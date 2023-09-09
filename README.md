@@ -1,0 +1,2 @@
+# gcond
+Gestione amministrazione condominiale
