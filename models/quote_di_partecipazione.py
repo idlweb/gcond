@@ -5,12 +5,12 @@ from odoo import models, fields, api
 
 
 class QuoteDiPartecipazione(models.Model):
-    _name = "condominio.quote_di_partecipazione"
+    _name = "gcond.quote_di_partecipazione"
 
     # Tabella di Ripartizione
 
     tabella_ripartizione_id = fields.Many2one(
-        "condominio.tabelle_ripartizione", string="Tabella di Ripartizione"
+        "gcond.tabelle_ripartizione", string="Tabella di Ripartizione"
     )
 
     # Condomino

@@ -11,5 +11,5 @@ class Partner(models.Model):
     # Tabella di Ripartizione
 
     tabella_ripartizione_id = fields.Many2one(
-        "condominio.tabelle_ripartizione", string="Tabella di Ripartizione"
+        "gcond.tabelle_ripartizione", string="Tabella di Ripartizione"
     )

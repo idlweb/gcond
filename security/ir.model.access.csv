@@ -1,5 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_gcond_quote_partecipazione,gcond.quote.partecipazione,gcond.model_quote_partecipazione,,1,1,1,1
+access_gcond_quote_di_partecipazione,gcond.quote.di.partecipazione,gcond.model_quote_di_partecipazione,,1,1,1,1
 
 
 
