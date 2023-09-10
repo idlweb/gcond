@@ -13,7 +13,13 @@ class GcondAccountCondominium(models.Model):
     city = fields.Char(string='City', required=True)
     zip = fields.Char(string='ZIP', required=True)
 
-
+    tax_ids = fields.Many2many(
+        comodel_name='account.tax',
+        relation='account_account_tax_rel',
+        column1='account_id',
+        column2='tax_id',
+        string='Taxes',
+    )
     
     country_id = fields.Many2one(
         comodel_name='res.country',
