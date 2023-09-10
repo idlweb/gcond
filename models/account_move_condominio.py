@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from account_condominio import GcondAccountCondominium
+from gcond import GcondAccountCondominium
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
