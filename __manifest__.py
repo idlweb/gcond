@@ -14,16 +14,11 @@
     'images' : ['images/accounts.jpeg','images/bank_statement.jpeg','images/cash_register.jpeg','images/chart_of_accounts.jpeg','images/customer_invoice.jpeg','images/journal_entries.jpeg'],
     'depends' : ['account'],
     'data': [
-        #'security/account_security.xml',
-        #'security/ir.model.access.csv',
-        #'data/account_data.xml',
-        #'data/digest_data.xml',
-        #'views/account_report.xml',
-        #
+        'security/ir.model.access.csv',
         'views/account_condominium_table_view.xml',
         'views/account_condominium_view.xml',
         'views/account_move_form_btn.xml',
-        'views/menu.xml',
+        #'views/menu.xml',
     ],
     'demo': [
         #'demo/account_demo.xml',
