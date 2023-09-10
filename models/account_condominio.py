@@ -12,10 +12,17 @@ class GcondAccountCondominium(models.Model):
     vat = fields.Char(string='VAT', required=True)
     city = fields.Char(string='City', required=True)
     zip = fields.Char(string='ZIP', required=True)
+
+    condominium_id = fields.Many2one(
+        comodel_name='account.condominio',
+        string='Condominium',
+        ondelete='cascade')
+
     country_id = fields.Many2one(
         comodel_name='res.country',
         string='Country',
         required=True)
+    
     phone = fields.Char(string='Phone')
 
     property_account_register_id = fields.Many2one(
