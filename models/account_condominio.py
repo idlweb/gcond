@@ -23,16 +23,14 @@ class GcondAccountCondominium(models.Model):
         column2='tax_id',
         string='Taxes',
     )
-    
-    """
-   
-    
-    condomino_id = fields.Many2one(
+
+    condominio_id = fields.Many2one(
         'res.partner',
         string='Condominio',
         ondelete='cascade',
     )
-    
+
+    """
     country_id = fields.Many2one(
         comodel_name='res.country',
         string='Country',
