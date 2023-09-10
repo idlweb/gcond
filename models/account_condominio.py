@@ -15,6 +15,10 @@ class GcondAccountCondominium(models.Model):
     zip = fields.Char(string='ZIP', required=True)
     phone = fields.Char(string='Phone')
     
+    type_registration = fields.Selection(
+        [('fattura', 'Fattura'), ('ricevuta', 'Ricevuta')],
+        string='Tipo Registrazione',
+        default='fattura',)
 
     """
     account_condominio_id = fields.Many2one(
