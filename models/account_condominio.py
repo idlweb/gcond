@@ -85,7 +85,7 @@ class GcondAccountCondominium(models.Model):
         return record
     
 
-    @api.multi
+    #@api.multi
     def distribute_charges(self, amount, table, document_number, account_id):
         """
         Distributes charges to condominiums based on the distribution table.
