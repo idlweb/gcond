@@ -15,6 +15,7 @@ class GcondAccountCondominium(models.Model):
     zip = fields.Char(string='ZIP', required=True)
     phone = fields.Char(string='Phone')
 
+    """
     # fix many2many da 'estensione ereditaria'
     tax_ids = fields.Many2many(
         comodel_name='account.tax',
@@ -54,7 +55,7 @@ class GcondAccountCondominium(models.Model):
 
     @api.model
     def action_register_condominium(self):
-        """Azione per registrare un condominio."""
+        #Azione per registrare un condominio.
         view_id = self.env.ref('gcond.view_account_condominium_form').id
         return {
             'type': 'ir.actions.act_window',
@@ -67,7 +68,7 @@ class GcondAccountCondominium(models.Model):
 
     @api.model
     def action_accounting(self):
-        """Azione per gestire la contabilità dei condomini."""
+        #Azione per gestire la contabilità dei condomini.
         view_id = self.env.ref('gcond.view_account_condominium_accounting').id
         return {
             'type': 'ir.actions.act_window',
@@ -81,7 +82,7 @@ class GcondAccountCondominium(models.Model):
 
     @api.model
     def create(self, vals):
-        """Crea un nuovo condominio."""
+        #Crea un nuovo condominio.
         record = super(GcondAccountCondominium, self).create(vals)
 
         # Imposta il conto di credito del condominio.
@@ -94,30 +95,18 @@ class GcondAccountCondominium(models.Model):
             ('code', '=', '2100'),
         ], limit=1)
     
-        """Crea un nuovo condominio."""
+        #Crea un nuovo condominio.
         record = super(GcondAccountCondominium, self).create(vals)
 
         # Imposta la tipologia di registrazione di default.
         record.type_registration = 'debit'
 
         return record
-    
+    """
 
+    """
     #@api.multi
     def distribute_charges(self, amount, table, document_number, account_id):
-        """
-        Distributes charges to condominiums based on the distribution table.
-
-        Args:
-            amount: The total amount of the charge.
-            table: The distribution table.
-            document_number: The document number.
-            account_id: The account ID.
-
-        Returns:
-            A dictionary of condominiums and their assigned charges.
-        """
-
         charges = {}
         for condominium in self.related_condominiums:
             # Get the condominium's share of the charge.
@@ -151,3 +140,4 @@ class GcondAccountCondominium(models.Model):
             charges[condominium] = charge
 
         return charges
+        """
