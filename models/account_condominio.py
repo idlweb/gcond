@@ -16,6 +16,12 @@ class GcondAccountCondominium(models.Model):
     phone = fields.Char(string='Phone')
     """
 
+    account_condominio_id = fields.Many2one(
+        'account.move',
+        string='Account Condominio',
+        ondelete='cascade',
+    )
+
     # fix many2many da 'estensione ereditaria'
     tax_ids = fields.Many2many(
         comodel_name='account.tax',
