@@ -33,7 +33,7 @@ class GcondAccountCondominium(models.Model):
         string='Taxes',
     )
 
-    """
+    
     condominio_id = fields.Many2one(
         'res.partner',
         string='Condominio',
@@ -111,9 +111,9 @@ class GcondAccountCondominium(models.Model):
         record.type_registration = 'debit'
 
         return record
-    """
+    
 
-    """
+    
     #@api.multi
     def distribute_charges(self, amount, table, document_number, account_id):
         charges = {}
@@ -149,4 +149,4 @@ class GcondAccountCondominium(models.Model):
             charges[condominium] = charge
 
         return charges
-        """
+        
