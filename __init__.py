@@ -4,8 +4,10 @@
 
 #from . import controllers
 from . import models
+from . import views
+from . import security
 #from . import demo
-from . import wizard
-from . import report
-from . import populate
-from . import tools
+#from . import wizard
+#from . import report
+#from . import populate
+#from . import tools
