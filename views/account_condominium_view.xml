@@ -34,9 +34,10 @@
         </field>
     </record>
 
-     <record id="view_account_condominium_form" model="ir.ui.view">
+
+    <record id="view_account_condominio_form" model="ir.ui.view">
         <field name="name">Account Condominium Form</field>
-        <field name="model">account.condomino</field>
+        <field name="model">account.condominio</field>
         <field name="arch" type="xml">
             <form string="Account Condominium">
                 <field name="name"/>
@@ -47,9 +48,10 @@
                 <field name="country_id"/>
                 <field name="phone"/>
                 <field name="email"/>
+                <div class="o_form_buttons">
+                    <button name="action_accounting" string="Contabilità" type="object" />
+                </div>
             </form>
         </field>
     </record>
-
-
 </odoo>

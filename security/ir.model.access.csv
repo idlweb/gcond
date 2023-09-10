@@ -1,12 +1,10 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 1,account_condominium_manager,account.condominio,group_account_manager,1,1,1,1
 2,account_condominium_user,account.condominio,group_account_user,1,1,1,1
-3,account_move_condominio_manager,account.move.condominio,group_account_manager,1,1,1,1
-4,account_move_condominio_user,account.move.condominio,group_account_user,1,1,1,1
-5,account_condominium_table_manager,account.condominium.table,group_account_manager,1,1,1,1
-6,account_condominium_table_user,account.condominium.table,group_account_user,1,1,1,1
-7,quote_di_partecipazione_manager,quote.di.partecipazione,group_account_manager,1,1,1,1
-8,quote_di_partecipazione_user,quote.di.partecipazione,group_account_user,1,1,1,1
+3,account_condominium_table_manager,account.condominio.table,group_account_manager,1,1,1,1
+4,account_condominium_table_user,account.condominio.table,group_account_user,1,1,1,1
+5,quote_di_partecipazione_manager,quote.di.partecipazione,group_account_manager,1,1,1,1
+6,quote_di_partecipazione_user,quote.di.partecipazione,group_account_user,1,1,1,1
 
 
 
