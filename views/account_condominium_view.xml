@@ -24,8 +24,8 @@
                 <field name="name"/>
                 <field name="vat"/>
                 <field name="type_registration"/>
-                <field name="account_receivable_id"/>
-                <field name="account_payable_id"/>
+                <field name="receivable_account_id"/> 
+                <field name="payable_account_id"/>
                 <field name="journal_id"/>
                 <field name="date_start"/>
                 <field name="date_end"/>
