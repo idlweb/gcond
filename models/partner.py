@@ -2,7 +2,7 @@ from odoo import models, fields, api
 
 
 class Partner(models.Model):
-    _inherit = "res.partner"
+    _inherit = "res.partner" 
 
     """
     # condomino
@@ -18,5 +18,6 @@ class Partner(models.Model):
     tabella_ripartizione_id = fields.Many2one(
         "gcond.tabelle_ripartizione", string="Tabella di Ripartizione"
     )
+    
     """
     
