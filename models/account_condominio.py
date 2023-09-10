@@ -1,67 +1,135 @@
 from odoo import models, fields, api
 
 class GcondAccountCondominium(models.Model):
-    _name = 'gcond.account.condominium'
+    _name = 'account.condominio'
     _inherit = 'account.account'
 
     name = fields.Char(string='Name', required=True)
     code = fields.Char(string='Code', required=True)
     description = fields.Text(string='Description')
+    address = fields.Char(string='Indirizzo')
+    email = fields.Char(string='Email', help='Indirizzo email del condominio', required=False)
+    vat = fields.Char(string='VAT', required=True)
+    city = fields.Char(string='City', required=True)
+    zip = fields.Char(string='ZIP', required=True)
+    country_id = fields.Many2one(
+        comodel_name='res.country',
+        string='Country',
+        required=True)
+    phone = fields.Char(string='Phone')
 
     property_account_register_id = fields.Many2one(
         'account.account.register',
         string='Registro di registrazione',
-        required=True,
-    )
+        required=True,)
 
-   document_number = fields.Char(string='Document Number')
-account_id = fields.Many2one('account.account', string='Account')
+    receivable_account_id = fields.Many2one(
+        'account.account', string='Conto credito', required=True,
+        help='Conto di credito del condominio')
+    
+    payable_account_id = fields.Many2one(
+        'account.account', string='Conto debito', required=True,
+        help='Conto di debito del condominio')
 
-@api.multi
-def distribute_charges(self, amount, table, document_number, account_id):
-    """
-    Distributes charges to condominiums based on the distribution table.
+    #document_number = fields.Char(string='Document Number')
+    #account_id = fields.Many2one('account.account', string='Account')
 
-    Args:
-        amount: The total amount of the charge.
-        table: The distribution table.
-        document_number: The document number.
-        account_id: The account ID.
+    @api.model
+    def action_register_condominium(self):
+        """Azione per registrare un condominio."""
+        view_id = self.env.ref('gcond.view_account_condominium_form').id
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Registra condominio',
+            'res_model': 'account.condominio',
+            'view_mode': 'form',
+            'view_id': view_id,
+            'target': 'new',
+        }
 
-    Returns:
-        A dictionary of condominiums and their assigned charges.
-    """
+    @api.model
+    def action_accounting(self):
+        """Azione per gestire la contabilità dei condomini."""
+        view_id = self.env.ref('gcond.view_account_condominium_accounting').id
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Contabilità condominio',
+            'res_model': 'account.condominio',
+            'view_mode': 'tree,form',
+            'view_id': view_id,
+            'target': 'current',
+        }
 
-    charges = {}
-    for condominium in self.related_condominiums:
-        # Get the condominium's share of the charge.
-        share = table.get(condominium.code_table)
-        if share is None:
-            # The condominium is not included in the distribution table.
-            continue
 
-        # Calculate the condominium's charge.
-        charge = amount * share
+    @api.model
+    def create(self, vals):
+        """Crea un nuovo condominio."""
+        record = super(GcondAccountCondominium, self).create(vals)
 
-        # Create a journal entry for the charge.
-        account_move = self.env['account.move'].create({
-            'journal_id': self.env['account.journal'].search([('type', '=', 'general')], limit=1).id,
-            'date': fields.Date.today(),
-            'line_ids': [
-                {
-                    'account_id': condominium.account_id.id,
-                    'name': condominium.name,
-                    'debit': charge,
-                },
-                {
-                    'account_id': account_id,
-                    'name': 'Spese condominiali',
-                    'credit': charge,
-                },
-            ],
-        })
+        # Imposta il conto di credito del condominio.
+        record.receivable_account_id = self.env['account.account'].search([
+            ('code', '=', '2000'),
+        ], limit=1)
 
-        # Add the charge to the dictionary of charges.
-        charges[condominium] = charge
+        # Imposta il conto di debito del condominio.
+        record.payable_account_id = self.env['account.account'].search([
+            ('code', '=', '2100'),
+        ], limit=1)
+    
+        """Crea un nuovo condominio."""
+        record = super(GcondAccountCondominium, self).create(vals)
 
-    return charges
+        # Imposta la tipologia di registrazione di default.
+        record.type_registration = 'debit'
+
+        return record
+    
+
+    @api.multi
+    def distribute_charges(self, amount, table, document_number, account_id):
+        """
+        Distributes charges to condominiums based on the distribution table.
+
+        Args:
+            amount: The total amount of the charge.
+            table: The distribution table.
+            document_number: The document number.
+            account_id: The account ID.
+
+        Returns:
+            A dictionary of condominiums and their assigned charges.
+        """
+
+        charges = {}
+        for condominium in self.related_condominiums:
+            # Get the condominium's share of the charge.
+            share = table.get(condominium.code_table)
+            if share is None:
+                # The condominium is not included in the distribution table.
+                continue
+
+            # Calculate the condominium's charge.
+            charge = amount * share
+
+            # Create a journal entry for the charge.
+            account_move = self.env['account.move'].create({
+                'journal_id': self.env['account.journal'].search([('type', '=', 'general')], limit=1).id,
+                'date': fields.Date.today(),
+                'line_ids': [
+                    {
+                        'account_id': condominium.account_id.id,
+                        'name': condominium.name,
+                        'debit': charge,
+                    },
+                    {
+                        'account_id': account_id,
+                        'name': 'Spese condominiali',
+                        'credit': charge,
+                    },
+                ],
+            })
+
+            # Add the charge to the dictionary of charges.
+            charges[condominium] = charge
+
+        return charges

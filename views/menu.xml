@@ -1,0 +1,10 @@
+<odoo>
+    <data>
+        <menuitem id="menu_gcond" name="gcond" parent="base.menu_administration"/>
+        <menuitem id="menu_gcond_register_condominium" name="Registra condominio"
+                  action="account_condominium.action_register_condominium"
+                  parent="menu_gcond"/>
+        <menuitem id="menu_gcond_accounting" name="Contabilità condominio"
+                  parent="menu_gcond"/>
+    </data>
+</odoo>
