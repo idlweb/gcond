@@ -21,7 +21,7 @@ class AccountCondominium(models.Model):
         relation='account_condominio_tax_rel',
         column1='condominio_id',
         column2='tax_id',
-        string='Taxes',
+        string='Taxes', 
     )
 
 
