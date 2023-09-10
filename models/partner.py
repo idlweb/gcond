@@ -11,8 +11,8 @@ class Partner(models.Model):
     proprietario = fields.Boolean(string="Proprietario")
 
     # Tabella di Ripartizione
-    """
+    
     tabella_ripartizione_id = fields.Many2one(
         "gcond.tabelle_ripartizione", string="Tabella di Ripartizione"
     )
-    """
+    
