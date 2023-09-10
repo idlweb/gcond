@@ -15,15 +15,17 @@ class GcondAccountCondominium(models.Model):
     zip = fields.Char(string='ZIP', required=True)
     phone = fields.Char(string='Phone')
 
-    """
     # fix many2many da 'estensione ereditaria'
     tax_ids = fields.Many2many(
         comodel_name='account.tax',
-        relation='account_account_tax_rel',
+        relation='account_condominio_tax_rel',
         column1='account_id',
         column2='tax_id',
         string='Taxes',
     )
+    
+    """
+   
     
     condomino_id = fields.Many2one(
         'res.partner',
