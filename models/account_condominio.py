@@ -15,6 +15,7 @@ class GcondAccountCondominium(models.Model):
     zip = fields.Char(string='ZIP', required=True)
     phone = fields.Char(string='Phone')
 
+
     # fix many2many da 'estensione ereditaria'
     tax_ids = fields.Many2many(
         comodel_name='account.tax',
