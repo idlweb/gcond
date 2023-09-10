@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from . import tabelle_ripartizione
+#from . import tabelle_ripartizione
 #from . import partner
-from . import quote_di_partecipazione
+#from . import quote_di_partecipazione
 from . import account_condominio
 from . import account_condominio_table
 from . import condominio
