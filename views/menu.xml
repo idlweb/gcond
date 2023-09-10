@@ -2,6 +2,6 @@
     <data>
         <menuitem id="menu_gcond" name="gcond"/>
         <menuitem id="menu_gcond_register_condominium" parent="menu_gcond" name="Registra condominio" action="gcond.action_register_condominium"/>
-        <menuitem id="menu_gcond_accounting" name="Contabilità condominio"  parent="menu_gcond"/>
+        <!--menuitem id="menu_gcond_accounting" name="Contabilità condominio"  parent="menu_gcond"/-->
     </data>
 </odoo>
