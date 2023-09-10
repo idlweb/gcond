@@ -13,11 +13,8 @@ class GcondAccountCondominium(models.Model):
     city = fields.Char(string='City', required=True)
     zip = fields.Char(string='ZIP', required=True)
 
-    condominium_id = fields.Many2one(
-        comodel_name='account.condominio',
-        string='Condominium',
-        ondelete='cascade')
 
+    
     country_id = fields.Many2one(
         comodel_name='res.country',
         string='Country',
