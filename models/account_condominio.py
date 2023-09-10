@@ -25,8 +25,6 @@ class GcondAccountCondominium(models.Model):
     )
 
 
-    
-
     condominio_id = fields.Many2one(
         'res.partner',
         string='Condominio',
