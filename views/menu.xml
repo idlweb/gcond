@@ -1,15 +1,13 @@
 <odoo>
     <data>
-        <record id="action_register_condominium" model="ir.actions.act_window">
-            <id>action_register_condominium</id>
-            <name>Registra condominio</name>
-            <model>account.condominio</model>
-            <view_mode>form</view_mode>
-            <target>new</target>
+        <record id="menu_gcond" model="ir.ui.menu">
+            <name>Gestione condomini</name>
+            <icon>fa-building</icon>
+            <sequence>1</sequence>
         </record>
-        <menuitem id="menu_gcond_register_condominium" parent="menu_gcond" name="Registra condominio" action="action_register_condominium"/>
-        <record id="account_condominio" model="ir.model">
-            <field name="action_register_condominium" ref="action_register_condominium"/>
-        </record>
+        <menuitem id="menu_gcond_register_condominium" parent="menu_gcond" name="Registra condominio" />
+        <menuitem id="menu_gcond_view_condominium" parent="menu_gcond" name="Visualizza condomini" />
+        <menuitem id="menu_gcond_edit_condominium" parent="menu_gcond" name="Modifica condominio" />
+        <menuitem id="menu_gcond_delete_condominium" parent="menu_gcond" name="Elimina condominio" />
     </data>
 </odoo>
