@@ -1,5 +1,6 @@
 from odoo import models, fields, api
-from gcond import GcondAccountCondominium
+#from gcond import GcondAccountCondominium                  
+from account_condominio import GcondAccountCondominium
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
@@ -20,7 +21,7 @@ class AccountMove(models.Model):
         document_number = self.document_number
         account_id = self.account_id
 
-        charges = GcondAccountCondominium.distribute_charges(amount, table, document_number, account_id)
+        charges = GcondAccountCondominium.distribute_charges(amount, table, document_number, account_id)        
 
-
+        
         return charges

@@ -1,7 +1,7 @@
 from odoo import models, fields, api
 
 class AccountCondominiumTable(models.Model):
-    _name = 'gcond.account.condominium.table'
+    _name = 'account.condominio.table'
 
     name = fields.Char(string='Name', required=True)
     code = fields.Char(string='Code', required=True)
