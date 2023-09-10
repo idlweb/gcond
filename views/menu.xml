@@ -1,10 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
-        <menuitem id="menu_gcond" name="Gestione condomini"/>
-        <menuitem id="menu_gcond_register_condominium" name="Registra condominio"
-                  action="account_condominio.action_register_condominium"
-                  parent="menu_gcond"/>
-        <menuitem id="menu_gcond_accounting" name="Contabilità condominio"
-                  parent="menu_gcond"/>
-    </data>
+
+    <!-- Top menu item -->
+    <!--
+        This menu item's purpose is to overwrite another one defined in
+        the base module in order to set new groups.
+    -->
+    <menuitem
+        id="gcond_menu_root"
+        name="Gwestione condomini"
+        sequence="25"/>
+
+    <!--  -->
+    <menuitem
+        id="menu_gcond_register_condominium"
+        name="Registra condominio"
+        parent="gcond_menu_root"
+        action="account_condominio.action_register_condominium"
+        sequence="1"/>
+
+    <!--  -->
+    <menuitem
+        id="menu_gcond_accounting"
+        name="Contabilità condominio"
+        parent="gcond_menu_roots"
+        sequence="1"/>
+  
 </odoo>
