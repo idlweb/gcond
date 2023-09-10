@@ -1,5 +1,5 @@
 <odoo>
-    <!--record id="view_account_condominium" model="ir.ui.view">
+    <record id="view_account_condominium" model="ir.ui.view">
         <field name="name">Condominium Account</field>
         <field name="model">account.condominio</field>
         <field name="arch" type="xml">
@@ -53,5 +53,5 @@
                 </div>
             </form>
         </field>
-    </record-->
+    </record>
 </odoo>
