@@ -3,7 +3,7 @@ from odoo import models, fields, api
 class AccountCondominium(models.Model):
     _inherit = 'res.partner'
 
-    
+    """
     condomino_id = fields.Many2one(
         comodel_name='account.condomino',
         string='Condomino',
@@ -23,6 +23,6 @@ class AccountCondominium(models.Model):
         column2='tax_id',
         string='Taxes', 
     )
-
+    """
 
     

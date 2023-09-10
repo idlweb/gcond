@@ -4,20 +4,7 @@ class GcondAccountCondominium(models.Model):
     _name = 'account.condominio'
     _inherit = 'account.account'
 
-
-    condominio_id = fields.Many2one(
-        'res.partner',
-        string='Condomino',
-        ondelete='cascade',
-    )
-
-    condomino_ids = fields.One2many(
-        'res.partner',
-        'condomino_id',
-        string='Condomino',
-        required=True,
-    )
-
+    
     name = fields.Char(string='Name', required=True)
     code = fields.Char(string='Code', required=True)
     description = fields.Text(string='Description')
@@ -26,7 +13,7 @@ class GcondAccountCondominium(models.Model):
     vat = fields.Char(string='VAT', required=True)
     city = fields.Char(string='City', required=True)
     zip = fields.Char(string='ZIP', required=True)
-
+    phone = fields.Char(string='Phone')
 
     # fix many2many da 'estensione ereditaria'
     tax_ids = fields.Many2many(
@@ -37,14 +24,18 @@ class GcondAccountCondominium(models.Model):
         string='Taxes',
     )
     
+    condomino_id = fields.Many2one(
+        'res.partner',
+        string='Condominio',
+        ondelete='cascade',
+    )
     
     country_id = fields.Many2one(
         comodel_name='res.country',
         string='Country',
         required=True)
     
-    phone = fields.Char(string='Phone')
-
+    
     property_account_register_id = fields.Many2one(
         'account.account.register',
         string='Registro di registrazione',
