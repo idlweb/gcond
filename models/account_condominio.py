@@ -4,7 +4,7 @@ class GcondAccountCondominium(models.Model):
     _name = 'account.condominio'
     _inherit = 'account.account'
 
-    
+    """
     name = fields.Char(string='Name', required=True)
     code = fields.Char(string='Code', required=True)
     description = fields.Text(string='Description')
@@ -14,7 +14,7 @@ class GcondAccountCondominium(models.Model):
     city = fields.Char(string='City', required=True)
     zip = fields.Char(string='ZIP', required=True)
     phone = fields.Char(string='Phone')
-
+    """
 
     # fix many2many da 'estensione ereditaria'
     tax_ids = fields.Many2many(
