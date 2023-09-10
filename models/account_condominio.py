@@ -17,7 +17,7 @@ class GcondAccountCondominium(models.Model):
     """
 
     account_condominio_id = fields.Many2one(
-        'account.move',
+        'account.account',
         string='Account Condominio',
         ondelete='cascade',
     )
