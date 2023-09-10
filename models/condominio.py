@@ -4,9 +4,9 @@ class AccountCondominium(models.Model):
     _inherit = 'res.partner'
 
     
-    condominium_id = fields.Many2one(
-        comodel_name='account.condominio',
-        string='Condominium',
+    condomino_id = fields.Many2one(
+        comodel_name='account.condomino',
+        string='Condomino',
     )
  
     related_condominiums = fields.One2many(
