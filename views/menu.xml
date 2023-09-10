@@ -3,7 +3,7 @@
         <record id="action_register_condominium" model="ir.actions.act_window">
             <id>action_register_condominium</id>
             <name>Registra condominio</name>
-            <res_model>account.condominio</res_model>
+            <model>account.condominio</model>
             <view_mode>form</view_mode>
             <target>new</target>
         </record>
