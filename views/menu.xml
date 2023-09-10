@@ -7,7 +7,6 @@
             <view_mode>form</view_mode>
             <target>new</target>
         </record>
-        <menuitem id="menu_gcond" name="gcond"/>
         <menuitem id="menu_gcond_register_condominium" parent="menu_gcond" name="Registra condominio" action="action_register_condominium"/>
         <record id="account_condominio" model="ir.model">
             <field name="action_register_condominium" ref="action_register_condominium"/>
