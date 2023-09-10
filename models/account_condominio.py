@@ -20,6 +20,12 @@ class GcondAccountCondominium(models.Model):
         string='Tipo Registrazione',
         default='fattura',)
 
+    journal_id = fields.Many2one(
+        'account.journal',
+        string='Giornale',
+        required=True,
+    )
+
     """
     account_condominio_id = fields.Many2one(
         'account.account',
