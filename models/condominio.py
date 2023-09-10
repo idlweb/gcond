@@ -24,11 +24,5 @@ class AccountCondominium(models.Model):
         string='Taxes',
     )
 
-    """
-    related_condominiums = fields.One2many(
-        comodel_name='res.partner',
-        inverse_name='condominium_id',
-        string='Related Condominiums',
-    )
-    """
+
     
