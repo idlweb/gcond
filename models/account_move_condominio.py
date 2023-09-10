@@ -6,6 +6,12 @@ from . import account_condominio
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
+    account_condominio_id = fields.Many2one(
+        'res.partner',
+        string='Condominio',
+        ondelete='cascade',
+    )
+
     def button_distribute_charges(self):
         """
         Distributes charges to condominiums based on the distribution table.
