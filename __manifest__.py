@@ -20,10 +20,10 @@
         #'data/digest_data.xml',
         #'views/account_report.xml',
         #
-        'views/account_condominium_table_view.xml',
-        #'views/account_condominium_view.xml',
-        'views/account_move_form_btn.xml',
-        'views/menu.xml',
+        #'views/account_condominium_table_view.xml',
+        'views/account_condominium_view.xml',
+        #'views/account_move_form_btn.xml',
+        #'views/menu.xml',
     ],
     'demo': [
         #'demo/account_demo.xml',
