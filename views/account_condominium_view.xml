@@ -48,7 +48,7 @@
                 <field name="country_id"/>
                 <field name="phone"/>
                 <field name="email"/>
-                <field name="condominium_id"/>
+                <!--field name="condominium_id"/-->
                 <div class="o_form_buttons">
                     <button name="action_accounting" string="Contabilità" type="object" />
                 </div>
