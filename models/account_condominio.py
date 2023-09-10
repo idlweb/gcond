@@ -13,11 +13,6 @@ class GcondAccountCondominium(models.Model):
     city = fields.Char(string='City', required=True)
     zip = fields.Char(string='ZIP', required=True)
 
-    
-    # non mi è chiaro il legame con account_tax_ids
-    account_condominio_id = fields.Many2one(
-        comodel_name='account.condominio',
-        string='Condominium')
 
     # fix many2many da 'estensione ereditaria'
     tax_ids = fields.Many2many(
