@@ -3,6 +3,12 @@ from odoo import models, fields, api
 class AccountCondominiumTable(models.Model):
     _name = 'account.condominio.table'
 
+    account_condominio_id = fields.Many2one(
+        'res.partner',
+        string='Condominio',
+        ondelete='cascade',
+    )
+    
     name = fields.Char(string='Name', required=True)
     code = fields.Char(string='Code', required=True)
     description = fields.Text(string='Description')
