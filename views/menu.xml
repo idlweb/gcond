@@ -17,12 +17,5 @@
         name="Registra condominio"
         parent="gcond_menu_root"
         sequence="1"/>
-
-    <!--  -->
-    <menuitem
-        id="menu_gcond_accounting"
-        name="Contabilità condominio"
-        parent="gcond_menu_roots"
-        sequence="1"/>
   
 </odoo>
