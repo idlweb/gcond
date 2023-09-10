@@ -14,11 +14,12 @@ class GcondAccountCondominium(models.Model):
     zip = fields.Char(string='ZIP', required=True)
 
     
+    # non mi è chiaro il legame con account_tax_ids
     account_condominio_id = fields.Many2one(
         comodel_name='account.condominio',
         string='Condominium')
 
-    
+    # fix many2many da 'estensione ereditaria'
     tax_ids = fields.Many2many(
         comodel_name='account.tax',
         relation='account_account_tax_rel',
