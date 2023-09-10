@@ -15,6 +15,7 @@ class AccountCondominium(models.Model):
         string='Related Condominiums',
     )
  
+    # fix many2many da 'estensione ereditaria'
     tax_ids = fields.Many2many(
         comodel_name='account.tax',
         relation='account_condominio_tax_rel',
