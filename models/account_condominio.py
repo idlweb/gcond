@@ -24,13 +24,6 @@ class GcondAccountCondominium(models.Model):
         string='Taxes',
     )
 
-    """
-    condominio_id = fields.Many2one(
-        'res.partner',
-        string='Condominio',
-        ondelete='cascade',
-    )
-    
     country_id = fields.Many2one(
         comodel_name='res.country',
         string='Country',
@@ -49,6 +42,15 @@ class GcondAccountCondominium(models.Model):
     payable_account_id = fields.Many2one(
         'account.account', string='Conto debito', required=True,
         help='Conto di debito del condominio')
+
+    """
+    condominio_id = fields.Many2one(
+        'res.partner',
+        string='Condominio',
+        ondelete='cascade',
+    )
+    
+    
 
     #document_number = fields.Char(string='Document Number')
     #account_id = fields.Many2one('account.account', string='Account')
