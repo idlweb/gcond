@@ -4,11 +4,20 @@ class GcondAccountCondominium(models.Model):
     _name = 'account.condominio'
     _inherit = 'account.account'
 
-    condomino_id = fields.Many2one(
+
+    condominio_id = fields.Many2one(
         'res.partner',
-        string='Condominio',
+        string='Condomino',
         ondelete='cascade',
     )
+
+    condomino_ids = fields.One2many(
+        'res.partner',
+        'condomino_id',
+        string='Condomino',
+        required=True,
+    )
+
     name = fields.Char(string='Name', required=True)
     code = fields.Char(string='Code', required=True)
     description = fields.Text(string='Description')
