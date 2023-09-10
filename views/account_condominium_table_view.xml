@@ -1,7 +1,7 @@
 <odoo>
     <record id="view_account_condominium_table_tree" model="ir.ui.view">
         <field name="name">Condominium Tables</field>
-        <field name="model">account.condominium.table</field>
+        <field name="model">account.condominio.table</field>
         <field name="arch" type="xml">
             <tree string="Condominium Tables">
                 <field name="name"/>
@@ -17,7 +17,7 @@
 
     <record id="view_account_condominium_table_form" model="ir.ui.view">
         <field name="name">Condominium Table</field>
-        <field name="model">account.condominium.table</field>
+        <field name="model">account.condominio.table</field>
         <field name="arch" type="xml">
             <form string="Condominium Table">
                 <field name="name"/>
