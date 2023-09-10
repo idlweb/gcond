@@ -5,7 +5,7 @@
 #from . import quote_di_partecipazione
 from . import account_condominio
 from . import account_condominio_table
-from . import condominio
+from . import condomino
 from . import account_move_condominio
 from . import partner
 
