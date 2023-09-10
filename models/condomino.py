@@ -11,7 +11,7 @@ class AccountCondominium(models.Model):
  
     related_condominiums = fields.One2many(
         comodel_name='res.partner',
-        inverse_name='condominium_id',
+        inverse_name='condominio_id',
         string='Related Condominiums',
     )
  

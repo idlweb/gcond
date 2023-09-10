@@ -7,7 +7,7 @@
                 <field name="name"/>
                 <field name="code"/>
                 <field name="description"/>
-                <field name="condominium_id"/>
+                <field name="condominio_id"/>
                 <field name="code_table"/>
                 <field name="unit_of_measure"/>
                 <field name="value_distribution"/>
@@ -23,7 +23,7 @@
                 <field name="name"/>
                 <field name="code"/>
                 <field name="description"/>
-                <field name="condominium_id"/>
+                <field name="condominio_id"/>
                 <field name="code_table"/>
                 <field name="unit_of_measure"/>
                 <field name="value_distribution"/>
