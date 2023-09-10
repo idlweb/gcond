@@ -18,8 +18,9 @@ class TabelleRipartizione(models.Model):
         string="Tipologia",
     )
 
+    """
     # Quote di partecipazione
-
     quote_di_partecipazione = fields.One2many(
         "condominio.quote_di_partecipazione", "tabella_ripartizione_id", string="Quote di partecipazione"
     )
+    """
