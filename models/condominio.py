@@ -22,7 +22,7 @@ class AccountCondominium(models.Model):
         column2='tax_id',
         string='Taxes',
     )
-    
+
     """
     related_condominiums = fields.One2many(
         comodel_name='res.partner',
