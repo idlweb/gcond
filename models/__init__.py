@@ -7,5 +7,6 @@ from . import account_condominio
 from . import account_condominio_table
 from . import condominio
 from . import account_move_condominio
+from . import partner
 
 
