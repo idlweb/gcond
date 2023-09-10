@@ -16,7 +16,6 @@
         id="menu_gcond_register_condominium"
         name="Registra condominio"
         parent="gcond_menu_root"
-        action="account_condominio.action_register_condominium"
         sequence="1"/>
 
     <!--  -->
