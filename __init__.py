@@ -4,7 +4,7 @@
 
 #from . import controllers
 from . import models
-from . import demo
+#from . import demo
 from . import wizard
 from . import report
 from . import populate
