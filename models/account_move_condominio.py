@@ -23,8 +23,6 @@ class AccountMove(models.Model):
         account_id = self.account_id
 
         instAC = account_condominio.GcondAccountCondominium()
-
         charges = instAC.distribute_charges(amount, table, document_number, account_id)        
 
-        
         return charges

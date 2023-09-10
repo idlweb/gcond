@@ -35,6 +35,11 @@ class GcondAccountCondominium(models.Model):
         'account.account', string='Conto debito', required=True,
         help='Conto di debito del condominio')
 
+
+    tax_ids = fields.Many2many(
+        comodel_name='account.tax',
+        inverse_name='condominio_ids',
+        string='Taxes',)
     #document_number = fields.Char(string='Document Number')
     #account_id = fields.Many2one('account.account', string='Account')
 
