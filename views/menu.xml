@@ -1,13 +1,10 @@
 <odoo>
     <data>
-        <record id="menu_gcond" model="ir.ui.menu">
-            <name>Gestione condomini</name>
-            <icon>fa-building</icon>
-            <sequence>1</sequence>
-        </record>
-        <menuitem id="menu_gcond_register_condominium" parent="menu_gcond" name="Registra condominio" />
-        <menuitem id="menu_gcond_view_condominium" parent="menu_gcond" name="Visualizza condomini" />
-        <menuitem id="menu_gcond_edit_condominium" parent="menu_gcond" name="Modifica condominio" />
-        <menuitem id="menu_gcond_delete_condominium" parent="menu_gcond" name="Elimina condominio" />
+        <menuitem id="menu_gcond" name="Gestione condomini"/>
+        <menuitem id="menu_gcond_register_condominium" name="Registra condominio"
+                  action="account_condominio.action_register_condominium"
+                  parent="menu_gcond"/>
+        <menuitem id="menu_gcond_accounting" name="Contabilità condominio"
+                  parent="menu_gcond"/>
     </data>
 </odoo>
