@@ -3,6 +3,12 @@ from odoo import models, fields, api
 class AccountCondominium(models.Model):
     _inherit = 'res.partner'
 
+    account_condominio_id = fields.Many2one(
+        'res.partner',
+        string='Condominio',
+        ondelete='cascade',
+    )
+    
     """
     condomino_id = fields.Many2one(
         comodel_name='account.condomino',
