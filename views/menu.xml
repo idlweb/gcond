@@ -5,20 +5,8 @@
       <field name="view_mode">form</field>
     </record>
 
-    <record model="ir.actions.act_window" id="gcond.condominium_accounting">
-      <field name="name">Account Condominium Accounting</field>
-        <field name="model">account.condominio</field>
-        <field name="arch" type="xml">
-            <form string="Account Condominium Accounting">
-                <field name="name"/>
-                <field name="vat"/>
-                <field name="type_registration"/>
-                <field name="receivable_account_id"/> 
-                <field name="payable_account_id"/>
-                <field name="journal_id"/>
-            </form>
-        </field>
-    </record>
+
+
 
 
     <!-- Top menu item -->
