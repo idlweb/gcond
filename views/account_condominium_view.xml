@@ -8,13 +8,28 @@
                 <field name="code"/>
                 <field name="description"/>
                 <field name="property_account_register_id"/>
-
                 <button name="new" string="New" type="primary"/>
                 <button name="edit" string="Edit" type="primary"/>
                 <button name="delete" string="Delete" type="primary"/>
             </form>
         </field>
     </record>
+
+    <record id="view_account_condominium_accounting" model="ir.ui.view">
+        <field name="name">Account Condominium Accounting</field>
+        <field name="model">account.condominio</field>
+        <field name="arch" type="xml">
+            <form string="Account Condominium Accounting">
+                <field name="name"/>
+                <field name="vat"/>
+                <field name="type_registration"/>
+                <field name="receivable_account_id"/> 
+                <field name="payable_account_id"/>
+                <field name="journal_id"/-->
+            </form>
+        </field>
+    </record-->
+
 
     <record id="view_account_condominio_form" model="ir.ui.view">
         <field name="name">Account Condominium Form</field>
@@ -29,10 +44,6 @@
                 <field name="country_id"/>
                 <field name="phone"/>
                 <field name="email"/>
-                <field name="type_registration"/>
-                <field name="receivable_account_id"/> 
-                <field name="payable_account_id"/>
-                <field name="journal_id"/>
                 <div class="o_form_buttons">
                     <button name="action_accounting" string="Contabilità" type="object" />
                 </div>
