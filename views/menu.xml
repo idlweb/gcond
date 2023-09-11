@@ -6,10 +6,10 @@
     </record>
 
 
-    <record id="view_account_condominium_accounting" model="ir.ui.view">
-        <field name="name">Account Condominium Accounting</field>
-        <field name="model">account.condominio</field>
-        <field name="arch" type="xml">
+    <record model="ir.actions.act_window" id="gcond.view_account_condominium_accounting">
+       <field name="name">Account Condominium Accounting</field>
+       <field name="model">account.condominio</field>
+       <field name="arch" type="xml">
             <form string="Account Condominium Accounting">
                 <field name="name"/>
                 <field name="vat"/>
@@ -18,8 +18,9 @@
                 <field name="payable_account_id"/>
                 <field name="journal_id"/>
             </form>
-        </field>
+       </field>
     </record>
+
 
     <!-- Top menu item -->
 
