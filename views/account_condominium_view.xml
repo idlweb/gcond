@@ -28,7 +28,7 @@
                 <field name="journal_id"/>
             </form>
         </field>
-    </record-->
+    </record>
 
 
     <record id="view_account_condominio_form" model="ir.ui.view">
