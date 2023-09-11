@@ -2,7 +2,23 @@
     <record model="ir.actions.act_window" id="gcond.action_window">
       <field name="name">gcond window</field>
       <field name="res_model">account.condominio</field>
-      <field name="view_mode">tree,form</field>
+      <field name="view_mode">form</field>
+    </record>
+
+
+    <record id="view_account_condominium_accounting" model="ir.ui.view">
+        <field name="name">Account Condominium Accounting</field>
+        <field name="model">account.condominio</field>
+        <field name="arch" type="xml">
+            <form string="Account Condominium Accounting">
+                <field name="name"/>
+                <field name="vat"/>
+                <field name="type_registration"/>
+                <field name="receivable_account_id"/> 
+                <field name="payable_account_id"/>
+                <field name="journal_id"/>
+            </form>
+        </field>
     </record>
 
     <!-- Top menu item -->
@@ -20,7 +36,7 @@
             action="gcond.action_window"/>
     
     <menuitem name="Registra condominio" id="gcond.menu_2_list" parent="gcond.menu_1" 
-             action="action_register_condominium"/>
+             action="gcond.view_account_condominium_accounting"/>
     
 </odoo>
 
