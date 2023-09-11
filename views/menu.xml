@@ -32,9 +32,7 @@
     <menuitem id="menu_gcond_register_condominium" parent="gcond.menu_1" 
             name="Registra condominio" action="action_register_condominium"/>
     
-    <record id="account_condominio" model="ir.model">
-            <field name="action_register_condominium" ref="action_register_condominium"/>
-    </record>
+   
 
 </odoo>
 
