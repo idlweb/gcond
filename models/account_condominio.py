@@ -75,7 +75,7 @@ class GcondAccountCondominium(models.Model):
     @api.model
     def action_register_condominium(self):
         #Azione per registrare un condominio.
-        view_id = self.env.ref('gcond.view_account_condominium_form').id
+        view_id = self.env.ref('view_account_condominium_form').id
         return {
             'type': 'ir.actions.act_window',
             'name': 'Registra condominio',
@@ -88,7 +88,7 @@ class GcondAccountCondominium(models.Model):
     @api.model
     def action_accounting(self):
         #Azione per gestire la contabilità dei condomini.
-        view_id = self.env.ref('gcond.view_account_condominium_accounting').id
+        view_id = self.env.ref('view_account_condominium_accounting').id
         return {
             'type': 'ir.actions.act_window',
             'name': 'Contabilità condominio',
