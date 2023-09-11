@@ -16,25 +16,6 @@
         </field>
     </record>
 
-    <!--record id="view_account_condominium_accounting" model="ir.ui.view">
-        <field name="name">Account Condominium Accounting</field>
-        <field name="model">account.condominio</field>
-        <field name="arch" type="xml">
-            <form string="Account Condominium Accounting">
-                <field name="name"/>
-                <field name="vat"/>
-                <field name="type_registration"/>
-                <field name="receivable_account_id"/> 
-                <field name="payable_account_id"/>
-                <field name="journal_id"/-->
-                <!--field name="date_start"/-->
-                <!--field name="date_end"/-->
-                <!--field name="invoice_ids"/-->
-            <!--/form>
-        </field>
-    </record-->
-
-
     <record id="view_account_condominio_form" model="ir.ui.view">
         <field name="name">Account Condominium Form</field>
         <field name="model">account.condominio</field>
@@ -48,6 +29,10 @@
                 <field name="country_id"/>
                 <field name="phone"/>
                 <field name="email"/>
+                <field name="type_registration"/>
+                <field name="receivable_account_id"/> 
+                <field name="payable_account_id"/>
+                <field name="journal_id"/-->
                 <div class="o_form_buttons">
                     <button name="action_accounting" string="Contabilità" type="object" />
                 </div>

@@ -23,7 +23,7 @@ class GcondAccountCondominium(models.Model):
     journal_id = fields.Many2one(
         'account.journal',
         string='Giornale',
-        required=True,
+        required=False,
     )
 
     """
@@ -53,13 +53,13 @@ class GcondAccountCondominium(models.Model):
     country_id = fields.Many2one(
         comodel_name='res.country',
         string='Country',
-        required=True)
+        required=False)
     
     
     property_account_register_id = fields.Many2one(
         'account.account.register',
         string='Registro di registrazione',
-        required=True,)
+        required=False,)
 
     receivable_account_id = fields.Many2one(
         'account.account', string='Conto credito', required=True,

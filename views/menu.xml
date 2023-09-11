@@ -2,12 +2,8 @@
     <record model="ir.actions.act_window" id="gcond.action_window">
       <field name="name">gcond window</field>
       <field name="res_model">account.condominio</field>
-      <field name="view_mode">form</field>
+      <field name="view_mode">form,tree</field>
     </record>
-
-
-
-
 
     <!-- Top menu item -->
 
@@ -15,7 +11,7 @@
 
     <!-- menu categories -->
 
-    <menuitem name="Menu 1" id="gcond.menu_1" parent="gcond.menu_root"/>
+    <menuitem name="Condominii" id="gcond.menu_1" parent="gcond.menu_root"/>
     <menuitem name="Menu 2" id="gcond.menu_2" parent="gcond.menu_root"/>
 
     <!-- actions -->
