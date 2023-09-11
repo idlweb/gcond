@@ -1,21 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record model="ir.actions.act_window" id="gcond.action_window">
+      <field name="name">gcond window</field>
+      <field name="res_model">gcond.account.condominio</field>
+      <field name="view_mode">tree,form</field>
+    </record>
 
     <!-- Top menu item -->
-    <!--
-        This menu item's purpose is to overwrite another one defined in
-        the base module in order to set new groups.
-    -->
-    <menuitem
-        id="gcond_menu_root"
-        name="Gwestione condomini"
-        sequence="25"/>
 
-    <!--  -->
-    <menuitem
-        id="menu_gcond_register_condominium"
-        name="Registra condominio"
-        parent="gcond_menu_root"
-        sequence="1"/>
-  
+    <menuitem name="gcond_condominio" id="gcond.menu_root"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Menu 1" id="account_condominio.menu_1" parent="gcond.menu_root"/>
+    <menuitem name="Menu 2" id="account_condominio.menu_2" parent="gcond.menu_root"/>
+
+    <!-- actions -->
+
+    <menuitem name="List" id="account_condominio.menu_1_list" parent="account_condominio.menu_1"
+              action="gcond.action_window"/>
+
 </odoo>
+
