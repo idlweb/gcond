@@ -1,7 +1,7 @@
 <odoo>
     <record model="ir.actions.act_window" id="gcond.action_window">
       <field name="name">gcond window</field>
-      <field name="res_model">gcond.account.condominio</field>
+      <field name="res_model">account.condominio</field>
       <field name="view_mode">tree,form</field>
     </record>
 
