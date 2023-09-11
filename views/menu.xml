@@ -20,7 +20,7 @@
             action="gcond.action_window"/>
     
     <menuitem name="Registra condominio" id="gcond.menu_2_list" parent="gcond.menu_1" 
-             action="gcond.account.condominio.action_register_condominium"/>
+             action="action_register_condominium"/>
     
 </odoo>
 
