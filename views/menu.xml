@@ -11,12 +11,12 @@
 
     <!-- menu categories -->
 
-    <menuitem name="Menu 1" id="account_condominio.menu_1" parent="gcond.menu_root"/>
-    <menuitem name="Menu 2" id="account_condominio.menu_2" parent="gcond.menu_root"/>
+    <menuitem name="Menu 1" id="gcond.menu_1" parent="gcond.menu_root"/>
+    <menuitem name="Menu 2" id="gcond.menu_2" parent="gcond.menu_root"/>
 
     <!-- actions -->
 
-    <menuitem name="List" id="account_condominio.menu_1_list" parent="account_condominio.menu_1"
+    <menuitem name="List" id="gcond.menu_1_list" parent="gcond.menu_1"
               action="gcond.action_window"/>
 
 </odoo>
