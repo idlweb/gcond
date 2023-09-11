@@ -5,7 +5,7 @@
       <field name="view_mode">form</field>
     </record>
 
-    <record model="ir.actions.act_window" id="gcond.view_account_condominium_accounting">
+    <record model="ir.actions.act_window" id="view_account_condominium_accounting">
       <field name="name">Account Condominium Accounting</field>
         <field name="model">account.condominio</field>
         <field name="arch" type="xml">
@@ -36,7 +36,7 @@
             action="gcond.action_window"/>
     
     <menuitem name="Registra condominio" id="gcond.menu_2_list" parent="gcond.menu_1" 
-             action="gcond.view_account_condominium_accounting"/>
+             action="view_account_condominium_accounting"/>
     
 </odoo>
 
