@@ -34,9 +34,6 @@
 
     <menuitem name="List" id="gcond.menu_1_list" parent="gcond.menu_1"
             action="gcond.action_window"/>
-    
-    <menuitem name="Registra condominio" id="gcond.menu_2_list" parent="gcond.menu_1" 
-             action="gcond.condominium_accounting"/>
-    
+ 
 </odoo>
 
