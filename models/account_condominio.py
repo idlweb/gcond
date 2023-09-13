@@ -71,11 +71,11 @@ class GcondAccountCondominium(models.Model):
         required=False,)
     """
 
-    """
+    
     receivable_account_id = fields.Many2one(
-        'account.account', string='Conto credito', required=True,
+        'account.account', string='Conto credito', required=False,
         help='Conto di credito del condominio')
-    """
+    
 
     """
     payable_account_id = fields.Many2one(
