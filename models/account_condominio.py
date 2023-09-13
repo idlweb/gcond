@@ -133,7 +133,8 @@ class GcondAccountCondominium(models.Model):
         record = super(GcondAccountCondominium, self).create(vals)
 
         # Imposta la tipologia di registrazione di default.
-        record.type_registration = 'debit'
+        """ capire il senso di questa istruzione"""
+        #record.type_registration = 'debit'
 
         return record
     
