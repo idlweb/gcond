@@ -8,6 +8,8 @@
         <field name="arch" type="xml">
             <form string="Account Condominium">
                 <field name="name"/>
+                <field name="code"/>
+                <field name="description"/>
                 <field name="vat"/>
                 <field name="address"/>
                 <field name="city"/>

@@ -15,16 +15,20 @@ class GcondAccountCondominium(models.Model):
     zip = fields.Char(string='ZIP', required=True)
     phone = fields.Char(string='Phone')
     
+    """
     type_registration = fields.Selection(
         [('fattura', 'Fattura'), ('ricevuta', 'Ricevuta')],
         string='Tipo Registrazione',
         default='fattura',)
-
+    """
+    
+    """
     journal_id = fields.Many2one(
         'account.journal',
         string='Giornale',
         required=False,
     )
+    """
 
     """
     account_condominio_id = fields.Many2one(
@@ -34,6 +38,7 @@ class GcondAccountCondominium(models.Model):
     )
     """
 
+    """
     # fix many2many da 'estensione ereditaria'
     tax_ids = fields.Many2many(
         comodel_name='account.tax',
@@ -42,33 +47,42 @@ class GcondAccountCondominium(models.Model):
         column2='tax_id',
         string='Taxes',
     )
+    """
 
-    
+    """
     condominio_id = fields.Many2one(
         'res.partner',
         string='Condominio',
         ondelete='cascade',
     )
+    """
     
+    """
     country_id = fields.Many2one(
         comodel_name='res.country',
         string='Country',
         required=False)
+    """
     
-    
+    """
     property_account_register_id = fields.Many2one(
         'account.account.register',
         string='Registro di registrazione',
         required=False,)
+    """
 
+    """
     receivable_account_id = fields.Many2one(
         'account.account', string='Conto credito', required=True,
         help='Conto di credito del condominio')
-    
+    """
+
+    """
     payable_account_id = fields.Many2one(
         'account.account', string='Conto debito', required=True,
         help='Conto di debito del condominio')
-
+    """
+    
     #document_number = fields.Char(string='Document Number')
     #account_id = fields.Many2one('account.account', string='Account')
 
