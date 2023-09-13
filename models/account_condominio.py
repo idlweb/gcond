@@ -82,7 +82,7 @@ class GcondAccountCondominium(models.Model):
         'account.account', string='Conto debito', required=True,
         help='Conto di debito del condominio')
     """
-    
+
     #document_number = fields.Char(string='Document Number')
     #account_id = fields.Many2one('account.account', string='Account')
 
@@ -113,6 +113,7 @@ class GcondAccountCondominium(models.Model):
         }
 
 
+    """
     @api.model
     def create(self, vals):
         #Crea un nuovo condominio.
@@ -135,7 +136,7 @@ class GcondAccountCondominium(models.Model):
         record.type_registration = 'debit'
 
         return record
-    
+    """
 
     
     #@api.multi
