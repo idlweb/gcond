@@ -113,7 +113,7 @@ class GcondAccountCondominium(models.Model):
         }
 
 
-    """
+    
     @api.model
     def create(self, vals):
         #Crea un nuovo condominio.
@@ -121,12 +121,12 @@ class GcondAccountCondominium(models.Model):
 
         # Imposta il conto di credito del condominio.
         record.receivable_account_id = self.env['account.account'].search([
-            ('code', '=', '2000'),
+            ('code', '=', '250100'),
         ], limit=1)
 
         # Imposta il conto di debito del condominio.
         record.payable_account_id = self.env['account.account'].search([
-            ('code', '=', '2100'),
+            ('code', '=', '250100'),
         ], limit=1)
     
         #Crea un nuovo condominio.
@@ -136,7 +136,7 @@ class GcondAccountCondominium(models.Model):
         record.type_registration = 'debit'
 
         return record
-    """
+    
 
     
     #@api.multi
