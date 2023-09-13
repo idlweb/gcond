@@ -57,12 +57,12 @@ class GcondAccountCondominium(models.Model):
     )
     """
     
-    """
+   
     country_id = fields.Many2one(
         comodel_name='res.country',
         string='Country',
         required=False)
-    """
+   
     
     """
     property_account_register_id = fields.Many2one(
