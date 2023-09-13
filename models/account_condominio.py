@@ -77,11 +77,11 @@ class GcondAccountCondominium(models.Model):
         help='Conto di credito del condominio')
     
 
-    """
+    
     payable_account_id = fields.Many2one(
         'account.account', string='Conto debito', required=True,
         help='Conto di debito del condominio')
-    """
+    
 
     #document_number = fields.Char(string='Document Number')
     #account_id = fields.Many2one('account.account', string='Account')
