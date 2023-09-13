@@ -1,9 +1,9 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_account_condominium_manager,account_condominium_manager,account.condominio,group_account_manager,1,1,1,1
-access_account_condominium_user,account_condominium_user,account.condominio,group_account_user,1,1,1,1
-access_account_condominium_table_manager,account_condominium_table_manager,account.condominio.table,group_account_manager,1,1,1,1
-access_condominium_table_user,account_condominium_table_user,account.condominio.table,group_account_user,1,1,1,1
-access_condominio_user,condominio_user,condomino,group_account_user,1,1,1,1
+access_account_condominium_manager,account_condominium_manager,account.condominio,,1,1,1,1
+access_account_condominium_user,account_condominium_user,account.condominio,,1,1,1,1
+access_account_condominium_table_manager,account_condominium_table_manager,account.condominio.table,,1,1,1,1
+access_condominium_table_user,account_condominium_table_user,account.condominio.table,,1,1,1,1
+access_condominio_user,condominio_user,condomino,,1,1,1,1
 
 
 
