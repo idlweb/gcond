@@ -16,18 +16,18 @@
         <field name="model">account.condominio</field>
         <field name="arch" type="xml">
             <form string="Account Condominium">
-                <field name="name">name</field> 
-                <field name="code">code</field> 
-                <field name="description">description</field> 
-                <field name="vat">vat</field> 
-                <field name="address">address</field> 
-                <field name="city">city</field> 
-                <field name="zip">zip</field> 
-                <field name="country_id">country_id</field> 
-                <field name="phone">phone</field> 
-                <field name="email">email</field> 
-                <field name="receivable_account_id">receivable_account_id</field> 
-                <field name="journal_id">journal_id</field>            
+                <field name="name"/>
+                <field name="code"/>
+                <field name="description"/>
+                <field name="vat"/>
+                <field name="address"/>
+                <field name="city"/>
+                <field name="zip"/>
+                <field name="country_id"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="receivable_account_id"/>
+                <field name="journal_id"/>          
             </form>
         </field>
     </record>
