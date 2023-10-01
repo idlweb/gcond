@@ -24,7 +24,7 @@ class GcondAccountCondominium(models.Model):
         string='Tipo Registrazione',
         default='fattura',)
     
-    
+    pdb.set_trace()
     """
     journal_id = fields.Many2one(
         'account.journal',
@@ -101,8 +101,7 @@ class GcondAccountCondominium(models.Model):
             'view_id': view_id,
             'target': 'new',
         }
-
-    pdb.set_trace()
+   
     @api.model
     def action_accounting(self):
         #Azione per gestire la contabilità dei condomini.
