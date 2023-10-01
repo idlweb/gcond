@@ -26,7 +26,8 @@
                 <field name="country_id"/>
                 <field name="phone"/>
                 <field name="email"/>
-                <field name="receivable_account_id"/>            
+                <field name="receivable_account_id"/>
+                <field name="journal_id"></field>            
             </form>
         </field>
     </record>

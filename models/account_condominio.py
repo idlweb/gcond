@@ -1,3 +1,8 @@
+"""
+    questa tabella rappresenta il condominio
+    TO-DO: erediterà da res.partner e non da account.
+    In odoo account.account rappresenta il piano dei conti
+"""
 from odoo import models, fields, api
 import logging 
 _logger = logging.getLogger(__name__)
@@ -8,15 +13,15 @@ class GcondAccountCondominium(models.Model):
     #_inherit = 'account.account'
 
     
-    name = fields.Char(string='Name', required=True)
-    code = fields.Char(string='Code', required=True)
-    description = fields.Text(string='Description')
-    address = fields.Char(string='Indirizzo')
-    email = fields.Char(string='Email', help='Indirizzo email del condominio', required=False)
-    vat = fields.Char(string='VAT', required=True)
-    city = fields.Char(string='City', required=True)
-    zip = fields.Char(string='ZIP', required=True)
-    phone = fields.Char(string='Phone')
+    name = fields.Char(string='Name', required=True) # se eredito da partner non serve
+    code = fields.Char(string='Code', required=True) # ok
+    description = fields.Text(string='Description')  # se eredito da partner non serve
+    address = fields.Char(string='Indirizzo')        # se eredito da partner non serve
+    email = fields.Char(string='Email', help='Indirizzo email del condominio', required=False) # se eredito da partner non serve
+    vat = fields.Char(string='VAT', required=True)   # se eredito da partner non serve
+    city = fields.Char(string='City', required=True) # se eredito da partner non serve
+    zip = fields.Char(string='ZIP', required=True)   # se eredito da partner non serve
+    phone = fields.Char(string='Phone')              # se eredito da partner non serve
     
     
     type_registration = fields.Selection(
@@ -24,15 +29,16 @@ class GcondAccountCondominium(models.Model):
         string='Tipo Registrazione',
         default='fattura',)
     
-    pdb.set_trace()
-    """
+    
+    
     journal_id = fields.Many2one(
         'account.journal',
         string='Giornale',
         required=False,
     )
-    """
-
+    
+    pdb.set_trace()
+    
     """
     account_condominio_id = fields.Many2one(
         'account.account',
@@ -66,13 +72,8 @@ class GcondAccountCondominium(models.Model):
         string='Country',
         required=False)
    
-    
-    """
-    property_account_register_id = fields.Many2one(
-        'account.account.register',
-        string='Registro di registrazione',
-        required=False,)
-    """
+
+
 
     
     receivable_account_id = fields.Many2one(
