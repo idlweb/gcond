@@ -122,8 +122,7 @@ class GcondAccountCondominium(models.Model):
     
     @api.model
     def create(self, vals):
-        #Crea un nuovo condominio.
-        record = super(GcondAccountCondominium, self).create(vals)
+        
 
         # Imposta il conto di credito del condominio.
         record.receivable_account_id = self.env['account.account'].search([
@@ -137,6 +136,14 @@ class GcondAccountCondominium(models.Model):
     
         #Crea un nuovo condominio.
         record = super(GcondAccountCondominium, self).create(vals)
+        
+        """ 
+        #Crea un nuovo condominio.
+        record = super(GcondAccountCondominium, self).create(vals)
+        La funzione crea, già sovrascrive il comportamento della creazione del nuovo record
+        non c'è bisogno di richiamare ulteriormente lo stesso metodo
+        """
+        
 
         # Imposta la tipologia di registrazione di default.
         """ capire il senso di questa istruzione"""
