@@ -37,8 +37,8 @@ class GcondAccountCondominium(models.Model):
         required=False,
     )
     
-    pdb.set_trace()
-    
+    # pdb.set_trace()
+
     """
     account_condominio_id = fields.Many2one(
         'account.account',
