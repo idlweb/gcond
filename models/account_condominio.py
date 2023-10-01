@@ -1,4 +1,6 @@
 from odoo import models, fields, api
+import logging 
+_logger = logging.getLogger(__name__)
 
 class GcondAccountCondominium(models.Model):
     _name = 'account.condominio'
@@ -102,6 +104,7 @@ class GcondAccountCondominium(models.Model):
     @api.model
     def action_accounting(self):
         #Azione per gestire la contabilità dei condomini.
+        _logger.debug('verifica id utilizzatoin action_accounting %d', self.env.ref('view_account_condominium_accounting').id)
         view_id = self.env.ref('view_account_condominium_accounting').id
         return {
             'type': 'ir.actions.act_window',
