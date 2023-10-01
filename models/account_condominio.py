@@ -122,7 +122,8 @@ class GcondAccountCondominium(models.Model):
     
     @api.model
     def create(self, vals):
-        
+        #Crea un nuovo condominio.
+        record = super(GcondAccountCondominium, self).create(vals)
 
         # Imposta il conto di credito del condominio.
         record.receivable_account_id = self.env['account.account'].search([
@@ -134,9 +135,6 @@ class GcondAccountCondominium(models.Model):
             ('code', '=', '250100'),
         ], limit=1)
     
-        #Crea un nuovo condominio.
-        record = super(GcondAccountCondominium, self).create(vals)
-        
         """ 
         #Crea un nuovo condominio.
         record = super(GcondAccountCondominium, self).create(vals)
