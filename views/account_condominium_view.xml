@@ -11,24 +11,33 @@
         </field>
     </record>
     
+
+    <!-- model.name form view -->
     <record id="view_account_condominio_form" model="ir.ui.view">
-        <field name="name">Account Condominium Form</field>
+        <field name="name">Account.Condominium.Form</field>
         <field name="model">account.condominio</field>
         <field name="arch" type="xml">
-            <form string="Account Condominium">
-                <field name="name" label="Name"/>
-                <field name="code" label="code"/>
-                <field name="description" label="description"/>
-                <field name="vat" label="vat"/>
-                <field name="address" label="address"/>
-                <field name="city" label="city"/>
-                <field name="zip" label="zip"/>
-                <field name="country_id" label="country_id"/>
-                <field name="phone" label="phone"/>
-                <field name="email" label="email"/>
-                <field name="receivable_account_id" label="receivable_account_id"/>
-                <field name="journal_id" label="journal_id"/>          
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="name" label="Name"/>
+                        <field name="code" label="code"/>
+                        <field name="description" label="description"/>
+                        <field name="vat" label="vat"/>
+                        <field name="address" label="address"/>
+                        <field name="city" label="city"/>
+                        <field name="zip" label="zip"/>
+                        <field name="country_id" label="country_id"/>
+                        <field name="phone" label="phone"/>
+                        <field name="email" label="email"/>
+                        <field name="receivable_account_id" label="receivable_account_id"/>
+                        <field name="journal_id" label="journal_id"/>      
+                        
+                    </group>
+                </sheet>
             </form>
         </field>
     </record>
+
+
 </odoo>

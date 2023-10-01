@@ -22,7 +22,7 @@ class GcondAccountCondominium(models.Model):
     city = fields.Char(string='City', required=True) # se eredito da partner non serve
     zip = fields.Char(string='ZIP', required=True)   # se eredito da partner non serve
     phone = fields.Char(string='Phone')              # se eredito da partner non serve
-    
+
     
     type_registration = fields.Selection(
         [('fattura', 'Fattura'), ('ricevuta', 'Ricevuta')],
