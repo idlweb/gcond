@@ -29,8 +29,7 @@
                         <field name="zip" label="zip"/>
                         <field name="country_id" label="country_id"/>
                         <field name="phone" label="phone"/>
-                        <field name="email" label="email"/>
-                        <field name="receivable_account_id" label="receivable_account_id"/>
+                        <field name="email" label="email"/>                
                         <field name="payable_account_id" label="payable_account_id"/>      
                         <field name="receivable_account_id" label="receivable_account_id"/>   
                         <field name="journal_id" label="journal_id"/>   
