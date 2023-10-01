@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 import logging 
 _logger = logging.getLogger(__name__)
+import pdb
 
 class GcondAccountCondominium(models.Model):
     _name = 'account.condominio'
@@ -101,6 +102,7 @@ class GcondAccountCondominium(models.Model):
             'target': 'new',
         }
 
+    pdb.set_trace()
     @api.model
     def action_accounting(self):
         #Azione per gestire la contabilità dei condomini.
