@@ -102,6 +102,7 @@ class GcondAccountCondominium(models.Model):
             'target': 'new',
         }
    
+    """
     @api.model
     def action_accounting(self):
         #Azione per gestire la contabilità dei condomini.
@@ -115,7 +116,7 @@ class GcondAccountCondominium(models.Model):
             'view_id': view_id,
             'target': 'current',
         }
-
+    """
 
     
     @api.model
