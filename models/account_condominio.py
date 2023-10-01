@@ -12,7 +12,7 @@ class GcondAccountCondominium(models.Model):
     _name = 'account.condominio'
     #_inherit = 'account.account'
 
-    
+
     name = fields.Char(string='Name', required=True) # se eredito da partner non serve
     code = fields.Char(string='Code', required=True) # ok
     description = fields.Text(string='Description')  # se eredito da partner non serve
@@ -83,7 +83,7 @@ class GcondAccountCondominium(models.Model):
 
     
     payable_account_id = fields.Many2one(
-        'account.account', string='Conto debito', required=True,
+        'account.account', string='Conto debito', required=False,
         help='Conto di debito del condominio')
     
 
