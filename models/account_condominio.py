@@ -105,13 +105,13 @@ class GcondAccountCondominium(models.Model):
     @api.model
     def action_accounting(self):
         #Azione per gestire la contabilità dei condomini.
-        _logger.debug('verifica id utilizzatoin action_accounting %d', self.env.ref('view_account_condominium_accounting').id)
+        #_logger.debug('verifica id utilizzatoin action_accounting %d', self.env.ref('view_account_condominium_accounting').id)
         view_id = self.env.ref('view_account_condominium_accounting').id
         return {
             'type': 'ir.actions.act_window',
             'name': 'Contabilità condominio',
             'res_model': 'account.condominio',
-            'view_mode': 'tree,form',
+            'view_mode': 'form',
             'view_id': view_id,
             'target': 'current',
         }
