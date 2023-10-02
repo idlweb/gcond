@@ -62,7 +62,7 @@ class GcondAccountCondomino(models.Model):
             
         return record
 
-
+    """
     def action_register_condomino_form(self):
         view_id = self.env.ref('view_condomino_form').id
         return {
@@ -74,5 +74,5 @@ class GcondAccountCondomino(models.Model):
             'res_id': self.id,
             'target': 'current',
         }
-
+    """
       
