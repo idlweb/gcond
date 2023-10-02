@@ -20,7 +20,11 @@ class GcondAccountCondomino(models.Model):
         string='Tipologia condomino',
         default='proprietario',)
     
-
+    commercial_partner_id = fields.Many2one(
+        comodel_name='res.partner',
+        string='Partner commerciale',
+        ondelete='set null',
+    )
     
     # fix many2many da 'estensione ereditaria'
     channel_ids = fields.Many2many(
