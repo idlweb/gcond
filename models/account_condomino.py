@@ -21,13 +21,10 @@ class GcondAccountCondomino(models.Model):
         default='proprietario',)
     
 
-    """
+    
     # fix many2many da 'estensione ereditaria'
-    tax_ids = fields.Many2many(
-        comodel_name='account.tax',
-        relation='account_condominio_tax_rel',
-        column1='condominio_id',
-        column2='tax_id',
-        string='Taxes', 
+    channel_ids = fields.Many2many(
+        comodel_name='mail',
+        relation='account_condominio_mail_partner_rel',
     )
-    """
+  
