@@ -1,22 +1,40 @@
+"""
+    Nella valutazione/analisi della natura dell'entita'
+    condomino (proprietario/affittuario) non si evidenziano
+    caratteristiche che lo rendano diverso dal partner, che ne è una astrazione
+    pertanto sembra corretto estendere la classe.
+    In odoo le tecniche di ererditarietà sono tre:
+        a) aggiungo al'esistente e non ottengo una copia
+        b) eredito e nomino e pertanto creo una classe/tabella (prototipo) nuova   =>  NO 
+        c) Delegation: copio le difinizioni ma non la struttura                    =>  NO
+        d) posso mettere in relazione 1:1 il condomino con un partner              =>  NO
+"""
+
+import logging 
+_logger = logging.getLogger(__name__)
+import pdb
+
 from odoo import models, fields, api
 
 class AccountCondominium(models.Model):
     _inherit = 'res.partner'
 
-   
-    
-    """
+
+
+
     condomino_id = fields.Many2one(
         comodel_name='account.condomino',
-        string='Condomino',
+        string='Condominio',
     )
- 
-    related_condominiums = fields.One2many(
-        comodel_name='res.partner',
-        inverse_name='condomino_id',
-        string='Related Condominiums',
-    )
- 
+
+
+    type_condomino = fields.Selection(
+        [('affuttuario', 'Affittuario'), ('proprietario', 'Proprietario')],
+        string='Tipologia condomino',
+        default='proprietario',)
+
+        
+    """
     # fix many2many da 'estensione ereditaria'
     tax_ids = fields.Many2many(
         comodel_name='account.tax',
@@ -26,5 +44,6 @@ class AccountCondominium(models.Model):
         string='Taxes', 
     )
     """
+   
 
     
