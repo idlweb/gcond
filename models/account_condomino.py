@@ -29,6 +29,7 @@ class GcondAccountCondomino(models.Model):
     @api.model
     def create(self, vals):
         #Crea un nuovo condominio.
+        _logger.debug('===============================> Create a %s with vals %s', self._name, vals)
         record = super(GcondAccountCondomino, self).create(vals)  
         self.commercial_partner_id = self.create({'name': 'test'})
             
