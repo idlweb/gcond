@@ -1,0 +1,190 @@
+<form string="Partner" modifiers="{}">
+	<div class="alert alert-warning oe_edit_only" role="alert" attrs="{'invisible': [('same_vat_partner_id', '=', False)]}" modifiers="{'invisible':[['same_vat_partner_id','=',false]]}">
+		
+                  Esiste già un partner con la stessa 
+		<span modifiers="{}">
+			<span class="o_vat_label" modifiers="{}">
+				Partita IVA
+			</span>
+		</span>
+		 (
+		<field name="same_vat_partner_id" can_create="true" can_write="true" modifiers="{'readonly':true}" id="same_vat_partner_id"/>
+		<field name="partner_gid" invisible="True" modifiers="{'invisible':true}" id="partner_gid"/>
+		<field name="additional_info" invisible="True" modifiers="{'invisible':true}" id="additional_info"/>
+		
+            ), crearne veramente uno nuovo?
+                
+	</div>
+	<sheet modifiers="{}">
+		<div class="oe_button_box" name="button_box" modifiers="{}">
+			<button type="object" class="oe_stat_button" icon="fa-pencil-square-o" name="action_view_partner_invoices" context="{'default_partner_id': active_id}" modifiers="{}" options="{}">
+				<div class="o_form_field o_stat_info" modifiers="{}">
+					<span class="o_stat_value" modifiers="{}">
+						<field name="currency_id" invisible="1" can_create="true" can_write="true" modifiers="{'invisible':true,'readonly':true}" id="currency_id"/>
+						<field name="total_invoiced" widget="monetary" options="{'currency_field': 'currency_id'}" modifiers="{'readonly':true}" id="total_invoiced"/>
+					</span>
+					<span class="o_stat_text" modifiers="{}">
+						Fatturato
+					</span>
+				</div>
+			</button>
+			<button type="action" class="oe_stat_button" icon="fa-credit-card" name="347" context="{'search_default_partner_id': active_id, 'create': False, 'edit': False}" attrs="{'invisible': [('payment_token_count', '=', 0)]}" modifiers="{'invisible':[['payment_token_count','=',0]]}" options="{}">
+				<div class="o_form_field o_stat_info" modifiers="{}">
+					<span class="o_stat_value" modifiers="{}">
+						<field name="payment_token_count" widget="statinfo" nolabel="1" modifiers="{'readonly':true}" id="payment_token_count"/>
+					</span>
+					<span class="o_stat_text" modifiers="{}">
+						Carte di credito
+					</span>
+				</div>
+			</button>
+		</div>
+		<widget name="web_ribbon" title="In archivio" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}" modifiers="{'invisible':[['active','=',true]]}"/>
+		<field name="image_1920" widget="image" class="oe_avatar" options="{'preview_image': 'image_128'}" on_change="1" modifiers="{}" id="image_1920"/>
+		<div class="oe_title" modifiers="{}">
+			<field name="is_company" invisible="1" on_change="1" modifiers="{'invisible':true}" id="is_company"/>
+			<field name="commercial_partner_id" invisible="1" on_change="1" can_create="true" can_write="true" modifiers="{'invisible':true,'readonly':true}" id="commercial_partner_id"/>
+			<field name="active" invisible="1" on_change="1" modifiers="{'invisible':true}" id="active"/>
+			<field name="company_type" widget="radio" class="oe_edit_only" options="{'horizontal': true}" on_change="1" modifiers="{}" id="company_type"/>
+			<h1 modifiers="{}">
+				<field name="name" default_focus="1" placeholder="Nome" attrs="{'required' : [('type', '=', 'contact')]}" widget="field_partner_autocomplete" on_change="1" modifiers="{'required':[['type','=','contact']]}" id="name"/>
+			</h1>
+			<div class="o_row" modifiers="{}">
+				<field name="parent_id" widget="res_partner_many2one" placeholder="Azienda" domain="[('is_company', '=', True)]" context="{'default_is_company': True, 'show_vat': True}" attrs="{'invisible': ['|', '&amp;', ('is_company','=', True),('parent_id', '=', False),('company_name', '!=', False),('company_name', '!=', '')]}" on_change="1" can_create="true" can_write="true" modifiers="{'invisible':['|','&amp;',['is_company','=',true],['parent_id','=',false],['company_name','!=',false],['company_name','!=','']]}" id="parent_id"/>
+				<field name="company_name" attrs="{'invisible': ['|', '|', ('company_name', '=', False), ('company_name', '=', ''), ('is_company', '=', True)]}" on_change="1" modifiers="{'invisible':['|','|',['company_name','=',false],['company_name','=',''],['is_company','=',true]]}" id="company_name"/>
+				<button name="create_company" icon="fa-plus-square" string="Crea azienda" type="object" class="oe_edit_only btn-link" attrs="{'invisible': ['|', '|', ('is_company','=', True), ('company_name', '=', ''), ('company_name', '=', False)]}" modifiers="{'invisible':['|','|',['is_company','=',true],['company_name','=',''],['company_name','=',false]]}" options="{}"/>
+			</div>
+		</div>
+		<group modifiers="{}">
+			<group modifiers="{}">
+				<field name="type" attrs="{'invisible': [('is_company','=', True)], 'readonly': [('user_ids', '!=', [])]}" on_change="1" modifiers="{'invisible':[['is_company','=',true]],'readonly':[['user_ids','!=',[]]]}" id="type"/>
+				<span class="o_form_label o_td_label" name="address_name" modifiers="{}">
+					<b attrs="{'invisible': ['|', ('parent_id', '=', False), ('type', '!=', 'contact')]}" modifiers="{'invisible':['|',['parent_id','=',false],['type','!=','contact']]}">
+						Indirizzo azienda
+					</b>
+					<b attrs="{'invisible': ['|', ('parent_id', '=', False), ('type', '!=', 'invoice')]}" modifiers="{'invisible':['|',['parent_id','=',false],['type','!=','invoice']]}">
+						Indirizzo fattura
+					</b>
+					<b attrs="{'invisible': ['|', ('parent_id', '=', False), ('type', '!=', 'delivery')]}" modifiers="{'invisible':['|',['parent_id','=',false],['type','!=','delivery']]}">
+						Indirizzo di consegna
+					</b>
+					<b attrs="{'invisible': ['|', ('parent_id', '=', False), ('type', '!=', 'other')]}" modifiers="{'invisible':['|',['parent_id','=',false],['type','!=','other']]}">
+						Altro indirizzo
+					</b>
+					<b attrs="{'invisible': ['|', ('parent_id', '=', False), ('type', '!=', 'private')]}" modifiers="{'invisible':['|',['parent_id','=',false],['type','!=','private']]}">
+						Indirizzo privato
+					</b>
+					<b attrs="{'invisible': ['&amp;', ('parent_id', '!=', False), ('type', '!=', False)]}" modifiers="{'invisible':['&amp;',['parent_id','!=',false],['type','!=',false]]}">
+						Indirizzo
+					</b>
+				</span>
+				<div class="o_address_format" modifiers="{}">
+					<field name="street" placeholder="Indirizzo…" class="o_address_street" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}" modifiers="{'readonly':[['type','=','contact'],['parent_id','!=',false]]}" id="street"/>
+					<field name="street2" placeholder="Indirizzo 2…" class="o_address_street" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}" modifiers="{'readonly':[['type','=','contact'],['parent_id','!=',false]]}" id="street2"/>
+					<field name="city" placeholder="Città" class="o_address_city" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}" modifiers="{'readonly':[['type','=','contact'],['parent_id','!=',false]]}" id="city"/>
+					<field name="state_id" class="o_address_state" placeholder="Stato/Provincia" options="{'no_open': True, 'no_quick_create': True}" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}" context="{'country_id': country_id, 'default_country_id': country_id, 'zip': zip}" on_change="1" can_create="true" can_write="true" modifiers="{'readonly':[['type','=','contact'],['parent_id','!=',false]]}" id="state_id"/>
+					<field name="zip" placeholder="CAP" class="o_address_zip" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}" on_change="1" modifiers="{'readonly':[['type','=','contact'],['parent_id','!=',false]]}" id="zip"/>
+					<field name="country_id" placeholder="Nazione" class="o_address_country" options="{'no_open': True, 'no_create': True}" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}" on_change="1" can_create="true" can_write="true" modifiers="{'readonly':[['type','=','contact'],['parent_id','!=',false]]}" id="country_id"/>
+				</div>
+				<field name="vat" placeholder="es. IT06363391001" attrs="{'readonly': [('parent_id','!=',False)]}" widget="field_partner_autocomplete" string="Partita IVA" on_change="1" modifiers="{'readonly':[['parent_id','!=',false]]}" id="vat"/>
+			</group>
+			<group modifiers="{}">
+				<field name="function" placeholder="es. Direttore vendite" attrs="{'invisible': [('is_company','=', True)]}" modifiers="{'invisible':[['is_company','=',true]]}" id="function"/>
+				<field name="phone_blacklisted" invisible="1" modifiers="{'invisible':true,'readonly':true}" id="phone_blacklisted"/>
+				<field name="mobile_blacklisted" invisible="1" modifiers="{'invisible':true,'readonly':true}" id="mobile_blacklisted"/>
+				<label for="phone" class="oe_inline" modifiers="{}"/>
+				<div class="o_row o_row_readonly" modifiers="{}">
+					<button name="phone_action_blacklist_remove" class="fa fa-ban text-danger" title="Il numero di telefono è nella lista nera del marketing via SMS. Fai clic per toglierlo." type="object" context="{'default_phone': phone}" attrs="{'invisible': [('phone_blacklisted', '=', False)]}" modifiers="{'invisible':[['phone_blacklisted','=',false]]}" options="{}"/>
+					<field name="phone" widget="phone" on_change="1" modifiers="{}" id="phone"/>
+				</div>
+				<field name="phone_blacklisted" invisible="1" modifiers="{'invisible':true,'readonly':true}" id="phone_blacklisted__0__"/>
+				<field name="mobile_blacklisted" invisible="1" modifiers="{'invisible':true,'readonly':true}" id="mobile_blacklisted__1__"/>
+				<label for="mobile" class="oe_inline" modifiers="{}"/>
+				<div class="o_row o_row_readonly" modifiers="{}">
+					<button name="phone_action_blacklist_remove" class="fa fa-ban text-danger" title="Il numero di telefono è nella lista nera del marketing via SMS. Fai clic per toglierlo." type="object" context="{'default_phone': mobile}" attrs="{'invisible': [('mobile_blacklisted', '=', False)]}" modifiers="{'invisible':[['mobile_blacklisted','=',false]]}" options="{}"/>
+					<field name="mobile" widget="phone" on_change="1" modifiers="{}" id="mobile"/>
+				</div>
+				<field name="phone_sanitized" invisible="1" on_change="1" modifiers="{'invisible':true,'readonly':true}" id="phone_sanitized"/>
+				<field name="user_ids" invisible="1" modifiers="{'invisible':true}" id="user_ids"/>
+				<field name="is_blacklisted" invisible="1" modifiers="{'invisible':true,'readonly':true}" id="is_blacklisted"/>
+				<label for="email" class="oe_inline" modifiers="{}"/>
+				<div class="o_row o_row_readonly" modifiers="{}">
+					<button name="mail_action_blacklist_remove" class="fa fa-ban text-danger" title="L'e-mail è nella lista nera dell'invio massivo, fai clic per toglierla." type="object" context="{'default_email': email}" attrs="{'invisible': [('is_blacklisted', '=', False)]}" modifiers="{'invisible':[['is_blacklisted','=',false]]}" options="{}"/>
+					<field name="email" widget="email" context="{'gravatar_image': True}" attrs="{'required': [('user_ids','!=', [])]}" on_change="1" modifiers="{'required':[['user_ids','!=',[]]]}" id="email"/>
+				</div>
+				<field name="website" widget="url" placeholder="es. https://www.odoo.com" modifiers="{}" id="website"/>
+				<field name="write_date" modifiers="{'readonly':true}" id="write_date"/>
+				<field name="title" options="{'no_open': True}" placeholder="es. Signor" attrs="{'invisible': [('is_company', '=', True)]}" can_create="true" can_write="true" modifiers="{'invisible':[['is_company','=',true]]}" id="title"/>
+				<field name="active_lang_count" invisible="1" modifiers="{'invisible':true,'readonly':true}" id="active_lang_count"/>
+				<label for="lang" attrs="{'invisible': [('active_lang_count', '&lt;=', 1)]}" modifiers="{'invisible':[['active_lang_count','&lt;=',1]]}"/>
+				<div class="o_row" attrs="{'invisible': [('active_lang_count', '&lt;=', 1)]}" modifiers="{'invisible':[['active_lang_count','&lt;=',1]]}">
+					<field name="lang" on_change="1" modifiers="{}" id="lang"/>
+					<button type="action" name="53" class="btn-sm btn-link mb4 fa fa-globe" aria-label="Altre lingue" title="Altre lingue" modifiers="{}" options="{}"/>
+				</div>
+				<field name="category_id" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" placeholder="Etichette..." can_create="true" can_write="true" modifiers="{}" id="category_id"/>
+				<field name="l10n_it_pec_email" attrs="{'invisible': [('parent_id', '!=', False)]}" modifiers="{'invisible':[['parent_id','!=',false]]}" id="l10n_it_pec_email"/>
+				<field name="l10n_it_codice_fiscale" attrs="{'invisible': [('parent_id', '!=', False)]}" modifiers="{'invisible':[['parent_id','!=',false]]}" id="l10n_it_codice_fiscale"/>
+				<field name="l10n_it_pa_index" attrs="{'invisible': [('parent_id', '!=', False)]}" modifiers="{'invisible':[['parent_id','!=',false]]}" id="l10n_it_pa_index"/>
+			</group>
+		</group>
+		<notebook colspan="4" modifiers="{}">
+			<page string="Contatti e indirizzi" name="contact_addresses" autofocus="autofocus" modifiers="{}">
+				<field name="child_ids" mode="kanban" context="{'default_parent_id': active_id, 'default_street': street, 'default_street2': street2, 'default_city': city, 'default_state_id': state_id, 'default_zip': zip, 'default_country_id': country_id, 'default_lang': lang, 'default_user_id': user_id, 'default_type': 'other'}" modifiers="{}" id="child_ids"/>
+			</page>
+			<page name="sales_purchases" string="Vendite e acquisti" modifiers="{}">
+				<group name="container_row_2" modifiers="{}">
+					<group string="Vendite" name="sale" priority="1" modifiers="{}">
+						<field name="user_id" domain="[('share', '=', False)]" can_create="true" can_write="true" modifiers="{}" id="user_id"/>
+						<field name="team_id" can_create="true" can_write="true" modifiers="{}" id="team_id"/>
+						<field string="Termini di pagamento" name="property_payment_term_id" widget="selection" can_create="true" can_write="true" modifiers="{}" id="property_payment_term_id"/>
+					</group>
+					<group string="Acquisti" name="purchase" priority="2" modifiers="{}">
+						<field string="Termini di pagamento" name="property_supplier_payment_term_id" widget="selection" can_create="true" can_write="true" modifiers="{}" id="property_supplier_payment_term_id"/>
+					</group>
+					<group string="Informazioni fiscali" name="fiscal_information" priority="5" modifiers="{}">
+						<field name="property_account_position_id" options="{'no_create': True, 'no_open': True}" can_create="true" can_write="true" modifiers="{}" id="property_account_position_id"/>
+					</group>
+					<group name="misc" string="Varie" modifiers="{}">
+						<field name="ref" string="Riferimento" modifiers="{}" id="ref"/>
+						<field name="company_id" options="{'no_create': True}" attrs="{'readonly': [('parent_id', '!=', False)]}" force_save="1" on_change="1" can_create="true" can_write="true" modifiers="{'readonly':[['parent_id','!=',false]]}" id="company_id"/>
+						<field name="industry_id" attrs="{'invisible': [('is_company', '=', False)]}" options="{'no_create': True}" can_create="true" can_write="true" modifiers="{'invisible':[['is_company','=',false]]}" id="industry_id"/>
+					</group>
+				</group>
+			</page>
+			<page string="Fatturazione" name="accounting" attrs="{'invisible': [('is_company','=',False),('parent_id','!=',False)]}" modifiers="{'invisible':[['is_company','=',false],['parent_id','!=',false]]}">
+				<group modifiers="{}">
+					<group string="Conti bancari" name="banks" modifiers="{}">
+						<field name="bank_ids" nolabel="1" modifiers="{}" id="bank_ids"/>
+						<button type="action" class="btn-link" name="61" context="{'search_default_partner_id': active_id, 'default_partner_id': active_id, 'form_view_ref': 'account.view_company_partner_bank_form'}" string="Visualizza dettagli dei conti" colspan="2" modifiers="{}" options="{}"/>
+					</group>
+					<group string="Registrazioni contabili" name="accounting_entries" invisible="1" modifiers="{'invisible':true}">
+						<field name="currency_id" invisible="1" can_create="true" can_write="true" modifiers="{'invisible':true,'readonly':true}" id="currency_id__9__"/>
+						<field name="property_account_receivable_id" can_create="true" can_write="true" modifiers="{'required':true}" id="property_account_receivable_id"/>
+						<field name="property_account_payable_id" can_create="true" can_write="true" modifiers="{'required':true}" id="property_account_payable_id"/>
+					</group>
+				</group>
+			</page>
+			<page string="Fatturazione" name="accounting_disabled" attrs="{'invisible': ['|',('is_company','=',True),('parent_id','=',False)]}" modifiers="{'invisible':['|',['is_company','=',true],['parent_id','=',false]]}">
+				<div modifiers="{}">
+					<p modifiers="{}">
+						Le impostazioni contabili sono gestite nell' 
+						<button name="open_commercial_entity" type="object" string="azienda principale" class="oe_link" modifiers="{}" options="{}"/>
+					</p>
+				</div>
+			</page>
+			<page name="internal_notes" string="Note interne" modifiers="{}">
+				<field name="comment" placeholder="Nota interna..." modifiers="{}" id="comment"/>
+				<group colspan="2" col="2" invisible="1" modifiers="{'invisible':true}">
+					<separator string="Avviso in fattura" colspan="4" modifiers="{}"/>
+					<field name="invoice_warn" nolabel="1" modifiers="{}" id="invoice_warn"/>
+					<field name="invoice_warn_msg" colspan="3" nolabel="1" attrs="{'required':[('invoice_warn', '!=', False), ('invoice_warn','!=','no-message')],'readonly':[('invoice_warn','=','no-message')]}" modifiers="{'readonly':[['invoice_warn','=','no-message']],'required':[['invoice_warn','!=',false],['invoice_warn','!=','no-message']]}" id="invoice_warn_msg"/>
+				</group>
+			</page>
+		</notebook>
+	</sheet>
+	<div class="oe_chatter" modifiers="{}">
+		<field name="message_follower_ids" modifiers="{}" id="message_follower_ids"/>
+		<field name="activity_ids" modifiers="{}" id="activity_ids"/>
+		<field name="message_ids" modifiers="{}" id="message_ids"/>
+	</div>
+</form>

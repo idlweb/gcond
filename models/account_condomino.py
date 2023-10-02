@@ -20,11 +20,6 @@ class GcondAccountCondomino(models.Model):
         string='Tipologia condomino',
         default='proprietario',)
     
-    commercial_partner_id = fields.Many2one(
-        comodel_name='res.partner',
-        string='Partner commerciale',
-        ondelete='set null',
-    )
     
     # fix many2many da 'estensione ereditaria'
     channel_ids = fields.Many2many(
@@ -45,4 +40,21 @@ class GcondAccountCondomino(models.Model):
             'target': 'current',
         }
 
+
+    def action_open_condomino_form(self):
+        view_id = self.env.ref('gcond.view_condomino_form').id
+
+        # Imposta il valore del campo `commercial_partner_id` a un oggetto `res.partner` valido.
+        if not self.commercial_partner_id:
+            self.commercial_partner_id = self.create({'name': 'Condominio'})
+
+        return {
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'account.condomino',
+            'views': [(view_id, 'form')],
+            'res_id': self.id,
+            'target': 'current',
+        }
 
