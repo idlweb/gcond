@@ -10,7 +10,7 @@ import pdb
 
 class GcondAccountCondominium(models.Model):
     _name = 'account.condominio'
-    #_inherit = 'account.account'
+
 
 
     name = fields.Char(string='Name', required=True) # se eredito da partner non serve

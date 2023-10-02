@@ -1,11 +1,13 @@
 from odoo import models, fields, api
+import logging 
+_logger = logging.getLogger(__name__)
+import pdb
 
-
-class Partner(models.Model):
+class GcondAccountCondomino(models.Model):
     _inherit = "res.partner" 
 
     condomino_id = fields.Many2one(
-        comodel_name='account.condomino',
+        comodel_name='account.condominio',
         string='Condominio',
         ondelete='set null',
     )
