@@ -43,7 +43,7 @@
 
     <record id='action_all_condomini' model='ir.actions.act_window'>
         <field name="name">tutti i condomini</field>
-        <field name="res_model">res.partner</field>
+        <field name="res_model">account.condomino</field>
         <field name="view_mode">tree,form</field>
     </record>
 
