@@ -1,46 +1,5 @@
 <odoo>
 
-    <record id="view_partner_form" model="ir.ui.view">
-        <field name="model">res.partner</field>
-        <field name="inherit_id" ref="base.view_partner_form" />
-        <field name="arch" type="xml">
-            <field name="website" position="after">
-                <field name="write_date" />
-            </field>
-        </field>
-    </record>
-
-    <record id="view_condomino_res_partner_filter" model="ir.ui.view">
-        <field name="model">res.partner</field>
-        <field name="inherit_id" ref="base.view_res_partner_filter" />
-        <field name="arch" type="xml">
-            <xpath expr="." position="inside">
-                <field name="mobile" />
-            </xpath>
-        </field>
-    </record>
-
-    <record id="view_condomino_partner_tree" model="ir.ui.view">
-        <field name="model">res.partner</field>
-        <field name="inherit_id" ref="base.view_partner_tree" />
-        <field name="arch" type="xml">
-            <field name="email" position="after">
-                <field name="phone" position="move"/>
-            </field>
-        </field>
-    </record>
-
-    <record id="view_condomino_form" model="ir.ui.view">
-        <field name="model">account.condomino</field>
-        <field name="type">form</field>
-        <field name="arch" type="xml">
-            <form string="Condomino">
-                <field name="condominio_id"/>
-                <field name="type_condomino"/>
-            </form>
-        </field>
-    </record>
-
     <record id='action_all_condomini' model='ir.actions.act_window'>
         <field name="name">tutti i condomini</field>
         <field name="res_model">account.condomino</field>
