@@ -16,7 +16,7 @@ import pdb
 
 from odoo import models, fields, api
 
-class res.partner(models.Model):
+class ResPartner(models.Model):
     _inherit = 'res.partner'
 
 
