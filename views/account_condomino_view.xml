@@ -11,15 +11,6 @@
         </field>
     </record>
 
-    <record id="gcond.view_condomino_filter" model="ir.ui.view">
-        <field name="model">account.condomino</field>
-        <field name="inherit_id" ref="base.view_res_partner_filter" />
-        <field name="arch" type="xml">
-            <xpath expr="." position="inside">
-                <field name="mobile" />
-            </xpath>
-        </field>
-    </record>
 
     <record id="gcond.view_condominoo_tree" model="ir.ui.view">
         <field name="model">account.condomino</field>
