@@ -26,6 +26,13 @@ class GcondAccountCondomino(models.Model):
         relation='account_condomino_mail_partner_rel',
     )
   
+    @api.model
+    def create(self, vals):
+        #Crea un nuovo condominio.
+        record = super(GcondAccountCondomino, self).create(vals)  
+        if not self.commercial_partner_id:
+            self.commercial_partner_id = self.create({'name': 'test'})
+        return record
 
 
     def action_register_condomino_form(self):
@@ -40,21 +47,4 @@ class GcondAccountCondomino(models.Model):
             'target': 'current',
         }
 
-
-    def action_open_condomino_form(self):
-        view_id = self.env.ref('gcond.view_condomino_form').id
-
-        # Imposta il valore del campo `commercial_partner_id` a un oggetto `res.partner` valido.
-        if not self.commercial_partner_id:
-            self.commercial_partner_id = self.create({'name': 'Condominio'})
-
-        return {
-            'type': 'ir.actions.act_window',
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'account.condomino',
-            'views': [(view_id, 'form')],
-            'res_id': self.id,
-            'target': 'current',
-        }
-
+      
