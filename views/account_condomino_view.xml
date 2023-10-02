@@ -1,6 +1,6 @@
 <odoo>
     <!-- model.name form view -->
-    <record id="model.name_view_form" model="ir.ui.view">
+    <record id="gcond.account_condomino_view_form" model="ir.ui.view">
         <field name="name">gcond.account.condomino.form</field>
         <field name="model">account.condomino</field>
         <field name="arch" type="xml">
@@ -16,7 +16,7 @@
     </record>
 
     <!-- model.name tree view -->
-    <record id="model.name_view_tree" model="ir.ui.view">
+    <record id="gcond.account_condomino_view_tree" model="ir.ui.view">
         <field name="name">gcond.account.condomino.tree</field>
         <field name="model">account.condomino</field>
         <field name="arch" type="xml">
@@ -29,7 +29,7 @@
    
 
     <!-- model.name action window -->
-    <record id="model.name_action" model="ir.actions.act_window">
+    <record id="gcond.account_condomino_action" model="ir.actions.act_window">
         <field name="name">gcond.account.condomino.action</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">account.condomino</field>
