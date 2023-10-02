@@ -53,7 +53,7 @@ class GcondAccountCondomino(models.Model):
         if not vals.get('commercial_partner_id'):
             vals['commercial_partner_id'] = self.env['res.partner'].create({'name': 'Condominio'})
         #Crea un nuovo condominio.
-        _logger.debug('===============================> Create a %s with vals %s', self._name, vals)
+        self.env['log'].info("=============>    La funzione action_open_condominio è stata eseguita per il condomino con ID")
         record = super(GcondAccountCondomino, self).create(vals)  
             
         return record
