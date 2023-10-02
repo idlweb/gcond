@@ -21,14 +21,6 @@ class AccountCondominium(models.Model):
 
 
 
-
-    condomino_id = fields.Many2one(
-        comodel_name='account.condomino',
-        string='Condominio',
-        ondelete='set null',
-    )
-
-
     type_condomino = fields.Selection(
         [('affuttuario', 'Affittuario'), ('proprietario', 'Proprietario')],
         string='Tipologia condomino',
