@@ -1,4 +1,6 @@
 <odoo>
+
+
     <record id="view_account_condominium_table_tree" model="ir.ui.view">
         <field name="name">Condominium Tables</field>
         <field name="model">account.condominio</field>
