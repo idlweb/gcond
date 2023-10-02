@@ -24,7 +24,6 @@ class GcondAccountCondomino(models.Model):
     
     # fix many2many da 'estensione ereditaria'
     channel_ids = fields.Many2many(
-        comodel_name='mail',
-        relation='account_condominio_mail_partner_rel',
+        relation='account_condomino_mail_partner_rel',
     )
   
