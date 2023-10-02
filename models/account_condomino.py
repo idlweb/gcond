@@ -6,11 +6,13 @@ import pdb
 class GcondAccountCondomino(models.Model):
     _inherit = "res.partner" 
 
+    """
     condominio_id = fields.Many2one(
         comodel_name='account.condominio',
-        string='Condominio',
+        string='Condomino',
         ondelete='set null',
     )
+    """
 
 
     type_condomino = fields.Selection(
