@@ -49,12 +49,16 @@ class GcondAccountCondomino(models.Model):
 
     @api.model
     def create(self, vals):
+        record = super(GcondAccountCondomino, self).create(vals)  
         # Imposta il valore del campo `commercial_partner_id` su un valore valido.
+        record.commercial_partner_id = self.env['res.partner'].create({'name': 'Condominio'})
+        """
         if not vals.get('commercial_partner_id'):
             vals['commercial_partner_id'] = self.env['res.partner'].create({'name': 'Condominio'})
+        """
         #Crea un nuovo condominio.
         self.env['log'].info("=============>    La funzione action_open_condominio è stata eseguita per il condomino con ID")
-        record = super(GcondAccountCondomino, self).create(vals)  
+        
             
         return record
 
