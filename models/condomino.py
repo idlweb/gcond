@@ -16,7 +16,7 @@ import pdb
 
 from odoo import models, fields, api
 
-class AccountCondominium(models.Model):
+class res.partner(models.Model):
     _inherit = 'res.partner'
 
 
