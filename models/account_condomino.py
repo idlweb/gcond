@@ -14,12 +14,12 @@ class GcondAccountCondomino(models.Model):
     )
     """
 
-
+    """
     type_condomino = fields.Selection(
         [('affuttuario', 'Affittuario'), ('proprietario', 'Proprietario')],
         string='Tipologia condomino',
         default='proprietario',)
-
+    """
 
     """
     # fix many2many da 'estensione ereditaria'
