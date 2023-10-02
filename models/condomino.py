@@ -17,8 +17,16 @@ import pdb
 from odoo import models, fields, api
 
 class AccountCondominium(models.Model):
-    _inherit = 'res.partner'
+    #_inherit = 'res.partner'
 
+
+
+
+    condomino_id = fields.Many2one(
+        comodel_name='account.condomino',
+        string='Condominio',
+        ondelete='set null',
+    )
 
 
     type_condomino = fields.Selection(

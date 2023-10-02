@@ -39,14 +39,7 @@ class GcondAccountCondominium(models.Model):
     
     # pdb.set_trace()
 
-    """
-    account_condominio_id = fields.Many2one(
-        'account.account',
-        string='Account Condominio',
-        ondelete='cascade',
-    )
-    """
-
+   
     """
     # fix many2many da 'estensione ereditaria'
     tax_ids = fields.Many2many(
