@@ -4,8 +4,8 @@ _logger = logging.getLogger(__name__)
 import pdb
 
 class GcondAccountCondomino(models.Model):
-    _inherit = "res.partner" 
-
+    _name = 'account.condomino'
+    
     """
     condominio_id = fields.Many2one(
         comodel_name='account.condominio',
@@ -31,4 +31,17 @@ class GcondAccountCondomino(models.Model):
         string='Taxes', 
     )
     """
-    
+
+class ResPartner(models.Model):
+    _inherit = 'res.partner'
+
+    condominio_id = fields.Many2one(
+        comodel_name='account.condominio',
+        string='Condomino',
+        ondelete='set null',
+    )
+
+    type_condomino = fields.Selection(
+        [('affuttuario', 'Affittuario'), ('proprietario', 'Proprietario')],
+        string='Tipologia condomino',
+        default='proprietario',)
