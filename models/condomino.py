@@ -23,8 +23,9 @@ class AccountCondominium(models.Model):
 
 
     condomino_id = fields.Many2one(
-        comodel_name='account.condomino',
+        'account.condomino',
         string='Condominio',
+        ondelete='set null',
     )
 
 
@@ -33,7 +34,7 @@ class AccountCondominium(models.Model):
         string='Tipologia condomino',
         default='proprietario',)
 
-        
+
     """
     # fix many2many da 'estensione ereditaria'
     tax_ids = fields.Many2many(
