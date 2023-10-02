@@ -29,8 +29,8 @@ class GcondAccountCondomino(models.Model):
   
 
 
-    def action_open_condomino_form(self):
-        view_id = self.env.ref('gcond.view_condomino_form').id
+    def action_register_condomino_form(self):
+        view_id = self.env.ref('view_condomino_form').id
         return {
             'type': 'ir.actions.act_window',
             'view_type': 'form',
