@@ -30,8 +30,8 @@ class GcondAccountCondomino(models.Model):
     def create(self, vals):
         #Crea un nuovo condominio.
         record = super(GcondAccountCondomino, self).create(vals)  
-        if not self.commercial_partner_id:
-            self.commercial_partner_id = self.create({'name': 'test'})
+        self.commercial_partner_id = self.create({'name': 'test'})
+            
         return record
 
 
