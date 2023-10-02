@@ -5,13 +5,6 @@
       <field name="view_mode">tree,form</field>
     </record>
 
-    
-    <record model="ir.actions.act_window" id="gcond.account_condomino_action">
-        <field name="name">tutti i condomini</field>
-        <field name="res_model">account.condomino</field>
-        <field name="view_mode">tree,form</field>
-    </record>
-
     <!-- Top menu item -->
 
     <menuitem name="GESTIONE CONDOMINIALE" id="gcond.menu_root"/>
@@ -23,8 +16,9 @@
 
     <!-- actions -->
 
-    <menuitem name="Gestione" id="gcond.menu_1_list" parent="gcond.menu_1" action="gcond.action_window"/>
-    <menuitem name="Gestione condomini" id="gcond.menu_2_list" parent="gcond.menu_2" action="gcond.action_window" sequence="10" groups=""/>
+    <menuitem name="Gestione" id="gcond.menu_1_list" parent="gcond.menu_1"
+            action="gcond.action_window"/>
 
+ 
 </odoo>
 

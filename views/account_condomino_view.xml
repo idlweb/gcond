@@ -1,33 +1,42 @@
 <odoo>
-    <!-- model.name form view -->
-    <record id="gcond.account_condomino_view_form" model="ir.ui.view">
-        <field name="name">gcond.account.condomino.form</field>
+
+    <record id="gcond.view_condomino_form" model="ir.ui.view">
         <field name="model">account.condomino</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
-            <form string="">
-                <sheet>
-                    <group>
-                        <field name="name"></field><!-- Add your fields here -->
-                        
-                    </group>
-                </sheet>
-            </form>
+            <field name="type" position="before">
+                <field name="condominio_id" />
+                <field name="type_condomino" />
+            </field>
         </field>
     </record>
 
-    <!-- model.name tree view -->
-    <record id="gcond.account_condomino_view_tree" model="ir.ui.view">
-        <field name="name">gcond.account.condomino.tree</field>
+    <record id="gcond.view_condomino_filter" model="ir.ui.view">
         <field name="model">account.condomino</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter" />
         <field name="arch" type="xml">
-            <tree>
-                <field name="name"></field><!-- Add your fields here -->
-                
-            </tree>
+            <xpath expr="." position="inside">
+                <field name="mobile" />
+            </xpath>
         </field>
     </record>
-   
 
+    <record id="gcond.view_condominoo_tree" model="ir.ui.view">
+        <field name="model">account.condomino</field>
+        <field name="inherit_id" ref="base.view_partner_tree" />
+        <field name="arch" type="xml">
+            <field name="email" position="after">
+                <field name="phone" position="move"/>
+            </field>
+        </field>
+    </record>
 
+    <record id="gcond.action_all_condomini" model="ir.actions.act_window">
+        <field name="name">All Contacts</field>
+        <field name="res_model">account.condomino</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Gestione condomini" id="gcond.menu_2_list" parent="gcond.menu_2" action="action_all_condomini" sequence="10" groups=""/>
 
 </odoo>

@@ -27,3 +27,18 @@ class GcondAccountCondomino(models.Model):
         relation='account_condomino_mail_partner_rel',
     )
   
+
+
+    def action_open_condomino_form(self):
+        view_id = self.env.ref('gcond.view_condomino_form').id
+        return {
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'account.condomino',
+            'views': [(view_id, 'form')],
+            'res_id': self.id,
+            'target': 'current',
+        }
+
+

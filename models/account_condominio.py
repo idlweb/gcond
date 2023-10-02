@@ -96,6 +96,7 @@ class GcondAccountCondominium(models.Model):
             'target': 'new',
         }
    
+   
     """
     @api.model
     def action_accounting(self):
