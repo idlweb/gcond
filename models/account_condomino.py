@@ -6,7 +6,7 @@ import pdb
 class GcondAccountCondomino(models.Model):
     _inherit = "res.partner" 
 
-    condomino_id = fields.Many2one(
+    condominio_id = fields.Many2one(
         comodel_name='account.condominio',
         string='Condominio',
         ondelete='set null',
