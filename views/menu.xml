@@ -24,7 +24,7 @@
     <!-- actions -->
 
     <menuitem name="Gestione" id="gcond.menu_1_list" parent="gcond.menu_1" action="gcond.action_window"/>
-    <menuitem name="Gestione condomini" id="gcond.menu_2_list" parent="gcond.menu_2" action="gcond.account_condomino_action" sequence="10" groups=""/>
+    <menuitem name="Gestione condomini" id="gcond.menu_2_list" parent="gcond.menu_2" action="gcond.action_window" sequence="10" groups=""/>
 
 </odoo>
 
