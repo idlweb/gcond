@@ -1,6 +1,16 @@
 <odoo>
 
-    <record id="view_res_partner_filter" model="ir.ui.view">
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <field name="website" position="after">
+                <field name="write_date" />
+            </field>
+        </field>
+    </record>
+    
+    <record id="view_condomino_res_partner_filter" model="ir.ui.view">
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_res_partner_filter" />
         <field name="arch" type="xml">
@@ -10,7 +20,7 @@
         </field>
     </record>
 
-    <record id="view_partner_tree" model="ir.ui.view">
+    <record id="view_condomino_partner_tree" model="ir.ui.view">
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_tree" />
         <field name="arch" type="xml">
@@ -21,7 +31,7 @@
     </record>
 
     <record id='action_all_condomini' model='ir.actions.act_window'>
-        <field name="name">All Contacts</field>
+        <field name="name">tutti i condomini</field>
         <field name="res_model">res.partner</field>
         <field name="view_mode">tree,form</field>
     </record>
