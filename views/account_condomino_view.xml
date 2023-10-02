@@ -1,4 +1,52 @@
 <odoo>
+    <!-- model.name form view -->
+    <record id="model.name_view_form" model="ir.ui.view">
+        <field name="name">gcond.account.condomino.form</field>
+        <field name="model">account.condomino</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="name"></field><!-- Add your fields here -->
+                        
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- model.name tree view -->
+    <record id="model.name_view_tree" model="ir.ui.view">
+        <field name="name">gcond.account.condomino.tree</field>
+        <field name="model">account.condomino</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"></field><!-- Add your fields here -->
+                
+            </tree>
+        </field>
+    </record>
+   
+
+    <!-- model.name action window -->
+    <record id="model.name_action" model="ir.actions.act_window">
+        <field name="name">gcond.account.condomino.action</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">account.condomino</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_type">form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="target">{current}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                <!-- Add Text Here -->
+            </p><p>
+                <!-- More details about what a user can do with this object will be OK --> 
+            
+            </p>
+        </field>
+    </record>
 
     <record id='action_all_condomini' model='ir.actions.act_window'>
         <field name="name">tutti i condomini</field>
