@@ -23,7 +23,7 @@ class AccountCondominium(models.Model):
 
 
     condomino_id = fields.Many2one(
-        'account.condomino',
+        comodel_name='account.condomino',
         string='Condominio',
         ondelete='set null',
     )
