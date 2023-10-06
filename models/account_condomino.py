@@ -10,7 +10,7 @@ class GcondAccountCondomino(models.Model):
 
     
     condominio_id = fields.Many2one(
-        comodel_name='res.partner',
+        comodel_name='account.condominio',
         string='Condominio di appartenenza',
         ondelete='set null',
     )
