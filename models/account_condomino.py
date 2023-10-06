@@ -10,7 +10,7 @@ class GcondAccountCondomino(models.Model):
     
     condominio_id = fields.Many2one(
         comodel_name='account.condominio',
-        string='Condomino',
+        string='Condominio di appartenenza',
         ondelete='set null',
     )
 
@@ -50,7 +50,7 @@ class GcondAccountCondomino(models.Model):
                     'parent_id': partner.parent_id,
                 })
     """
-    
+
     @api.depends('is_company', 'parent_id.commercial_partner_id')
     def _compute_commercial_partner(self):
         for partner in self:
