@@ -8,26 +8,26 @@ class GcondAccountCondomino(models.Model):
     _inherit = 'res.partner'
 
 
-    """
+    
     condominio_id = fields.Many2one(
         comodel_name='res.partner',
         string='Condominio di appartenenza',
         ondelete='set null',
     )
-    """
-    """
+    
+    
     type_condomino = fields.Selection(
         [('affuttuario', 'Affittuario'), ('proprietario', 'Proprietario')],
         string='Tipologia condomino',
         default='proprietario',)
-    """
+    
     
     # fix many2many da 'estensione ereditaria'
-    """
+    
     channel_ids = fields.Many2many(
         relation='account_condomino_mail_partner_rel',
     )
-    """
+    
     
     
 
@@ -51,9 +51,7 @@ class GcondAccountCondomino(models.Model):
                 })
     """
 
-    _sql_constraints = []
-
-  
+ 
     @api.depends('is_company', 'parent_id.commercial_partner_id')
     def _compute_commercial_partner(self):
         for partner in self:
