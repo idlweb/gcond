@@ -15,18 +15,19 @@ class GcondAccountCondomino(models.Model):
         ondelete='set null',
     )
     """
-    
+    """
     type_condomino = fields.Selection(
         [('affuttuario', 'Affittuario'), ('proprietario', 'Proprietario')],
         string='Tipologia condomino',
         default='proprietario',)
-    
+    """
     
     # fix many2many da 'estensione ereditaria'
+    """
     channel_ids = fields.Many2many(
         relation='account_condomino_mail_partner_rel',
     )
-
+    """
     
     
 
