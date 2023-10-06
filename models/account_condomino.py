@@ -7,6 +7,9 @@ class GcondAccountCondomino(models.Model):
     _name = 'account.condomino'
     _inherit = 'res.partner'
 
+
+    name = fields.Char(default='Nome contatto')
+
     condominio_id = fields.Many2one(
         comodel_name='account.condominio',
         string='Condominio di appartenenza',
