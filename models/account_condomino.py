@@ -4,7 +4,7 @@ _logger = logging.getLogger(__name__)
 import pdb
 
 class GcondAccountCondomino(models.Model):
-    _name = 'account.condomino'
+    #_name = 'account.condomino'
     _inherit = 'res.partner'
 
 
