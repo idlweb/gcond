@@ -26,6 +26,17 @@ class GcondAccountCondomino(models.Model):
         relation='account_condomino_mail_partner_rel',
     )
 
+    commercial_partner_id = fields.Many2one(
+        'res.partner', string='Commercial Entity',
+        compute='_compute_commercial_partner', store=True,
+        recursive=True, index=True)
+
+    @api.depends('is_company', 'parent_id.commercial_partner_id')
+    def _compute_commercial_partner(self):
+        for partner in self:
+            if partner.is_company or not partner.parent_id:
+                partner.commercial_partner_id = partner
+
     """
     def action_open_condominio_form(self):
         view_id = self.env.ref('gcond.view_condomino_form').id
