@@ -6,9 +6,6 @@ import pdb
 class GcondAccountCondomino(models.Model):
     _name = 'account.condomino'
     _inherit = 'res.partner'
-    
-    
-    name = fields.Char(default='Nome condomino')
 
     condominio_id = fields.Many2one(
         comodel_name='account.condominio',
@@ -67,7 +64,7 @@ class GcondAccountCondomino(models.Model):
         for partner in self:
             if partner.is_company or not partner.parent_id:
                 partner.commercial_partner_id = self.env['account.condomino'].create({
-                    'name': partner.name,
+                    'name': "nome condomino",
                     'is_company': partner.is_company,
                     'parent_id': partner.parent_id,
                 })
