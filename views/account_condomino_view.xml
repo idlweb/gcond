@@ -18,8 +18,10 @@
         <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
             <field name="type" position="before">
-                <field name="condominio_id" label="Condominio appartenenza" />
-                <field name="type_condomino" label="Tipologia condomino"/>
+                <group>
+                    <field name="condominio_id" label="Condominio appartenenza" />
+                    <field name="type_condomino" label="Tipologia condomino"/>
+                </group>
             </field>
         </field>
     </record>
