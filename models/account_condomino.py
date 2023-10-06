@@ -60,7 +60,11 @@ class GcondAccountCondomino(models.Model):
     def _compute_commercial_partner(self):
         for partner in self:
             if partner.is_company or not partner.parent_id:
-                partner.commercial_partner_id = self.env['res.partner'].create({'name': 'condominio'})
+                partner.commercial_partner_id = self.env['res.partner'].create({
+                    'name': partner.name,
+                    'is_company': partner.is_company,
+                    'parent_id': partner.parent_id,
+                })
             else:
                 partner.commercial_partner_id = partner.parent_id.commercial_partner_id
 
@@ -78,10 +82,7 @@ class GcondAccountCondomino(models.Model):
     def create(self, vals):
         record = super(GcondAccountCondomino, self).create(vals)  
         # Imposta il valore del campo `commercial_partner_id` su un valore valido.
-        record.commercial_partner_id = self.env['res.partner'].create({'name': 'condominio'})
-        
-        if not vals.get('commercial_partner_id'):
-            vals['commercial_partner_id'] = self.env['res.partner'].create({'name': 'condominio'})
+      
         #Crea un nuovo condominio.                    
         return record
     
