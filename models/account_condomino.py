@@ -62,8 +62,7 @@ class GcondAccountCondomino(models.Model):
     def _check_name(self):
         for partner in self:
             if not partner.name:
-                partner.name = "Nominativo condomino"
-                #raise ValidationError("I condomini richiedono un nome")
+                raise ValidationError("I condomini richiedono un nome")
             
     @api.depends('is_company', 'parent_id.commercial_partner_id')
     def _compute_commercial_partner(self):
