@@ -65,7 +65,7 @@ class GcondAccountCondomino(models.Model):
             if partner.is_company or not partner.parent_id:
                 if not partner.name:
                     partner.name = "Nominativo condomino"
-                    condomino = partner.env['res.condomino'].search([('name', '=', partner.name)], limit=1)
+                    condomino = partner.env['res.partner'].search([('name', '=', partner.name)], limit=1)
                     partner.commercial_partner_id = self.env['account.condomino'].create({
                         'name': condomino.name,
                         'is_company': condomino.is_company,
