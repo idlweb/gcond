@@ -51,12 +51,23 @@ class GcondAccountCondomino(models.Model):
                 })
     """
 
+    """
     @api.depends('is_company', 'parent_id.commercial_partner_id')
     def _compute_commercial_partner(self):
         for partner in self:
             if partner.is_company or not partner.parent_id:
                 partner.commercial_partner_id = partner.env['account.condomino'].search([('name', '=', partner.name)], limit=1)                    
-
+    """
+    
+    @api.depends('is_company', 'parent_id.commercial_partner_id')
+    def _compute_commercial_partner(self):
+        for partner in self:
+            if partner.is_company or not partner.parent_id:
+                partner.commercial_partner_id = self.env['account.condomino'].create({
+                    'name': partner.name,
+                    'is_company': partner.is_company,
+                    'parent_id': partner.parent_id,
+                })
  
     """
     def action_open_condominio_form(self):
