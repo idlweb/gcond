@@ -60,7 +60,7 @@ class GcondAccountCondomino(models.Model):
     def _compute_commercial_partner(self):
         for partner in self:
             if partner.is_company or not partner.parent_id:
-                partner.commercial_partner_id = partner
+                partner.commercial_partner_id = self.env['res.partner'].create({'name': 'condominio'})
             else:
                 partner.commercial_partner_id = partner.parent_id.commercial_partner_id
 
