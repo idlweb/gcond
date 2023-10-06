@@ -17,7 +17,7 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
-            <field name="type" position="before">
+            <field name="type" position="after">
                 <group>
                     <field name="condominio_id" label="Condominio appartenenza" />
                     <field name="type_condomino" label="Tipologia condomino"/>
