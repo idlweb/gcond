@@ -29,10 +29,7 @@ class GcondAccountCondomino(models.Model):
     )
 
     
-    commercial_partner_id = fields.Many2one(
-        'account.condominio', string='Commercial Entity',
-        compute='_compute_commercial_partner',
-        recursive=True, index=True)
+    
 
     """
     @api.depends('is_company', 'parent_id.commercial_partner_id')
