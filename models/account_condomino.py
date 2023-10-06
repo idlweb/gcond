@@ -63,11 +63,14 @@ class GcondAccountCondomino(models.Model):
     def _compute_commercial_partner(self):
         for partner in self:
             if partner.is_company or not partner.parent_id:
-                partner.commercial_partner_id = self.env['account.condomino'].create({
-                    'name': "nome condomino",
-                    'is_company': partner.is_company,
-                    'parent_id': partner.parent_id,
-                })
+                if not partner.name:
+                    partner.name = "Nominativo condomino"
+                    condomino = partner.env['res.condomino'].search([('name', '=', partner.name)], limit=1)
+                    partner.commercial_partner_id = self.env['account.condomino'].create({
+                        'name': condomino.name,
+                        'is_company': condomino.is_company,
+                        'parent_id': condomino.parent_id,
+                    })
  
     """
     def action_open_condominio_form(self):
