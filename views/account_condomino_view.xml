@@ -26,7 +26,7 @@
 
     <record model="ir.actions.act_window" id="gcond.action_all_condomini" >
         <field name="name">All Contacts</field>
-        <field name="res_model">account.condomino</field>
+        <field name="res_model">res.partner</field>
         <field name="view_mode">tree,form</field>
     </record>
 
