@@ -1,0 +1,1 @@
+access_gcond_account_condomino,gcond.account_condomino,model_account_condomino,,1,1,1,1
