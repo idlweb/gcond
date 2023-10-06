@@ -31,7 +31,7 @@ class GcondAccountCondomino(models.Model):
     
     commercial_partner_id = fields.Many2one(
         'account.condominio', string='Commercial Entity',
-        compute='_compute_commercial_partner', store=True,
+        compute='_compute_commercial_partner',
         recursive=True, index=True)
 
     """
@@ -60,54 +60,31 @@ class GcondAccountCondomino(models.Model):
     def _compute_commercial_partner(self):
         for partner in self:
             if partner.is_company or not partner.parent_id:
+                partner.commercial_partner_id = partner
+            else:
+                partner.commercial_partner_id = partner.parent_id.commercial_partner_id
+
+    """
+    @api.depends('is_company', 'parent_id.commercial_partner_id')
+    def _compute_commercial_partner(self):
+        for partner in self:
+            if partner.is_company or not partner.parent_id:
                 partner.commercial_partner_id = partner.env['res.partner'].search([('name', '=', partner.name)], limit=1)
-      
+    """
   
 
-    """
-    def action_open_condominio_form(self):
-        view_id = self.env.ref('gcond.view_condomino_form').id
-
-        return {
-            'type': 'ir.actions.act_window',
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'account.condomino',
-            'views': [(view_id, 'form')],
-            'res_id': self.id,
-            'target': 'current',
-        }
-    
-    def post_init(self):
-        for condomino in self:
-            if condomino.action_open_condominio_executed:
-                self.env['log'].info("=============>    La funzione action_open_condominio è stata eseguita per il condomino con ID", condomino.id)
-    """
-
-    """ 
+     
     @api.model
     def create(self, vals):
         record = super(GcondAccountCondomino, self).create(vals)  
         # Imposta il valore del campo `commercial_partner_id` su un valore valido.
-        record.commercial_partner_id = self.env['res.partner'].create({'name': 'Condominio'})
+        record.commercial_partner_id = self.env['res.partner'].create({'name': 'condominio'})
         
         if not vals.get('commercial_partner_id'):
-            vals['commercial_partner_id'] = self.env['res.partner'].create({'name': 'Condominio'})
+            vals['commercial_partner_id'] = self.env['res.partner'].create({'name': 'condominio'})
         #Crea un nuovo condominio.                    
         return record
-    """
+    
 
-    """
-    def action_register_condomino_form(self):
-        view_id = self.env.ref('view_condomino_form').id
-        return {
-            'type': 'ir.actions.act_window',
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'account.condomino',
-            'views': [(view_id, 'form')],
-            'res_id': self.id,
-            'target': 'current',
-        }
-    """
+
       
