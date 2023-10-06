@@ -51,12 +51,14 @@ class GcondAccountCondomino(models.Model):
                 })
     """
 
- 
+    """
     @api.depends('is_company', 'parent_id.commercial_partner_id')
     def _compute_commercial_partner(self):
         for partner in self:
             if partner.is_company or not partner.parent_id:
                 pass
+    """
+    
     """
     @api.depends('is_company', 'parent_id.commercial_partner_id')
     def _compute_commercial_partner(self):
@@ -66,7 +68,7 @@ class GcondAccountCondomino(models.Model):
     """
   
 
-     
+    """ 
     @api.model
     def create(self, vals):
         record = super(GcondAccountCondomino, self).create(vals)  
@@ -74,7 +76,7 @@ class GcondAccountCondomino(models.Model):
       
         #Crea un nuovo condominio.                    
         return record
-    
+    """
 
 
       
