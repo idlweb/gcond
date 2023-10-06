@@ -4,7 +4,7 @@ _logger = logging.getLogger(__name__)
 import pdb
 
 class GcondAccountCondomino(models.Model):
-    _name = 'account.condomino'
+   #_name = 'account.condomino'
     _inherit = 'res.partner'
 
 
@@ -58,7 +58,7 @@ class GcondAccountCondomino(models.Model):
             if partner.is_company or not partner.parent_id:
                 pass
     """
-    
+
     """
     @api.depends('is_company', 'parent_id.commercial_partner_id')
     def _compute_commercial_partner(self):
