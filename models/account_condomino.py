@@ -67,7 +67,7 @@ class GcondAccountCondomino(models.Model):
                     partner.name = "Nominativo condomino"
                     condomino = partner.env['res.partner'].search([('name', '=', partner.name)], limit=1)
                     partner.commercial_partner_id = self.env['account.condomino'].create({
-                        'name': condomino.name,
+                        #'name': condomino.name,
                         'is_company': condomino.is_company,
                         'parent_id': condomino.parent_id,
                     })
