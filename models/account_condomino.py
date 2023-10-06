@@ -64,7 +64,7 @@ class GcondAccountCondomino(models.Model):
                     'name': partner.name,
                     'is_company': partner.is_company,
                     'parent_id': partner.parent_id,
-                })
+                }).id
             else:
                 partner.commercial_partner_id = partner.parent_id.commercial_partner_id
 
