@@ -30,7 +30,7 @@ class GcondAccountCondomino(models.Model):
 
     
     commercial_partner_id = fields.Many2one(
-        'res.partner', string='Commercial Entity',
+        'account.condominio', string='Commercial Entity',
         compute='_compute_commercial_partner', store=True,
         recursive=True, index=True)
 
@@ -67,12 +67,7 @@ class GcondAccountCondomino(models.Model):
     def _compute_commercial_partner(self):
         for partner in self:
             if partner.is_company or not partner.parent_id:
-                    #condomino = partner.env['res.partner'].search([('name', '=', partner.name)], limit=1)
-                    partner.commercial_partner_id = self.env['account.condomino'].create({
-                        'name': partner.name,
-                        'is_company': partner.is_company,
-                        'parent_id': partner.parent_id,
-                    })
+                partner.commercial_partner_id = partner.env['res.partner'].search([('name', '=', partner.name)], limit=1)
     
 
     """
