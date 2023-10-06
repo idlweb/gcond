@@ -58,16 +58,20 @@ class GcondAccountCondomino(models.Model):
             if partner.is_company or not partner.parent_id:
                 partner.commercial_partner_id = partner.env['account.condomino'].search([('name', '=', partner.name)], limit=1)                    
     """
-
+    @api.constrains('name')
+    def _check_name(self):
+        for partner in self:
+            if not partner.name:
+                partner.name = "Nominativo condomino"
+                #raise ValidationError("I condomini richiedono un nome")
+            
     @api.depends('is_company', 'parent_id.commercial_partner_id')
     def _compute_commercial_partner(self):
         for partner in self:
             if partner.is_company or not partner.parent_id:
-                if not partner.name:
-                    partner.name = "Nominativo condomino"
                     condomino = partner.env['res.partner'].search([('name', '=', partner.name)], limit=1)
                     partner.commercial_partner_id = self.env['account.condomino'].create({
-                        #'name': condomino.name,
+                        'name': condomino.name,
                         'is_company': condomino.is_company,
                         'parent_id': condomino.parent_id,
                     })
