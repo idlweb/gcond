@@ -2,7 +2,7 @@
 
     <record id="view_condominoo_tree" model="ir.ui.view">
         <field name="name">Condomino tree</field>
-        <field name="model">account.condomino</field>
+        <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_tree" />
         <field name="arch" type="xml">
             <field name="email" position="after">
@@ -14,7 +14,7 @@
 
     <record id="view_condomino_form" model="ir.ui.view">
         <field name="name">Condomino form</field>
-        <field name="model">account.condomino</field>
+        <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
             <field name="type" position="before">
