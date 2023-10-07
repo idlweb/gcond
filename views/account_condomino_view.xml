@@ -26,12 +26,5 @@
         </field>
     </record>
 
-    <record model="ir.actions.act_window" id="gcond.action_all_condomini" >
-        <field name="name">All Contacts</field>
-        <field name="res_model">res.partner</field>
-        <field name="view_mode">tree,form</field>
-    </record>
-
-    <menuitem name="Gestione condomini" id="gcond.menu_2_list" parent="gcond.menu_2" 
-            action="gcond.action_all_condomini" sequence="10" groups=""/>
+    
 </odoo>
