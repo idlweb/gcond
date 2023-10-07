@@ -21,15 +21,21 @@ class GcondAccountCondomino(models.Model):
         string='Tipologia condomino',
         default='proprietario',)
     
-    
+
+    company_type = fields.Selection(string='Company Type',
+        selection=[('person', 'Individual'), ('company', 'Company'), ('condominio','Condominio')],
+        compute='_compute_company_type', inverse='_write_company_type')
+
+
+
+
     # fix many2many da 'estensione ereditaria'
     
+    """
     channel_ids = fields.Many2many(
         relation='account_condomino_mail_partner_rel',
     )
-    
-    
-    
+    """
 
     """
     @api.depends('is_company', 'parent_id.commercial_partner_id')
