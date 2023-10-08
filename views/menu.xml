@@ -12,18 +12,7 @@
     </record>
     
 
-    <record model="ir.actions.act_window" id="gcond.action_view_form" >
-        <field name="name">Tabelle di ripartizione</field>
-        <field name="res_model">account.condominio.table.master</field>
-        <field name="view_mode">form</field>
-        <field name="target">new</field>
-    </record>
-
-    <record model="ir.actions.act_window" id="gcond.action_view_tree" >
-        <field name="name">Tabelle di ripartizione</field>
-        <field name="res_model">account.condominio.table.master</field>
-        <field name="view_mode">tree,form</field>
-    </record>
+   
 
 
     <!-- Top menu item -->
@@ -43,8 +32,7 @@
     <menuitem name="Gestione condomini" id="gcond.menu_2_list" parent="gcond.menu_2" 
             action="gcond.action_all_condomini" sequence="10" groups=""/>
 
-    <menuitem name="Tabelle di ripartizione" id="account_condominio_table_view"  parent="gcond.menu_1" 
-              action="gcond.action_view_form"/>
+
 
 </odoo>
 
