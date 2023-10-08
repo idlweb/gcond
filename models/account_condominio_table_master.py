@@ -73,6 +73,11 @@ class AccountCondominioTableMaster(models.Model):
             # Abilitiamo la funzione onchange
             self.trigger_lazy('condominio_id')
 
+            # Verifichiamo se il condominio_id è impostato
+            if not self.condominio_id:
+                # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
+                self.trigger_lazy('condominio_id', disable=True)
+
     """
     def create(self, vals):
         # Recupera il conto di contabilità di default per la tabella di ripartizione
