@@ -7,6 +7,7 @@ class AccountCondominiumTable(models.Model):
         'account.condominio.table',
         string='testata',
         required=False,
+        inverse='',
     )
 
     unit_of_measure = fields.Char(string='Unit Of Measure')
