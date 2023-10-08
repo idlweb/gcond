@@ -52,8 +52,8 @@ class AccountCondominioTableMaster(models.Model):
     @api.model
     def create(self):
         # Avvia la funzione onchange solo se il campo condominio_id è diverso da 0
-        if self.condominio_id:
-            self.onchange_condominio_id()
+        #if self.condominio_id:
+        #    self.onchange_condominio_id()
 
         return super(AccountCondominioTableMaster, self).create()
 
