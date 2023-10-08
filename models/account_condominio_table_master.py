@@ -64,8 +64,6 @@ class AccountCondominioTableMaster(models.Model):
                 'quote' : 100,
             })
 
-        return super(account_condominio_table_master, self).create()
-
         return super(AccountCondominioTableMaster, self).create()
 
     """
