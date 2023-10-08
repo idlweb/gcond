@@ -35,7 +35,7 @@ class AccountCondominioTableMaster(models.Model):
     @api.onchange('condominio_id')
     def onchange_condominio_id(self):
         # Ottieni tutti i condomini
-        condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id)])
+        condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
 
         # Crea un ciclo per ogni condomino
         for condomino in condomini:
