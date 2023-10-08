@@ -27,8 +27,6 @@ class AccountCondominioTableMaster(models.Model):
   
     table_ids = fields.One2many('account.condominio.table', 'table_id', string='Righe tabelle condominiali')
     
-    
-
     @api.model
     def create(self, vals):
         return super(AccountCondominioTableMaster, self).create(vals)
