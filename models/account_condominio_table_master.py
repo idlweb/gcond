@@ -44,7 +44,6 @@ class AccountCondominioTableMaster(models.Model):
                 'table_id': self.id,
                 'condomino_id': condomino.id,
                 'quote' : 100,
-                'name'  : self.name,
             })
 
         return {}
