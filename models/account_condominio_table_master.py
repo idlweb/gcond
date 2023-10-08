@@ -52,10 +52,13 @@ class AccountCondominioTableMaster(models.Model):
             # Memorizza gli ID delle righe di dettaglio
             id_dettagli = {dettaglio.id for dettaglio in dettagli}
             # Elimina tutte le righe di dettaglio
+            """
             for dettaglio_id in id_dettagli:
                 dettaglio = self.env['account.condominio.table'].browse(dettaglio_id)
                 dettaglio.unlink()
-
+            """
+            ids = [id_dettagli]
+            self.unlink(ids)
 
             condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
             # Ripopola le righe di dettaglio
