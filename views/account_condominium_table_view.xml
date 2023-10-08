@@ -17,14 +17,10 @@
             <field name="model">account.condominio.table</field>
             <field name="arch" type="xml">
                 <form string="Condominium Table">
-                    <sheet>
-                        <group>                
                             <field name="table_id"/>
                             <field name="unit_of_measure" label="udm"/>
                             <field name="value_distribution" label="valore"/>
-                            <field name="quote" label="%"/>    
-                        </group>
-                    </sheet>            
+                            <field name="quote" label="%"/>                                
                     <button name="new" string="New" type="primary"/>
                     <button name="edit" string="Edit" type="primary"/>
                     <button name="delete" string="Delete" type="primary"/>
