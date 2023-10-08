@@ -43,8 +43,6 @@ class AccountCondominioTableMaster(models.Model):
             record = self.env['account.condominio.table'].create({
                 'table_id': self.id,
                 'condomino_id': condomino.id,
-                'codice_tabella': 'Tabella %s' % self.code_table,
-                'nome': 'Tabella %s' % self.name,
             })
 
         return {}
