@@ -147,25 +147,39 @@ class GcondAccountCondominium(models.Model):
     
     #@api.multi
     def distribute_charges(self, amount, table, document_number, account_id):
-        charges = {}
-        for condominium in self.related_condominiums:
+        charges = {}  
+        """
+            We are in the place where we must distribute for each 
+            'condomino'? I think that 
+        """                    
+        #for condomino in self.related_condominiums: ## TO-DO resolve 'related_condominium' not exist! We have condominio_id
+        for condomino in self.env['res.partner'].search([('condominio_id', '=', self.id)]):    
             # Get the condominium's share of the charge.
-            share = table.get(condominium.code_table)
+            # at this point how
+            share = table.get(condomino.code_table) ## what get() do? Quota? 
             if share is None:
-                # The condominium is not included in the distribution table.
+                # The condominium is not included in the distribution table.  ## what it meanning?
                 continue
 
             # Calculate the condominium's charge.
             charge = amount * share
 
+            """
+
+            """
             # Create a journal entry for the charge.
+            """
+                Which is the difference between 'account_id: condominium.account_id.id' and 
+                'account_id: condominium.account_id'
+            """
             account_move = self.env['account.move'].create({
                 'journal_id': self.env['account.journal'].search([('type', '=', 'general')], limit=1).id,
                 'date': fields.Date.today(),
                 'line_ids': [
-                    {
-                        'account_id': condominium.account_id.id,
-                        'name': condominium.name,
+                    {                        
+                        'account_id': condomino.account_id.id, # credo ci sia fonfusione sulle entità in campo
+                                                               # 
+                        'name': condomino.name,
                         'debit': charge,
                     },
                     {
@@ -177,7 +191,7 @@ class GcondAccountCondominium(models.Model):
             })
 
             # Add the charge to the dictionary of charges.
-            charges[condominium] = charge
+            charges[condomino] = charge
 
         return charges
         
