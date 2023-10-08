@@ -53,15 +53,7 @@ class AccountCondominioTableMaster(models.Model):
                     <group>
                         <field name="code_table" required="True"/>
                         <field name="description" required="True"/>
-                        <field name="account_id" required="True"/>
-                        <field name="details" widget="field.tree" relation="account.condominio.table" target="new">
-                            <tree string="Dettaglio tabella di ripartizione">
-                                <field name="table_id"/>
-                                <field name="unit_of_measure" label="udm"/>
-                                <field name="value_distribution" label="valore"/>
-                                <field name="quote" label="%"/>                                                                
-                            </tree>
-                        </field>
+                        <field name="account_id" required="True"/>                       
                     </group>
                   </sheet>   
                 </form>
@@ -80,7 +72,6 @@ class AccountCondominioTableMaster(models.Model):
             'fields': ['id', 'code_table', 'description'],
             'arch': """
                 <tree string="Tabelle di ripartizione">
-                    <field name="id"/>
                     <field name="code_table"/>
                     <field name="description"/>
                 </tree>
