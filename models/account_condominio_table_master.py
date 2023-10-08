@@ -42,7 +42,7 @@ class AccountCondominioTableMaster(models.Model):
             # Crea una nuova riga di dettaglio
             record = self.env['account.condominio.table'].create({
                 'table_id': self.id,
-                'condominio_id': condomino.id,
+                'condomino_id': condomino.id,
                 'codice_tabella': 'Tabella %s' % self.code_table,
                 'nome': 'Tabella %s' % self.name,
             })
