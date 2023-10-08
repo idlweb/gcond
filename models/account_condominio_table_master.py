@@ -35,7 +35,7 @@ class AccountCondominioTableMaster(models.Model):
 
     @api.onchange('condominio_id')
     def onchange_condominio_id(self):
-        if not self.condominio_id or self.state == 'draft':
+        if not self.condominio_id:
             # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
             pass
         else:
