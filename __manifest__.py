@@ -15,7 +15,7 @@
     'depends' : ['web','base','account'],
     'data': [
         'security/ir.model.access.csv',
-        'views/account_condominium_table_view.xml',
+        #'views/account_condominium_table_view.xml',
         'views/account_condominium_view.xml',
         'views/account_condomino_view.xml',
         #'views/account_move_form_btn.xml',
