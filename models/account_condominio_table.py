@@ -7,6 +7,6 @@ class AccountCondominiumTable(models.Model):
     value_distribution = fields.Float(string='Value Distribution')
     quote = fields.Float(string='percentuale di competenza')
     table_id = fields.Many2one('account.condominio.table.master', string='Appartiene alla tabella',  required=False,)
-    condominio_id = fields.Many2one('account.condomino',string='', required=False,)
+    condomino_id = fields.Many2one('res.partner',string='', required=False,)
 
    
