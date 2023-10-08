@@ -21,6 +21,7 @@
                 <form string="">
                     <sheet>
                         <group>
+                            <field name="id"/>                            
                             <field name="name" required="True"/>                            
                             <field name="description" required="True"/>
                             <field name="code_table" required="True"/>
@@ -28,6 +29,7 @@
                             <field name="condominio_id" required="True"/>                                        
                             <field name="table_ids" widget="field.tree" relation="account.condominio.table" target="new">
                                 <tree string="Dettaglio tabella di ripartizione">
+                                    <field name="id"/>
                                     <field name="table_id"/>
                                     <field name="unit_of_measure" label="udm"/>
                                     <field name="value_distribution" label="valore"/>
