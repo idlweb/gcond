@@ -24,7 +24,7 @@ class AccountCondominioTableMaster(models.Model):
         comodel_name='account.condominio',
         string='Condominio di apparteneaccount_condominio_table  ondelete='set null',
     )
-    field_name_ids = fields.One2many('account.condominio.table', 'table_id', string='field_name')
+  
     
     #table_ids = fields.One2many(comodel_name='account.condominio.table', string='Righe tabelle condominiali')
     
