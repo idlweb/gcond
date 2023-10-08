@@ -26,8 +26,6 @@
     </record>
 
 
-
-
     <!-- Top menu item -->
 
     <menuitem name="GESTIONE CONDOMINIALE" id="gcond.menu_root"/>
