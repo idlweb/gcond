@@ -56,11 +56,11 @@ class AccountCondominioTableMaster(models.Model):
         #    self.onchange_condominio_id()
 
         # Crea un ciclo per ogni condominio
-        for condomino in self.condominio_id.partner_ids:
+        for condomino in self.condominio_id.partner_ids.mapped('id'):
             # Crea una nuova riga di dettaglio
             record = self.env['account.condominio.table'].create({
                 'table_id': self.id,
-                'condomino_id': condomino.id,
+                'condomino_id': condomino,
                 'quote' : 100,
             })
 
