@@ -58,8 +58,7 @@
                                     <field name="value_distribution" label="valore"/>
                                     <field name="quote" label="%"/>                                                                
                                 </tree>
-                            </field>
-                            
+                            </field>                            
                         </group>
                     </sheet>
                 </form>
