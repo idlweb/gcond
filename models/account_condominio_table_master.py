@@ -44,7 +44,7 @@ class AccountCondominioTableMaster(models.Model):
         return super(AccountCondominioTableMaster, self).create(vals)
     """
 
-    def view_form(self, cr, uid, ids, context=None):
+    def action_table_master_view_form(self, cr, uid, ids, context=None):
         return {
             'name': 'Inserisci tabella di ripartizione',
             'view_type': 'form',
@@ -67,7 +67,7 @@ class AccountCondominioTableMaster(models.Model):
         }
 
 
-    def view_tree(self, cr, uid, ids, context=None):
+    def action_table_master_view_tree(self, cr, uid, ids, context=None):
         return {
             'name': 'Tabelle di ripartizione',
             'view_type': 'tree',
