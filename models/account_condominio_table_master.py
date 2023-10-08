@@ -39,9 +39,15 @@ class AccountCondominioTableMaster(models.Model):
             # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
             pass
         else:
+            # Ottieni tutte le righe di dettaglio
+            dettagli = self.env['account.condominio.table'].search([('table_id', '=', self.id)])
+
+            # Elimina tutte le righe di dettaglio
+            for dettaglio in dettagli:
+                dettaglio.unlink()
+                
             # Ottieni tutti i condomini
             condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
-
             # Crea un ciclo per ogni condomino
             for condomino in condomini:
                 # Crea una nuova riga di dettaglio
