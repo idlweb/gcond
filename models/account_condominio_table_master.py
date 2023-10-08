@@ -27,6 +27,7 @@ class AccountCondominioTableMaster(models.Model):
   
     table_ids = fields.One2many('account.condominio.table', 'table_id', string='Righe tabelle condominiali')
     
+    condominio_id_old = fields.Integer(string='Condominio ID vecchio')
     """
     @api.model
     def create(self, vals):
