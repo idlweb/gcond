@@ -37,7 +37,7 @@ class AccountCondominioTableMaster(models.Model):
     def onchange_condominio_id(self):
         if not self.condominio_id or self.state == 'draft':
             # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
-            self.trigger_lazy('condominio_id', disable=True)
+            pass
         else:
             # Ottieni tutti i condomini
             condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
@@ -75,7 +75,7 @@ class AccountCondominioTableMaster(models.Model):
     def onchange_state(self):
         pass
     """
-    
+
     """
     def create(self, vals):
         # Recupera il conto di contabilità di default per la tabella di ripartizione
