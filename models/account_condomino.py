@@ -8,7 +8,7 @@ class GcondAccountCondomino(models.Model):
     _inherit = 'res.partner'
 
 
-    is_company = fields.Boolean(string='is a Condominio', default=True,
+    is_condominio = fields.Boolean(string='is a Condominio', default=True,
         help="Check if the contact is a condominio, otherwise it is a person or a company")
 
 
