@@ -16,7 +16,6 @@
         <field name="name">Tabelle di ripartizione</field>
         <field name="res_model">account.condominio.table.master</field>
         <field name="view_mode">form</field>
-        <field name="view_type">form,tree</field>
         <field name="target">new</field>
     </record>
 
@@ -24,7 +23,6 @@
         <field name="name">Tabelle di ripartizione</field>
         <field name="res_model">account.condominio.table.master</field>
         <field name="view_mode">tree,form</field>
-        <field name="view_type">tree</field>
     </record>
 
 
