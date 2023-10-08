@@ -8,7 +8,10 @@ class GcondAccountCondomino(models.Model):
     _inherit = 'res.partner'
 
 
-    
+    is_company = fields.Boolean(string='is a Condominio', default=True,
+        help="Check if the contact is a condominio, otherwise it is a person or a company")
+
+
     condominio_id = fields.Many2one(
         comodel_name='account.condominio',
         string='Condominio di appartenenza',
@@ -37,42 +40,51 @@ class GcondAccountCondomino(models.Model):
     )
     """
 
+    """ 
+        Tentativo di arricchire la logica di identificazione
+        da sfruttare nella form per personalizzare le visualizzazioni
     """
-    @api.depends('is_company', 'parent_id.commercial_partner_id')
-    def _compute_commercial_partner(self):
+    @api.depends('is_company')
+    def _compute_company_type(self):
         for partner in self:
-            if partner.is_company or not partner.parent_id:
-                partner.commercial_partner_id = partner
-    """
+            if self.condominio_id:
+                self.company_type = 'condominio'
+                self.is_condominio = True
+            else:
+                partner.company_type = 'company' if partner.is_company else 'person'
+
+    def _write_company_type(self):
+        for partner in self:
+            if partner.company_type == 'condominio':
+               partner.is_condominio = True
+            elif partner.company_type == 'company':
+               partner.is_company = True
+               
+
+    @api.onchange('company_type')
+    def onchange_company_type(self):
+        if self.company_type == 'condominio':
+           self.is_condominio = True
+        else:
+           self.is_company = (self.company_type == 'company')
+
 
     """
-    @api.depends('is_company', 'parent_id.commercial_partner_id')
-    def _compute_commercial_partner(self):
-        for partner in self:
-            if partner.is_company or not partner.parent_id:
-                partner.commercial_partner_id = self.env['res.partner'].create({
-                    'name': partner.name,
-                    'is_company': partner.is_company,
-                    'parent_id': partner.parent_id,
-                })
+    def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
+        res = super(GcondAccountCondomino, self).fields_view_get(view_id='view_condomino_form', view_type=view_type, toolbar=toolbar, submenu=submenu)
+
+        if view_type == 'form' and res['model'] == 'res.partner':
+            res['fields'].append({
+                'name': 'is_condominio',
+                'invisible': True,
+                'on_change': 1,
+                'modifiers': {'invisible': True},
+                'id': 'is_condominio',
+            })
+
+        return res
     """
 
-    """
-    @api.depends('is_company', 'parent_id.commercial_partner_id')
-    def _compute_commercial_partner(self):
-        for partner in self:
-            if partner.is_company or not partner.parent_id:
-                pass
-    """
-
-    """
-    @api.depends('is_company', 'parent_id.commercial_partner_id')
-    def _compute_commercial_partner(self):
-        for partner in self:
-            if partner.is_company or not partner.parent_id:
-                partner.commercial_partner_id = partner.env['res.partner'].search([('name', '=', partner.name)], limit=1)
-    """
-  
 
     """ 
     @api.model

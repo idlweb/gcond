@@ -21,6 +21,8 @@
                 <group>
                     <field name="condominio_id" label="Condominio appartenenza" />
                     <field name="type_condomino" label="Tipologia condomino"/>
+                    <field name="condominio_id" label="Condominio appartenenza" />
+                    <field name="is_condominio" invisible="1" on_change="1" modifiers="{'invisible':true}" id="is_condominio"/>
                 </group>
             </field>
         </field>
