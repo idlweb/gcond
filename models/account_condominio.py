@@ -155,7 +155,12 @@ class GcondAccountCondominium(models.Model):
         #for condomino in self.related_condominiums: ## TO-DO resolve 'related_condominium' not exist! We have condominio_id
         for condomino in self.env['res.partner'].search([('condominio_id', '=', self.id)]):    
             # Get the condominium's share of the charge.
-            # at this point how
+            # at this time 'table' contiene tutte le righe della tabella
+            # account.condominio.table aventi lo stesso codice
+            """
+                TO-DO: nella maschera di registrazine alla pressione del bottone ripartisci 
+                       spese o comunque all'esecuzione dell'action occorre una funzione che 
+            """
             share = table.get(condomino.code_table) ## what get() do? Quota? 
             if share is None:
                 # The condominium is not included in the distribution table.  ## what it meanning?
@@ -164,9 +169,6 @@ class GcondAccountCondominium(models.Model):
             # Calculate the condominium's charge.
             charge = amount * share
 
-            """
-
-            """
             # Create a journal entry for the charge.
             """
                 Which is the difference between 'account_id: condominium.account_id.id' and 
