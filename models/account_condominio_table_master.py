@@ -49,8 +49,7 @@ class AccountCondominioTableMaster(models.Model):
             """
             # Ottieni tutte le righe di dettaglio
             dettagli = self.env['account.condominio.table'].search([('table_id', '=', self.id)])
-            print(dettagli)
-            assert dettagli == [], "La variabile 'dettagli' non è vuota."
+            print("=========================================>",dettagli)
             # Memorizza gli ID delle righe di dettaglio
             id_dettagli = {dettaglio.id for dettaglio in dettagli}
             # Elimina tutte le righe di dettaglio
