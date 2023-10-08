@@ -20,6 +20,12 @@ class AccountCondominioTableMaster(models.Model):
     code_table = fields.Char(string='Codice tabella')
     description = fields.Char(string='Descrizione')
     account_id = fields.Many2one('account.account', string='Conto di contabilità')
+    condominio_id = fields.Many2one(
+        comodel_name='account.condominio',
+        string='Condominio di appartenenza',
+        ondelete='set null',
+    )
+    
     #table_ids = fields.One2many(comodel_name='account.condominio.table', string='Righe tabelle condominiali')
     
     
@@ -53,7 +59,7 @@ class AccountCondominioTableMaster(models.Model):
                     <group>
                         <field name="code_table" required="True"/>
                         <field name="description" required="True"/>
-                        <field name="account_id" required="True"/>                       
+                        <field name="account_id" required="True"/>                 
                     </group>
                   </sheet>   
                 </form>
