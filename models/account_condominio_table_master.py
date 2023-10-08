@@ -42,20 +42,29 @@ class AccountCondominioTableMaster(models.Model):
             # Ottieni tutte le righe di dettaglio
             dettagli = self.env['account.condominio.table'].search([('table_id', '=', self.id)])
 
-            # Elimina tutte le righe di dettaglio
-            for dettaglio in dettagli:
-                dettaglio.unlink()
+            if self.condominio_id_old != self.condominio_id:
                 
+                # Elimina tutte le righe di dettaglio
+                for dettaglio in dettagli:
+                    dettaglio.unlink()
+
+                # Ripopola le righe di dettaglio
+                condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
+                # Crea un ciclo per ogni condomino
+                for condomino in condomini:
+                    # Crea una nuova riga di dettaglio
+                    record = self.env['account.condominio.table'].create({
+                        'table_id': self.id,
+                        'condomino_id': condomino.id,
+                        'quote' : 100,
+                })     
+
+                # Memorizza il valore corrente del condominio_id
+                self.condominio_id_old = self.condominio_id
+
+
             # Ottieni tutti i condomini
-            condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
-            # Crea un ciclo per ogni condomino
-            for condomino in condomini:
-                # Crea una nuova riga di dettaglio
-                record = self.env['account.condominio.table'].create({
-                    'table_id': self.id,
-                    'condomino_id': condomino.id,
-                    'quote' : 100,
-            })                   
+                          
 
         return {}
     
