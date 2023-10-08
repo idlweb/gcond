@@ -35,17 +35,21 @@ class AccountCondominioTableMaster(models.Model):
 
     @api.onchange('condominio_id')
     def onchange_condominio_id(self):
-        # Ottieni tutti i condomini
-        condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
+        if not self.condominio_id or self.state == 'draft':
+            # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
+            self.trigger_lazy('condominio_id', disable=True)
+        else:
+            # Ottieni tutti i condomini
+            condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
 
-        # Crea un ciclo per ogni condomino
-        for condomino in condomini:
-            # Crea una nuova riga di dettaglio
-            record = self.env['account.condominio.table'].create({
-                'table_id': self.id,
-                'condomino_id': condomino.id,
-                'quote' : 100,
-            })
+            # Crea un ciclo per ogni condomino
+            for condomino in condomini:
+                # Crea una nuova riga di dettaglio
+                record = self.env['account.condominio.table'].create({
+                    'table_id': self.id,
+                    'condomino_id': condomino.id,
+                    'quote' : 100,
+            })                   
 
         return {}
     
@@ -66,18 +70,12 @@ class AccountCondominioTableMaster(models.Model):
         """
         return super(AccountCondominioTableMaster, self).create()
 
+    """
     @api.onchange('state')
     def onchange_state(self):
-        # Se stiamo ancora nella fase create
-        if self.state == 'draft':
-            # Abilitiamo la funzione onchange
-            self.trigger_lazy('condominio_id')
-
-            # Verifichiamo se il condominio_id è impostato
-            if not self.condominio_id:
-                # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
-                self.trigger_lazy('condominio_id', disable=True)
-
+        pass
+    """
+    
     """
     def create(self, vals):
         # Recupera il conto di contabilità di default per la tabella di ripartizione
