@@ -55,6 +55,17 @@ class AccountCondominioTableMaster(models.Model):
         #if self.condominio_id:
         #    self.onchange_condominio_id()
 
+        # Crea un ciclo per ogni condominio
+        for condomino in self.condominio_id.partner_ids:
+            # Crea una nuova riga di dettaglio
+            record = self.env['account.condominio.table'].create({
+                'table_id': self.id,
+                'condomino_id': condomino.id,
+                'quote' : 100,
+            })
+
+        return super(account_condominio_table_master, self).create()
+
         return super(AccountCondominioTableMaster, self).create()
 
     """
