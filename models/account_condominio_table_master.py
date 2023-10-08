@@ -28,6 +28,7 @@ class AccountCondominioTableMaster(models.Model):
     table_ids = fields.One2many('account.condominio.table', 'table_id', string='Righe tabelle condominiali')
     
     condominio_id_old = fields.Integer(string='Condominio ID vecchio')
+    
     """
     @api.model
     def create(self, vals):
@@ -63,22 +64,7 @@ class AccountCondominioTableMaster(models.Model):
 
         return {}
     
-    @api.model
-    def create(self):
-        # Avvia la funzione onchange solo se il campo condominio_id è diverso da 0
-        #if self.condominio_id:
-        #    self.onchange_condominio_id()
-        """
-        # Crea un ciclo per ogni condominio
-        for condomino in self.condominio_id.partner_ids.mapped('id'):
-            # Crea una nuova riga di dettaglio
-            record = self.env['account.condominio.table'].create({
-                'table_id': self.id,
-                'condomino_id': condomino,
-                'quote' : 100,
-            })
-        """
-        return super(AccountCondominioTableMaster, self).create()
+
 
     """
     @api.onchange('state')
