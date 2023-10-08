@@ -22,9 +22,9 @@ class AccountCondominioTableMaster(models.Model):
     account_id = fields.Many2one('account.account', string='Conto di contabilità')
     condominio_id = fields.Many2one(
         comodel_name='account.condominio',
-        string='Condominio di appartenenza',
-        ondelete='set null',
+        string='Condominio di apparteneaccount_condominio_table  ondelete='set null',
     )
+    field_name_ids = fields.One2many('account.condominio.table', 'table_id', string='field_name')
     
     #table_ids = fields.One2many(comodel_name='account.condominio.table', string='Righe tabelle condominiali')
     
@@ -44,6 +44,10 @@ class AccountCondominioTableMaster(models.Model):
         return super(AccountCondominioTableMaster, self).create(vals)
     """
 
+
+    """
+        Per ora le def sulle actions dovrebbero funzionanare solo sui bottoni delle viste
+    """
     def action_table_master_view_form(self, cr, uid, ids, context=None):
         return {
             'name': 'Inserisci tabella di ripartizione',
@@ -60,11 +64,18 @@ class AccountCondominioTableMaster(models.Model):
                         <field name="code_table" required="True"/>
                         <field name="description" required="True"/>
                         <field name="account_id" required="True"/>                 
+                         <field name="details" widget="field.tree" relation="account.condominio.table" target="new">
+                            <tree string="Dettaglio tabella di ripartizione">
+                                <field name="table_id"/>
+                                <field name="unit_of_measure" label="udm"/>
+                                <field name="value_distribution" label="valore"/>
+                                <field name="quote" label="%"/>                                                                
+                            </tree>
+                        </field>
                     </group>
                   </sheet>   
                 </form>
             """,
-             'action': 'action_account_table_master_view_form',
         }
 
 
@@ -83,7 +94,6 @@ class AccountCondominioTableMaster(models.Model):
                     <field name="description"/>
                 </tree>
             """,
-            'action': 'action_account_table_master_view_form',
     }
 
     
