@@ -52,6 +52,8 @@ class GcondAccountCondomino(models.Model):
                 self.is_condominio = True
             else:
                 partner.company_type = 'company' if partner.is_company else 'person'
+                self.is_company = True
+                self.is_condominio = False
 
     def _write_company_type(self):
         for partner in self:
