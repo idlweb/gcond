@@ -15,9 +15,10 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_res_partner_filter" />
         <field name="arch" type="xml">
-            <xpath expr="." position="inside">
-                <field name="is_condominio" />
-            </xpath>
+            <xpath expr="//filter[@name='inactive']" position="before">
+                <filter string="Solo condomini" name="customer" domain="[('is_condominio','=', True)]"/>
+                <separator/>
+            </xpath>        
         </field>
     </record>
 
