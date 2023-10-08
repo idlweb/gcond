@@ -31,6 +31,24 @@ class AccountCondominioTableMaster(models.Model):
     def create(self, vals):
         return super(AccountCondominioTableMaster, self).create(vals)
 
+
+    @api.onchange('condominio_id')
+    def onchange_condominio_id(self):
+        # Ottieni tutti i condomini
+        condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id)])
+
+        # Crea un ciclo per ogni condomino
+        for condomino in condomini:
+            # Crea una nuova riga di dettaglio
+            record = self.env['account.condominio.table'].create({
+                'table_id': self.id,
+                'condominio_id': condomino.id,
+                'codice_tabella': 'Tabella %s' % self.code_table,
+                'nome': 'Tabella %s' % self.name,
+            })
+
+        return {}
+
     """
     def create(self, vals):
         # Recupera il conto di contabilità di default per la tabella di ripartizione
