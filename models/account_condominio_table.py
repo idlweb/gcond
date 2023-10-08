@@ -4,7 +4,7 @@ class AccountCondominiumTable(models.Model):
     _name = 'account.condominio.table'
 
     table_id = fields.Many2one(
-        'account.condominio.table',
+        'account.condominio.table.master',
         string='testata',
         required=False,
         inverse='',
