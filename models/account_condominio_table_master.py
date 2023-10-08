@@ -27,10 +27,11 @@ class AccountCondominioTableMaster(models.Model):
   
     table_ids = fields.One2many('account.condominio.table', 'table_id', string='Righe tabelle condominiali')
     
+    """
     @api.model
     def create(self, vals):
         return super(AccountCondominioTableMaster, self).create(vals)
-
+    """
 
     @api.onchange('condominio_id')
     def onchange_condominio_id(self):
@@ -47,6 +48,14 @@ class AccountCondominioTableMaster(models.Model):
             })
 
         return {}
+    
+    @api.model
+    def create(self):
+        # Avvia la funzione onchange solo se il campo condominio_id è diverso da 0
+        if self.condominio_id:
+            self.onchange_condominio_id()
+
+        return super(AccountCondominioTableMaster, self).create()
 
     """
     def create(self, vals):
