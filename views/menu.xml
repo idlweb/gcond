@@ -12,7 +12,7 @@
     </record>
     
 
-    <record model="ir.actions.act_window" id="account_condominio_table.action_view_form" >
+    <record model="ir.actions.act_window" id="account_condominio_table_master.action_view_form" >
         <field name="name">Tabelle di ripartizione</field>
         <field name="res_model">account.condominio.table.master</field>
         <field name="view_mode">form</field>
@@ -20,7 +20,7 @@
         <field name="target">new</field>
     </record>
 
-    <record model="ir.actions.act_window" id="account_condominio_table.action_view_tree" >
+    <record model="ir.actions.act_window" id="account_condominio_table_master.action_view_tree" >
         <field name="name">Tabelle di ripartizione</field>
         <field name="res_model">account.condominio.table.master</field>
         <field name="view_mode">tree,form</field>
@@ -46,7 +46,7 @@
             action="gcond.action_all_condomini" sequence="10" groups=""/>
 
     <menuitem name="Tabelle di ripartizione" id="account_condominio_table_view"  parent="gcond.menu_1" 
-              action="account_condominio_table.action_view_form"/>
+              action="account_condominio_table_master.action_view_form"/>
 
 </odoo>
 
