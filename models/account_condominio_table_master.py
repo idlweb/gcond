@@ -45,7 +45,7 @@ class AccountCondominioTableMaster(models.Model):
             dettagli = self.env['account.condominio.table'].search([('table_id', '=', self.id)])
 
             # Verifica se la modifica del condominio_id è stata effettuata dall'utente
-            if self.condominio_id_old != self.condominio_id and self.id != self.env.context.get('active_id'):
+            if self.condominio_id_old != self.condominio_id and self.id != self.env.context.get('active_id') and dettagli:
                 # Elimina tutte le righe di dettaglio
                 for dettaglio in dettagli:
                     dettaglio.unlink()
