@@ -28,7 +28,6 @@ class AccountCondominioTableMaster(models.Model):
     table_ids = fields.One2many('account.condominio.table', 'table_id', string='Righe tabelle condominiali')
     
     condominio_id_old = fields.Integer(string='Condominio ID vecchio')
-    
     """
     @api.model
     def create(self, vals):
@@ -43,29 +42,28 @@ class AccountCondominioTableMaster(models.Model):
         else:
             # Ottieni tutte le righe di dettaglio
             dettagli = self.env['account.condominio.table'].search([('table_id', '=', self.id)])
+            # Elimina tutte le righe di dettaglio
+            for dettaglio in dettagli:
+                dettaglio.unlink()
 
             # Verifica se la modifica del condominio_id è stata effettuata dall'utente
-            #if self.condominio_id_old != self.condominio_id and self.id != self.env.context.get('active_id') and dettagli:
-            if dettagli:   
-                # Elimina tutte le righe di dettaglio
-                for dettaglio in dettagli:
-                    dettaglio.unlink()
-
-                condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
-                # Ripopola le righe di dettaglio
-                for condomino in condomini:
-                    record = self.env['account.condominio.table'].create({
-                        'table_id': self.id,
-                        'condomino_id': condomino.id,
-                        'quote' : 100,
-                    })
+            #if self.condominio_id_old != self.condominio_id and self.id != self.env.context.get('active_id'):
+            
+            condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
+            # Ripopola le righe di dettaglio
+            for condomino in condomini:
+                record = self.env['account.condominio.table'].create({
+                    'table_id': self.id,
+                    'condomino_id': condomino.id,
+                    'quote' : 100,
+                })
 
             # Memorizza il valore corrente del condominio_id
             self.condominio_id_old = self.condominio_id
 
         return {}
     
-
+  
 
     """
     @api.onchange('state')
