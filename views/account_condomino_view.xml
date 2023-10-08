@@ -11,6 +11,15 @@
         </field>
     </record>
 
+    <record id="view_condomino_filter" model="ir.ui.view">
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter" />
+        <field name="arch" type="xml">
+            <xpath expr="." position="inside">
+                <field name="is_condominio" />
+            </xpath>
+        </field>
+    </record>
 
     <record id="view_condomino_form" model="ir.ui.view">
         <field name="name">Condomino form</field>
