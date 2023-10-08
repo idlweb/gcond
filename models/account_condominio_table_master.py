@@ -54,7 +54,7 @@ class AccountCondominioTableMaster(models.Model):
         # Avvia la funzione onchange solo se il campo condominio_id è diverso da 0
         #if self.condominio_id:
         #    self.onchange_condominio_id()
-
+        """
         # Crea un ciclo per ogni condominio
         for condomino in self.condominio_id.partner_ids.mapped('id'):
             # Crea una nuova riga di dettaglio
@@ -63,8 +63,15 @@ class AccountCondominioTableMaster(models.Model):
                 'condomino_id': condomino,
                 'quote' : 100,
             })
-
+        """
         return super(AccountCondominioTableMaster, self).create()
+
+    @api.onchange('state')
+    def onchange_state(self):
+        # Se stiamo ancora nella fase create
+        if self.state == 'draft':
+            # Abilitiamo la funzione onchange
+            self.trigger_lazy('condominio_id')
 
     """
     def create(self, vals):
