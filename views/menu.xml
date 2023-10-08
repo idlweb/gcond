@@ -12,14 +12,14 @@
     </record>
     
 
-    <record model="ir.actions.act_window" id="account_condominio_table_master.action_table_master_view_form" >
+    <record model="ir.actions.act_window" id="action_account_table_master_view_form" >
         <field name="name">Tabelle di ripartizione</field>
         <field name="res_model">account.condominio.table.master</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
 
-    <record model="ir.actions.act_window" id="account_condominio_table_master.action_table_master_view_tree" >
+    <record model="ir.actions.act_window" id="action_account_table_master_view_tree" >
         <field name="name">Tabelle di ripartizione</field>
         <field name="res_model">account.condominio.table.master</field>
         <field name="view_mode">tree,form</field>

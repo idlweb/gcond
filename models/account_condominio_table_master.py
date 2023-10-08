@@ -64,6 +64,7 @@ class AccountCondominioTableMaster(models.Model):
                   </sheet>   
                 </form>
             """,
+             'action': 'action_account_table_master_view_form',
         }
 
 
@@ -82,6 +83,7 @@ class AccountCondominioTableMaster(models.Model):
                     <field name="description"/>
                 </tree>
             """,
+            'action': 'action_account_table_master_view_form',
     }
 
     
