@@ -66,6 +66,7 @@ class AccountCondominioTableMaster(models.Model):
 
             # Memorizza gli ID delle righe di dettaglio
             id_dettagli = {dettaglio.id for dettaglio in dettagli}
+            self._logger.info('verifica esistenza dettagli:',id_dettagli)
 
             # Elimina tutte le righe di dettaglio
             for dettaglio_id in id_dettagli:
