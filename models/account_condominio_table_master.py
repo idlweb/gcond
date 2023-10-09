@@ -53,28 +53,39 @@ class AccountCondominioTableMaster(models.Model):
     """
 
 
+    
+
     @api.onchange('condominio_id')
     def onchange_condominio_id(self):
         if not self.condominio_id:
             # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
-            return {}
+            pass
         else:
-            # Memorizza il valore corrente del condominio_id
+            # Ottieni tutte le righe di dettaglio
+            dettagli = self.env['account.condominio.table'].search([('table_id', '=', self.id)])
 
-            # Elimina le righe di dettaglio esistenti
-            # ...
+            # Memorizza gli ID delle righe di dettaglio
+            id_dettagli = {dettaglio.id for dettaglio in dettagli}
 
-            # Crea nuove righe di dettaglio
+            # Elimina tutte le righe di dettaglio
+            for dettaglio_id in id_dettagli:
+                dettaglio = self.env['account.condominio.table'].browse(dettaglio_id)
+                dettaglio.unlink()
+
+            # Ripopola le righe di dettaglio
             condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
             for condomino in condomini:
-                record = self.env['account.condominio.table.line'].create({
+                record = self.env['account.condominio.table'].create({
                     'table_id': self.id,
-                    'condominio_id': condomino.id,
+                    'condomino_id': condomino.id,
                     'quote' : 100,
                 })
 
-            # Disabilita la funzione onchange
-            return {}
+            # Memorizza il valore corrente del condominio_id
+            self.condominio_id_old = self.condominio_id
+
+        return {}
+
 
 
     """
