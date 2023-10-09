@@ -57,6 +57,7 @@ class AccountCondominioTableMaster(models.Model):
                     for dettaglio in dettagli_da_eliminare:
                         self.env.cr.execute("DELETE FROM account_condominio_table_line WHERE id=%s", (dettaglio.id,))
 
+                """
                 # Ripopola le righe di dettaglio
                 condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id)])
                 for condomino in condomini:
@@ -65,7 +66,7 @@ class AccountCondominioTableMaster(models.Model):
                         'condominio_id': condomino.id,
                         'quote' : 100,
                     })
-
+                """
             return {}
     """
     @api.onchange('state')
