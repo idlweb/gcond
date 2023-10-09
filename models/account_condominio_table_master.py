@@ -72,7 +72,7 @@ class AccountCondominioTableMaster(models.Model):
                     })
 
             # Disabilita la funzione onchange
-            return {'readonly': True}
+            return {}
 
 
     """
