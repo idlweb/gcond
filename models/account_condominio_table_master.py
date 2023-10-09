@@ -75,7 +75,7 @@ class AccountCondominioTableMaster(models.Model):
             for dettaglio_id in id_dettagli:
                 dettaglio = self.env['account.condominio.table'].browse(dettaglio_id)      
                 _logger.info('================================')  
-                _logger.info(pprint.pformat(dettagli))
+                _logger.info(pprint.pformat(dettaglio.id))
                 dettaglio.unlink()
 
             _logger.info(pprint.pformat(id_dettagli))
