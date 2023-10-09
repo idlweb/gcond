@@ -51,9 +51,14 @@ class AccountCondominioTableMaster(models.Model):
             dettagli = self.env['account.condominio.table'].search([('table_id', '=', self.id)])
 
             
-            # Elimina tutte le righe di dettaglio
+            
+            # Elimina le righe di dettaglio che devono essere eliminate
             for dettaglio in dettagli:
-                dettaglio.unlink()
+                # Controlla se la riga di dettaglio deve essere eliminata
+                if dettaglio.condominio_id != self.condominio_id:
+                    # Elimina la riga di dettaglio
+                    dettaglio.unlink()
+
             """
             # Memorizza gli ID delle righe di dettaglio
             id_dettagli = {dettaglio.id for dettaglio in dettagli}
