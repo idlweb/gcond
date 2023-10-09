@@ -52,10 +52,9 @@ class AccountCondominioTableMaster(models.Model):
 
             
             
-            # Elimina le righe di dettaglio che devono essere eliminate
+            # Elimina le righe di dettaglio che **non** appartengono al nuovo condominio
             for dettaglio in dettagli:
-                # Controlla se la riga di dettaglio deve essere eliminata
-                if dettaglio.condominio_id != self.condominio_id:
+                if dettaglio.condominio_id == self.condominio_id:
                     # Elimina la riga di dettaglio
                     dettaglio.unlink()
 
