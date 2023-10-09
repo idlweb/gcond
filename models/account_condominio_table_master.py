@@ -33,11 +33,6 @@ class AccountCondominioTableMaster(models.Model):
     def create(self, vals):
         return super(AccountCondominioTableMaster, self).create(vals)
     """
-
-    @api.onchange('account_id')
-    def _onchange_account_id(self):
-        # Memorizza il valore corrente del condominio_id
-        pass
     
     
     @api.onchange('condominio_id')
