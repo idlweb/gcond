@@ -35,59 +35,33 @@ class AccountCondominioTableMaster(models.Model):
     """
 
     @api.onchange('condominio_id')
-    def onchange_condominio_id(self):
-        if not self.condominio_id:
-            # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
-            pass
-        else:
-            """
-            # Ottieni tutte le righe di dettaglio
-            dettagli = self.env['account.condominio.table'].search([('table_id', '=', self.id)])
-            # Elimina tutte le righe di dettaglio
-            for dettaglio in dettagli:
-                dettaglio.unlink()
-            """
-             # Ottieni tutte le righe di dettaglio
-            dettagli = self.env['account.condominio.table'].search([('table_id', '=', self.id)])
+def onchange_condominio_id(self):
+    if not self.condominio_id:
+        # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
+        pass
+    else:
+        # Ottieni tutte le righe di dettaglio
+        dettagli = self.env['account.condominio.table'].search([('table_id', '=', self.id)])
 
-            
-            
-            # Elimina le righe di dettaglio che **non** appartengono al nuovo condominio
+        # Memorizza il valore corrente del condominio_id
+        self.condominio_id_old = self.condominio_id
+
+        # Controlla se il condominio è cambiato
+        if self.condominio_id_old != self.condominio_id:
+            # Elimina le righe di dettaglio che **appartengono** al vecchio condominio
             for dettaglio in dettagli:
-                if dettaglio.condominio_id == self.condominio_id:
+                if dettaglio.condominio_id == self.condominio_id_old:
                     # Elimina la riga di dettaglio
                     dettaglio.unlink()
 
-            """
-            # Memorizza gli ID delle righe di dettaglio
-            id_dettagli = {dettaglio.id for dettaglio in dettagli}
-            # Elimina tutte le righe di dettaglio
-           
-            for dettaglio_id in id_dettagli:
-                dettaglio = self.env['account.condominio.table'].browse(dettaglio_id)
-                dettaglio.state = 'deleted'
-                dettaglio.write()
-            """
-            # Controlla se il condominio è cambiato
-            if self.condominio_id_old != self.condominio_id:
-                # Elimina le righe di dettaglio che **appartengono** al vecchio condominio
-                for dettaglio in dettagli:
-                    if dettaglio.condominio_id == self.condominio_id_old:
-                        # Elimina la riga di dettaglio
-                        dettaglio.unlink()
-            
-
-            condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
-            # Ripopola le righe di dettaglio
-            for condomino in condomini:
-                record = self.env['account.condominio.table'].create({
-                    'table_id': self.id,
-                    'condomino_id': condomino.id,
-                    'quote' : 100,
-                })
-
-            # Memorizza il valore corrente del condominio_id
-            self.condominio_id_old = self.condominio_id
+        # Ripopola le righe di dettaglio
+        condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id)])
+        for condomino in condomini:
+            record = self.env['account.condominio.table'].create({
+                'table_id': self.id,
+                'condomino_id': condomino.id,
+                'quote' : 100,
+            })
 
         return {}
     
