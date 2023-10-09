@@ -72,6 +72,8 @@ class AccountCondominioTableMaster(models.Model):
             # Elimina tutte le righe di dettaglio
             for dettaglio_id in id_dettagli:
                 dettaglio = self.env['account.condominio.table'].browse(dettaglio_id)
+                _logger.info("================================")
+                _logger.info(dettaglio.id)
                 dettaglio.unlink()
 
             # Ripopola le righe di dettaglio
