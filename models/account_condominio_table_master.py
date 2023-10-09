@@ -47,8 +47,14 @@ class AccountCondominioTableMaster(models.Model):
             for dettaglio in dettagli:
                 dettaglio.unlink()
             """
-            # Ottieni tutte le righe di dettaglio
+             # Ottieni tutte le righe di dettaglio
             dettagli = self.env['account.condominio.table'].search([('table_id', '=', self.id)])
+
+            
+            # Elimina tutte le righe di dettaglio
+            for dettaglio in dettagli:
+                dettaglio.unlink()
+            """
             # Memorizza gli ID delle righe di dettaglio
             id_dettagli = {dettaglio.id for dettaglio in dettagli}
             # Elimina tutte le righe di dettaglio
@@ -57,7 +63,7 @@ class AccountCondominioTableMaster(models.Model):
                 dettaglio = self.env['account.condominio.table'].browse(dettaglio_id)
                 dettaglio.state = 'deleted'
                 dettaglio.write()
-           
+            """
            
 
             condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
