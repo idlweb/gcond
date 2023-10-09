@@ -48,7 +48,6 @@ class AccountCondominioTableMaster(models.Model):
             # Controlla se il condominio è cambiato
             if self.condominio_id != self.condominio_id_old:
 
-                """
                 # Elimina le righe di dettaglio che **appartengono** al vecchio condominio
                 dettagli_da_eliminare = self.env['account.condominio.table'].search([('table_id', '=', self.id), ('condominio_id', '=', self.condominio_id_old)])
 
@@ -56,23 +55,18 @@ class AccountCondominioTableMaster(models.Model):
                 if dettagli_da_eliminare:
                     # Elimina le righe di dettaglio una per una, in ordine
                     for dettaglio in dettagli_da_eliminare:
-                        dettaglio.unlink()
-                """
-                 # Elimina le righe di dettaglio che **appartengono** al vecchio condominio
-                self.env.cr.execute("DELETE FROM account_condominio_table_line WHERE table_id=%s AND condominio_id=%s", (self.id, self.condominio_id_old))
-
+                        self.env.cr.execute("DELETE FROM account_condominio_table_line WHERE id=%s", (dettaglio.id,))
 
                 # Ripopola le righe di dettaglio
                 condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id)])
                 for condomino in condomini:
                     record = self.env['account.condominio.table'].create({
                         'table_id': self.id,
-                        'condomino_id': condomino.id,
+                        'condominio_id': condomino.id,
                         'quote' : 100,
                     })
 
             return {}
-
     """
     @api.onchange('state')
     def onchange_state(self):
