@@ -53,7 +53,7 @@ class AccountCondominioTableMaster(models.Model):
 
                 # Controlla se ci sono righe di dettaglio da eliminare
                 if dettagli_da_eliminare:
-                    # Elimina le righe di dettaglio una per una, in ordine
+                    # Elimina le righe di dettaglio una per una, in ordine inverso
                     for dettaglio in dettagli_da_eliminare:
                         self.env.cr.execute("DELETE FROM account_condominio_table_line WHERE id=%s", (dettaglio.id,))
 
