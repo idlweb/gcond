@@ -79,6 +79,8 @@ class AccountCondominioTableMaster(models.Model):
                 _logger.info(pprint.pformat(dettaglio))
                 dettaglio.unlink()
 
+            _logger.info('================================')  
+            _logger.info(pprint.pformat(dettaglio))
             # Ripopola le righe di dettaglio
             condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
             for condomino in condomini:
