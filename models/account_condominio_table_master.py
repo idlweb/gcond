@@ -67,7 +67,7 @@ class AccountCondominioTableMaster(models.Model):
                         'quote' : 100,
                     })
                 """
-            return {}
+        return {}
     """
     @api.onchange('state')
     def onchange_state(self):
