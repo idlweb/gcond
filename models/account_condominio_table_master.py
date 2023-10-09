@@ -87,7 +87,9 @@ class AccountCondominioTableMaster(models.Model):
 
         return {}
 
-
+    def __init__(self, **kwargs):
+        super(AccountCondominioTableMaster, self).__init__(**kwargs)
+        self._logger = logging.getLogger(__name__)
 
     """
         Per ora le def sulle actions dovrebbero funzionanare solo sui bottoni delle viste
