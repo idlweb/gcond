@@ -11,6 +11,7 @@ from odoo import models, fields, api
 import logging 
 _logger = logging.getLogger(__name__)
 import pdb
+import pprint
 
 
 class AccountCondominioTableMaster(models.Model):
@@ -72,9 +73,10 @@ class AccountCondominioTableMaster(models.Model):
 
             # Elimina tutte le righe di dettaglio
             for dettaglio_id in id_dettagli:
-                dettaglio = self.env['account.condominio.table'].browse(dettaglio_id)        
+                dettaglio = self.env['account.condominio.table'].browse(dettaglio_id)      
+                _logger.info('================================')  
                 _logger.info(dettaglio.id)
-                print(dettaglio.id)
+                _logger.info(pprint.pformat(dettaglio))
                 dettaglio.unlink()
 
             # Ripopola le righe di dettaglio
