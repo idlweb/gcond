@@ -68,7 +68,14 @@ class AccountCondominioTableMaster(models.Model):
                 dettaglio.state = 'deleted'
                 dettaglio.write()
             """
-           
+            # Controlla se il condominio è cambiato
+            if self.condominio_id_old != self.condominio_id:
+                # Elimina le righe di dettaglio che **appartengono** al vecchio condominio
+                for dettaglio in dettagli:
+                    if dettaglio.condominio_id == self.condominio_id_old:
+                        # Elimina la riga di dettaglio
+                        dettaglio.unlink()
+            
 
             condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
             # Ripopola le righe di dettaglio
@@ -79,6 +86,8 @@ class AccountCondominioTableMaster(models.Model):
                     'quote' : 100,
                 })
 
+            # Memorizza il valore corrente del condominio_id
+            self.condominio_id_old = self.condominio_id
 
         return {}
     
