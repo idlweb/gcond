@@ -39,7 +39,7 @@ class AccountCondominioTableMaster(models.Model):
         # Memorizza il valore corrente del condominio_id
             self.condominio_id_old = self.condominio_id        
             # Elimina le righe di dettaglio che **appartengono** al vecchio condominio
-            dettagli_da_eliminare = self.env['account.condominio.table'].search([('table_id', '=', self.id), ('condominio_id', '=', self.condominio_id_old)])
+            dettagli_da_eliminare = self.env['account.condominio.table'].search([('table_id', '=', self.id), ('condominio_id', '=', self.condominio_id_old.id)])
             # Controlla se ci sono righe di dettaglio da eliminare
             if dettagli_da_eliminare:
             # Elimina le righe di dettaglio una per una, in ordine inverso
@@ -63,7 +63,7 @@ class AccountCondominioTableMaster(models.Model):
                 # ...
 
                 # Crea nuove righe di dettaglio
-                condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id)])
+                condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
                 for condomino in condomini:
                     record = self.env['account.condominio.table.line'].create({
                         'table_id': self.id,
