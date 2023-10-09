@@ -53,7 +53,7 @@ class AccountCondominioTableMaster(models.Model):
 
                 # Controlla se ci sono righe di dettaglio da eliminare
                 if dettagli_da_eliminare:
-                    # Elimina le righe di dettaglio una per una
+                    # Elimina le righe di dettaglio una per una, in ordine
                     for dettaglio in dettagli_da_eliminare:
                         dettaglio.unlink()
 
