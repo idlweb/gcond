@@ -64,6 +64,7 @@ class AccountCondominioTableMaster(models.Model):
                     })
 
             return {}
+            
     """
     @api.onchange('state')
     def onchange_state(self):
