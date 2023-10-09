@@ -49,11 +49,10 @@ class AccountCondominioTableMaster(models.Model):
             if self.condominio_id != self.condominio_id_old:
 
                 # Elimina le righe di dettaglio che **appartengono** al vecchio condominio
-                dettagli = self.env['account.condominio.table'].search([('table_id', '=', self.id)])
-                for dettaglio in dettagli:
-                    if dettaglio.condominio_id == self.condominio_id_old:
-                        # Elimina la riga di dettaglio
-                        dettaglio.unlink()
+                dettagli_da_eliminare = self.env['account.condominio.table'].search([('table_id', '=', self.id), ('condominio_id', '=', self.condominio_id_old)])
+                for dettaglio in dettagli_da_eliminare:
+                    # Elimina la riga di dettaglio
+                    dettaglio.unlink()
 
                 # Ripopola le righe di dettaglio
                 condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id)])
@@ -64,7 +63,7 @@ class AccountCondominioTableMaster(models.Model):
                         'quote' : 100,
                     })
 
-        return {}
+            return {}
 
     """
     @api.onchange('state')
