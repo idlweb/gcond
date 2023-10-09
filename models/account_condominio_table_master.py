@@ -65,7 +65,7 @@ class AccountCondominioTableMaster(models.Model):
             # ...
 
             # Crea nuove righe di dettaglio
-            condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id)])
+            condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
             for condomino in condomini:
                 record = self.env['account.condominio.table.line'].create({
                     'table_id': self.id,
