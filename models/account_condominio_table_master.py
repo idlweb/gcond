@@ -51,7 +51,7 @@ class AccountCondominioTableMaster(models.Model):
                 # Elimina le righe di dettaglio che **appartengono** al vecchio condominio
                 dettagli_da_eliminare = self.env['account.condominio.table'].search([('table_id', '=', self.id), ('condominio_id', '=', self.condominio_id_old)])
                 for dettaglio in dettagli_da_eliminare:
-                    # Elimina la riga di dettaglio
+                    # Elimina la riga di dettaglio una per una
                     dettaglio.unlink()
 
                 # Ripopola le righe di dettaglio
@@ -64,7 +64,6 @@ class AccountCondominioTableMaster(models.Model):
                     })
 
             return {}
-
     """
     @api.onchange('state')
     def onchange_state(self):
