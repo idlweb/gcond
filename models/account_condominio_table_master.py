@@ -35,33 +35,33 @@ class AccountCondominioTableMaster(models.Model):
     """
 
     @api.onchange('condominio_id')
-def onchange_condominio_id(self):
-    if not self.condominio_id:
-        # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
-        pass
-    else:
-        # Ottieni tutte le righe di dettaglio
-        dettagli = self.env['account.condominio.table'].search([('table_id', '=', self.id)])
+    def onchange_condominio_id(self):
+        if not self.condominio_id:
+            # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
+            pass
+        else:
+            # Ottieni tutte le righe di dettaglio
+            dettagli = self.env['account.condominio.table'].search([('table_id', '=', self.id)])
 
-        # Memorizza il valore corrente del condominio_id
-        self.condominio_id_old = self.condominio_id
+            # Memorizza il valore corrente del condominio_id
+            self.condominio_id_old = self.condominio_id
 
-        # Controlla se il condominio è cambiato
-        if self.condominio_id_old != self.condominio_id:
-            # Elimina le righe di dettaglio che **appartengono** al vecchio condominio
-            for dettaglio in dettagli:
-                if dettaglio.condominio_id == self.condominio_id_old:
-                    # Elimina la riga di dettaglio
-                    dettaglio.unlink()
+            # Controlla se il condominio è cambiato
+            if self.condominio_id_old != self.condominio_id:
+                # Elimina le righe di dettaglio che **appartengono** al vecchio condominio
+                for dettaglio in dettagli:
+                    if dettaglio.condominio_id == self.condominio_id_old:
+                        # Elimina la riga di dettaglio
+                        dettaglio.unlink()
 
-        # Ripopola le righe di dettaglio
-        condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id)])
-        for condomino in condomini:
-            record = self.env['account.condominio.table'].create({
-                'table_id': self.id,
-                'condomino_id': condomino.id,
-                'quote' : 100,
-            })
+            # Ripopola le righe di dettaglio
+            condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id)])
+            for condomino in condomini:
+                record = self.env['account.condominio.table'].create({
+                    'table_id': self.id,
+                    'condomino_id': condomino.id,
+                    'quote' : 100,
+                })
 
         return {}
     
