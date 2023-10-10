@@ -91,7 +91,7 @@ class AccountCondominioTableMaster(models.Model):
                 record = self.env['account.condominio.table'].create({
                     'table_id': self.id,
                     'condomino_id': condomino.id,
-                    'quote' : 100,
+                    'quote' : 99.99,
                 })
 
             # Memorizza il valore corrente del condominio_id
