@@ -68,13 +68,13 @@ class AccountCondominioTableMaster(models.Model):
             # Memorizza gli ID delle righe di dettaglio
             id_dettagli = {dettaglio.id for dettaglio in dettagli}
             _logger.info('verifica esistenza dettagli:')
-            _logger.info('================================')
+            _logger.info('=================================')
             #_logger.debug('')
 
             # Elimina tutte le righe di dettaglio
             for dettaglio_id in id_dettagli:
                 dettaglio = self.env['account.condominio.table'].browse(dettaglio_id)      
-                _logger.info('================================')  
+                _logger.info('================================@')  
                 _logger.info(pprint.pformat(dettaglio.id))
                 dettaglio.unlink()
 
