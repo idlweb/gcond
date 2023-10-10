@@ -68,17 +68,16 @@ class AccountCondominioTableMaster(models.Model):
             # Memorizza gli ID delle righe di dettaglio
             id_dettagli = {dettaglio.id for dettaglio in dettagli}
             _logger.info('verifica esistenza dettagli:')
-            _logger.info('=================================')
+            _logger.info('=============INIZIO===================')
             #_logger.debug('')
 
             # Elimina tutte le righe di dettaglio
             for dettaglio_id in id_dettagli:
                 dettaglio = self.env['account.condominio.table'].browse(dettaglio_id)      
-                _logger.info('================================@')  
-                _logger.info(pprint.pformat(dettaglio.id))
                 dettaglio.unlink()
 
-            _logger.info(pprint.pformat(dettagli))
+            _logger.info(pprint.pformat(type(dettagli))
+            _logger.info('==============FINE=================')
             # Ripopola le righe di dettaglio
             condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
             for condomino in condomini:
