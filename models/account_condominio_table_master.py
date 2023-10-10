@@ -63,7 +63,7 @@ class AccountCondominioTableMaster(models.Model):
             pass
         else:
             # Ottieni tutte le righe di dettaglio
-            dettagli = self.env['account.condominio.table'].search([('table_id', '=', self.id)])
+            dettagli = self.env['account.condominio.table'].search([('table_id', '=', 2)])
             _logger.info('=============INIZIO===================')
             _logger.info(self.id) 
             _logger.info('^^^^^')
