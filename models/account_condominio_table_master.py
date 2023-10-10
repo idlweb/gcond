@@ -73,12 +73,13 @@ class AccountCondominioTableMaster(models.Model):
 
             # Elimina tutte le righe di dettaglio
             for dettaglio_id in id_dettagli:
-                dettaglio = self.env['account.condominio.table'].browse(dettaglio_id.id)      
+                dettaglio = self.env['account.condominio.table'].browse(dettaglio_id.id)
+                _logger.debug(dettaglio.id)
+                _logger.debug(pprint.pformat(dettaglio))      
                 dettaglio.unlink()
 
             _logger.info('verifica esistenza dettagli:')
-            for dettaglio_id in list(id_dettagli):
-                pass
+                
             _logger.info(list(id_dettagli))    
             _logger.info('==============FINE=================')
             
