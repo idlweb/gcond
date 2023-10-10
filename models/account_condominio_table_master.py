@@ -12,6 +12,7 @@ import logging
 _logger = logging.getLogger(__name__)
 import pdb
 import pprint
+import re
 
 
 class AccountCondominioTableMaster(models.Model):
@@ -53,8 +54,23 @@ class AccountCondominioTableMaster(models.Model):
         return super(AccountCondominioTableMaster, self).create(vals)
     """
 
+  
 
-    
+    def parte_numerica(stringa):
+        """
+        Prende solo la parte numerica di una stringa.
+        Args: stringa: La stringa da cui prendere la parte numerica.
+        Returns: La parte numerica della stringa.
+        """
+        # Cerca un'espressione regolare che corrisponde a una stringa di numeri.
+        match = re.match(r"\d+", stringa)
+
+        # Se l'espressione regolare viene trovata, restituisce la parte numerica della stringa.
+        if match:
+            return match.group()
+        else:
+            return None
+
 
     @api.onchange('condominio_id')
     def onchange_condominio_id(self):
@@ -63,7 +79,8 @@ class AccountCondominioTableMaster(models.Model):
             pass
         else:
             # Ottieni tutte le righe di dettaglio
-            dettagli = self.env['account.condominio.table'].search([('table_id', '=', 1)])
+            dettagli = self.env['account.condominio.table'].search([('table_id', '=', self.parte_numerica(self.id))])
+            _logger.info('verifica esistenza dettagli:')
             _logger.info('=============INIZIO===================')
             _logger.info(self.id) 
             _logger.info('^^^^^')
@@ -77,8 +94,6 @@ class AccountCondominioTableMaster(models.Model):
             for dettaglio_id in id_dettagli:
                 dettaglio = self.env['account.condominio.table'].browse(dettaglio_id)                
                 dettaglio.unlink()
-
-            _logger.info('verifica esistenza dettagli:')
                 
             _logger.info(list(id_dettagli))    
             _logger.info('==============FINE=================')
