@@ -65,7 +65,7 @@ class AccountCondominioTableMaster(models.Model):
             # Ottieni tutte le righe di dettaglio
             dettagli = self.env['account.condominio.table'].search([('table_id', '=', self.id)])
             _logger.info('=============INIZIO===================')
-            _logger.info('^^^^^') 
+            _logger.info('^^^^^',self.id) 
 
             # Memorizza gli ID delle righe di dettaglio
             id_dettagli = {dettaglio.id for dettaglio in dettagli}
