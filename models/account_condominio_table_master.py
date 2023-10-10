@@ -56,7 +56,7 @@ class AccountCondominioTableMaster(models.Model):
 
   
 
-    def parte_numerica(stringa):
+    def parte_numerica(self,stringa):
         """
         Prende solo la parte numerica di una stringa.
         Args: stringa: La stringa da cui prendere la parte numerica.
