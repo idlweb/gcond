@@ -76,7 +76,7 @@ class AccountCondominioTableMaster(models.Model):
                 dettaglio = self.env['account.condominio.table'].browse(dettaglio_id)      
                 dettaglio.unlink()
 
-            _logger.info(pprint.pformat(type(dettagli))
+            _logger.info(pprint.pformat(type(dettagli)))
             _logger.info('==============FINE=================')
             # Ripopola le righe di dettaglio
             condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
@@ -84,7 +84,7 @@ class AccountCondominioTableMaster(models.Model):
                 record = self.env['account.condominio.table'].create({
                     'table_id': self.id,
                     'condomino_id': condomino.id,
-                    'quote' : 110,
+                    'quote' : 100,
                 })
 
             # Memorizza il valore corrente del condominio_id
