@@ -78,8 +78,8 @@ class AccountCondominioTableMaster(models.Model):
 
             _logger.info('verifica esistenza dettagli:')
             for dettaglio_id in list(id_dettagli):
-                #_logger.info(pprint.pformat(type(dettagli)))
-                _logger.info(dettaglio.id)    
+                pass
+            _logger.info(list(id_dettagli))    
             _logger.info('==============FINE=================')
             
             # Ripopola le righe di dettaglio
