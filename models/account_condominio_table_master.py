@@ -102,12 +102,12 @@ class AccountCondominioTableMaster(models.Model):
             self.flush()
 
             # Ripopola le righe di dettaglio
-            condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
+            condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id)])
             for condomino in condomini:
                 record = self.env['account.condominio.table'].create({
                     'table_id': self.id,
                     'condomino_id': condomino.id,
-                    'quote' : 99.99,
+                    'quote' : 100.99,
                 })
 
             # Memorizza il valore corrente del condominio_id
