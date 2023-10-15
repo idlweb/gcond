@@ -83,7 +83,18 @@ class AccountCondominioTableMaster(models.Model):
                 # Controlla se il condominio è cambiato
                 self.condominio_id_old = self._origin.condominio_id
                 if self.condominio_id_old != self.condominio_id:
-                    
+                    # Crea una lista dei record da cancellare.
+                    record_da_cancellare = []
+
+                    for record in self:
+                        # Verifica se il record è duplicato.
+                        #=> if record.id in record.table_ids:
+                        if record.table_id.exists() and record.table_id.id in record.table_ids:
+                            record_da_cancellare.append(record.id)
+
+                    _logger.info(record_da_cancellare)
+
+                    """
                     # Ottieni tutte le righe di dettaglio
                     dettagli = self.env['account.condominio.table'].search([ ( 'table_id', '=', int(self.parte_numerica(str(self.id)) )) ])
                     _logger.info('verifica esistenza dettagli:')
@@ -91,7 +102,7 @@ class AccountCondominioTableMaster(models.Model):
                     _logger.info(self.id) 
                     _logger.info('^^^^^')
 
-                    """
+                   
                     # Memorizza gli ID delle righe di dettaglio
                     id_dettagli = {dettaglio.id for dettaglio in dettagli}
                     
@@ -110,16 +121,8 @@ class AccountCondominioTableMaster(models.Model):
                     self.flush()
                     """                
 
-                    # Crea una lista dei record da cancellare.
-                    record_da_cancellare = []
-
-                    for record in self:
-                        # Verifica se il record è duplicato.
-                        #=> if record.id in record.table_ids:
-                        if record.table_id.exists() and record.table_id.id in record.table_ids:
-                            record_da_cancellare.append(record.id)
-
-                    _logger.info(record_da_cancellare)
+                    
+                    
 
                     # Cancella i record duplicati.
                     self.env["account.condominio.table"].search([("id", "in", record_da_cancellare)]).unlink()
@@ -132,10 +135,6 @@ class AccountCondominioTableMaster(models.Model):
                             'condomino_id': condomino.id,
                             'quote' : 100.99,
                         })
-
-                    # Converti il valore del campo table_id in un oggetto NewId
-                    if self.condominio_id:
-                        self.table_id = self.condominio_id.id
 
             return {}
 
