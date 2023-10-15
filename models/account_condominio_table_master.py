@@ -79,7 +79,7 @@ class AccountCondominioTableMaster(models.Model):
             pass
         else:
             _logger.info('=============test vcondominio===================')
-            _logger.info(self._origin.condominio_id)
+            _logger.info(self._origin)
             _logger.info(self.condominio_id)
             # Controlla se il condominio è cambiato
             self.condominio_id_old = self._origin.condominio_id
@@ -119,8 +119,7 @@ class AccountCondominioTableMaster(models.Model):
                         record_da_cancellare.append(record.id)
 
                 # Cancella i record duplicati.
-                self.env["account.condominio.table"].search([("id", "in", record_da_cancellare)]).unlink()
-                self.flush()
+                self.env["account.condominio.table.line"].search([("id", "in", record_da_cancellare)]).unlink()
                                                                             
                 # Ripopola le righe di dettaglio
                 condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
