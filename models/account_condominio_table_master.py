@@ -79,7 +79,7 @@ class AccountCondominioTableMaster(models.Model):
             pass
         else:
             # Controlla se il condominio è cambiato
-            self.condominio_id_old = self.get_old_value("condominio_id")
+            self.condominio_id_old = self._origin.condominio_id
             if self.condominio_id_old != self.condominio_id:
                  
                
