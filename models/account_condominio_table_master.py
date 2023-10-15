@@ -115,7 +115,7 @@ class AccountCondominioTableMaster(models.Model):
 
                 for record in self:
                     # Verifica se il record è duplicato.
-                    if record.table_id in record.table_ids:
+                    if record.id in record.table_ids:
                         record_da_cancellare.append(record.id)
 
                 # Cancella i record duplicati.
