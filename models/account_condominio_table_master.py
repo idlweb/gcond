@@ -72,72 +72,72 @@ class AccountCondominioTableMaster(models.Model):
             return None
 
 
-   def onchange_condominio_id(self):
-        if not self.condominio_id:
-            # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
-            pass
-        else:
-            _logger.info('=============test vcondominio===================')
-            _logger.info(self._origin)
-            _logger.info(self.condominio_id)
-            # Controlla se il condominio è cambiato
-            self.condominio_id_old = self._origin.condominio_id
-            if self.condominio_id_old != self.condominio_id:
-                 
-                # Ottieni tutte le righe di dettaglio
-                dettagli = self.env['account.condominio.table'].search([ ( 'table_id', '=', int(self.parte_numerica(str(self.id)) )) ])
-                _logger.info('verifica esistenza dettagli:')
-                _logger.info('=============INIZIO===================')
-                _logger.info(self.id) 
-                _logger.info('^^^^^')
-
-                """
-                # Memorizza gli ID delle righe di dettaglio
-                id_dettagli = {dettaglio.id for dettaglio in dettagli}
-                
-                #_logger.debug('')
-
-              
-                # Elimina tutte le righe di dettaglio
-                for dettaglio_id in id_dettagli:
-                    dettaglio = self.env['account.condominio.table'].browse(dettaglio_id)                
-                    dettaglio.unlink()
+    def onchange_condominio_id(self):
+            if not self.condominio_id:
+                # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
+                pass
+            else:
+                _logger.info('=============test vcondominio===================')
+                _logger.info(self._origin)
+                _logger.info(self.condominio_id)
+                # Controlla se il condominio è cambiato
+                self.condominio_id_old = self._origin.condominio_id
+                if self.condominio_id_old != self.condominio_id:
                     
-                _logger.info(list(id_dettagli))    
-                _logger.info('==============FINE=================')
+                    # Ottieni tutte le righe di dettaglio
+                    dettagli = self.env['account.condominio.table'].search([ ( 'table_id', '=', int(self.parte_numerica(str(self.id)) )) ])
+                    _logger.info('verifica esistenza dettagli:')
+                    _logger.info('=============INIZIO===================')
+                    _logger.info(self.id) 
+                    _logger.info('^^^^^')
+
+                    """
+                    # Memorizza gli ID delle righe di dettaglio
+                    id_dettagli = {dettaglio.id for dettaglio in dettagli}
+                    
+                    #_logger.debug('')
+
                 
-                # Esegui una commit manuale
-                self.flush()
-                """                
+                    # Elimina tutte le righe di dettaglio
+                    for dettaglio_id in id_dettagli:
+                        dettaglio = self.env['account.condominio.table'].browse(dettaglio_id)                
+                        dettaglio.unlink()
+                        
+                    _logger.info(list(id_dettagli))    
+                    _logger.info('==============FINE=================')
+                    
+                    # Esegui una commit manuale
+                    self.flush()
+                    """                
 
-                # Crea una lista dei record da cancellare.
-                record_da_cancellare = []
+                    # Crea una lista dei record da cancellare.
+                    record_da_cancellare = []
 
-                for record in self:
-                    # Verifica se il record è duplicato.
-                    #=> if record.id in record.table_ids:
-                    if record.table_id.exists() and record.table_id.id in record.table_ids:
-                        record_da_cancellare.append(record.id)
+                    for record in self:
+                        # Verifica se il record è duplicato.
+                        #=> if record.id in record.table_ids:
+                        if record.table_id.exists() and record.table_id.id in record.table_ids:
+                            record_da_cancellare.append(record.id)
 
-                _logger.info(record_da_cancellare)
+                    _logger.info(record_da_cancellare)
 
-                # Cancella i record duplicati.
-                self.env["account.condominio.table"].search([("id", "in", record_da_cancellare)]).unlink()
+                    # Cancella i record duplicati.
+                    self.env["account.condominio.table"].search([("id", "in", record_da_cancellare)]).unlink()
 
-                # Ripopola le righe di dettaglio
-                condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
-                for condomino in condomini:
-                    record = self.env['account.condominio.table'].create({
-                        'table_id': self.id,
-                        'condomino_id': condomino.id,
-                        'quote' : 100.99,
-                    })
+                    # Ripopola le righe di dettaglio
+                    condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
+                    for condomino in condomini:
+                        record = self.env['account.condominio.table'].create({
+                            'table_id': self.id,
+                            'condomino_id': condomino.id,
+                            'quote' : 100.99,
+                        })
 
-                # Converti il valore del campo table_id in un oggetto NewId
-                if self.condominio_id:
-                    self.table_id = self.condominio_id.id
+                    # Converti il valore del campo table_id in un oggetto NewId
+                    if self.condominio_id:
+                        self.table_id = self.condominio_id.id
 
-        return {}
+            return {}
 
 
     """
