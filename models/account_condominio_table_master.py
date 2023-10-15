@@ -78,6 +78,9 @@ class AccountCondominioTableMaster(models.Model):
             # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
             pass
         else:
+            _logger.info('=============test vcondominio===================')
+            _logger.info(self._origin.condominio_id)
+            _logger.info(self.condominio_id)
             # Controlla se il condominio è cambiato
             self.condominio_id_old = self._origin.condominio_id
             if self.condominio_id_old != self.condominio_id:
