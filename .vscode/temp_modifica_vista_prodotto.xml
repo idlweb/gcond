@@ -1,0 +1,548 @@
+<form string="Prodotto" name="Product Template">
+                <header>
+                    <button string="Stampare etichette" type="object" name="action_open_label_layout" modifiers="{&quot;invisible&quot;: [[&quot;detailed_type&quot;, &quot;==&quot;, &quot;service&quot;]]}"/>
+          <field name="is_temporal" modifiers="{&quot;invisible&quot;: true, &quot;readonly&quot;: true}"/>
+                        <button string="Aggiorna quantità" type="object" name="action_update_quantity_on_hand" modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;!=&quot;, &quot;product&quot;]]}"/>
+                        <button string="Rifornisci" type="action" name="446" context="{'default_product_tmpl_id': id}" modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;not in&quot;, [&quot;consu&quot;, &quot;product&quot;]]]}"/>
+                </header>
+                <sheet name="product_form">
+                    <field name="product_variant_count" modifiers="{&quot;invisible&quot;: true, &quot;readonly&quot;: true}"/>
+                    <field name="is_kits" modifiers="{&quot;invisible&quot;: true, &quot;readonly&quot;: true}"/>
+                <field name="service_type" widget="radio" on_change="1" modifiers="{&quot;invisible&quot;: true}"/>
+                <field name="visible_expense_policy" modifiers="{&quot;invisible&quot;: true, &quot;readonly&quot;: true}"/>
+                    <field name="is_product_variant" modifiers="{&quot;invisible&quot;: true, &quot;readonly&quot;: true}"/>
+                    <field name="attribute_line_ids" modifiers="{&quot;invisible&quot;: true}"/>
+                    <field name="type" on_change="1" modifiers="{&quot;invisible&quot;: true}"/>
+                    <field name="company_id" on_change="1" modifiers="{&quot;invisible&quot;: true}" can_create="true" can_write="true"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="open_pricelist_rules" icon="fa-list-ul" type="object">
+                               <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="pricelist_item_count" modifiers="{&quot;readonly&quot;: true}"/>
+                                    </span>
+                                    <span modifiers="{&quot;invisible&quot;: [[&quot;pricelist_item_count&quot;, &quot;=&quot;, 1]]}">
+                                        Prezzi aggiuntivi
+                                    </span>
+                                    <span modifiers="{&quot;invisible&quot;: [[&quot;pricelist_item_count&quot;, &quot;!=&quot;, 1]]}">
+                                        Prezzo aggiuntivo
+                                    </span>
+                               </div>
+                        </button>
+                <field name="is_published" widget="website_redirect_button" modifiers="{&quot;invisible&quot;: [[&quot;sale_ok&quot;, &quot;=&quot;, false], [&quot;rent_ok&quot;, &quot;=&quot;, false]]}"/>
+                <button name="156" type="action" icon="fa-sitemap" class="oe_stat_button" modifiers="{&quot;invisible&quot;: [[&quot;product_variant_count&quot;, &quot;&lt;=&quot;, 1]]}">
+                    <field string="Varianti" name="product_variant_count" widget="statinfo" modifiers="{&quot;readonly&quot;: true}"/>
+                </button>
+                        <field name="tracking" on_change="1" modifiers="{&quot;invisible&quot;: true, &quot;required&quot;: true}"/>
+                            <field name="show_on_hand_qty_status_button" modifiers="{&quot;invisible&quot;: true, &quot;readonly&quot;: true}"/>
+                            <field name="show_forecasted_qty_status_button" modifiers="{&quot;invisible&quot;: true, &quot;readonly&quot;: true}"/>
+                            <button type="object" name="action_open_quants" class="oe_stat_button" icon="fa-cubes" modifiers="{&quot;invisible&quot;: [[&quot;show_on_hand_qty_status_button&quot;, &quot;=&quot;, false]]}">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value" widget="statinfo">
+                                        <field name="qty_available" widget="statinfo" nolabel="1" class="mr4" modifiers="{&quot;readonly&quot;: true}"/>
+                                        <field name="uom_name" on_change="1" modifiers="{&quot;readonly&quot;: true}"/>
+                                    </span>
+                                    <span class="o_stat_text">A disposizione</span>
+                                </div>
+                            </button>
+                            <button type="object" name="action_product_tmpl_forecast_report" context="{'default_product_tmpl_id': id}" class="oe_stat_button" icon="fa-cubes" modifiers="{&quot;invisible&quot;: [[&quot;show_forecasted_qty_status_button&quot;, &quot;=&quot;, false]]}">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="virtual_available" widget="statinfo" nolabel="1" class="mr4" modifiers="{&quot;readonly&quot;: true}"/>
+                                        <field name="uom_name" on_change="1" modifiers="{&quot;readonly&quot;: true}"/>
+                                    </span>
+                                    <span class="o_stat_text">Previste</span>
+                                </div>
+                            </button>
+                            <button type="object" name="action_view_stock_move_lines" class="oe_stat_button" icon="fa-exchange" modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;not in&quot;, [&quot;product&quot;, &quot;consu&quot;]]]}">
+                                <div class="o_field_widget o_stat_info mr4">
+                                    <span class="o_stat_text">Dentro:</span>
+                                    <span class="o_stat_text">Fuori:</span>
+                                </div>
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value"><field name="nbr_moves_in" modifiers="{&quot;readonly&quot;: true}"/></span>
+                                    <span class="o_stat_value"><field name="nbr_moves_out" modifiers="{&quot;readonly&quot;: true}"/></span>
+                                </div>
+                            </button>
+                            <button type="object" name="action_view_orderpoints" class="oe_stat_button" icon="fa-refresh" modifiers="{&quot;invisible&quot;: [&quot;|&quot;, [&quot;type&quot;, &quot;!=&quot;, &quot;product&quot;], [&quot;nbr_reordering_rules&quot;, &quot;!=&quot;, 1]]}">
+                                <div class="o_field_widget o_stat_info mr4">
+                                    <span class="o_stat_text">Min:</span>
+                                    <span class="o_stat_text">Max:</span>
+                                </div>
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value"><field name="reordering_min_qty" modifiers="{&quot;readonly&quot;: true}"/></span>
+                                    <span class="o_stat_value"><field name="reordering_max_qty" modifiers="{&quot;readonly&quot;: true}"/></span>
+                                </div>
+                            </button>
+                            <button type="object" name="action_view_orderpoints" class="oe_stat_button" icon="fa-refresh" modifiers="{&quot;invisible&quot;: [&quot;|&quot;, [&quot;type&quot;, &quot;!=&quot;, &quot;product&quot;], [&quot;nbr_reordering_rules&quot;, &quot;==&quot;, 1]]}">
+                                <field name="nbr_reordering_rules" widget="statinfo" modifiers="{&quot;readonly&quot;: true}"/>
+                            </button>
+                            <button string="Numeri di lotto/serie" type="object" name="action_open_product_lot" class="oe_stat_button" icon="fa-bars" modifiers="{&quot;invisible&quot;: [[&quot;tracking&quot;, &quot;=&quot;, &quot;none&quot;]]}"/>
+                    <button class="oe_stat_button" name="839" type="action" icon="fa-flask" modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;not in&quot;, [&quot;product&quot;, &quot;consu&quot;]]]}">
+                        <field string="Distinta base" name="bom_count" widget="statinfo" modifiers="{&quot;readonly&quot;: true}"/>
+                    </button>
+                    <button class="oe_stat_button" name="action_used_in_bom" type="object" icon="fa-level-up" modifiers="{&quot;invisible&quot;: [&quot;|&quot;, [&quot;type&quot;, &quot;not in&quot;, [&quot;product&quot;, &quot;consu&quot;]], [&quot;used_in_bom_count&quot;, &quot;=&quot;, 0]]}">
+                        <field string="Usato in" name="used_in_bom_count" widget="statinfo" modifiers="{&quot;readonly&quot;: true}"/>
+                    </button>
+                <button class="oe_stat_button" name="908" type="action" icon="fa-wrench" modifiers="{&quot;invisible&quot;: [[&quot;detailed_type&quot;, &quot;==&quot;, &quot;service&quot;]]}">
+                    <field string="OMT" name="eco_count" widget="statinfo" modifiers="{&quot;readonly&quot;: true}"/>
+                </button>
+                    <button class="oe_stat_button" name="action_view_mos" type="object" icon="fa-list-alt" help="Prodotti negli ultimi 365 giorni" modifiers="{&quot;invisible&quot;: [&quot;|&quot;, &quot;|&quot;, [&quot;type&quot;, &quot;not in&quot;, [&quot;product&quot;, &quot;consu&quot;]], [&quot;bom_count&quot;, &quot;=&quot;, 0], [&quot;mrp_product_qty&quot;, &quot;=&quot;, 0]]}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="mrp_product_qty" widget="statinfo" nolabel="1" class="mr4" modifiers="{&quot;readonly&quot;: true}"/>
+                                <field name="uom_name" on_change="1" modifiers="{&quot;readonly&quot;: true}"/>
+                            </span>
+                            <span class="o_stat_text">Prodotto</span>
+                        </div>
+                    </button>
+                    <field name="mrp_product_qty" modifiers="{&quot;invisible&quot;: true, &quot;readonly&quot;: true}"/>
+                    <button name="action_cost_structure" type="object" class="oe_stat_button" icon="fa-dollar" string="Analisi costi" modifiers="{&quot;invisible&quot;: [[&quot;mrp_product_qty&quot;, &quot;=&quot;, 0]]}">
+                    </button>
+                            <button string="Regole di stoccaggio" type="object" name="action_view_related_putaway_rules" class="oe_stat_button" icon="fa-random" context="{                                     'invisible_handle': True,                                     'single_product': product_variant_count == 1,                                 }" modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;=&quot;, &quot;service&quot;]]}"/>
+                <button name="action_see_quality_control_points" type="object" class="oe_stat_button" icon="fa-list" modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;not in&quot;, [&quot;product&quot;, &quot;consu&quot;]]]}">
+                    <field string="Punti qualità" name="quality_control_point_qty" widget="statinfo" modifiers="{&quot;readonly&quot;: true}"/>
+                </button>
+                <button name="action_see_quality_checks" type="object" class="oe_stat_button" icon="fa-check" modifiers="{&quot;invisible&quot;: [&quot;|&quot;, [&quot;type&quot;, &quot;not in&quot;, [&quot;product&quot;, &quot;consu&quot;]], [&quot;quality_pass_qty&quot;, &quot;=&quot;, 0], [&quot;quality_fail_qty&quot;, &quot;=&quot;, 0]]}">
+                    <div class="o_field_widget o_stat_info mr4">
+                        <span class="o_stat_text">Superato:</span>
+                        <span class="o_stat_text">Fallito:</span>
+                    </div>
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value"><field name="quality_pass_qty" modifiers="{&quot;readonly&quot;: true}"/></span>
+                        <span class="o_stat_value"><field name="quality_fail_qty" modifiers="{&quot;readonly&quot;: true}"/></span>
+                    </div>
+                </button>
+                            <button type="object" string=" Capacità di stoccaggio" name="action_view_storage_category_capacity" class="oe_stat_button" icon="fa-cubes" modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;=&quot;, &quot;service&quot;]]}"/>
+                        
+                <button class="oe_stat_button" name="action_view_sales" type="object" icon="fa-signal" help="Venduto negli ultimi 365 giorni" modifiers="{&quot;invisible&quot;: [[&quot;sale_ok&quot;, &quot;=&quot;, false]]}">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="sales_count" widget="statinfo" nolabel="1" class="mr4" modifiers="{&quot;readonly&quot;: true}"/>
+                            <field name="uom_name" on_change="1" modifiers="{&quot;readonly&quot;: true}"/>
+                        </span>
+                        <span class="o_stat_text">Vendute</span>
+                    </div>
+                </button>
+                <field name="rent_ok" on_change="1" modifiers="{&quot;invisible&quot;: true}"/>
+                <button class="oe_stat_button" name="action_view_rentals" type="object" icon="fa-calendar" modifiers="{&quot;invisible&quot;: [[&quot;rent_ok&quot;, &quot;=&quot;, false]]}">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="qty_in_rent" widget="statinfo" nolabel="1" class="mr4" modifiers="{&quot;readonly&quot;: true}"/>
+                            <field name="uom_name" on_change="1" modifiers="{&quot;readonly&quot;: true}"/>
+                        </span>
+                        <span class="o_stat_text">in noleggio</span>
+                    </div>
+                </button>
+                    <button class="oe_stat_button" name="action_view_po" type="object" icon="fa-credit-card" help="Acquistato negli ultimi 365 giorni" modifiers="{&quot;invisible&quot;: [[&quot;purchase_ok&quot;, &quot;=&quot;, false]]}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="purchased_product_qty" widget="statinfo" nolabel="1" class="mr4" modifiers="{&quot;readonly&quot;: true}"/>
+                                <field name="uom_name" on_change="1" modifiers="{&quot;readonly&quot;: true}"/>
+                            </span>
+                            <span class="o_stat_text">Acquistate</span>
+                        </div>
+                    </button>
+                <button class="oe_stat_button" name="action_open_mps_view" type="object" icon="fa-area-chart" modifiers="{&quot;invisible&quot;: [[&quot;schedule_count&quot;, &quot;=&quot;, 0]]}">
+                   <field string="Programmazioni" name="schedule_count" widget="statinfo" modifiers="{&quot;readonly&quot;: true}"/>
+               </button>
+                    </div>
+                    <widget name="web_ribbon" title="In archivio" bg_color="bg-danger" modifiers="{&quot;invisible&quot;: [[&quot;active&quot;, &quot;=&quot;, true]]}"/>
+                    <field name="id" modifiers="{&quot;invisible&quot;: true, &quot;readonly&quot;: true}"/>
+                    <field name="image_1920" widget="image" class="oe_avatar" options="{'preview_image': 'image_128'}"/>
+                    <div class="oe_title">
+                        <label for="name" string="Nome prodotto"/>
+                        <h1>
+                            <div class="d-flex">
+                                <field name="priority" widget="priority" class="me-3"/>
+                                <field class="text-break" name="name" placeholder="es. Cheese Burger" on_change="1" modifiers="{&quot;required&quot;: true}"/>
+                            </div>
+                        </h1>
+                    </div>
+                    <div name="options">
+                        <span class="d-inline-block">
+                            <field name="sale_ok" on_change="1"/>
+                            <label for="sale_ok"/>
+                        </span>
+                        <span class="d-inline-block">
+                            <field name="purchase_ok"/>
+                            <label for="purchase_ok"/>
+                        </span>
+                    <span class="d-inline-block">
+                        <field name="can_be_expensed" on_change="1"/>
+                        <label for="can_be_expensed"/>
+                    </span>
+                <span class="d-inline-block">
+                    <field name="rent_ok" on_change="1"/>
+                    <label for="rent_ok"/>
+                </span>
+                    </div>
+                    <notebook>
+                        <page string="Informazioni generali" name="general_information">
+                            <group>
+                                <group name="group_general">
+                                    <field name="active" modifiers="{&quot;invisible&quot;: true}"/>
+                                    <field name="detailed_type" on_change="1" modifiers="{&quot;required&quot;: true}"/>
+                <field name="invoice_policy" on_change="1" modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;=&quot;, &quot;service&quot;]], &quot;required&quot;: true}"/>
+                <field name="service_policy" string="Politica di fatturazione" on_change="1" modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;!=&quot;, &quot;service&quot;]], &quot;required&quot;: [[&quot;type&quot;, &quot;=&quot;, &quot;service&quot;]]}"/>
+                <field name="service_tracking" on_change="1" modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;!=&quot;, &quot;service&quot;]], &quot;required&quot;: true}"/>
+                <field name="project_id" context="{'default_allow_billable': True}" modifiers="{&quot;invisible&quot;: [[&quot;service_tracking&quot;, &quot;!=&quot;, &quot;task_global_project&quot;]], &quot;required&quot;: [[&quot;service_tracking&quot;, &quot;==&quot;, &quot;task_global_project&quot;]]}" can_create="true" can_write="true"/>
+                <field name="project_template_id" context="{'active_test': False, 'default_allow_billable': True}" modifiers="{&quot;invisible&quot;: [[&quot;service_tracking&quot;, &quot;not in&quot;, [&quot;task_in_project&quot;, &quot;project_only&quot;]]]}" can_create="true" can_write="true"/>
+                <field name="expense_policy" widget="radio" on_change="1" modifiers="{&quot;invisible&quot;: [[&quot;visible_expense_policy&quot;, &quot;=&quot;, false]]}"/>
+                <field name="documents_allowed_company_id" modifiers="{&quot;invisible&quot;: true, &quot;readonly&quot;: true}"/>
+                <field name="template_folder_id" context="{'documents_project': True, 'default_company_id': company_id}" modifiers="{&quot;invisible&quot;: [[&quot;service_tracking&quot;, &quot;not in&quot;, [&quot;task_in_project&quot;, &quot;project_only&quot;]]]}" can_create="true" can_write="true"/>
+                                    <field name="product_tooltip" string="" class="fst-italic text-muted" modifiers="{&quot;readonly&quot;: true}"/>
+                <label for="product_tooltip" string="" modifiers="{&quot;invisible&quot;: [&quot;|&quot;, [&quot;type&quot;, &quot;!=&quot;, &quot;service&quot;], [&quot;service_policy&quot;, &quot;!=&quot;, &quot;ordered_prepaid&quot;]]}"/>
+                <div class="fst-italic text-muted" modifiers="{&quot;invisible&quot;: [&quot;|&quot;, [&quot;type&quot;, &quot;!=&quot;, &quot;service&quot;], [&quot;service_policy&quot;, &quot;!=&quot;, &quot;ordered_prepaid&quot;]]}">
+                    Avvertire il venditore per un upsell quando il lavoro fatto supera
+                    <field name="service_upsell_threshold" widget="percentage" class="oe_inline"/>
+                    delle ore vendute. <field name="service_upsell_threshold_ratio" class="oe_inline" modifiers="{&quot;invisible&quot;: [[&quot;service_upsell_threshold_ratio&quot;, &quot;=&quot;, false]], &quot;readonly&quot;: true}"/>
+                </div>
+                <label for="planning_enabled" modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;!=&quot;, &quot;service&quot;]]}"/>
+                <div modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;!=&quot;, &quot;service&quot;]]}">
+                    <field name="planning_enabled" class="oe_inline"/>
+                    <span class="oe_inline me-2" modifiers="{&quot;invisible&quot;: [[&quot;planning_enabled&quot;, &quot;=&quot;, false]]}">
+                        as
+                    </span>
+                    <field name="planning_role_id" class="oe_inline" nolabel="1" placeholder="ad es. Consulente" modifiers="{&quot;invisible&quot;: [[&quot;planning_enabled&quot;, &quot;=&quot;, false]], &quot;required&quot;: [[&quot;planning_enabled&quot;, &quot;=&quot;, true]]}" can_create="true" can_write="true"/>
+                </div>
+                <label for="product_tooltip" string="" modifiers="{&quot;invisible&quot;: [&quot;|&quot;, [&quot;type&quot;, &quot;not in&quot;, [&quot;product&quot;, &quot;consu&quot;]], [&quot;invoice_policy&quot;, &quot;!=&quot;, &quot;order&quot;]]}"/>
+                <div class="fst-italic text-muted" modifiers="{&quot;invisible&quot;: [&quot;|&quot;, [&quot;type&quot;, &quot;not in&quot;, [&quot;product&quot;, &quot;consu&quot;]], [&quot;invoice_policy&quot;, &quot;!=&quot;, &quot;order&quot;]]}">
+                    Puoi fatturarli prima che siano consegnati.
+                </div>
+                <label for="product_tooltip" string="" modifiers="{&quot;invisible&quot;: [&quot;|&quot;, [&quot;type&quot;, &quot;not in&quot;, [&quot;product&quot;, &quot;consu&quot;]], [&quot;invoice_policy&quot;, &quot;!=&quot;, &quot;delivery&quot;]]}"/>
+                <div class="fst-italic text-muted" modifiers="{&quot;invisible&quot;: [&quot;|&quot;, [&quot;type&quot;, &quot;not in&quot;, [&quot;product&quot;, &quot;consu&quot;]], [&quot;invoice_policy&quot;, &quot;!=&quot;, &quot;delivery&quot;]]}">
+                    Fattura dopo la consegna, basata sulle quantità consegnate, non ordinate.
+                </div>
+                                    <field name="uom_id" options="{'no_create': True}" on_change="1" modifiers="{&quot;required&quot;: true}" can_create="true" can_write="true"/>
+                <label for="base_unit_count"/>
+                <div name="base_unit_price" class="d-flex flex-row">
+                    <field name="base_unit_count" style="width: 4rem;" on_change="1" modifiers="{&quot;invisible&quot;: [[&quot;product_variant_count&quot;, &quot;&gt;&quot;, 1]], &quot;required&quot;: true}"/>
+                    <field name="base_unit_id" options="{'no_open': True}" placeholder="Specifica unità" style="width: 10rem;" on_change="1" modifiers="{&quot;invisible&quot;: [[&quot;product_variant_count&quot;, &quot;&gt;&quot;, 1]]}" can_create="true" can_write="true"/>
+                    <div class="d-flex flex-row" modifiers="{&quot;invisible&quot;: [&quot;|&quot;, [&quot;base_unit_price&quot;, &quot;=&quot;, 0], [&quot;product_variant_count&quot;, &quot;&gt;&quot;, 1]]}">
+                        (<field name="base_unit_price" class="oe_inline" modifiers="{&quot;readonly&quot;: true}"/> / <field name="base_unit_name" class="oe_inline" modifiers="{&quot;readonly&quot;: true}"/>)
+                    </div>
+                    <span class="text-muted" modifiers="{&quot;invisible&quot;: [[&quot;product_variant_count&quot;, &quot;&lt;=&quot;, 1]]}">In base alle varianti</span>
+                </div>
+                                    <field name="uom_po_id" options="{'no_create': True}" on_change="1" modifiers="{&quot;required&quot;: true}" can_create="true" can_write="true"/>
+                                </group>
+                                <group name="group_standard_price">
+                                    <label for="list_price"/>
+                                    <div name="pricing">
+                                      <field name="list_price" class="oe_inline" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" on_change="1"/>
+                    <span class="ms-2"/><field name="tax_string" modifiers="{&quot;readonly&quot;: true}"/>
+                                    </div>
+                <label for="compare_list_price"/>
+                <div class="o_row">
+                    <del class="oe_read_only">
+                        <field name="compare_list_price" nolabel="1" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                    </del>
+                    <field name="compare_list_price" nolabel="1" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" class="oe_edit_only"/>
+                </div>
+                    <field name="taxes_id" widget="many2many_tags" context="{'default_type_tax_use':'sale', 'search_default_sale': 1, 'search_default_service': type == 'service', 'search_default_goods': type == 'consu'}" on_change="1" can_create="true" can_write="true"/>
+                                    <label for="standard_price" modifiers="{&quot;invisible&quot;: [[&quot;product_variant_count&quot;, &quot;&gt;&quot;, 1], [&quot;is_product_variant&quot;, &quot;=&quot;, false]]}"/>
+                                    <div name="standard_price_uom" modifiers="{&quot;invisible&quot;: [[&quot;product_variant_count&quot;, &quot;&gt;&quot;, 1], [&quot;is_product_variant&quot;, &quot;=&quot;, false]]}">
+                                        <field name="standard_price" class="oe_inline" widget="monetary" options="{'currency_field': 'cost_currency_id', 'field_digits': True}"/>
+                                        <span>per
+                                            <field name="uom_name" class="oe_inline" on_change="1" modifiers="{&quot;readonly&quot;: true}"/>
+                                        </span>
+                    <field name="bom_count" modifiers="{&quot;invisible&quot;: true, &quot;readonly&quot;: true}"/>
+                        <field name="cost_method" modifiers="{&quot;invisible&quot;: true, &quot;readonly&quot;: true}"/>
+                        <field name="valuation" modifiers="{&quot;invisible&quot;: true, &quot;readonly&quot;: true}"/>
+                        <button name="button_bom_cost" string="Calcola prezzo dalla distinta base" type="object" help="Calcolare il prezzo del prodotto usando i prodotti e le operazioni della relativa distinta base, solo se i prodotti sono fabbricati. " class="oe_link pt-0" modifiers="{&quot;invisible&quot;: [&quot;|&quot;, [&quot;bom_count&quot;, &quot;=&quot;, 0], &quot;&amp;&quot;, [&quot;valuation&quot;, &quot;=&quot;, &quot;real_time&quot;], [&quot;cost_method&quot;, &quot;=&quot;, &quot;fifo&quot;]]}"/>
+                        
+                                    </div>
+                                    <field name="categ_id" string="Categoria prodotto" on_change="1" modifiers="{&quot;required&quot;: true}" can_create="true" can_write="true"/>
+                <label for="default_code" modifiers="{&quot;invisible&quot;: [[&quot;product_variant_count&quot;, &quot;&gt;&quot;, 1]]}"/>
+                    <div class="o_row" modifiers="{&quot;invisible&quot;: [[&quot;product_variant_count&quot;, &quot;&gt;&quot;, 1]]}">
+                        <field name="default_code" nolabel="1" class="oe_inline" style="width: 55% !important;" on_change="1"/>
+                        <span style="width: 5% !important; display: inline-block;"/>
+                        <label for="version" class="oe_inline fw-bold" style="width: 20% !important; margin: 0;"/>
+                        <field name="version" nolabel="1" class="oe_inline" style="width: 20% !important;" modifiers="{&quot;readonly&quot;: true}"/>
+                    </div>
+            <field name="barcode" modifiers="{&quot;invisible&quot;: [[&quot;product_variant_count&quot;, &quot;&gt;&quot;, 1]]}"/>
+                                    <field name="product_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" can_create="true" can_write="true"/>
+                                    <field name="company_id" options="{'no_create': True}" on_change="1" can_create="true" can_write="true"/>
+                                    <field name="currency_id" modifiers="{&quot;invisible&quot;: true, &quot;readonly&quot;: true}"/>
+                                    <field name="cost_currency_id" modifiers="{&quot;invisible&quot;: true, &quot;readonly&quot;: true}"/>
+                                    <field name="product_variant_id" modifiers="{&quot;invisible&quot;: true, &quot;readonly&quot;: true}"/>
+                                </group>
+                            </group>
+                            <group string="Note interne">
+                                <field colspan="2" name="description" nolabel="1" placeholder="Questa nota è solo per uso interno."/>
+                            </group>
+                        </page>
+                <page name="variants" string="Attributi &amp; varianti">
+                    <field name="attribute_line_ids" widget="one2many" context="{'show_attribute': False}">
+                        <tree string="Varianti" editable="bottom" decoration-info="value_count &lt;= 1">
+                            <field name="value_count" modifiers="{&quot;readonly&quot;: true, &quot;column_invisible&quot;: true}"/>
+                            <field name="attribute_id" on_change="1" modifiers="{&quot;readonly&quot;: [[&quot;id&quot;, &quot;!=&quot;, false]], &quot;required&quot;: true}" can_create="true" can_write="true"/>
+                            <field name="value_ids" widget="many2many_tags" options="{'no_create_edit': True, 'color_field': 'color'}" context="{'default_attribute_id': attribute_id, 'show_attribute': False}" on_change="1" can_create="true" can_write="true"/>
+                            <button string="Configura" class="float-end btn-secondary" type="object" name="action_open_attribute_values"/>
+                        </tree>
+                    </field>
+                        <p class="oe_grey oe_edit_only">
+                        <strong>Avvertenza</strong>: l'aggiunta o la cancellazione di attributi
+determinerà la perdita delle varianti e dei lead già esistenti e
+delle loro eventuali personalizzazioni.
+                    </p>
+                </page>
+                        <page string="Vendite" name="sales" modifiers="{&quot;invisible&quot;: [[&quot;sale_ok&quot;, &quot;=&quot;, false], [&quot;rent_ok&quot;, &quot;=&quot;, false]]}">
+                            <group name="sale">
+                                <group string="Upsell &amp; Cross-Sell" name="upsell">
+                <field name="optional_product_ids" widget="many2many_tags" options="{'color_field': 'color'}" domain="[('id', '!=', active_id), '|', ('company_id', '=', company_id), ('company_id', '=', False)]" placeholder="Raccomanda quando si aggiunge al carrello o si fa un'offerta" can_create="true" can_write="true"/>
+                <field name="accessory_product_ids" widget="many2many_tags" placeholder="Accessori suggeriti nel carrello eCommerce" modifiers="{&quot;invisible&quot;: [[&quot;sale_ok&quot;, &quot;=&quot;, false], [&quot;rent_ok&quot;, &quot;=&quot;, false]]}" can_create="true" can_write="true"/>
+                <field name="alternative_product_ids" widget="many2many_tags" domain="[('id', '!=', active_id), '|', ('company_id', '=', company_id), ('company_id', '=', False)]" placeholder="Visualizzato in fondo alle pagine dei prodotti" modifiers="{&quot;invisible&quot;: [[&quot;sale_ok&quot;, &quot;=&quot;, false], [&quot;rent_ok&quot;, &quot;=&quot;, false]]}" can_create="true" can_write="true"/></group>
+                <group string="Negozio e-commerce" name="shop" modifiers="{&quot;invisible&quot;: [[&quot;sale_ok&quot;, &quot;=&quot;, false], [&quot;rent_ok&quot;, &quot;=&quot;, false]]}">
+                    <field name="website_url" modifiers="{&quot;invisible&quot;: true, &quot;readonly&quot;: true}"/>
+                    <field name="website_id" options="{'no_create': True}" can_create="true" can_write="true"/>
+                    <field name="website_sequence"/>
+                    <field name="public_categ_ids" widget="many2many_tags" string="Categorie" can_create="true" can_write="true"/>
+                <label for="allow_out_of_stock_order" string="Esaurito" modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;in&quot;, [&quot;service&quot;, &quot;consu&quot;]]]}"/>
+                <div modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;in&quot;, [&quot;service&quot;, &quot;consu&quot;]]]}">
+                    <field name="allow_out_of_stock_order" class="oe_inline"/> Continua a vendere
+                </div>
+
+                <label for="show_availability" string="Mostra quantità disponibile" modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;in&quot;, [&quot;service&quot;, &quot;consu&quot;]]]}"/>
+                <div modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;in&quot;, [&quot;service&quot;, &quot;consu&quot;]]]}">
+                    <field name="show_availability" class="oe_inline"/>
+                    <span modifiers="{&quot;invisible&quot;: [[&quot;show_availability&quot;, &quot;=&quot;, false]]}">
+                        <label for="available_threshold" string="solo se inferiore a" class="o_light_label"/>
+                        <field name="available_threshold" class="oe_inline col-1" widget="integer"/>
+                        Unità
+                    </span>
+                </div>
+                <field name="out_of_stock_message" modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;in&quot;, [&quot;service&quot;, &quot;consu&quot;]]]}"/>
+                    <field name="website_ribbon_id" options="{'no_quick_create': True}" can_create="true" can_write="true"/>
+                </group>
+                <group name="product_template_images" string="Contenuto aggiuntivo prodotto" modifiers="{&quot;invisible&quot;: [[&quot;sale_ok&quot;, &quot;=&quot;, false], [&quot;rent_ok&quot;, &quot;=&quot;, false]]}">
+                    <field name="product_template_image_ids" class="o_website_sale_image_list" context="{'default_name': name}" mode="kanban" add-label="Aggiungi media" nolabel="1"><kanban string="Immagini prodotto" default_order="sequence">
+                <field name="id" modifiers="{&quot;readonly&quot;: true}"/>
+                <field name="name" modifiers="{&quot;required&quot;: true}"/>
+                <field name="image_1920"/>
+                <field name="sequence" widget="handle"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="card oe_kanban_global_click p-0">
+                            <div class="o_squared_image">
+                                <img class="card-img-top" t-att-src="kanban_image('product.image', 'image_1920', record.id.raw_value)" t-att-alt="record.name.value"/>
+                            </div>
+                            <div class="card-body p-0">
+                                <h4 class="card-title p-2 m-0 bg-200">
+                                    <small><field name="name" modifiers="{&quot;required&quot;: true}"/></small>
+                                </h4>
+                            </div>
+                            <!-- below 100 Kb: good -->
+                            <t t-if="record.image_1920.raw_value.length &lt; 100*1000">
+                                <t t-set="size_status" t-value="'text-bg-success'"/>
+                                <t t-set="message">Dimensione file adeguata</t>
+                            </t>
+                            <!-- below 1000 Kb: decent -->
+                            <t t-elif="record.image_1920.raw_value.length &lt; 1000*1000">
+                                <t t-set="size_status" t-value="'text-bg-warning'"/>
+                                <t t-set="message">Dimensione file enorme, l'immagine deve essere ottimizzata/ridotta.</t>
+                            </t>
+                            <!-- above 1000 Kb: bad -->
+                            <t t-else="1">
+                                <t t-set="size_status" t-value="'text-bg-danger'"/>
+                                <t t-set="message">Ottimizzazione obbligatoria. Ridurre la dimensione del file o aumentare la compressione nelle impostazioni.</t>
+                            </t>
+                            <span t-attf-class="badge #{size_status} o_product_image_size" t-esc="record.image_1920.value" t-att-title="message"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban></field>
+                </group>
+                            </group>
+                            <group>
+                                <group string="Descrizione vendite" name="description">
+                                    <field colspan="2" name="description_sale" nolabel="1" placeholder="Nota aggiunta agli ordini di vendita e alle fatture."/>
+                                </group>
+                <group string="Avviso alla vendita del prodotto">
+                        <field name="sale_line_warn" string="Avviso" modifiers="{&quot;required&quot;: true}"/>
+                        <field name="sale_line_warn_msg" string="Messaggio" placeholder="Scrivi un messaggio..." modifiers="{&quot;invisible&quot;: [[&quot;sale_line_warn&quot;, &quot;=&quot;, &quot;no-message&quot;]], &quot;readonly&quot;: [[&quot;sale_line_warn&quot;, &quot;=&quot;, &quot;no-message&quot;]], &quot;required&quot;: [[&quot;sale_line_warn&quot;, &quot;!=&quot;, &quot;no-message&quot;]]}"/>
+                    </group>
+                
+                            </group>
+                        </page>
+        <page string="Prezzo basato sul tempo" name="pricing" modifiers="{&quot;invisible&quot;: [[&quot;is_temporal&quot;, &quot;=&quot;, false]]}">
+          <group>
+            <group name="pricing">
+                <field name="product_pricing_ids" nolabel="1" colspan="2">
+                  <tree editable="bottom">
+                    <control>
+                        <create name="add_product_pricing" string="Aggiungi un prezzo"/>
+                    </control>
+                    <field name="product_variant_ids" widget="many2many_tags" domain="[('product_tmpl_id', '=', parent.id)]" modifiers="{&quot;column_invisible&quot;: [[&quot;parent.product_variant_count&quot;, &quot;&lt;&quot;, 2]]}" can_create="true" can_write="true"/>
+                    <field name="recurrence_id" string="Periodo" modifiers="{&quot;required&quot;: true}" can_create="true" can_write="true"/>
+                    <field name="pricelist_id" on_change="1" can_create="true" can_write="true"/>
+                    <field name="currency_id" modifiers="{&quot;readonly&quot;: true, &quot;column_invisible&quot;: true}"/>
+                    <field name="price" modifiers="{&quot;required&quot;: true}"/>
+                  </tree>
+                </field>
+            </group>
+                <group string="Prenotazioni" name="extra_rental" modifiers="{&quot;invisible&quot;: [[&quot;rent_ok&quot;, &quot;=&quot;, false]]}">
+                    <field name="extra_hourly" widget="monetary"/>
+                    <field name="extra_daily" widget="monetary"/>
+                    <field name="currency_id" modifiers="{&quot;invisible&quot;: true, &quot;readonly&quot;: true}"/>
+                <label for="preparation_time"/>
+                <div>
+                    <field name="preparation_time" widget="float_time" class="oe_inline p-0 col-lg-2"/>
+                    <label for="preparation_time" string="ore prima dell'ordine" class="oe_inline"/>
+                </div>
+                </group>
+          </group>
+        </page>
+                        <page string="Acquisto" name="purchase" modifiers="{&quot;invisible&quot;: [[&quot;purchase_ok&quot;, &quot;=&quot;, false]]}">
+                    <field name="seller_ids" context="{'default_product_tmpl_id':context.get('product_tmpl_id',active_id), 'product_template_invisible_variant': True, 'tree_view_ref':'purchase.product_supplierinfo_tree_view2'}" nolabel="1" modifiers="{&quot;invisible&quot;: [[&quot;product_variant_count&quot;, &quot;&gt;&quot;, 1]], &quot;readonly&quot;: [[&quot;product_variant_count&quot;, &quot;&gt;&quot;, 1]]}"><tree string="Informazioni fornitore" multi_edit="1" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="partner_id" on_change="1" modifiers="{&quot;required&quot;: true}" can_create="true" can_write="true"/>
+                <field name="is_subcontractor" optional="hide" modifiers="{&quot;readonly&quot;: true}"/>
+                <field name="product_id" optional="hide" options="{'no_create': True, 'no_open': True}" on_change="1" can_create="true" can_write="true"/>
+                <field name="product_tmpl_id" string="Prodotto" on_change="1" modifiers="{&quot;readonly&quot;: true, &quot;column_invisible&quot;: true}"/>
+                <field name="product_name" optional="hide"/>
+                <field name="product_code" optional="hide"/>
+                <field name="date_start" optional="hide"/>
+                <field name="date_end" optional="hide"/>
+                <field name="company_id" optional="hide" can_create="true" can_write="true"/>
+                <field name="min_qty" optional="hide" modifiers="{&quot;required&quot;: true}"/>
+                <field name="product_uom" optional="hide" modifiers="{&quot;readonly&quot;: true}"/>
+                <field name="price" string="Prezzo" modifiers="{&quot;required&quot;: true}"/>
+                <field name="currency_id" modifiers="{&quot;required&quot;: true}" can_create="true" can_write="true"/>
+                <field name="delay" optional="show" modifiers="{&quot;required&quot;: true}"/>
+                    <field name="company_id" modifiers="{&quot;column_invisible&quot;: true}" can_create="true" can_write="true"/>
+            </tree></field>
+                    <field name="variant_seller_ids" context="{'model': active_model, 'active_id': active_id, 'tree_view_ref':'purchase.product_supplierinfo_tree_view2'}" nolabel="1" modifiers="{&quot;invisible&quot;: [[&quot;product_variant_count&quot;, &quot;&lt;=&quot;, 1]], &quot;readonly&quot;: [[&quot;product_variant_count&quot;, &quot;&lt;=&quot;, 1]]}"><tree string="Informazioni fornitore" multi_edit="1" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="partner_id" on_change="1" modifiers="{&quot;required&quot;: true}" can_create="true" can_write="true"/>
+                <field name="is_subcontractor" optional="hide" modifiers="{&quot;readonly&quot;: true}"/>
+                <field name="product_id" optional="hide" options="{'no_create': True, 'no_open': True}" on_change="1" can_create="true" can_write="true"/>
+                <field name="product_tmpl_id" string="Prodotto" on_change="1" modifiers="{&quot;readonly&quot;: true, &quot;column_invisible&quot;: true}"/>
+                <field name="product_name" optional="hide"/>
+                <field name="product_code" optional="hide"/>
+                <field name="date_start" optional="hide"/>
+                <field name="date_end" optional="hide"/>
+                <field name="company_id" optional="hide" can_create="true" can_write="true"/>
+                <field name="min_qty" optional="hide" modifiers="{&quot;required&quot;: true}"/>
+                <field name="product_uom" optional="hide" modifiers="{&quot;readonly&quot;: true}"/>
+                <field name="price" string="Prezzo" modifiers="{&quot;required&quot;: true}"/>
+                <field name="currency_id" modifiers="{&quot;required&quot;: true}" can_create="true" can_write="true"/>
+                <field name="delay" optional="show" modifiers="{&quot;required&quot;: true}"/>
+                    <field name="company_id" modifiers="{&quot;column_invisible&quot;: true}" can_create="true" can_write="true"/>
+            </tree></field>
+                            <group name="purchase">
+                <group string="Riordino" modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;!=&quot;, &quot;service&quot;]]}">
+                    <div class="o_td_label d-inline-flex">
+                        <label for="service_to_purchase"/>
+                        <field name="service_to_purchase"/>
+                        <span class="fa fa-lg fa-building-o fa-fw" title="Service to Purchase"/>
+                    </div>
+                </group>
+                                <group string="Fatture fornitore" name="bill">
+                    <field name="supplier_taxes_id" colspan="2" widget="many2many_tags" context="{'default_type_tax_use':'purchase'}" modifiers="{&quot;readonly&quot;: [[&quot;purchase_ok&quot;, &quot;=&quot;, 0]]}" can_create="true" can_write="true"/>
+                    <field name="purchase_method" widget="radio"/>
+                </group>
+                    <group col="1">
+                        <group string="Descrizione per acquisto">
+                           <field name="description_purchase" nolabel="1" colspan="2" placeholder="Nota aggiunta agli ordini di acquisto."/>
+                        </group>
+                        <group string="Avviso all'acquisto del prodotto">
+                            <field name="purchase_line_warn" nolabel="1" colspan="2" modifiers="{&quot;required&quot;: true}"/>
+                            <field name="purchase_line_warn_msg" colspan="2" nolabel="1" placeholder="Scrivi un messaggio..." modifiers="{&quot;invisible&quot;: [[&quot;purchase_line_warn&quot;, &quot;=&quot;, &quot;no-message&quot;]], &quot;readonly&quot;: [[&quot;purchase_line_warn&quot;, &quot;=&quot;, &quot;no-message&quot;]], &quot;required&quot;: [[&quot;purchase_line_warn&quot;, &quot;!=&quot;, &quot;no-message&quot;]]}"/>
+                        </group>
+                    </group>
+                            </group>
+                        </page>
+                        <page string="Magazzino" name="inventory" modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;=&quot;, &quot;service&quot;]]}">
+                            <group name="inventory">
+                    <field name="has_available_route_ids" modifiers="{&quot;invisible&quot;: true, &quot;readonly&quot;: true}"/>
+                    <group string="Operazioni" name="operations">
+                        <label for="route_ids" modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;=&quot;, &quot;service&quot;]]}"/>
+                        <div>
+                            <field name="route_ids" class="mb-0" widget="many2many_checkboxes" modifiers="{&quot;invisible&quot;: [&quot;|&quot;, [&quot;has_available_route_ids&quot;, &quot;=&quot;, false], [&quot;type&quot;, &quot;=&quot;, &quot;service&quot;]]}" can_create="true" can_write="true"/>
+                            <button id="stock.view_diagram_button" string="Visualizza schema" type="action" name="478" icon="fa-arrow-right" class="btn btn-link pt-0" context="{'default_product_tmpl_id': id}" modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;not in&quot;, [&quot;product&quot;, &quot;consu&quot;]]]}"/>
+                        </div>
+                        <field name="route_from_categ_ids" widget="many2many_tags" modifiers="{&quot;invisible&quot;: [[&quot;route_from_categ_ids&quot;, &quot;=&quot;, []]], &quot;readonly&quot;: true}"/>
+                    </group>
+                                <group name="group_lots_and_weight" string="Logistica" modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;not in&quot;, [&quot;product&quot;, &quot;consu&quot;]]]}">
+                        <field name="responsible_id" domain="[('share', '=', False)]" widget="many2one_avatar_user" can_create="true" can_write="true"/>
+                                    <label for="weight" modifiers="{&quot;invisible&quot;: [[&quot;product_variant_count&quot;, &quot;&gt;&quot;, 1], [&quot;is_product_variant&quot;, &quot;=&quot;, false]]}"/>
+                                    <div class="o_row" name="weight" modifiers="{&quot;invisible&quot;: [[&quot;product_variant_count&quot;, &quot;&gt;&quot;, 1], [&quot;is_product_variant&quot;, &quot;=&quot;, false]]}">
+                                        <field name="weight" class="oe_inline"/>
+                                        <field name="weight_uom_name" modifiers="{&quot;readonly&quot;: true}"/>
+                                    </div>
+                                    <label for="volume" modifiers="{&quot;invisible&quot;: [[&quot;product_variant_count&quot;, &quot;&gt;&quot;, 1], [&quot;is_product_variant&quot;, &quot;=&quot;, false]]}"/>
+                                    <div class="o_row" name="volume" modifiers="{&quot;invisible&quot;: [[&quot;product_variant_count&quot;, &quot;&gt;&quot;, 1], [&quot;is_product_variant&quot;, &quot;=&quot;, false]]}">
+                                        <field name="volume" string="Volume" class="oe_inline"/>
+                                        <field name="volume_uom_name" modifiers="{&quot;readonly&quot;: true}"/>
+                                    </div>
+                    <field name="bom_count" string="Distinta base" modifiers="{&quot;invisible&quot;: true, &quot;readonly&quot;: true}"/>
+                    <label for="produce_delay" string="Tempo di produzione" modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;=&quot;, &quot;service&quot;]]}"/>
+                    <div modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;=&quot;, &quot;service&quot;]]}">
+                        <field name="produce_delay" class="oe_inline"/> giorni
+                    </div>
+                    <label for="days_to_prepare_mo" modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;=&quot;, &quot;service&quot;]]}"/>
+                    <div modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;=&quot;, &quot;service&quot;]]}">
+                        <field name="days_to_prepare_mo" class="oe_inline"/> giorni
+                        <button name="action_compute_bom_days" string="Calcolato dalla DB" type="object" help="Compute the days required to resupply all components from BoM, by either buying or manufacturing the components and/or subassemblies.                                       Also note that purchase security lead times will be added when appropriate." class="oe_link pt-0" modifiers="{&quot;invisible&quot;: [&quot;|&quot;, [&quot;type&quot;, &quot;=&quot;, &quot;service&quot;], [&quot;bom_count&quot;, &quot;=&quot;, 0]]}"/>
+                    </div>
+                    <label for="sale_delay" modifiers="{&quot;invisible&quot;: [[&quot;sale_ok&quot;, &quot;=&quot;, false]]}"/>
+                    <div modifiers="{&quot;invisible&quot;: [[&quot;sale_ok&quot;, &quot;=&quot;, false]]}">
+                        <field name="sale_delay" class="oe_inline" style="vertical-align:baseline"/> giorni
+                    </div>
+                <field name="hs_code" string="Codice SA"/>
+                <field name="country_of_origin" can_create="true" can_write="true"/>
+                                </group>
+                    <group string="Tracciabilità" name="traceability" modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;=&quot;, &quot;consu&quot;]]}">
+                        <field name="tracking" widget="radio" on_change="1" modifiers="{&quot;invisible&quot;: [[&quot;type&quot;, &quot;=&quot;, &quot;service&quot;]], &quot;required&quot;: true}"/>
+                    </group>
+                     <group string="Ubicazioni di contropartita" name="stock_property">
+                        <field name="property_stock_production" can_create="true" can_write="true"/>
+                        <field name="property_stock_inventory" can_create="true" can_write="true"/>
+                    </group>
+                            </group>
+                            <group name="packaging" string="Imballaggio" colspan="4" modifiers="{&quot;invisible&quot;: [&quot;|&quot;, [&quot;type&quot;, &quot;not in&quot;, [&quot;product&quot;, &quot;consu&quot;]], [&quot;product_variant_count&quot;, &quot;&gt;&quot;, 1], [&quot;is_product_variant&quot;, &quot;=&quot;, false]]}">
+                                <field colspan="2" name="packaging_ids" nolabel="1" context="{'tree_view_ref':'product.product_packaging_tree_view2', 'default_company_id': company_id}"><tree string="Imballaggi prodotti" name="packaging" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name" string="Imballaggio" modifiers="{&quot;required&quot;: true}"/>
+                    <field name="package_type_id" can_create="true" can_write="true"/>
+                    <field name="route_ids" optional="hide" widget="many2many_tags" can_create="true" can_write="true"/>
+                <field name="qty"/>
+                <field name="product_uom_id" options="{'no_open': True, 'no_create': True}" modifiers="{&quot;readonly&quot;: true}"/>
+                <field name="purchase" optional="show"/>
+                <field name="sales" optional="show"/>
+                <field name="barcode" optional="hide"/>
+                <field name="company_id" optional="hide" can_create="true" can_write="true"/>
+            </tree></field>
+                            </group>
+                    <group>
+                        <group string="Descrizione per ricezioni">
+                            <field name="description_pickingin" colspan="2" nolabel="1" placeholder="Nota aggiunta agli ordini di ricezione (es. dove stoccare il prodotto nel magazzino). "/>
+                        </group>
+                        <group string="Descrizione per ordini di consegna">
+                            <field name="description_pickingout" colspan="2" nolabel="1" placeholder="Nota aggiunta agli ordini di consegna."/>
+                        </group>
+                        <group string="Descrizione per trasferimenti interni">
+                            <field name="description_picking" colspan="2" placeholder="Nota aggiunta agli ordini di trasferimento interno (es. dove prelevare il prodotto nel magazzino)." nolabel="1"/>
+                        </group>
+                    </group>
+                        </page>
+                    <page string="Contabilità" name="invoicing">
+                        <group name="properties">
+                            <group string="Crediti">
+                                <field name="property_account_income_id" can_create="true" can_write="true"/>
+                            </group>
+                            <group string="Debiti" name="payables">
+                                <field name="property_account_expense_id" modifiers="{&quot;readonly&quot;: [[&quot;purchase_ok&quot;, &quot;=&quot;, 0]]}" can_create="true" can_write="true"/>
+                <field name="property_account_creditor_price_difference" domain="[('deprecated','=',False)]" modifiers="{&quot;readonly&quot;: [[&quot;purchase_ok&quot;, &quot;=&quot;, 0]]}" can_create="true" can_write="true"/>
+                            </group>
+                        </group>
+                        <group name="accounting"/>
+                    </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
