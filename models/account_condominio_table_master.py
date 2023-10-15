@@ -77,6 +77,7 @@ class AccountCondominioTableMaster(models.Model):
                 # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
                 pass
             else:
+                """
                 _logger.info('=============test vcondominio===================')
                 _logger.info(self._origin)
                 _logger.info(self.condominio_id)
@@ -94,7 +95,7 @@ class AccountCondominioTableMaster(models.Model):
 
                     _logger.info(record_da_cancellare)
 
-                    """
+                    
                     # Ottieni tutte le righe di dettaglio
                     dettagli = self.env['account.condominio.table'].search([ ( 'table_id', '=', int(self.parte_numerica(str(self.id)) )) ])
                     _logger.info('verifica esistenza dettagli:')
@@ -119,22 +120,19 @@ class AccountCondominioTableMaster(models.Model):
                     
                     # Esegui una commit manuale
                     self.flush()
-                    """                
-
-                    
-                    
-
                     # Cancella i record duplicati.
                     self.env["account.condominio.table"].search([("id", "in", record_da_cancellare)]).unlink()
 
+                    """                
+                                    
                     # Ripopola le righe di dettaglio
-                    condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
-                    for condomino in condomini:
-                        record = self.env['account.condominio.table'].create({
-                            'table_id': self.id,
-                            'condomino_id': condomino.id,
-                            'quote' : 100.99,
-                        })
+                condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
+                for condomino in condomini:
+                    record = self.env['account.condominio.table'].create({
+                        'table_id': self.id,
+                        'condomino_id': condomino.id,
+                        'quote' : 100.99,
+                    })
 
             return {}
 
