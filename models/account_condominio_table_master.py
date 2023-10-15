@@ -78,10 +78,12 @@ class AccountCondominioTableMaster(models.Model):
             # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
             pass
         else:
+            # Memorizza il valore corrente del condominio_id
+            self.condominio_id_old = self.condominio_id
             # Controlla se il condominio è cambiato
             if self.condominio_id != self.condominio_id_old:
                  
-            
+                """
                 # Ottieni tutte le righe di dettaglio
                 dettagli = self.env['account.condominio.table'].search([ ( 'table_id', '=', self.parte_numerica(str(self.id)) ) ])
                 _logger.info('verifica esistenza dettagli:')
@@ -104,7 +106,7 @@ class AccountCondominioTableMaster(models.Model):
                 
                 # Esegui una commit manuale
                 self.flush()
-                 
+                """
                                                                             
                 # Ripopola le righe di dettaglio
                 condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
@@ -114,11 +116,7 @@ class AccountCondominioTableMaster(models.Model):
                         'condomino_id': condomino.id,
                         'quote' : 100.99,
                     })
-
-           
-
-            # Memorizza il valore corrente del condominio_id
-            self.condominio_id_old = self.condominio_id
+                
 
         return {}
 
