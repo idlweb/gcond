@@ -85,7 +85,7 @@ class AccountCondominioTableMaster(models.Model):
             self.condominio_id_old = self._origin.condominio_id
             if self.condominio_id_old != self.condominio_id:
                  
-               
+                """
                 # Ottieni tutte le righe di dettaglio
                 dettagli = self.env['account.condominio.table'].search([ ( 'table_id', '=', int(self.parte_numerica(str(self.id)) )) ])
                 _logger.info('verifica esistenza dettagli:')
@@ -108,7 +108,19 @@ class AccountCondominioTableMaster(models.Model):
                 
                 # Esegui una commit manuale
                 self.flush()
-               
+                """
+
+                 # Crea una lista dei record da cancellare.
+                record_da_cancellare = []
+
+                for record in self:
+                    # Verifica se il record è duplicato.
+                    if record.table_id in record.table_ids:
+                        record_da_cancellare.append(record.id)
+
+                # Cancella i record duplicati.
+                self.env["account.condominio.table"].search([("id", "in", record_da_cancellare)]).unlink()
+                self.flush()
                                                                             
                 # Ripopola le righe di dettaglio
                 condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
