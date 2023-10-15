@@ -79,7 +79,8 @@ class AccountCondominioTableMaster(models.Model):
             pass
         else:
             # Controlla se il condominio è cambiato
-            if self.old_condominio_id != self.condominio_id:
+            self.condominio_id_old = self.get_old_value("condominio_id")
+            if self.condominio_id_old != self.condominio_id:
                  
                
                 # Ottieni tutte le righe di dettaglio
