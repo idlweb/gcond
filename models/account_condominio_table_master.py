@@ -74,14 +74,19 @@ class AccountCondominioTableMaster(models.Model):
 
     @api.onchange('condominio_id')
     def onchange_condominio_id(self):
+        self.reset_context()
         if not self.condominio_id:
             # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
             pass
         else:
-            if self.condominio_id != self.condominio_id_old:
-                _logger.info('==============DEBUG=================')          
+            if self.condominio_id != self._origin.condominio_id:
+                self.condominio_id_old = self.condominio_id
+                _logger.info('==============DEBUG=================1')          
                 _logger.info('il valore di condominio è %s, quello di id_old è %s', self.condominio_id, self._origin.condominio_id)
+                _logger.info('il valore di condominio old è %s', self.condominio_id_old)
         
+        self.condominio_id_old = 99
+
         #self.condominio_id_old = self.condominio_id 
         #self.flush()
 
