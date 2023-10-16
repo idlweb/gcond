@@ -86,12 +86,13 @@ class AccountCondominioTableMaster(models.Model):
                 _logger.info('il valore di condominio old è %s', self.condominio_id_old)
         
         self.condominio_id_old = 99
-
+        self.name = 'test'
         #self.condominio_id_old = self.condominio_id 
         #self.flush()
 
         return {}
 
+   
 
     """
         Per ora le def sulle actions dovrebbero funzionanare solo sui bottoni delle viste
