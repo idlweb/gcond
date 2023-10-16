@@ -81,8 +81,9 @@ class AccountCondominioTableMaster(models.Model):
             if self.condominio_id != self.condominio_id_old:
                 _logger.info('==============DEBUG=================')          
                 _logger.info('il valore di condominio è %s, quello di id_old è %s', self.condominio_id, self.condominio_id_old)
-                self.condominio_id_old = self.condominio_id 
-                self.flush()
+        
+        self.condominio_id_old = self.condominio_id 
+        self.flush()
 
         return {}
 
