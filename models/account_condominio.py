@@ -161,7 +161,7 @@ class GcondAccountCondominium(models.Model):
                 TO-DO: nella maschera di registrazine alla pressione del bottone ripartisci 
                        spese o comunque all'esecuzione dell'action occorre una funzione che 
             """
-            share = table.get(condomino.code_table) ## what get() do? Quota? 
+            share = table.get(condomino.code_table) ## what get() do? 
             if share is None:
                 # The condominium is not included in the distribution table.  ## what it meanning?
                 continue
