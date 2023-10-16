@@ -74,7 +74,6 @@ class AccountCondominioTableMaster(models.Model):
 
     @api.onchange('condominio_id')
     def onchange_condominio_id(self):
-        self.reset_context()
         if not self.condominio_id:
             # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
             pass
