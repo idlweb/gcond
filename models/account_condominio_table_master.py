@@ -86,6 +86,8 @@ class AccountCondominioTableMaster(models.Model):
 
                 #self.write({'table_ids': []})    
                 self.table_ids = []
+                self.table_ids.unlink()
+                self.flush()
         
         #self.condominio_id_old = 99
         #self.write({'condominio_id_old': 999})
