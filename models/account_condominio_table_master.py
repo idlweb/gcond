@@ -88,14 +88,14 @@ class AccountCondominioTableMaster(models.Model):
                 self.table_ids = []
                 self.table_ids.unlink()
                 self.flush()
-            # Ripopola le righe di dettaglio
-            condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
-            for condomino in condomini:
-                record = self.env['account.condominio.table'].create({
-                    'table_id': self.id,
-                    'condomino_id': condomino.id,
-                    'quote' : 100.99,
-                })
+                # Ripopola le righe di dettaglio
+                condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
+                for condomino in condomini:
+                    record = self.env['account.condominio.table'].create({
+                        'table_id': self.id,
+                        'condomino_id': condomino.id,
+                        'quote' : 100.99,
+                    })
         #self.condominio_id_old = 99
         #self.write({'condominio_id_old': 999})
         #self.condominio_id_old = self.condominio_id 
