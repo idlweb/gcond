@@ -83,7 +83,7 @@ class AccountCondominioTableMaster(models.Model):
                 self.condominio_id_old = self.condominio_id                        
                 _logger.info('il valore di condominio è %s, quello di id_old è %s', self.condominio_id, self._origin.condominio_id)
                 _logger.info('il valore di condominio old è %s', self.condominio_id_old)
-                self.write({'table_ids': [(6, 0)]})    
+                self.write({'table_ids': []})    
         
         #self.condominio_id_old = 99
         #self.write({'condominio_id_old': 999})
