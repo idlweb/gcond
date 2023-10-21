@@ -6,6 +6,7 @@
         <field name="model">account.condominio</field>
         <field name="arch" type="xml">
             <tree string="Condominium Tables">
+                <field name="id"/>
                 <field name="name"/>
                 <field name="code"/>
                 <field name="description"/>
