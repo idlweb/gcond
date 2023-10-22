@@ -79,13 +79,14 @@ class AccountCondominioTableMaster(models.Model):
             # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
             pass
         else:
-            if self.condominio_id != self._origin.condominio_id:
-                self.condominio_id_old = self.condominio_id                        
+            if self.condominio_id != self._origin.condominio_id:       # _origin è il valore precedente, condominio_id il new
+                self.condominio_id_old = self.condominio_id   
+                self.write({'condominio_id_old': self.condominio_id})                     
                 _logger.info('il valore di condominio è %s, quello di id_old è %s', self.condominio_id, self._origin.condominio_id)
                 _logger.info('il valore di condominio old è %s', self.condominio_id_old)
 
-                condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id_old)])
-                
+                condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id)])
+
                 #self.write({'table_ids': []})    
                 self.table_ids = []
                 self.table_ids.unlink()
