@@ -99,7 +99,7 @@ class AccountCondominioTableMaster(models.Model):
         #self.write({'condominio_id_old': 999})
         #self.condominio_id_old = self.condominio_id 
         #self.flush()
-
+        self.condominio_id = self.condominio_id
 
         return {}
 
