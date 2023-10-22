@@ -81,7 +81,20 @@ class AccountCondominioTableMaster(models.Model):
         else:
             #if self.condominio_id != self._origin.condominio_id:       # _origin è il valore precedente, condominio_id il new                    
             _logger.info('il valore di condominio è %s, quello precedente è %s', self.condominio_id, self._origin.condominio_id)
-          
+            condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])
+
+            #self.write({'table_ids': []})    
+            #self.table_ids = []
+            self.table_ids.unlink()
+            #self.flush()
+            # Ripopola le righe di dettaglio
+            
+            for condomino in condomini:
+                record = self.env['account.condominio.table'].create({
+                    'table_id': self.id,
+                    'condomino_id': condomino.id,
+                    'quote' : 100.01,
+                })
         #self.condominio_id_old = 99
         #self.write({'condominio_id_old': 999})
         #self.condominio_id_old = self.condominio_id 
