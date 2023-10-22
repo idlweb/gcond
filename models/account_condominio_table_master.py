@@ -73,6 +73,7 @@ class AccountCondominioTableMaster(models.Model):
 
     @api.onchange('condominio_id')
     def onchange_condominio_id(self):
+         prrrr
         _logger.info('==============DEBUG=================2') 
         _logger.info('^^^^^^^^^^^^^^^^^il valore di condominio fuori è %s', self.condominio_id)
         if not self.condominio_id:
@@ -80,7 +81,7 @@ class AccountCondominioTableMaster(models.Model):
             # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
         else:
             if self.condominio_id != self._origin.condominio_id or self.condominio_id == self._origin.condominio_id:  
-                prrrr     # _origin è il valore precedente, condominio_id il new                    
+                    # _origin è il valore precedente, condominio_id il new                    
                 _logger.info('il valore di condominio è %s, quello precedente è %s', self.condominio_id, self._origin.condominio_id)
                 condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])
             
