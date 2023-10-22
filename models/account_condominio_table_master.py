@@ -89,6 +89,11 @@ class AccountCondominioTableMaster(models.Model):
             #self.flush()
             # Ripopola le righe di dettaglio
             
+            self.update({
+                'condominio_id': condomino.id,
+                })
+            _logger.info('òòòòòòòòòòòòòòòòòòò->il valore di condominio è %s', self.condominio_id)
+                         
             for condomino in condomini:
                 record = self.env['account.condominio.table'].create({
                     'table_id': self.id,
@@ -96,10 +101,7 @@ class AccountCondominioTableMaster(models.Model):
                     'quote' : 100.01,
                 })
 
-            self.update({
-                'condominio_id': condomino.id,
-                })
-            _logger.info('òòòòòòòòòòòòòòòòòòò->'il valore di condominio è %s', self.condominio_id)
+            
         #self.write({'condominio_id_old': 999})
         #self.condominio_id_old = self.condominio_id 
         #self.flush()
