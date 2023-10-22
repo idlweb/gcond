@@ -85,7 +85,7 @@ class AccountCondominioTableMaster(models.Model):
                 #self.write({'table_ids': []})    
                 self.table_ids = []
                 self.table_ids.unlink()
-                self.flush()
+                #self.flush()
                 # Ripopola le righe di dettaglio
                 
                 _logger.info('condomini. ', condomini)
