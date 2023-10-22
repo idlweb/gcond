@@ -84,12 +84,14 @@ class AccountCondominioTableMaster(models.Model):
                 _logger.info('il valore di condominio è %s, quello di id_old è %s', self.condominio_id, self._origin.condominio_id)
                 _logger.info('il valore di condominio old è %s', self.condominio_id_old)
 
+                condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id_old)])
+                
                 #self.write({'table_ids': []})    
                 self.table_ids = []
                 self.table_ids.unlink()
                 self.flush()
                 # Ripopola le righe di dettaglio
-                condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id_old)])
+                
                 _logger.info('condomini. ', condomini)
                 for condomino in condomini:
                     record = self.env['account.condominio.table'].create({
