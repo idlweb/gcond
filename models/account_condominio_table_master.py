@@ -79,7 +79,7 @@ class AccountCondominioTableMaster(models.Model):
             pass
         else:
             if self.condominio_id != self._origin.condominio_id:       # _origin è il valore precedente, condominio_id il new                    
-                _logger.info('il valore di condominio è %s, quello di id_old è %s', self.condominio_id, self._origin.condominio_id)
+                _logger.info('il valore di condominio è %s, quello precedente è %s', self.condominio_id, self._origin.condominio_id)
                 condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id)])
 
                 #self.write({'table_ids': []})    
