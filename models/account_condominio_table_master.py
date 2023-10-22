@@ -85,7 +85,7 @@ class AccountCondominioTableMaster(models.Model):
                 _logger.info('il valore di condominio è %s, quello precedente è %s', self.condominio_id, self._origin.condominio_id)
                 condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])
             
-                #self.write({'table_ids': []})    
+                self.write({'table_ids': []})    
                 self.table_ids = []
                 self.table_ids.unlink()
                 self.flush()
