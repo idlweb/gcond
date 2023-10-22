@@ -83,12 +83,11 @@ class AccountCondominioTableMaster(models.Model):
                 condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])
 
                 #self.write({'table_ids': []})    
-                self.table_ids = []
+                #self.table_ids = []
                 self.table_ids.unlink()
                 #self.flush()
                 # Ripopola le righe di dettaglio
                 
-                _logger.info('condomini. ', condomini)
                 for condomino in condomini:
                     record = self.env['account.condominio.table'].create({
                         'table_id': self.id,
