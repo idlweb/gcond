@@ -74,7 +74,7 @@ class AccountCondominioTableMaster(models.Model):
     @api.onchange('condominio_id')
     def onchange_condominio_id(self):
         _logger.info('==============DEBUG=================2') 
-        _logger.info('il valore di condominio fuori è %s', self.condominio_id)
+        _logger.info('^^^^^^^^^^^^^^^^^il valore di condominio fuori è %s', self.condominio_id)
         if not self.condominio_id:
              _logger.info('il valore di condominio quando non modificato è %s', self.condominio_id)
             # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
@@ -99,7 +99,7 @@ class AccountCondominioTableMaster(models.Model):
         #self.write({'condominio_id_old': 999})
         #self.condominio_id_old = self.condominio_id 
         #self.flush()
-        self.condominio_id = self.condominio_id
+        
 
         return {}
 
