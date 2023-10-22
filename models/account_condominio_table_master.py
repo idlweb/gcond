@@ -75,8 +75,8 @@ class AccountCondominioTableMaster(models.Model):
     def onchange_condominio_id(self):
         _logger.info('==============DEBUG=================2')  
         if not self.condominio_id:
+             _logger.info('il valore di condominio è %s', self.condominio_id)
             # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
-            pass
         else:
             #if self.condominio_id != self._origin.condominio_id:       # _origin è il valore precedente, condominio_id il new                    
                 _logger.info('il valore di condominio è %s, quello precedente è %s', self.condominio_id, self._origin.condominio_id)
