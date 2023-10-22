@@ -92,7 +92,7 @@ class AccountCondominioTableMaster(models.Model):
                 
                 self.update({
                     'condominio_id': self.condominio.id,
-                    })
+                    }) 
                 
                 _logger.info('valore di condominio è %s', self.condominio_id)
 
