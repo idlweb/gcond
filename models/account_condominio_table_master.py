@@ -28,7 +28,7 @@ class AccountCondominioTableMaster(models.Model):
   
     table_ids = fields.One2many('account.condominio.table', 'table_id', string='Righe tabelle condominiali')
     
-    condominio_id_old = fields.Integer(string='Condominio ID vecchio')
+    #condominio_id_old = fields.Integer(string='Condominio ID vecchio')
     
     
     """
@@ -74,14 +74,11 @@ class AccountCondominioTableMaster(models.Model):
     @api.onchange('condominio_id')
     def onchange_condominio_id(self):
         _logger.info('==============DEBUG=================2')  
-        _logger.info('il valore di condominio old, all inizio è %s', self.condominio_id_old)
         if not self.condominio_id:
             # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
             pass
         else:
-            if self.condominio_id != self._origin.condominio_id:       # _origin è il valore precedente, condominio_id il new
-                self.condominio_id_old = self.condominio_id   
-                self.write({'condominio_id_old.id': self.condominio_id.id})                     
+            if self.condominio_id != self._origin.condominio_id:       # _origin è il valore precedente, condominio_id il new                    
                 _logger.info('il valore di condominio è %s, quello di id_old è %s', self.condominio_id, self._origin.condominio_id)
                 _logger.info('il valore di condominio old è %s', self.condominio_id_old)
 
