@@ -91,7 +91,7 @@ class AccountCondominioTableMaster(models.Model):
                 # Ripopola le righe di dettaglio
                 
                 self.update({
-                    'condominio_id': self.condominio.id,
+                    'condominio_id': self.condominio_id.id,
                     }) 
                 
                 _logger.info('valore di condominio è %s', self.condominio_id)
