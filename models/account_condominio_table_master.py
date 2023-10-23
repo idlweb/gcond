@@ -72,6 +72,7 @@ class AccountCondominioTableMaster(models.Model):
 
     @api.onchange('condominio_id')
     def onchange_condominio_id(self):
+        self.name = 'test'
         _logger.info('==============DEBUG=================4') 
         _logger.info('^^^^^^^^^^^^^^^^^il valore di condominio fuori è %s', self.condominio_id)
         if not self.condominio_id:
