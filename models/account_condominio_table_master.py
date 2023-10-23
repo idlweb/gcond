@@ -71,9 +71,6 @@ class AccountCondominioTableMaster(models.Model):
             return None
 
 
- 
-   
-
     """
         Per ora le def sulle actions dovrebbero funzionanare solo sui bottoni delle viste
     """
