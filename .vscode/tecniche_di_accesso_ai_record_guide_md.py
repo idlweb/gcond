@@ -3,42 +3,46 @@
 Funzione su cui sto lavorando. 
 Cancellazione di un recordset di dettaglio
 
-# Controlla se il condominio è cambiato
-if self.condominio_id != self.condominio_id_old:
+   @api.onchange('condominio_id')
+    def onchange_condominio_id(self):
+        _logger.info('==============DEBUG=================3') 
+        _logger.info('^^^^^^^^^^^^^^^^^il valore di condominio fuori è %s', self.condominio_id)
+        if not self.condominio_id:
+             pass
+            # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
+        else:
+            if self.condominio_id != self._origin.condominio_id or self.condominio_id == self._origin.condominio_id:  
+                    # _origin è il valore precedente, condominio_id il new                    
+                _logger.info('il valore di condominio è %s, quello precedente è %s', self.condominio_id, self._origin.condominio_id)
+                condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])
+            
+                self.write({'table_ids': []})    
+                self.table_ids = []
+                self.table_ids.unlink()
+                self.flush()
+                # Ripopola le righe di dettaglio
+                
+                self.update({
+                    'condominio_id': self.condominio.id,
+                    }) 
+                
+                _logger.info('valore di condominio è %s', self.condominio_id)
+
+                for condomino in condomini:
+                    record = self.env['account.condominio.table'].create({
+                        'table_id': self.id,
+                        'condomino_id': condomino.id,
+                        'quote' : 100.01,
+                    })
+
+            
+        #self.write({'condominio_id_old': 999})
+        #self.condominio_id_old = self.condominio_id 
+        #self.flush()
         
 
-    # Ottieni tutte le righe di dettaglio
-    dettagli = self.env['account.condominio.table'].search([ ( 'table_id', '=', self.parte_numerica(str(self.id)) ) ])
-    _logger.info('verifica esistenza dettagli:')
-    _logger.info('=============INIZIO===================')
-    _logger.info(self.id) 
-    _logger.info('^^^^^')
+        return {}
 
-    # Memorizza gli ID delle righe di dettaglio
-    id_dettagli = {dettaglio.id for dettaglio in dettagli}
-    
-    #_logger.debug('')
-
-    # Elimina tutte le righe di dettaglio
-    for dettaglio_id in id_dettagli:
-        dettaglio = self.env['account.condominio.table'].browse(dettaglio_id)                
-        dettaglio.unlink()
-        
-    _logger.info(list(id_dettagli))    
-    _logger.info('==============FINE=================')
-    
-    # Esegui una commit manuale
-    self.flush()
-        
-                                                                
-    # Ripopola le righe di dettaglio
-    condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
-    for condomino in condomini:
-        record = self.env['account.condominio.table'].create({
-            'table_id': self.id,
-            'condomino_id': condomino.id,
-            'quote' : 100.99,
-        })
 """
            
 
@@ -66,7 +70,7 @@ self.env["account.condominio.table.line"].search([("id", "in", record_da_cancell
 [(record.id, f'Condominio {record.condominio_id}') for record in self]
 
 
-self.write({'campo_ids': [(6, 0)]})
+self.write({'campo_ids': [(6, 0)]})                       # il campo ids è stato aggiornato con una lista vuota
 
 
 self.write({'campo_ids': [(record.id, 0) for record in self.campo_ids]})
