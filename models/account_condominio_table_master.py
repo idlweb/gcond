@@ -70,6 +70,11 @@ class AccountCondominioTableMaster(models.Model):
         else:
             return None
 
+
+    def delete_all_occurrences(self):
+        for record in self.env['account.condominio.table'].search([('table_id', '=', self.id)]):
+            record.unlink()
+
     @api.onchange('condominio_id')
     def onchange_condominio_id(self):
         
@@ -84,7 +89,9 @@ class AccountCondominioTableMaster(models.Model):
                 # _origin è il valore precedente, condominio_id il new                    
                 _logger.info('il valore di condominio è %s, quello precedente è %s', self.condominio_id, self._origin.condominio_id) 
                 
-                self.env['account.condominio.table'].search([('table_id', '=', self.id)]).unlink                                              
+                # Utilizza il metodo per cancellare tutte le ricorrenze
+                self.delete_all_occurrences()  
+
                 condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])               
                 for condomino in condomini:
                     record = self.env['account.condominio.table'].create({
