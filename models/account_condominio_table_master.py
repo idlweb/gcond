@@ -84,12 +84,13 @@ class AccountCondominioTableMaster(models.Model):
             # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
         else:
             if self.condominio_id != self._origin.condominio_id:  
-                    # _origin è il valore precedente, condominio_id il new                    
+               
+                # _origin è il valore precedente, condominio_id il new                    
                 _logger.info('il valore di condominio è %s, quello precedente è %s', self.condominio_id, self._origin.condominio_id)
+                
                 condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])
             
-                self.write({'table_ids': []})    
-                
+                #self.write({'table_ids': []})                    
                 self.table_ids.unlink()
                 self.flush()                #will make sure all the changes in the cache are pushed to the databas
                 # Ripopola le righe di dettaglio
@@ -100,7 +101,7 @@ class AccountCondominioTableMaster(models.Model):
                     record = self.env['account.condominio.table'].create({
                         'table_id': self.id,
                         'condomino_id': condomino.id,
-                        'quote' : 100.01,
+                        'quote' : 100.05,
                     })
             else:
                 self.condominio_id = self._origin.condominio_id
@@ -112,8 +113,8 @@ class AccountCondominioTableMaster(models.Model):
         #self.flush()
         #
         result = { 
-            'name': self.condominio_id.name, 
-            'descrizione': "sto scrivendo dopo", 
+            'name': "TESTO", 
+            'description': "sto scrivendo dopo", 
             'code_table': self.code_table,
             'account_id': self.account_id,
             'condominio_id': self.condominio_id
@@ -123,10 +124,12 @@ class AccountCondominioTableMaster(models.Model):
         } 
         message = ('La somma non deve superare 1000:\n') 
         #titles = late_books.mapped('book_id.name') 
+        """
         result['warning'] = { 
             'title': 'misure', 
             'message': message #+ '\n'.join(titles) 
         }  
+        """
         return result
 
    
