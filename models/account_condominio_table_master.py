@@ -83,53 +83,25 @@ class AccountCondominioTableMaster(models.Model):
              pass
             # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
         else:
-            if self.condominio_id != self._origin.condominio_id:  
-               
-                # _origin è il valore precedente, condominio_id il new                    
-                _logger.info('il valore di condominio è %s, quello precedente è %s', self.condominio_id, self._origin.condominio_id)
-                
-                condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])
             
-                #self.write({'table_ids': []})                    
-                self.table_ids.unlink()
-                self.flush()                #will make sure all the changes in the cache are pushed to the databas
-                # Ripopola le righe di dettaglio
-
-                _logger.info('valore di condominio è %s', self.condominio_id)
-
-                for condomino in condomini:
-                    record = self.env['account.condominio.table'].create({
-                        'table_id': self.id,
-                        'condomino_id': condomino.id,
-                        'quote' : 100.05,
-                    })
-            else:
-                self.condominio_id = self._origin.condominio_id
-                _logger.info('^^^^^^^^^^^^^^^^^il valore di condominio ritornato = è %s', self.condominio_id)
-            
-            
-        #self.write({'condominio_id_old': 999})
-        #self.condominio_id_old = self.condominio_id 
-        #self.flush()
-        #
-        result = { 
-            'name': "TESTO", 
-            'description': "sto scrivendo dopo", 
-            'code_table': self.code_table,
-            'account_id': self.account_id,
-            'condominio_id': self.condominio_id
-            #'domain': {'table_ids': [ 
-            #            ('id', 'in', self.table_ids.ids)] 
-            #        } 
-        } 
-        message = ('La somma non deve superare 1000:\n') 
-        #titles = late_books.mapped('book_id.name') 
-        """
-        result['warning'] = { 
-            'title': 'misure', 
-            'message': message #+ '\n'.join(titles) 
-        }  
-        """
+            result = { 
+                'name': "TESTO", 
+                'description': "sto scrivendo dopo", 
+                'code_table': self.code_table,
+                'account_id': self.account_id,
+                'condominio_id': self.condominio_id
+                #'domain': {'table_ids': [ 
+                #            ('id', 'in', self.table_ids.ids)] 
+                #        } 
+            } 
+            message = ('La somma non deve superare 1000:\n') 
+            #titles = late_books.mapped('book_id.name') 
+            """
+            result['warning'] = { 
+                'title': 'misure', 
+                'message': message #+ '\n'.join(titles) 
+            }  
+            """
         return result
 
    
