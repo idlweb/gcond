@@ -73,6 +73,7 @@ class AccountCondominioTableMaster(models.Model):
 
     def delete_all_occurrences(self):
         for record in self.env['account.condominio.table'].search([('table_id', '=', self.id)]):
+            _logger.info('Cancello il condomino: %s', record.condomino)
             record.unlink()
             record.flush()
 
