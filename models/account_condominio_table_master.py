@@ -93,7 +93,6 @@ class AccountCondominioTableMaster(models.Model):
                 self.table_ids.unlink()
                 self.flush()                #will make sure all the changes in the cache are pushed to the databas
                 # Ripopola le righe di dettaglio
-                                         
 
                 _logger.info('valore di condominio è %s', self.condominio_id)
 
@@ -113,8 +112,8 @@ class AccountCondominioTableMaster(models.Model):
         #self.flush()
         #
         result = { 
-            'name': self._name, 
-            'descrizione': self.description, 
+            'name': self.condominio_id.name, 
+            'descrizione': "sto scrivendo dopo", 
             'code_table': self.code_table,
             'account_id': self.account_id,
             'condominio_id': self.condominio_id
