@@ -100,7 +100,15 @@ class AccountCondominioTableMaster(models.Model):
             else:
                 self.condominio_id = self._origin.condominio_id
                 _logger.info('^^^^^^^^^^^^^^^^^il valore di condominio ritornato = è %s', self.condominio_id)
+                condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])
             
+               
+                for condomino in condomini:
+                    record = self.env['account.condominio.table'].create({
+                        'table_id': self.id,
+                        'condomino_id': condomino.id,
+                        'quote' : 100.05,
+                    })
             
         #self.write({'condominio_id_old': 999})
         #self.condominio_id_old = self.condominio_id 
