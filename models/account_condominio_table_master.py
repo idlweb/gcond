@@ -88,7 +88,7 @@ class AccountCondominioTableMaster(models.Model):
                 
                 condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])                  
                 for condomino in condomini:                
-                    record.unlink()             
+                    condomino.unlink()             
                 for condomino in condomini:
                     record = self.env['account.condominio.table'].create({
                         'table_id': self.id,
