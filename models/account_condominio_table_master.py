@@ -117,6 +117,11 @@ class AccountCondominioTableMaster(models.Model):
         #self.flush()
         #
         result = { 
+            'name': self._name, 
+            'descrizione': self.description, 
+            'code_table': self.code_table,
+            'account_id': self.account_id,
+            'condominio_id': self.condominio_id
             #'domain': {'table_ids': [ 
             #            ('id', 'in', self.table_ids.ids)] 
             #        } 
