@@ -74,7 +74,6 @@ class AccountCondominioTableMaster(models.Model):
     def onchange_condominio_id(self):
         
         self.name = 'prova'
-        self.table_ids = []
 
         _logger.info('==============DEBUG=================5') 
         _logger.info('^^^^^^^^^^^^^^^^^il valore di condominio fuori è %s', self.condominio_id)
@@ -86,24 +85,23 @@ class AccountCondominioTableMaster(models.Model):
             if self.condominio_id != self._origin.condominio_id:  
                 # _origin è il valore precedente, condominio_id il new                    
                 _logger.info('il valore di condominio è %s, quello precedente è %s', self.condominio_id, self._origin.condominio_id)                
-                self.table_ids = []
+                self.write((5, 124, 'table_ids'))
                 condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])                  
                 for condomino in condomini:
                     record = self.env['account.condominio.table'].create({
                         'table_id': self.id,
                         'condomino_id': condomino.id,
-                        'quote' : 100.08,
+                        'quote' : 100.07,
                     })
             else:
                 self.condominio_id = self._origin.condominio_id
                 _logger.info('^^^^^^^^^^^^^^^^^il valore di condominio ritornato = è %s', self.condominio_id)
-                self.table_ids = []
                 condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])                           
                 for condomino in condomini:
                     record = self.env['account.condominio.table'].create({
                         'table_id': self.id,
                         'condomino_id': condomino.id,
-                        'quote' : 100.04,
+                        'quote' : 100.03,
                     })
             
         #self.write({'condominio_id_old': 999})
