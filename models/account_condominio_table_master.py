@@ -92,7 +92,7 @@ class AccountCondominioTableMaster(models.Model):
                     record = self.env['account.condominio.table'].create({
                         'table_id': self.id,
                         'condomino_id': condomino.id,
-                        'quote' : 100.06,
+                        'quote' : 100.05,
                     })
             else:
                 self.condominio_id = self._origin.condominio_id
@@ -102,7 +102,7 @@ class AccountCondominioTableMaster(models.Model):
                     record = self.env['account.condominio.table'].create({
                         'table_id': self.id,
                         'condomino_id': condomino.id,
-                        'quote' : 100.02,
+                        'quote' : 100.01,
                     })
             
         #self.write({'condominio_id_old': 999})
