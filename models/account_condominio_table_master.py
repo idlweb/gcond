@@ -86,6 +86,7 @@ class AccountCondominioTableMaster(models.Model):
                 # _origin è il valore precedente, condominio_id il new                    
                 _logger.info('il valore di condominio è %s, quello precedente è %s', self.condominio_id, self._origin.condominio_id)                
                 self.write((5, 124, 'table_ids'))
+                self.write((6, 0, [119,124,127], 'table_ids'))
                 condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])                  
                 for condomino in condomini:
                     record = self.env['account.condominio.table'].create({
