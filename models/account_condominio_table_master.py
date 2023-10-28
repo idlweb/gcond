@@ -117,9 +117,9 @@ class AccountCondominioTableMaster(models.Model):
         #self.flush()
         #
         result = { 
-            'domain': {'table_ids': [ 
-                        ('id', 'in', self.table_ids.ids)] 
-                    } 
+            #'domain': {'table_ids': [ 
+            #            ('id', 'in', self.table_ids.ids)] 
+            #        } 
         } 
         message = ('La somma non deve superare 1000:\n') 
         #titles = late_books.mapped('book_id.name') 
