@@ -179,8 +179,7 @@ class GcondAccountCondominium(models.Model):
                 'date': fields.Date.today(),
                 'line_ids': [
                     {                        
-                        'account_id': condomino.account_id.id, # credo ci sia fonfusione sulle entità in campo
-                                                               # 
+                        'account_id': condomino.account_id.id, # credo ci sia fonfusione sulle entità in campo                                                        
                         'name': condomino.name,
                         'debit': charge,
                     },
