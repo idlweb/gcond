@@ -86,9 +86,11 @@ class AccountCondominioTableMaster(models.Model):
                 # _origin è il valore precedente, condominio_id il new                    
                 _logger.info('il valore di condominio è %s, quello precedente è %s', self.condominio_id, self._origin.condominio_id) 
                 
-                condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])                  
-                for condomino in condomini:                
-                    condomino.unlink()             
+                condomini = self.env['account.condominio.table'].search([('table_id', '=', self.id)])                  
+                for condomino in condomini:                                    
+                    condominio.unlink()
+                
+                condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])               
                 for condomino in condomini:
                     record = self.env['account.condominio.table'].create({
                         'table_id': self.id,
