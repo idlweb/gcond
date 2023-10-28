@@ -103,7 +103,7 @@ class AccountCondominioTableMaster(models.Model):
                         'quote' : 100.01,
                     })
             else:
-                self.condominio_id = 2
+                self.condominio_id = self._origin.condominio_id
                 _logger.info('^^^^^^^^^^^^^^^^^il valore di condominio ritornato = è %s', self.condominio_id)
             
             
