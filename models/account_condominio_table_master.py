@@ -73,8 +73,6 @@ class AccountCondominioTableMaster(models.Model):
     @api.onchange('condominio_id')
     def onchange_condominio_id(self):
         
-        self.name = 'prova'
-
         _logger.info('==============DEBUG=================5') 
         _logger.info('^^^^^^^^^^^^^^^^^il valore di condominio fuori è %s', self.condominio_id)
         
@@ -86,7 +84,7 @@ class AccountCondominioTableMaster(models.Model):
                 # _origin è il valore precedente, condominio_id il new                    
                 _logger.info('il valore di condominio è %s, quello precedente è %s', self.condominio_id, self._origin.condominio_id) 
                 
-                condomini = self.env['account.condominio.table'].search([('table_id.id', '=', self.parte_numerica(self.id))]).unlink                                              
+                condomini = self.env['account.condominio.table'].search([('table_id.id', '=', self.parte_numerica(str(self.id)))]).unlink                                              
                 condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])               
                 for condomino in condomini:
                     record = self.env['account.condominio.table'].create({
