@@ -74,6 +74,7 @@ class AccountCondominioTableMaster(models.Model):
     def delete_all_occurrences(self):
         for record in self.env['account.condominio.table'].search([('table_id', '=', self.id)]):
             record.unlink()
+            record.flush()
 
     @api.onchange('condominio_id')
     def onchange_condominio_id(self):
