@@ -2,4 +2,3 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_gcond_account_condominium,gcond.account_condominium,model_account_condominio,,1,1,1,1
 access_gcond_account_table,gcond.account_condominio_table,model_account_condominio_table,,1,1,1,1
 access_gcond_account_table_master,gcond.account_condominio_table_master,model_account_condominio_table_master,,1,1,1,1
-access_gcond_account_journal_condominio,gcond.account_journal_condominio,model_account_journal_condominio,,1,1,1,1
