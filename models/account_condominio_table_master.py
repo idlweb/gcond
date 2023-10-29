@@ -90,12 +90,16 @@ class AccountCondominioTableMaster(models.Model):
         """
         # Crea una copia del context
         context_copy = self.env.context.copy()
-
         # Aggiorna la copia del context
         context_copy.update({'table_ids': []})
-
         # Aggiorna il context originale
         self.env.context = context_copy
+
+    def provo_svuota_ids(self):
+        # Aggiunge un listener per aggiornare i campi del form
+        self.env['ir.model.fields'].onchange_context(self, context)
+        # Modifica il valore del context
+        self.env.context.update({'table_ids': []})
 
     @api.onchange('condominio_id')
     def onchange_condominio_id(self):
@@ -111,8 +115,16 @@ class AccountCondominioTableMaster(models.Model):
                 # _origin è il valore precedente, condominio_id il new                    
                 _logger.info('il valore di condominio è %s, quello precedente è %s', self.condominio_id, self._origin.condominio_id) 
                 
+                """
                 # Utilizza il metodo per cancellare tutte le ricorrenze
-                self.svuota()  
+                context_copy = self.env.context.copy()
+                # Aggiorna la copia del context
+                context_copy.update({'table_ids': []})
+                # Aggiorna il context originale
+                self.env.context = context_copy
+                """
+                
+                self.provo_svuota_ids()
 
                 condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])               
                 for condomino in condomini:
