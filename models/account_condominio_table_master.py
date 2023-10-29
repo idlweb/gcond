@@ -96,9 +96,11 @@ class AccountCondominioTableMaster(models.Model):
         self.env.context = context_copy
 
     def provo_svuota_ids(self):
-        self.onchange({'context': self.env.context})
+        self.onchange({'field_name': 'condominio:id', 'field_onchange': 'onchange_condominio_id'})
+
         # Modifica il valore del context
         self.env.context.update({'table_ids': []})
+
 
     @api.onchange('condominio_id')
     def onchange_condominio_id(self):
@@ -124,6 +126,7 @@ class AccountCondominioTableMaster(models.Model):
                 """
                 
                 self.provo_svuota_ids()
+                self.table_ids = self.env.context.get('table_ids')
 
                 condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])               
                 for condomino in condomini:
