@@ -96,8 +96,7 @@ class AccountCondominioTableMaster(models.Model):
         self.env.context = context_copy
 
     def provo_svuota_ids(self):
-        # Aggiunge un listener per aggiornare i campi del form
-        self.env['ir.model.fields'].onchange_context(self, context)
+        self.onchange({'context': self.env.context})
         # Modifica il valore del context
         self.env.context.update({'table_ids': []})
 
