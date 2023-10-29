@@ -71,11 +71,22 @@ class AccountCondominioTableMaster(models.Model):
             return None
 
 
-    def delete_all_occurrences(self):
-        for record in self.env['account.condominio.table'].search([('table_id', '=', self.id)]):
-            _logger.info('Cancello il condomino: %s', record.condomino)
+    def svuota(self):
+        #self.env['record.model'].search([('id', 'in', tuple(ids))]).ids
+        """
+        for record in self.env['account.condominio.table'].search([('table_id', '=', self.id)]):            
             record.unlink()
             record.flush()
+        
+        if self.state != 'available': 
+            raise UserError(_('Book is not available for renting'))
+        """
+         # Accede all'elenco dei record dal context
+        records = self.env.context.get('records')
+        # Modifica il valore di un record nell'elenco
+        self.env.context.update({'table_ids': []})
+        records[0].table_ids = []
+
 
     @api.onchange('condominio_id')
     def onchange_condominio_id(self):
@@ -92,7 +103,7 @@ class AccountCondominioTableMaster(models.Model):
                 _logger.info('il valore di condominio è %s, quello precedente è %s', self.condominio_id, self._origin.condominio_id) 
                 
                 # Utilizza il metodo per cancellare tutte le ricorrenze
-                self.delete_all_occurrences()  
+                self.svuota()  
 
                 condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])               
                 for condomino in condomini:
