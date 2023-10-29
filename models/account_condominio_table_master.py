@@ -120,10 +120,9 @@ class AccountCondominioTableMaster(models.Model):
                 self.env.context = context_copy
                 """
                 self.write({'table_ids': []})
-
-                self.provo_svuota_ids()
                 self.table_ids = self.env.context.get('table_ids')
-
+                _logger.info('il valore dei dettagli è %s', self.condominio_ids) 
+                
                 condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])               
                 for condomino in condomini:
                     record = self.env['account.condominio.table'].create({
