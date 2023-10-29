@@ -100,9 +100,6 @@ class AccountCondominioTableMaster(models.Model):
     @api.onchange('condominio_id')
     def onchange_condominio_id(self):
         
-        _logger.info('==============DEBUG=================5') 
-        _logger.info('^^^^^^^^^^^^^^^^^il valore di condominio fuori è %s', self.condominio_id)
-        
         if not self.condominio_id:
              pass
             # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
@@ -119,26 +116,25 @@ class AccountCondominioTableMaster(models.Model):
                 # Aggiorna il context originale
                 self.env.context = context_copy
                 """
+
                 self.write({'table_ids': []})
                 self.table_ids = self.env.context.get('table_ids')
-                _logger.info('il valore dei dettagli è %s', self.table_ids) 
                 
                 condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])               
                 for condomino in condomini:
                     record = self.env['account.condominio.table'].create({
                         'table_id': self.id,
                         'condomino_id': condomino.id,
-                        'quote' : 100.05,
+                        'quote' : 100,
                     })
             else:
                 self.condominio_id = self._origin.condominio_id
-                _logger.info('^^^^^^^^^^^^^^^^^il valore di condominio ritornato = è %s', self.condominio_id)
                 condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])                           
                 for condomino in condomini:
                     record = self.env['account.condominio.table'].create({
                         'table_id': self.id,
                         'condomino_id': condomino.id,
-                        'quote' : 100.01,
+                        'quote' : 100,
                     })
             
         #self.write({'condominio_id_old': 999})

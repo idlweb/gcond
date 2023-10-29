@@ -65,16 +65,12 @@ class GcondAccountCondominium(models.Model):
         string='Country',
         required=False)
    
-
-
-
     
     receivable_account_id = fields.Many2one(
         'account.account', string='Conto credito', required=False,
         help='Conto di credito del condominio')
     
 
-    
     payable_account_id = fields.Many2one(
         'account.account', string='Conto debito', required=False,
         help='Conto di debito del condominio')
@@ -113,11 +109,78 @@ class GcondAccountCondominium(models.Model):
         }
     """
 
+    def replace_spaces(self, name):
+        # Otteniamo il valore del campo name.
+        name = self.name
+        # Sostituiamo gli spazi con i trattini medi.
+        new_name = name.replace(' ', '-')
+        # Impostiamo il nuovo valore del campo name.
+        self.name = new_name
+        return None
+
+
+    def has_journal(self):
+        # Otteniamo il record del journal.
+        journal = self.env['account.journal'].search([
+            ('condominio_id', '=', self.id),
+        ])
+
+    # Se il record del journal è presente, allora il condominio ha già un journal.
+        return journal
+
+    def create_journal(self):
+        """
+            Analisi delle tecniche utilizzabili
+        """
+
+        """
+        #TO-DO ^^^^^^^^^^^^FOR^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # Otteniamo l'elenco dei tipi di journal.
+        type_list = ['general', 'bank', 'cash', 'sale', 'purchase', 'asset', 'liability', 'equity', 'cost', 'income', 'transfer', 'custom']
+        # Iteriamo sull'elenco dei tipi di journal.
+        for type in type_list:
+            # Creiamo il journal.
+            journal = self.env['account.journal'].create({
+                'name': 'Condominio - ' + type,
+                'code': type,
+                'type': type,
+                'condominio_id': self.id,
+            })
+        """
+
+        #TO-DO ^^^^^^^^^^^^LAMBDA^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # Otteniamo l'elenco dei tipi di journal.
+        if not self.has_journal():
+            type_list = ['general', 'bank', 'cash', 'sale', 'purchase', 'asset', 'liability', 'equity', 'cost', 'income', 'transfer', 'custom']
+
+            # Iteriamo sull'elenco dei tipi di journal.
+            self.env['account.journal'].create([{
+                'name': self.replace_spaces(self.name)+'-'+type,     #
+                'code': self.replace_spaces(self.name)+'-'+type,
+                'type': type,
+                'condominio_id': self.id,
+            } for type in type_list])
+        
+        """
+        #TO-DO ^^^^^^^^^^^^map()^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # Otteniamo l'elenco dei tipi di journal.
+        type_list = ['general', 'bank', 'cash', 'sale', 'purchase', 'asset', 'liability', 'equity', 'cost', 'income', 'transfer', 'custom']
+        # Creiamo i journal.
+        self.env['account.journal'].create(list(map(self.create_journal, type_list)))
+        """
+        return None
     
     @api.model
     def create(self, vals):
         #Crea un nuovo condominio.
         record = super(GcondAccountCondominium, self).create(vals)
+
+        """
+            Qui la logica dovrebbe essere quella di assegnare un conto di default
+            che dovrebbe essere creato - ma potrebb essere inutile. Ho comunque 
+            provato ad utilizzare la funzione create la scrittura con json
+        """
+        self.create_journal()
 
         # Imposta il conto di credito del condominio.
         record.receivable_account_id = self.env['account.account'].search([
@@ -143,8 +206,41 @@ class GcondAccountCondominium(models.Model):
 
         return record
     
-
+    """
+        Seri dubbi che questo metodi funzioni    
+    """
+    def open_journal_view(self):
+        # Otteniamo il record del condominio.
+        condominio = self
+        # Apri la vista account.journal.
+        view = self.env['ir.ui.view'].search([
+            ('model', '=', 'account.journal'),
+            ('name', '=', 'Journals Condominii'),
+        ])[0]
+        # Imposta il filtro per condominio.
+        view.domain = [('condominio_id', '=', condominio.id)]
+        # Apri la vista.
+        self.open_view(view)
+        return None
     
+
+    def _register_menus(self):
+        # Aggiungiamo una voce di menu al modulo.
+        menu = self.env['ir.ui.menu'].create({
+            'name': 'Contabilita',
+            #'parent_id': self.env.ref('account.menu_action_account_journal_tree').id,
+            'parent_id': self.env.ref('gcond.menu_root').id,
+            #'action': 'account.action_account_journal_tree',
+            'action': 'open_journal_view',
+        })
+        return None
+
+
+    def _post_init(self):
+        # Aggiungiamo una voce di menu al modulo.
+        self._register_menus()
+
+
     #@api.multi
     def distribute_charges(self, amount, table, document_number, account_id):
         charges = {}  

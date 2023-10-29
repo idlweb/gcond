@@ -37,10 +37,10 @@
 
     <!-- actions -->
 
-    <menuitem name="Gestione" id="gcond.menu_1_list" parent="gcond.menu_1"
+    <menuitem name="Gestione CONDOMINIO" id="gcond.menu_1_list" parent="gcond.menu_1"
             action="gcond.action_window"/>    
 
-    <menuitem name="Gestione condomini" id="gcond.menu_2_list" parent="gcond.menu_2" 
+    <menuitem name="Gestione CONDOMINI" id="gcond.menu_2_list" parent="gcond.menu_2" 
             action="gcond.action_all_condomini" sequence="10" groups=""/>
 
     <menuitem name="Tabelle di ripartizione" id="gcond.menu_table_master_view"  parent="gcond.menu_1" 
