@@ -121,7 +121,7 @@ class AccountCondominioTableMaster(models.Model):
                 """
                 self.write({'table_ids': []})
                 self.table_ids = self.env.context.get('table_ids')
-                _logger.info('il valore dei dettagli è %s', self.condominio_ids) 
+                _logger.info('il valore dei dettagli è %s', self.table_ids) 
                 
                 condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])               
                 for condomino in condomini:
