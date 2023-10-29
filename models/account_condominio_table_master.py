@@ -95,11 +95,6 @@ class AccountCondominioTableMaster(models.Model):
         # Aggiorna il context originale
         self.env.context = context_copy
 
-    def provo_svuota_ids(self):
-        self.onchange({'field_name': 'condominio:id', 'field_onchange': 'onchange_condominio_id'})
-
-        # Modifica il valore del context
-        self.env.context.update({'table_ids': []})
 
 
     @api.onchange('condominio_id')
@@ -124,7 +119,8 @@ class AccountCondominioTableMaster(models.Model):
                 # Aggiorna il context originale
                 self.env.context = context_copy
                 """
-                
+                self.write({'table_ids': []})
+
                 self.provo_svuota_ids()
                 self.table_ids = self.env.context.get('table_ids')
 
