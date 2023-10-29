@@ -81,12 +81,21 @@ class AccountCondominioTableMaster(models.Model):
         if self.state != 'available': 
             raise UserError(_('Book is not available for renting'))
         """
+        """
          # Accede all'elenco dei record dal context
         records = self.env.context.get('records')
         # Modifica il valore di un record nell'elenco
         self.env.context.update({'table_ids': []})
         records[0].table_ids = []
+        """
+        # Crea una copia del context
+        context_copy = self.env.context.copy()
 
+        # Aggiorna la copia del context
+        context_copy.update({'table_ids': []})
+
+        # Aggiorna il context originale
+        self.env.context = context_copy
 
     @api.onchange('condominio_id')
     def onchange_condominio_id(self):
