@@ -109,14 +109,10 @@ class GcondAccountCondominium(models.Model):
         }
     """
 
-    def replace_spaces(self, name):
-        # Otteniamo il valore del campo name.
-        name = format(self.name)
+    def replace_spaces_name_condominio(self, name):
         # Sostituiamo gli spazi con i trattini medi.
         new_name = name.replace(' ', '-')
-        # Impostiamo il nuovo valore del campo name.
-        self.name = new_name
-        return None
+        return new_name
 
 
     def has_journal(self):
@@ -130,22 +126,9 @@ class GcondAccountCondominium(models.Model):
 
 
     def create_journal(self, name, id):
-        """
-        Crea un journal legato ad un condominio.
-
-        Args:
-            self: L'istanza del modello di condominio.
-
-        Returns:
-            Il record del journal appena creato.
-        """
-
-        # Otteniamo il nome del journal.
-        name = 'Condominio - ' + name
-
         # Creiamo il record del journal.
         journal = self.env['account.journal'].create({
-            'name': 'Condominio-'+self.replace_spaces(name),
+            'name': 'Condominio-'+self.replace_spaces_name_condominio(name),
             'code': 'COND',
             'type': 'general',
             'condominio_id': id,
@@ -181,7 +164,7 @@ class GcondAccountCondominium(models.Model):
             che dovrebbe essere creato - ma potrebb essere inutile. Ho comunque 
             provato ad utilizzare la funzione create la scrittura con json
         """
-        self.create_journal(self.name, self.id)
+        self.create_journal(vals['name'], vals['id'])
 
         # Imposta il conto di credito del condominio.
         record.receivable_account_id = self.env['account.account'].search([
