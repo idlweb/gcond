@@ -128,12 +128,13 @@ class GcondAccountCondominium(models.Model):
     def create_journal(self, name, id):
         # Creiamo il record del journal.
         if not self.has_journal(id):
-            journal = self.env['account.journal'].create({
+            type_list = ['general', 'bank', 'cash', 'sale', 'purchase', 'asset', 'liability', 'equity', 'cost', 'income', 'transfer', 'custom']
+            journal = self.env['account.journal'].create([{
                 'name': 'Condominio-'+self.replace_spaces_name_condominio(name),
                 'code': 'CO'+str(id),
-                'type': 'general',
+                'type': type, #'general',
                 'condominio_id': int(id),
-            })
+            } for type in type_list ])        
 
         return journal
     
