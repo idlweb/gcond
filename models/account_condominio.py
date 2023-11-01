@@ -129,37 +129,19 @@ class GcondAccountCondominium(models.Model):
         return journal
 
     def create_journal(self):
-        """
-            Analisi delle tecniche utilizzabili
-        """
-
-        """
-        #TO-DO ^^^^^^^^^^^^FOR^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        # Otteniamo l'elenco dei tipi di journal.
-        type_list = ['general', 'bank', 'cash', 'sale', 'purchase', 'asset', 'liability', 'equity', 'cost', 'income', 'transfer', 'custom']
-        # Iteriamo sull'elenco dei tipi di journal.
-        for type in type_list:
-            # Creiamo il journal.
-            journal = self.env['account.journal'].create({
-                'name': 'Condominio - ' + type,
-                'code': type,
-                'type': type,
-                'condominio_id': self.id,
-            })
-        """
-
+       
         #TO-DO ^^^^^^^^^^^^LAMBDA^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         # Otteniamo l'elenco dei tipi di journal.
-        if not self.has_journal():
-            type_list = ['general', 'bank', 'cash', 'sale', 'purchase', 'asset', 'liability', 'equity', 'cost', 'income', 'transfer', 'custom']
+        #if not self.has_journal():
+        type_list = ['general', 'bank', 'cash', 'sale', 'purchase', 'asset', 'liability', 'equity', 'cost', 'income', 'transfer', 'custom']
 
-            # Iteriamo sull'elenco dei tipi di journal.
-            self.env['account.journal'].create([{
-                'name': self.replace_spaces(self.name)+'-'+type,     #
-                'code': self.replace_spaces(self.name)+'-'+type,
-                'type': type,
-                'condominio_id': self.id,
-            } for type in type_list])
+        # Iteriamo sull'elenco dei tipi di journal.
+        self.env['account.journal'].create([{
+            'name': self.replace_spaces(self.name)+'-'+type,     #
+            'code': self.replace_spaces(self.name)+'-'+type,
+            'type': type,
+            'condominio_id': self.id,
+        } for type in type_list])
         
         """
         #TO-DO ^^^^^^^^^^^^map()^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
