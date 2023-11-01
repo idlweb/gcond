@@ -115,10 +115,10 @@ class GcondAccountCondominium(models.Model):
         return new_name
 
 
-    def has_journal(self):
+    def has_journal(self, id):
         # Otteniamo il record del journal.
         journal = self.env['account.journal'].search([
-            ('condominio_id', '=', self.id),
+            ('condominio_id', '=', id),
         ])
 
     # Se il record del journal è presente, allora il condominio ha già un journal.
@@ -127,12 +127,13 @@ class GcondAccountCondominium(models.Model):
 
     def create_journal(self, name, id):
         # Creiamo il record del journal.
-        journal = self.env['account.journal'].create({
-            'name': 'Condominio-'+self.replace_spaces_name_condominio(name),
-            'code': 'COND'+str(id),
-            'type': 'general',
-            'condominio_id': id,
-        })
+        if not self.has_journal(id):
+            journal = self.env['account.journal'].create({
+                'name': 'Condominio-'+self.replace_spaces_name_condominio(name),
+                'code': 'CO'+str(id),
+                'type': 'general',
+                'condominio_id': int(id),
+            })
 
         return journal
     
@@ -164,7 +165,7 @@ class GcondAccountCondominium(models.Model):
             che dovrebbe essere creato - ma potrebb essere inutile. Ho comunque 
             provato ad utilizzare la funzione create la scrittura con json
         """
-        self.create_journal(vals['name'], self.id)
+        self.create_journal(vals['name'], vals['id'])
 
         # Imposta il conto di credito del condominio.
         record.receivable_account_id = self.env['account.account'].search([
