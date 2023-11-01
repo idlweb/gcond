@@ -211,7 +211,7 @@ class GcondAccountCondominium(models.Model):
         menu = self.env['ir.ui.menu'].create({
             'name': 'Contabilita',
             #'parent_id': self.env.ref('account.menu_action_account_journal_tree').id,
-            'parent_id': self.env.ref('gcond.menu_root').id,
+            'parent_id': False #self.env.ref('gcond.menu_root').id,
             #'action': 'account.action_account_journal_tree',
             'action': 'open_journal_view',
         })
