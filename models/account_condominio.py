@@ -129,6 +129,31 @@ class GcondAccountCondominium(models.Model):
         return journal
 
     def create_journal(self):
+        """
+        Crea un journal legato ad un condominio.
+
+        Args:
+            self: L'istanza del modello di condominio.
+
+        Returns:
+            Il record del journal appena creato.
+        """
+
+        # Otteniamo il nome del journal.
+        name = 'Condominio - ' + self.name
+
+        # Creiamo il record del journal.
+        journal = self.env['account.journal'].create({
+            'name': name,
+            'code': 'COND',
+            'type': 'general',
+            'condominio_id': self.id,
+        })
+
+        return journal
+    
+    """
+    def create_journal(self):
        
         #TO-DO ^^^^^^^^^^^^LAMBDA^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         # Otteniamo l'elenco dei tipi di journal.
@@ -144,14 +169,7 @@ class GcondAccountCondominium(models.Model):
         } for type in type_list])
         
         """
-        #TO-DO ^^^^^^^^^^^^map()^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        # Otteniamo l'elenco dei tipi di journal.
-        type_list = ['general', 'bank', 'cash', 'sale', 'purchase', 'asset', 'liability', 'equity', 'cost', 'income', 'transfer', 'custom']
-        # Creiamo i journal.
-        self.env['account.journal'].create(list(map(self.create_journal, type_list)))
-        """
-        return None
-    
+       
     @api.model
     def create(self, vals):
         #Crea un nuovo condominio.
