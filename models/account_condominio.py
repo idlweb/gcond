@@ -164,7 +164,7 @@ class GcondAccountCondominium(models.Model):
             che dovrebbe essere creato - ma potrebb essere inutile. Ho comunque 
             provato ad utilizzare la funzione create la scrittura con json
         """
-        self.create_journal(vals['name'], vals['id'])
+        self.create_journal(vals['name'], self.id)
 
         # Imposta il conto di credito del condominio.
         record.receivable_account_id = self.env['account.account'].search([
