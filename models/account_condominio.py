@@ -131,7 +131,7 @@ class GcondAccountCondominium(models.Model):
             type_list = ['general', 'bank', 'cash', 'sale', 'purchase', 'asset', 'liability', 'equity', 'cost', 'income', 'transfer', 'custom']
             journal = self.env['account.journal'].create([{
                 'name': 'Condominio-'+self.replace_spaces_name_condominio(name),
-                'code': str(id),
+                'code': str(id=id+1),
                 'type': type, #'general',
                 'condominio_id': int(id),
             } for type in type_list ])        
