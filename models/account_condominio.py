@@ -131,14 +131,26 @@ class GcondAccountCondominium(models.Model):
             type_list = ['general', 'bank', 'cash', 'sale', 'purchase', 'asset', 'liability', 'equity', 'cost', 'income', 'transfer', 'custom']
             
             # Incrementiamo il valore del campo code.
-            code = max(int(id) + 1, 1)
+            for index, type in enumerate(type_list):
+                code = 'CO' + index + 1
 
+                journal = self.env['account.journal'].create([{
+                    'name': 'Condominio-'+self.replace_spaces_name_condominio(name),
+                    'code': str(code),
+                    'type': type, #'general',
+                    'condominio_id': int(id),
+                }])        
+
+            """
+            # Incrementiamo il valore del campo code.
+            code = max(int(id) + 1, 1)
             journal = self.env['account.journal'].create([{
                 'name': 'Condominio-'+self.replace_spaces_name_condominio(name),
                 'code': code,
                 'type': type, #'general',
                 'condominio_id': int(id),
             } for type in type_list ])        
+            """
 
         return journal
     
