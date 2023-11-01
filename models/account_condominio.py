@@ -76,9 +76,8 @@ class GcondAccountCondominium(models.Model):
         help='Conto di debito del condominio')
     
 
-    #document_number = fields.Char(string='Document Number')
-    #account_id = fields.Many2one('account.account', string='Account')
-
+     
+    """
     @api.model
     def action_register_condominium(self):
         #Azione per registrare un condominio.
@@ -91,7 +90,8 @@ class GcondAccountCondominium(models.Model):
             'view_id': view_id,
             'target': 'new',
         }
-   
+    
+    """
    
     """
     @api.model
@@ -121,7 +121,7 @@ class GcondAccountCondominium(models.Model):
             ('condominio_id', '=', id),
         ])
 
-    # Se il record del journal è presente, allora il condominio ha già un journal.
+        # Se il record del journal è presente, allora il condominio ha già un journal.
         return journal
 
 
@@ -129,32 +129,20 @@ class GcondAccountCondominium(models.Model):
         # Creiamo il record del journal.
         if not self.has_journal(id):
             type_list = ['general', 'bank', 'cash', 'sale', 'purchase', 'asset', 'liability', 'equity', 'cost', 'income', 'transfer', 'custom']
+            
+            # Incrementiamo il valore del campo code.
+            code = max(int(id) + 1, 1)
+
             journal = self.env['account.journal'].create([{
                 'name': 'Condominio-'+self.replace_spaces_name_condominio(name),
-                'code': str(journal.id),
+                'code': code,
                 'type': type, #'general',
                 'condominio_id': int(id),
             } for type in type_list ])        
 
         return journal
     
-    """
-    def create_journal(self):
-       
-        #TO-DO ^^^^^^^^^^^^LAMBDA^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        # Otteniamo l'elenco dei tipi di journal.
-        #if not self.has_journal():
-        type_list = ['general', 'bank', 'cash', 'sale', 'purchase', 'asset', 'liability', 'equity', 'cost', 'income', 'transfer', 'custom']
-
-        # Iteriamo sull'elenco dei tipi di journal.
-        self.env['account.journal'].create([{
-            'name': self.name,#self.replace_spaces(self.name),     #
-            'code': self.name,#self.replace_spaces(self.name),
-            'type': type,
-            'condominio_id': self.id,
-        } for type in type_list])
-        
-        """
+   
        
     @api.model
     def create(self, vals):
@@ -193,6 +181,7 @@ class GcondAccountCondominium(models.Model):
 
         return record
     
+
     """
         Seri dubbi che questo metodi funzioni    
     """
