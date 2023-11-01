@@ -118,8 +118,7 @@ class AccountCondominioTableMaster(models.Model):
                 """
 
                 self.write({'table_ids': []})
-                self.table_ids = self.env.context.get('table_ids')
-                
+                self.table_ids = self.env.context.get('table_ids')                
                 condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])               
                 for condomino in condomini:
                     record = self.env['account.condominio.table'].create({
@@ -128,6 +127,8 @@ class AccountCondominioTableMaster(models.Model):
                         'quote' : 100,
                     })
             else:
+                self.write({'table_ids': []})
+                self.table_ids = self.env.context.get('table_ids')
                 self.condominio_id = self._origin.condominio_id
                 condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])                           
                 for condomino in condomini:
