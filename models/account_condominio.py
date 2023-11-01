@@ -129,7 +129,7 @@ class GcondAccountCondominium(models.Model):
         # Creiamo il record del journal.
         journal = self.env['account.journal'].create({
             'name': 'Condominio-'+self.replace_spaces_name_condominio(name),
-            'code': 'COND',
+            'code': 'COND'+str(id),
             'type': 'general',
             'condominio_id': id,
         })
