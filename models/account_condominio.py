@@ -128,6 +128,7 @@ class GcondAccountCondominium(models.Model):
     # Se il record del journal è presente, allora il condominio ha già un journal.
         return journal
 
+    @api.model
     def create_journal(self):
         """
         Crea un journal legato ad un condominio.
