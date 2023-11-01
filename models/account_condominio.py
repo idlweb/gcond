@@ -132,7 +132,7 @@ class GcondAccountCondominium(models.Model):
             
             # Incrementiamo il valore del campo code.
             for index, type in enumerate(type_list):
-                code = 'CO' + index + 1
+                code = 'CO' + str(index + 1)
 
                 journal = self.env['account.journal'].create([{
                     'name': 'Condominio-'+self.replace_spaces_name_condominio(name),
