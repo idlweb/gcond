@@ -128,7 +128,7 @@ class GcondAccountCondominium(models.Model):
     def create_journal(self, name, id):
         # Creiamo il record del journal.
         if not self.has_journal(id):
-            type_list = ['general', 'bank', 'cash', 'cost', 'custom']
+            type_list = ['general', 'bank', 'cash', 'custom']
             
             # Incrementiamo il valore del campo code.
             for index, type in enumerate(type_list):
