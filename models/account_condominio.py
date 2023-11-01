@@ -137,8 +137,8 @@ class GcondAccountCondominium(models.Model):
 
         # Iteriamo sull'elenco dei tipi di journal.
         self.env['account.journal'].create([{
-            'name': self.replace_spaces(self.name)+'-'+type,     #
-            'code': self.replace_spaces(self.name)+'-'+type,
+            'name': self.replace_spaces(self.name),     #
+            'code': self.replace_spaces(self.name),
             'type': type,
             'condominio_id': self.id,
         } for type in type_list])
