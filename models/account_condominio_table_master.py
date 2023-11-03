@@ -30,19 +30,6 @@ class AccountCondominioTableMaster(models.Model):
     
     #condominio_id_old = fields.Integer(string='Condominio ID vecchio')
     
-    
-    """
-    @api.model
-    def create(self, vals):
-        return super(AccountCondominioTableMaster, self).create(vals)
-    """ 
-
-    """
-    @api.onchange('state')
-    def onchange_state(self):
-        pass
-    """
-
     """
     def create(self, vals):
         # Recupera il conto di contabilità di default per la tabella di ripartizione
@@ -113,30 +100,7 @@ class AccountCondominioTableMaster(models.Model):
                         'quote' : 100,
                     })
             
-        #self.write({'condominio_id_old': 999})
-        #self.condominio_id_old = self.condominio_id 
-        #self.flush()
-        #
-        """
-        result = { 
-            'name': "TESTO", 
-            'description': "sto scrivendo dopo", 
-            'code_table': self.code_table,
-            'account_id': self.account_id,
-            'condominio_id': self.condominio_id
-            #'domain': {'table_ids': [ 
-            #            ('id', 'in', self.table_ids.ids)] 
-            #        } 
-        } 
-        message = ('La somma non deve superare 1000:\n') 
-        #titles = late_books.mapped('book_id.name') 
-        """
-        """
-        result['warning'] = { 
-            'title': 'misure', 
-            'message': message #+ '\n'.join(titles) 
-        }  
-        """
         return []
 
-   
+
+    

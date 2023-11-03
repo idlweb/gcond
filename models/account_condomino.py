@@ -31,19 +31,6 @@ class GcondAccountCondomino(models.Model):
     
 
 
-
-    # fix many2many da 'estensione ereditaria'
-    
-    """
-    channel_ids = fields.Many2many(
-        relation='account_condomino_mail_partner_rel',
-    )
-    """
-
-    """ 
-        Tentativo di arricchire la logica di identificazione
-        da sfruttare nella form per personalizzare le visualizzazioni
-    """
     @api.depends('is_company')
     def _compute_company_type(self):
         for partner in self:
@@ -70,6 +57,7 @@ class GcondAccountCondomino(models.Model):
         else:
            self.is_company = (self.company_type == 'company')
 
+
     """
     def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
         res = super(GcondAccountCondomino, self).fields_view_get(view_id='view_condomino_form', view_type=view_type, toolbar=toolbar, submenu=submenu)
@@ -86,16 +74,6 @@ class GcondAccountCondomino(models.Model):
         return res
     """
 
-
-    """ 
-    @api.model
-    def create(self, vals):
-        record = super(GcondAccountCondomino, self).create(vals)  
-        # Imposta il valore del campo `commercial_partner_id` su un valore valido.
-      
-        #Crea un nuovo condominio.                    
-        return record
-    """
 
 
       

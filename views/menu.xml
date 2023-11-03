@@ -11,6 +11,11 @@
         <field name="view_mode">tree,form</field>
     </record>
     
+     <record model="ir.actions.act_window" id="gcond.action_contabilita" >
+        <field name="name">Registri</field>
+        <field name="res_model">account.journal</field>
+        <field name="view_mode">tree,form</field>
+    </record>
 
     <record model="ir.actions.act_window" id="action_account_table_master_view_form" >
         <field name="name">Tabelle di ripartizione</field>
@@ -34,6 +39,7 @@
 
     <menuitem name="Condominio" id="gcond.menu_1" parent="gcond.menu_root"/>
     <menuitem name="Condomino" id="gcond.menu_2" parent="gcond.menu_root"/>
+    <menuitem name="Contabilità" id="gcond.menu_3" parent="gcond.menu_root"/>
 
     <!-- actions -->
 
@@ -41,6 +47,9 @@
             action="gcond.action_window"/>    
 
     <menuitem name="Gestione CONDOMINI" id="gcond.menu_2_list" parent="gcond.menu_2" 
+            action="gcond.action_all_condomini" sequence="10" groups=""/>
+    
+    <menuitem name="Gestione Contabilità" id="gcond.menu_3_list" parent="gcond.menu_3" 
             action="gcond.action_all_condomini" sequence="10" groups=""/>
 
     <menuitem name="Tabelle di ripartizione" id="gcond.menu_table_master_view"  parent="gcond.menu_1" 

@@ -60,41 +60,10 @@ class GcondAccountCondominium(models.Model):
         help='Conto di debito del condominio')
     
 
-     
-    """
-    @api.model
-    def action_register_condominium(self):
-        #Azione per registrare un condominio.
-        view_id = self.env.ref('view_account_condominium_form').id
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Registra condominio',
-            'res_model': 'account.condominio',
-            'view_mode': 'form',
-            'view_id': view_id,
-            'target': 'new',
-        }
-    
-    """
-   
-    """
-    @api.model
-    def action_accounting(self):
-        #Azione per gestire la contabilità dei condomini.
-        #_logger.debug('verifica id utilizzatoin action_accounting %d', self.env.ref('view_account_condominium_accounting').id)
-        view_id = self.env.ref('view_account_condominium_accounting').id
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Contabilità condominio',
-            'res_model': 'account.condominio',
-            'view_mode': 'form',
-            'view_id': view_id,
-            'target': 'current',
-        }
-    """
 
     def replace_spaces_name_condominio(self, name):
         # Sostituiamo gli spazi con i trattini medi.
+        # possibili ulteririori rimaneggiamenti
         new_name = name.replace(' ', '-')
         return new_name
 
@@ -149,33 +118,44 @@ class GcondAccountCondominium(models.Model):
         id = record.id
         self.create_journal(vals['name'], id)
 
+        """
         # Imposta il conto di credito del condominio.
         record.receivable_account_id = self.env['account.account'].search([
             ('code', '=', '250100'),
         ], limit=1)
 
-        # Imposta il conto di debito del condominio.
-        record.payable_account_id = self.env['account.account'].search([
-            ('code', '=', '250100'),
-        ], limit=1)
-    
-        """ 
-        #Crea un nuovo condominio.
-        record = super(GcondAccountCondominium, self).create(vals)
-        La funzione crea, già sovrascrive il comportamento della creazione del nuovo record
-        non c'è bisogno di richiamare ulteriormente lo stesso metodo
         """
         
-
-        # Imposta la tipologia di registrazione di default.
-        """ capire il senso di questa istruzione"""
-        #record.type_registration = 'debit'
-
         return record
     
+    
+    def create_cost_items_for_condominio(self):
+        # Ottieni l'id del condominio.
+        condominio_id = self.id
+
+        """
+            ma esiste una tabella delle voci di costo?
+        """
+
+        # Questa tabella è inesistente
+        cost_items = self.env['account.cost.item'].search([])
+
+        # Per ogni voce di costo esistente:
+        for cost_item in cost_items:
+            # Crea una nuova voce di costo.
+            new_cost_item = self.env['account.cost.item'].create({
+                'name': cost_item.name,
+                'description': cost_item.description,
+                'condominio_id': condominio_id,
+            })
+
+            # Imposta l'id del condominio come valore del campo `condominio_id` della nuova voce di costo.
+            new_cost_item.condominio_id = condominio_id
+
+    #=================================================================================================
 
     """
-        Seri dubbi che questo metodi funzioni    
+        Seri dubbi che questo metodo funzioni    
     """
     def open_journal_view(self):
         # Otteniamo il record del condominio.
@@ -209,54 +189,4 @@ class GcondAccountCondominium(models.Model):
         self._register_menus()
 
 
-    #@api.multi
-    def distribute_charges(self, amount, table, document_number, account_id):
-        charges = {}  
-        """
-            We are in the place where we must distribute for each 
-            'condomino'? I think that 
-        """                    
-        #for condomino in self.related_condominiums: ## TO-DO resolve 'related_condominium' not exist! We have condominio_id
-        for condomino in self.env['res.partner'].search([('condominio_id', '=', self.id)]):    
-            # Get the condominium's share of the charge.
-            # at this time 'table' contiene tutte le righe della tabella
-            # account.condominio.table aventi lo stesso codice
-            """
-                TO-DO: nella maschera di registrazine alla pressione del bottone ripartisci 
-                       spese o comunque all'esecuzione dell'action occorre una funzione che 
-            """
-            share = table.get(condomino.code_table) ## what get() do? 
-            if share is None:
-                # The condominium is not included in the distribution table.  ## what it meanning?
-                continue
 
-            # Calculate the condominium's charge.
-            charge = amount * share
-
-            # Create a journal entry for the charge.
-            """
-                Which is the difference between 'account_id: condominium.account_id.id' and 
-                'account_id: condominium.account_id'
-            """
-            account_move = self.env['account.move'].create({
-                'journal_id': self.env['account.journal'].search([('type', '=', 'general')], limit=1).id,
-                'date': fields.Date.today(),
-                'line_ids': [
-                    {                        
-                        'account_id': condomino.account_id.id, # credo ci sia fonfusione sulle entità in campo                                                        
-                        'name': condomino.name,
-                        'debit': charge,
-                    },
-                    {
-                        'account_id': account_id,
-                        'name': 'Spese condominiali',
-                        'credit': charge,
-                    },
-                ],
-            })
-
-            # Add the charge to the dictionary of charges.
-            charges[condomino] = charge
-
-        return charges
-        
