@@ -39,7 +39,7 @@
 
     <menuitem name="Condominio" id="gcond.menu_1" parent="gcond.menu_root"/>
     <menuitem name="Condomino" id="gcond.menu_2" parent="gcond.menu_root"/>
-    <menuitem name="Contabilita'" id="gcond.menu_3" parent="gcond.menu_root"/>
+    <menuitem name="Contabilita" id="gcond.menu_3" parent="gcond.menu_root"/>
 
     <!-- actions -->
 
