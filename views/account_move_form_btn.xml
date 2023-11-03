@@ -3,17 +3,14 @@
     <field name="model">account.move</field>
     <field name="inherit_id" ref="account.view_move_form"/>
     <field name="arch" type="xml">
-        <header>
-            <button name="button_distribute_charges" string="Distribute Charges" type="object" class="btn-primary"/>
-        </header>
+        <xpath expr="//group" position="before">
+            <header>
+                <button name="button_distribute_charges" string="Distribute Charges" type="object" class="btn-primary"/>>
+            </header>
+        </xpath>
     </field>
 </record>
 
 <!-- 
-<xpath expr="//group" position="before">
- <header>
- <button name="fetch_book_data" 
-string="Fetch Book Data" type="object"/>
- </header>
- </xpath>
+
 -->
