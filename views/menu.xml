@@ -15,6 +15,7 @@
     <record model="ir.actions.act_window" id="gcond.action_contabilita">
         <field name="name">Gestione Contabilità</field>
         <field name="res_model">account.journal</field>
+        <field name="view_id">ref('account.journal.dashboard.kanban').id</field>
         <field name="view_mode">kanban</field>        
     </record>
 
