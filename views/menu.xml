@@ -11,10 +11,17 @@
         <field name="view_mode">tree,form</field>
     </record>
     
-     <record model="ir.actions.act_window" id="gcond.action_contabilita" >
+    <record model="ir.actions.act_window" id="gcond.action_contabilita" >
         <field name="name">Registri</field>
         <field name="res_model">account.journal</field>
         <field name="view_mode">kanban</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="gcond.action_contabilita" >
+        <field name="name">Gestione Contabilità</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">account.journal</field>
+        <field name="view_mode">dashboard.kanban</field>       
     </record>
 
     <record model="ir.actions.act_window" id="action_account_table_master_view_form" >
