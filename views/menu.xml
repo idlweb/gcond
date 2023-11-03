@@ -17,8 +17,7 @@
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">account.journal</field>
         <field name="view_id">account.journal.dashboard.kanban</field>
-        <field name="view_mode">kanban</field>
-        <field name="target">current_menu</field>
+        <field name="view_mode">kanban</field>        
     </record>
 
     <record model="ir.actions.act_window" id="action_account_table_master_view_form" >
