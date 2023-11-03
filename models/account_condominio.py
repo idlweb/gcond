@@ -124,10 +124,6 @@ class GcondAccountCondominium(models.Model):
             # Incrementiamo il valore del campo code.
             for index, type in enumerate(type_list):
                 code = self._generate_code()  #'CO' + str(index + 1)
-
-                if not self.env['account.journal'].check_code(code):
-                    raise ValueError('Il codice del giornale deve essere univoco.')
-
                 journal = self.env['account.journal'].create([{
                     'name': 'Condominio-'+self.replace_spaces_name_condominio(name)+type,
                     'code': code,
