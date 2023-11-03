@@ -7,6 +7,8 @@ from odoo import models, fields, api
 import logging 
 _logger = logging.getLogger(__name__)
 import pdb
+import random
+import string
 
 class GcondAccountCondominium(models.Model):
     _name = 'account.condominio'
@@ -22,6 +24,7 @@ class GcondAccountCondominium(models.Model):
     city = fields.Char(string='City', required=True) # se eredito da partner non serve
     zip = fields.Char(string='ZIP', required=True)   # se eredito da partner non serve
     phone = fields.Char(string='Phone')              # se eredito da partner non serve
+
 
     
     type_registration = fields.Selection(
@@ -39,25 +42,6 @@ class GcondAccountCondominium(models.Model):
     
     # pdb.set_trace()
 
-   
-    """
-    # fix many2many da 'estensione ereditaria'
-    tax_ids = fields.Many2many(
-        comodel_name='account.tax',
-        relation='account_condominio_tax_rel',
-        column1='account_id',
-        column2='tax_id',
-        string='Taxes',
-    )
-    """
-
-    """
-    condominio_id = fields.Many2one(
-        'res.partner',
-        string='Condominio',
-        ondelete='cascade',
-    )
-    """
     
    
     country_id = fields.Many2one(
@@ -125,6 +109,13 @@ class GcondAccountCondominium(models.Model):
         return journal
 
 
+    def _generate_code(self):
+        code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
+        while self.env['account.journal'].search([('code', '=', code)]):
+            code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
+        return code
+
+
     def create_journal(self, name, id):
         # Creiamo il record del journal.
         if not self.has_journal(id):
@@ -132,7 +123,10 @@ class GcondAccountCondominium(models.Model):
             
             # Incrementiamo il valore del campo code.
             for index, type in enumerate(type_list):
-                code = 'CO' + str(index + 1)
+                code = self._generate_code()  #'CO' + str(index + 1)
+
+                if not self.env['account.journal'].check_code(code):
+                    raise ValueError('Il codice del giornale deve essere univoco.')
 
                 journal = self.env['account.journal'].create([{
                     'name': 'Condominio-'+self.replace_spaces_name_condominio(name)+type,
@@ -140,17 +134,7 @@ class GcondAccountCondominium(models.Model):
                     'type': type, #'general',
                     'condominio_id': int(id),
                 }])        
-
-            """
-            # Incrementiamo il valore del campo code.
-            code = max(int(id) + 1, 1)
-            journal = self.env['account.journal'].create([{
-                'name': 'Condominio-'+self.replace_spaces_name_condominio(name),
-                'code': code,
-                'type': type, #'general',
-                'condominio_id': int(id),
-            } for type in type_list ])        
-            """
+    
 
         return journal
     
