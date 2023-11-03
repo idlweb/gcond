@@ -50,7 +50,7 @@
             action="gcond.action_all_condomini" sequence="10" groups=""/>
     
     <menuitem name="Gestione Contabilità" id="gcond.menu_3_list" parent="gcond.menu_3" 
-            action="gcond.action_all_condomini" sequence="10" groups=""/>
+            action="gcond.action_contabilita" sequence="11" groups=""/>
 
     <menuitem name="Tabelle di ripartizione" id="gcond.menu_table_master_view"  parent="gcond.menu_1" 
               action="action_account_table_master_view_tree"/>
