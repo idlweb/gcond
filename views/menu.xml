@@ -5,14 +5,14 @@
       <field name="view_mode">tree,form</field>
     </record>
 
-    <record model="ir.actions.act_window" id="gcond.action_all_condomini" >
+    <record model="ir.actions.act_window" id="gcond.action_all_condomini">
         <field name="name">All Contacts</field>
         <field name="res_model">res.partner</field>
         <field name="view_mode">tree,form</field>
     </record>
     
 
-    <record model="ir.actions.act_window" id="gcond.action_contabilita" >
+    <record model="ir.actions.act_window" id="gcond.action_contabilita">
         <field name="name">Gestione Contabilità</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">account.journal</field>
@@ -52,7 +52,7 @@
     <menuitem name="Gestione CONDOMINI" id="gcond.menu_2_list" parent="gcond.menu_2" 
             action="gcond.action_all_condomini" sequence="10" groups=""/>
     
-    <menuitem name="Gestione Contabilità" id="gcond.menu_3_list" parent="gcond.menu_3" 
+    <menuitem name="Gestione Contabilita" id="gcond.menu_3_list" parent="gcond.menu_3" 
             action="gcond.action_contabilita" sequence="11" groups=""/>
 
     <menuitem name="Tabelle di ripartizione" id="gcond.menu_table_master_view"  parent="gcond.menu_1" 
