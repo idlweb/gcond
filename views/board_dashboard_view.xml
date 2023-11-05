@@ -1,0 +1,21 @@
+<record model="board.dashboard" id="my_dashboard">
+    <field name="name">Cruscotto di esempio</field>
+    <field name="widgets">
+        <record model="board.widget" id="my_widget_analogico">
+            <field name="type">analog</field>
+            <field name="value">123</field>
+            <field name="sensor_type">temperature</field>
+            <field name="color">blue</field>
+        </record>
+        <record model="board.widget" id="my_widget_analogico2">
+            <field name="type">barometer</field>
+            <field name="value">456</field>
+            <field name="color">green</field>
+        </record>
+        <record model="board.widget" id="my_widget_analogico3">
+            <field name="type">thermometer</field>
+            <field name="value">789</field>
+            <field name="color">red</field>
+        </record>
+    </field>
+</record>
