@@ -64,9 +64,6 @@
     <menuitem name="Gestione Contabilita" id="gcond.menu_3_list" parent="gcond.menu_3" 
             action="gcond.open_account_journal_dashboard_kanban" sequence="11" groups=""/>
 
-    <menuitem name="Cruscotto" id="gcond.menu_4_list" parent="gcond.menu_root" 
-            action="my_action_dashboard" sequence="12" groups=""/>
-
     <menuitem name="Tabelle di ripartizione" id="gcond.menu_table_master_view"  parent="gcond.menu_1" 
               action="action_account_table_master_view_tree"/>
 </odoo>
