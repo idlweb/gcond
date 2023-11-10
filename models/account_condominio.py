@@ -124,7 +124,7 @@ class GcondAccountCondominium(models.Model):
             ('code', '=', '250100'),
         ], limit=1)
 
-        """
+        """ 
         
         return record
     
