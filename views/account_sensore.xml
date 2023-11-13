@@ -8,14 +8,14 @@
                 <field name="valore_intero_interr" />
                 <field name="valore_decimale_libero"/>
                 <field name="max_rate"/>
+                <field name="valore_bool"/>
                 <button  name="read_value" type="object" class="btn-primary" icon="fa-eye" />
                 <templates>
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_global_click">
                                 <h1><field name="nome"/></h1> 
-                                <field name="valore_intero_interr" widget="progressbar"
-                                       options="{'max_field': 'max_rate'}">
-                                </field>                            
+                                <field name="valore_bool" widget="boolean_toggle"/>
+                                <field name="valore_intero_interr" widget="progressbar">                           
                                 <field name="valore_decimale_libero" widget="gauge" 
                                        style="width:80px;height:50px;cursor:pointer;" 
                                        options="{'max_field': 'max_rate'}">         
