@@ -12,9 +12,9 @@
                 <templates>
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_global_click">
-                                <h1 class="o_kanban_record_title"><field name="nome" /></h1> 
-                                <field name="valore_intero_interr" widget="bar"
-                                  style="width:80px;height:50px;cursor:pointer;"
+                                <h1><field name="nome" /></h1> 
+                                <field name="valore_intero_interr" widget="progressbar"
+                                  style="width:20px;height:30px;"
                                 >
                                 </field>
                                 <field name="valore_decimale_libero" widget="gauge" 
