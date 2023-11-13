@@ -68,7 +68,7 @@ class GcondAccountSensore(models.Model):
 
     @api.model #approfondire l'utilizzo del model, mi sa che agisce non sul record ma sulla struttura
     def read_value(self, id):
-        client = self.connectServerModbus()
+        client = self.connectServerModbus(self.id)
         sensore = self.env['account.sensore'].browse(id) 
         value = client.read_coil(23, sensore.slave_id)
         sensore.valore_intero_interr = self._get_interruttore(value)
@@ -77,7 +77,7 @@ class GcondAccountSensore(models.Model):
 
     @api.model #approfondire l'utilizzo del model, mi sa che agisce non sul record ma sulla struttura
     def write_value_on(self, id):
-        client = self.connectServerModbus()
+        client = self.connectServerModbus(self.id)
         sensore = self.env['account.sensore'].browse(id) 
         value = client.write_coil(22, True, sensore.slave_id)
         client.close()
