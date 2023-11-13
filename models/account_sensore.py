@@ -46,7 +46,7 @@ class GcondAccountSensore(models.Model):
     #logica di business
 
     # Gestione interruttore con widget 'bar' -> <field name="grafico" widget="bar" />
-    @api.depends('valore_bool')
+    @api.depends('valore_bool', 'valore_intero_interr')
     def _get_interruttore(self):
         if self.valore_bool:
             return 100
