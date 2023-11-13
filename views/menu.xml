@@ -52,7 +52,7 @@
     <record model="ir.actions.act_window" id="action_account_sensor_view_tree" >
         <field name="name">Tabelle sensori</field>
         <field name="res_model">account.sensore</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree</field>
     </record>
 
     <!-- Top menu item -->
