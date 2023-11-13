@@ -5,7 +5,7 @@
         <field name="arch" type="xml">
             <kanban>
                 <field name="nome" widget="kanban_header" />
-                <field name="valore_intero_interr" widget="bar" />
+                <field name="valore_intero_interr" widget="barchart" />
                 <!--field name="valore_decimale_libero" widget="gouge" /-->
                  <button  name="read_value" type="object" class="btn-primary" icon="fa-eye" />
             </kanban>
