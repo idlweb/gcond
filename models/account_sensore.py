@@ -32,7 +32,7 @@ class GcondAccountSensore(models.Model):
     tipo_registro_plc = fields.Char(string='Tipo registro PLC')
     address_server = fields.Char(string='Indirizzo server')
     port_server = fields.Integer(string='Porta server')
-    
+
     valore_bool = fields.Boolean(string='True-False',  default=True)
     valore_intero_interr = fields.Integer(string='Valore intero', compute='_compute_progressbar', default=100)
     valore_decimale_libero = fields.Float(string='Valore decimale')
@@ -48,7 +48,8 @@ class GcondAccountSensore(models.Model):
 
     # Gestione interruttore con widget 'bar' -> <field name="grafico" widget="bar" />
     @api.depends('valore_bool')
-    def _compute_progressbar(self):       
+    def _compute_progressbar(self): 
+        self.valore_bool = self.read_value()      
         if self.valore_bool:
             progress = 100
             self.valore_intero_interr = progress
@@ -69,16 +70,26 @@ class GcondAccountSensore(models.Model):
     def read_value(self, id):
         client = self.connectServerModbus()
         sensore = self.env['account.sensore'].browse(id) 
-        value = client.read_coil(sensore.id_registro_plc, sensore.slave_id)
+        value = client.read_coil(23, sensore.slave_id)
         sensore.valore_intero_interr = self._get_interruttore(value)
         client.close()
         return value
 
     @api.model #approfondire l'utilizzo del model, mi sa che agisce non sul record ma sulla struttura
-    def write_value(self, id):
+    def write_value_on(self, id):
         client = self.connectServerModbus()
         sensore = self.env['account.sensore'].browse(id) 
-        value = client.write_coil(sensore.id_registro_plc, sensore.slave_id)
+        value = client.write_coil(22, True, sensore.slave_id)
+        client.close()
+        if value:
+            return value
+        return 1 
+    
+    @api.model
+    def write_value_ff(self, id):
+        client = self.connectServerModbus()
+        sensore = self.env['account.sensore'].browse(id) 
+        value = client.write_coil(22, False, sensore.slave_id)
         client.close()
         if value:
             return value
