@@ -10,6 +10,9 @@ import pdb
 import random
 import string
 
+from pymodbus.client.tcp import ModbusTcpClient
+
+
 class GcondAccountSensore(models.Model):
     _name = 'account.sensore'
 
