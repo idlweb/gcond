@@ -9,6 +9,12 @@
                 <field name="valore_decimale_libero"/>
                 <field name="max_rate"/>
                 <field name="valore_bool"/>
+                <filter string="Categoria sensore" domain="[('categoria_sensore', '=', value)]" />
+                <filter string="Nome sensore" domain="[('nome', '=', value)]" />
+                <filter string="Nome sensore" domain="[('nome', '=', value)]" />
+                <filter string="partner" domain="[('partner.name', '=', value)]" />  
+                <filter string="progetto" domain="[('progetto.name', '=', value)]" />  
+                          
                 <button  name="read_value" type="object" class="btn-primary" icon="fa-eye" />
                 <templates>
                         <t t-name="kanban-box">
@@ -24,7 +30,8 @@
                                         <span>accendi</span>
                                     </button>
                                 </div>            
-                                <field name="valore_decimale_libero" widget="gauge" style="width:150px;height:300px;cursor:pointer;" />                                                      
+                                <field name="valore_decimale_libero" widget="gauge" style="width:150px;height:300px;cursor:pointer;"
+                                options="{'max_field': 'max_rate'}" />                                                      
                             </div>
                         </t>
                 </templates>
