@@ -105,7 +105,7 @@ class GcondAccountSensore(models.Model):
     class ModbusClient:
 
         def __init__(self, host, port, unit):
-            self.client = ModbusTcpClient(host, port, unit)
+            self.client = ModbusTcpClient(str(host), port, unit)
 
         def connect(self):
             self.client.connect()
