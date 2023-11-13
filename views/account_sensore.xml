@@ -6,7 +6,7 @@
                     <search string="">
                             <field name="categoria_sensore"/>
                             <field name="nome"/>
-                            <field name="Descrizione"/>  
+                            <field name="descrizione"/>  
                             <field name="progetto"/> 
                             <field name="partner"/>  
                     </search>
