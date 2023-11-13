@@ -33,7 +33,7 @@ class GcondAccountSensore(models.Model):
     address_server = fields.Char(string='Indirizzo server')
     port_server = fields.Integer(string='Porta server')
     valore_bool = fields.Boolean(string='True-False')
-    valore_intero_interr = fields.Integer(string='Valore decimale' compute='_compute_progressbar')
+    valore_intero_interr = fields.Integer(string='Valore decimale', compute='')
     valore_decimale_libero = fields.Float(string='Valore decimale')
     
     max_rate = fields.Integer(string='Maximun rate', default=1000)
@@ -47,9 +47,7 @@ class GcondAccountSensore(models.Model):
 
     # Gestione interruttore con widget 'bar' -> <field name="grafico" widget="bar" />
     @api.depends('valore_bool')
-    def _compute_progressbar(self):     
-        pass  
-        """
+    def _compute_progressbar(self):       
         for record in self:
             if record.valore_bool:
                 progress = 100
@@ -58,7 +56,6 @@ class GcondAccountSensore(models.Model):
                 progress = 0
                 record.valore_intero_interr = progress
         return self.valore_intero_interr
-        """
 
     @api.model
     def connectServerModbus(self,id):
