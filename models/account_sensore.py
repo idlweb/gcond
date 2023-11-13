@@ -49,8 +49,15 @@ class GcondAccountSensore(models.Model):
     # Gestione interruttore con widget 'bar' -> <field name="grafico" widget="bar" />
     @api.depends('valore_bool')
     def _compute_progressbar(self): 
-      
-        return self.valore_bool
+        #self.valore_bool = self.read_value(self.id)      
+        for r in self:       
+            if r.valore_bool:
+                progress = 100
+                r.valore_intero_interr = progress
+            else:
+                progress = 0
+                r.valore_intero_interr = progress
+            return r.valore_bool
 
     @api.model
     def connectServerModbus(self,id):
