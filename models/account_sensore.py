@@ -61,8 +61,8 @@ class GcondAccountSensore(models.Model):
     @api.model
     def connectServerModbus(self,id):
         sensore = self.env['account.sensore'].browse(id) 
-        #client = ModbusTcpClient(host="92.223.253.226", port=502, unit=10, debug=True)  <- eg.
-        client = GcondAccountSensore.ModbusClient(str(sensore.address_server), sensore.port_server, sensore.slave_id) 
+        client = ModbusTcpClient(host="92.223.253.226", port=502, unit=10, debug=True)  <- eg.
+        #client = GcondAccountSensore.ModbusClient(str(sensore.address_server), sensore.port_server, sensore.slave_id) 
         client.connect() 
         return client
 
@@ -87,7 +87,7 @@ class GcondAccountSensore(models.Model):
     
     @api.model
     def write_value_off(self, id):
-        client = self.connectServerModbus()
+        client = self.connectServerModbus(self.id)
         sensore = self.env['account.sensore'].browse(id) 
         value = client.write_coil(22, False, sensore.slave_id)
         client.close()
@@ -105,7 +105,7 @@ class GcondAccountSensore(models.Model):
     class ModbusClient:
 
         def __init__(self, host, port, unit):
-            self.client = ModbusTcpClient(str(host), port, unit)
+            self.client = ModbusTcpClient(host, port, unit)
 
         def connect(self):
             self.client.connect()
