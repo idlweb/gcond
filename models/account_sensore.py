@@ -55,7 +55,7 @@ class GcondAccountSensore(models.Model):
         else:
             progress = 0
             self.valore_intero_interr = progress
-
+        return self.valore_intero_interr
 
     @api.model
     def connectServerModbus(self,id):
