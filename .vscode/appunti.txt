@@ -1,1 +1,5 @@
 access_gcond_account_condomino,gcond.account_condomino,model_account_condomino,,1,1,1,1
+
+
+style="width:80px;height:50px;cursor:pointer;" 
+options="{'max_field': 'max_rate'}"
