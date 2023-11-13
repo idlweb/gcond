@@ -10,8 +10,8 @@
                 <field name="max_rate"/>
                 <field name="valore_bool"/>
                 <field name="categoria_sensore"/>
-                <field name="progetto"/>
-                <field name="partner"/>
+                <field name="progetto.name"/>
+                <field name="partner.name"/>
                 <filter string="Categoria sensore" domain="[('categoria_sensore', '=', value)]" />
                 <filter string="Nome sensore" domain="[('nome', '=', value)]" />
                 <filter string="partner" domain="[('partner.name', '=', value)]" />  
