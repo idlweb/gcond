@@ -24,8 +24,22 @@
                                         <span>accendi</span>
                                     </button>
                                 </div>
-                                <field name="valore_decimale_libero" widget="gauge" style="height: 150px!important; width: 300px!important;"/>            
-                                          
+                                <div class="oe_gauge o_field_widget" name="valore_decimale_libero" style="position: relative;">
+                                    <div class="chartjs-size-monitor">
+                                            <div class="chartjs-size-monitor-expand">
+                                                    <div class="">
+                                            </div>
+                                    </div>
+                                    <div class="chartjs-size-monitor-shrink">
+                                        <div class=""></div>
+                                    </div>
+                                </div>
+                                <canvas height="300" class="chartjs-render-monitor" width="150" style="display: block; width: 150px; height: 300px;"></canvas>
+                                <span class="o_gauge_value" style="text-align: center; position: absolute; left: 0px; right: 0px; bottom: 100px; font-weight: bold;">
+                                    <field name="valore_decimale_libero"/>
+                                </span>
+                                </div>
+                                <!--field name="valore_decimale_libero" widget="gauge" style="height: 150px!important; width: 300px!important;"/-->                                                      
                             </div>
                         </t>
                 </templates>
