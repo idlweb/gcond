@@ -1,9 +1,14 @@
-<record id="view_account_sensore_kanban" model="ir.ui.view">
-    <field name="name">account_sensor.kanban</field>
-    <field name="model">account.sensore</field>
-    <field name="arch" type="xml">
-        <kanban>
-           
-        </kanban>
-    </field>
-</record>
+<odoo>
+    <record id="view_account_sensore_kanban" model="ir.ui.view">
+        <field name="name">account_sensor.kanban</field>
+        <field name="model">account.sensore</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name" widget="kanban_header" />
+                <field name="valore_decimale" widget="goug" />
+                <field name="read_value" widget="button" icon="fa-eye" />
+                <filter string="Categoria sensore" domain="[('categoria_sensore', '=', value)]" />
+            </kanban>
+        </field>
+    </record>
+</odoo>
