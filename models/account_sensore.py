@@ -71,7 +71,7 @@ class GcondAccountSensore(models.Model):
         client = self.connectServerModbus(self.id)
         sensore = self.env['account.sensore'].browse(id) 
         value = client.read_coils(23, sensore.slave_id)   
-        client.close()
+        #client.close()
         return value
 
     @api.model #approfondire l'utilizzo del model, mi sa che agisce non sul record ma sulla struttura
