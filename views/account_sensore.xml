@@ -17,10 +17,10 @@
                                 <field name="valore_bool" label="valore_bool" widget="boolean_toggle"/>
                                 <field name="valore_intero_interr" label="valore_intero_interr" widget="progressbar"/> 
                                 <div class="col-12 col-sm-4 mb-3 mb-sm-0 o_kanban_primary_left">
-                                    <button type="object" name="write_value_off" class="btn btn-primary" >
+                                    <button type="object" name="write_value_off" class="btn btn-secondary" >
                                         <span>spegni</span>
                                     </button>
-                                    <button type="object" name="write_value_on" class="btn btn-primary" >
+                                    <button type="object" name="write_value_on" class="btn btn-secondary" >
                                         <span>accendi</span>
                                     </button>
                                 </div>                          
