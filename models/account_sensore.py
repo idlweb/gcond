@@ -37,6 +37,7 @@ class GcondAccountSensore(models.Model):
     #valore_decimale_definito = fields.digits(digits=(2, 2), string='Temperatura')
     valore_decimale_libero = fields.Float(string='Valore decimale')
     
+    max_rate = fields.Integer(string='Maximun rate', default=100)
 
     # Relazioni
 
