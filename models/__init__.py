@@ -6,7 +6,7 @@ from . import account_condominio_table_master
 from . import account_move_condominio
 from . import account_condomino
 from . import account_journal_condominio
-from . import account_sensore
+#from . import account_sensore
 
 
 
