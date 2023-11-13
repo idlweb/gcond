@@ -62,7 +62,7 @@ class GcondAccountSensore(models.Model):
     def connectServerModbus(self,id):
         sensore = self.env['account.sensore'].browse(id) 
         #client = ModbusTcpClient(host="92.223.253.226", port=502, unit=10, debug=True)  <- eg.
-        client = ModbusClient(sensore.address_server, sensore.port_server, sensore.slave_id) 
+        client = ModbusTcpClient(sensore.address_server, sensore.port_server, sensore.slave_id) 
         client.connect() 
         return client
 
