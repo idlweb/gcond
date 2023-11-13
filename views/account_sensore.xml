@@ -5,7 +5,7 @@
         <field name="arch" type="xml">
             <kanban>
                 <field name="nome" widget="kanban_header" />
-                <field name="valore_decimale" widget="goug" />
+                <field name="valore_decimale_libero" widget="goug" />
                 <field name="read_value" widget="button" icon="fa-eye" />
             </kanban>
         </field>
