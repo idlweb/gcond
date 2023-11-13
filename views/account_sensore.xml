@@ -15,8 +15,7 @@
                                 <field name="valore_intero_interr" widget="bar" />
                                 <field name="valore_decimale_libero" widget="gauge" 
                                        style="width:80px;height:50px;cursor:pointer;" 
-                                       options="{'max_field': 'max_rate'}">          
-                                       Progress    
+                                       options="{'max_field': 1000}">             
                                 </field>            
                             </div>
                         </t>
