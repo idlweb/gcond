@@ -33,7 +33,7 @@ class GcondAccountSensore(models.Model):
     address_server = fields.Char(string='Indirizzo server')
     port_server = fields.Integer(string='Porta server')
     valore_bool = fields.Boolean(string='True-False')
-    valore_intero_interr = fields.Integer(string='Valore decimale')
+    valore_intero_interr = fields.Integer(string='Valore decimale' compute='_compute_progressbar' widget='progressbar')
     #valore_decimale_definito = fields.digits(digits=(2, 2), string='Temperatura')
     valore_decimale_libero = fields.Float(string='Valore decimale')
     
@@ -47,12 +47,15 @@ class GcondAccountSensore(models.Model):
     #logica di business
 
     # Gestione interruttore con widget 'bar' -> <field name="grafico" widget="bar" />
-    @api.depends('valore_bool', 'valore_intero_interr')
-    def _get_interruttore(self):
+    @api.depends('valore_bool')
+    def _compute_progressbar(self):
         if self.valore_bool:
-            return 100
+            progress = 100
+            self.valore_intero_interr = progress
         else:
-            return 0
+            progress = 0
+            self.valore_intero_interr = progress
+
 
     @api.model
     def connectServerModbus(self,id):
