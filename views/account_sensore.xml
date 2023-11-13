@@ -3,12 +3,7 @@
     <field name="model">account.sensore</field>
     <field name="arch" type="xml">
         <kanban>
-            <field name="name" widget="kanban_header" />
-            <field name="valore_intero_interr" widget="bar" />
-            <!--field name="valore_decimale" widget="gouge" /-->
-            <field name="read_value" widget="button" icon="fa-eye" />
-            <field name="write_value" widget="button" icon="fa-eye" />
-            <filter string="Categoria sensore" domain="[('categoria_sensore', '=', value)]" />
+           
         </kanban>
     </field>
 </record>
