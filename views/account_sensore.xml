@@ -4,8 +4,8 @@
         <field name="model">account.sensore</field>
         <field name="arch" type="xml">
             <kanban>
-                <field name="nome" widget="kanban_header" />
-                <field name="valore_intero_interr" widget="barchart" />
+                <field name="nome" />
+                <field name="valore_intero_interr" />
                 <field name="valore_decimale_libero"/>
                 <button  name="read_value" type="object" class="btn-primary" icon="fa-eye" />
                 <templates>
