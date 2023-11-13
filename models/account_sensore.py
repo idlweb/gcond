@@ -66,7 +66,7 @@ class GcondAccountSensore(models.Model):
         client = self.connectServerModbus()
         sensore = self.env['account.sensore'].browse(id) 
         value = client.read_coil(sensore.id_registro_plc, sensore.slave_id)
-        sensore.valore_intero_interr = self._get_interruttore(value)
+        sensore.valore_intero_interr = 50#self._get_interruttore(value)
         client.close()
         return value
 
