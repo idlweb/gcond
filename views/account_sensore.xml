@@ -31,8 +31,17 @@
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_global_click">
                                 <h1><field name="nome"/></h1>                                  
-                                      
-                                <field name="valore_decimale_libero" widget="gauge" style="width:150px;height:300px;cursor:pointer;"
+                                <field name="valore_bool"  widget="boolean_toggle"/>
+                                <field name="valore_intero_interr"  widget="progressbar"/> 
+                                <div class="col-12 col-sm-4 mb-3 mb-sm-0 o_kanban_primary_left">
+                                    <button type="object" name="write_value_off" class="btn btn-secondary" >
+                                        <span>spegni</span>
+                                    </button>
+                                    <button type="object" name="write_value_on" class="btn btn-secondary" >
+                                        <span>accendi</span>
+                                    </button>
+                                </div>            
+                                <field name="valore_decimale_libero" widget="gauge" width="150px" height="300px" cursor="pointer"
                                 options="{'max_field': 'max_rate'}" />                                                      
                             </div>
                         </t>
