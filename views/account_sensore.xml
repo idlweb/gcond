@@ -6,7 +6,7 @@
             <kanban>
                 <field name="nome" widget="kanban_header" />
                 <field name="valore_intero_interr" widget="barchart" />
-                <field name="valore_decimale_libero" widget="gauge" />
+                <field name="valore_decimale_libero"/>
                 <button  name="read_value" type="object" class="btn-primary" icon="fa-eye" />
             </kanban>
         </field>
