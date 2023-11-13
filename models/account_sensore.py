@@ -34,7 +34,7 @@ class GcondAccountSensore(models.Model):
     port_server = fields.Integer(string='Porta server')
 
     valore_bool = fields.Boolean(string='True-False',  default=True)
-    valore_intero_interr = fields.Integer(string='Valore intero', compute='_compute_progressbar', default=100)
+    valore_intero_interr = fields.Integer(string='Valore intero',  default=100)
     valore_decimale_libero = fields.Float(string='Valore decimale')
     
     max_rate = fields.Integer(string='Maximun rate', default=100)
