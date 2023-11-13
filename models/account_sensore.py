@@ -33,8 +33,8 @@ class GcondAccountSensore(models.Model):
     address_server = fields.Char(string='Indirizzo server')
     port_server = fields.Integer(string='Porta server')
 
-    valore_bool = fields.Boolean(string='True-False', compute='_compute_progressbar',  default=True)
-    valore_intero_interr = fields.Integer(string='Valore intero',  default=100)
+    valore_bool = fields.Boolean(string='True-False', default=True)
+    valore_intero_interr = fields.Integer(string='Valore intero', compute='_compute_progressbar',  default=100)
     valore_decimale_libero = fields.Float(string='Valore decimale')
     
     max_rate = fields.Integer(string='Maximun rate', default=100)
@@ -57,7 +57,7 @@ class GcondAccountSensore(models.Model):
             else:
                 progress = 0
                 r.valore_intero_interr = progress
-            return r.valore_bool
+            return r.valore_intero_interr
 
     @api.model
     def connectServerModbus(self,id):
