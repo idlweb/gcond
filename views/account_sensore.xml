@@ -23,8 +23,8 @@
                                     <button type="object" name="write_value_on" class="btn btn-secondary" >
                                         <span>accendi</span>
                                     </button>
-                                </div> 
-                                <field name="valore_decimale_libero" widget="gauge"/>            
+                                </div>
+                                <field name="valore_decimale_libero" widget="gauge" style="display: block; height: 150px; width: 300px;"/>            
                                           
                             </div>
                         </t>
