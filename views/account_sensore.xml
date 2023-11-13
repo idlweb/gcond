@@ -14,7 +14,10 @@
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_global_click">
                                 <h1><field name="nome"/></h1> 
-                                <field name="valore_intero_interr" widget="gauge"/>                                         
+                                <field name="valore_intero_interr" widget="gauge"
+                                       style="width:80px;height:50px;cursor:pointer;" 
+                                       options="{'max_field': 'max_rate'}">      
+                                </field>                                   
                                 <field name="valore_bool"  widget="boolean_toggle"/>
                                 <field name="valore_intero_interr"  widget="progressbar"/> 
                                 <div class="col-12 col-sm-4 mb-3 mb-sm-0 o_kanban_primary_left">
