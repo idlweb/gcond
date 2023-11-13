@@ -33,7 +33,7 @@ class GcondAccountSensore(models.Model):
     address_server = fields.Char(string='Indirizzo server')
     port_server = fields.Integer(string='Porta server')
     valore_bool = fields.Boolean(string='True-False')
-    valore_intero_interr = fields.Integer(string='Valore decimale' compute='_compute_progressbar' widget='progressbar')
+    valore_intero_interr = fields.Integer(string='Valore decimale' compute='_compute_progressbar')
     #valore_decimale_definito = fields.digits(digits=(2, 2), string='Temperatura')
     valore_decimale_libero = fields.Float(string='Valore decimale')
     
