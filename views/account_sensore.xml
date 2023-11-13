@@ -24,7 +24,7 @@
                                         <span>accendi</span>
                                     </button>
                                 </div>            
-                                <field name="valore_decimale_libero" widget="gauge" style="height: 150px!important; width: 300px!important;"/>                                                      
+                                <field name="valore_decimale_libero" widget="gauge" style="width:150px;height:300px;cursor:pointer;" />                                                      
                             </div>
                         </t>
                 </templates>
