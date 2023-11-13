@@ -6,9 +6,12 @@
             <kanban>
                 <field name="nome" />
                 <field name="valore_intero_interr" />
-                <field name="valore_decimale_libero"/>
-                <button  name="read_value" type="object" class="btn-primary" icon="fa-eye" />
-               
+                <field name="valore_decimale_libero"/>                    
+                <templates>
+                        <t t-name="kanban-box">
+                            <button  name="read_value" type="object" class="btn-primary" icon="fa-eye" />
+                        </t>
+                </templates>
             </kanban>
         </field>
     </record>
