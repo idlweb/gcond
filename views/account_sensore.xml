@@ -13,8 +13,7 @@
                             <div t-attf-class="oe_kanban_global_click">
                                 <div><strong class="o_kanban_record_title"><t t-esc="record.nome.value"/></strong></div> 
                                 <field name="valore_intero_interr" widget="bar" />
-                                <field name="valore_decimale_libero" widget="gouge" />
-                                <field name="read_value" type="object" widget="button" icon="fa-eye" />                              
+                                <field name="valore_decimale_libero" widget="gouge" />                          
                             </div>
                         </t>
                 </templates>
