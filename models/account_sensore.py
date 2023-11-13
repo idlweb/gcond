@@ -86,7 +86,7 @@ class GcondAccountSensore(models.Model):
         return 1 
     
     @api.model
-    def write_value_ff(self, id):
+    def write_value_off(self, id):
         client = self.connectServerModbus()
         sensore = self.env['account.sensore'].browse(id) 
         value = client.write_coil(22, False, sensore.slave_id)
