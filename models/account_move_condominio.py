@@ -62,9 +62,9 @@ class AccountMove(models.Model):
         # inserirlo)
         """
             move.id -> journal_id -> condominio_id
-            
+
         """
-        table = self.env['account.condominio.table.master'].search([('id', '=', self.id)], limit=1)
+        table = self.env['account.condominio.table.master'].search([('account_id', '=', self.id)], limit=1)
         document_number = self.document_number
         account_id = self.account_id
         charges = self.distribute_charges(amount, table, document_number, account_id)        

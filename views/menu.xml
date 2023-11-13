@@ -43,6 +43,12 @@
         <field name="view_mode">tree,form</field>
     </record>
 
+    <record model="ir.actions.act_window" id="action_account_sensor_view_kanban" >
+        <field name="name">Dashboard Sensori</field>
+        <field name="res_model">account.sensore</field>
+        <field name="view_mode">kanban</field>
+    </record>
+
     <!-- Top menu item -->
 
     <menuitem name="GESTIONE CONDOMINIALE" id="gcond.menu_root"/>
@@ -66,5 +72,8 @@
 
     <menuitem name="Tabelle di ripartizione" id="gcond.menu_table_master_view"  parent="gcond.menu_1" 
               action="action_account_table_master_view_tree"/>
+    
+    <menuitem name="DASHBOARD" id="gcond.menu_table_sensor_view"  parent="gcond.menu_1" 
+              action="action_account_sensor_view_kanban"/>
 </odoo>
 

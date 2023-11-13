@@ -19,6 +19,7 @@
         'views/account_condominium_view.xml',
         'views/account_condomino_view.xml',
         'views/account_move_form_btn.xml',
+        'views/account_sensore.xml',
         'views/menu.xml',
     ],
     'demo': [
