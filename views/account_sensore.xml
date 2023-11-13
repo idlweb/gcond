@@ -7,7 +7,6 @@
                 <field name="name" widget="kanban_header" />
                 <field name="valore_decimale" widget="goug" />
                 <field name="read_value" widget="button" icon="fa-eye" />
-                <filter string="Categoria sensore" domain="[('categoria_sensore', '=', value)]" />
             </kanban>
         </field>
     </record>
