@@ -73,7 +73,7 @@
     <menuitem name="Tabelle di ripartizione" id="gcond.menu_table_master_view"  parent="gcond.menu_1" 
               action="action_account_table_master_view_tree"/>
     
-    <menuitem name="DASHBOARD" id="gcond.menu_table_sensor_view"  parent="gcond.menu_1" 
+    <menuitem name="DASHBOARD" id="gcond.menu_table_sensor_view"  parent="gcond.menu_root" 
               action="action_account_sensor_view_kanban"/>
 </odoo>
 
