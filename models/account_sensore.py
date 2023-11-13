@@ -32,7 +32,7 @@ class GcondAccountSensore(models.Model):
     tipo_registro_plc = fields.Char(string='Tipo registro PLC')
     address_server = fields.Char(string='Indirizzo server')
     port_server = fields.Integer(string='Porta server')
-    valore_bool = fields.Boolean(string='True-False')
+    valore_bool = fields.Boolean(string='True-False'.  default=True)
     valore_intero_interr = fields.Integer(string='Valore decimale', compute='_compute_progressbar')
     valore_decimale_libero = fields.Float(string='Valore decimale')
     
