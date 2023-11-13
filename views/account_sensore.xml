@@ -14,9 +14,8 @@
                             <div t-attf-class="oe_kanban_global_click">
                                 <h1><field name="nome" /></h1> 
                                 <field name="valore_intero_interr" widget="progressbar"
-                                  style="width:20px;height:30px;"
-                                >
-                                </field>
+                                       options="{'max_field': 'max_rate'}">
+                                </field>                            
                                 <field name="valore_decimale_libero" widget="gauge" 
                                        style="width:80px;height:50px;cursor:pointer;" 
                                        options="{'max_field': 'max_rate'}">         
