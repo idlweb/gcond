@@ -5,9 +5,9 @@
                 <field name="arch" type="xml">
                     <search string="">
                             <filter string="Categoria sensore" domain="[('categoria_sensore', '=', value)]" />
-                            <filter string="Nome sensore" domain="[('nome', '=', value)]" />
-                            <filter string="partner" domain="[('partner', '=', value)]" />  
-                            <filter string="progetto" domain="[('progetto', '=', value)]" />  
+                            <filter string="Nome sensore"/>
+                            <filter string="partner"/>  
+                            <filter string="progetto"/>  
                     </search>
                 </field>
     </record>
