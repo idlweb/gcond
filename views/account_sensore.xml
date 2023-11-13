@@ -12,8 +12,8 @@
                 <templates>
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_global_click">
-                                <field name="valore_intero_interr" widget="progrebar"  
-                                       style="width:280px;height:50px;cursor:pointer;" 
+                                <field name="valore_decimale_libero" widget="progressbar"  
+                                       style="width:280px;height:50px;" 
                                        options="{'max_field': 'max_rate'}">    
 
                                 </field>
