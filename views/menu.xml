@@ -49,10 +49,10 @@
         <field name="view_mode">kanban</field>
     </record>
 
-    <record model="ir.actions.act_window" id="action_account_sensor_view_tree" >
+    <record model="ir.actions.act_window" id="action_account_sensor_view" >
         <field name="name">Tabelle sensori</field>
         <field name="res_model">account.sensore</field>
-        <field name="view_mode">tree</field>
+        <field name="view_mode">tree,form</field>
     </record>
 
     <!-- Top menu item -->
