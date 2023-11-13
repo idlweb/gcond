@@ -4,11 +4,11 @@
                 <field name="model">account.sensore</field>
                 <field name="arch" type="xml">
                     <search string="">
-                            <field name=""></field> field="categoria_sensore"/>
-                            <field string="nome"/>
-                            <field string="Descrizione"/>  
-                            <field string="progetto"/> 
-                            <field string="partner"/>  
+                            <field name="categoria_sensore"/>
+                            <field name="nome"/>
+                            <field name="Descrizione"/>  
+                            <field name="progetto"/> 
+                            <field name="partner"/>  
                     </search>
                 </field>
     </record>
