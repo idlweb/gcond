@@ -71,7 +71,7 @@ class GcondAccountSensore(models.Model):
         client = self.connectServerModbus(self.id)
         sensore = self.env['account.sensore'].browse(id) 
         value = client.read_coils(23, sensore.slave_id)
-        sensore.valore_bool = value
+        self.valore_bool = value
         client.close()
         return value
 
@@ -80,7 +80,7 @@ class GcondAccountSensore(models.Model):
         client = self.connectServerModbus(self.id)
         sensore = self.env['account.sensore'].browse(id) 
         value = client.write_coil(22, True, sensore.slave_id)
-        sensore.valore_bool = value
+        self.valore_bool = value
         client.close()
         if value:
             return value
@@ -91,7 +91,7 @@ class GcondAccountSensore(models.Model):
         client = self.connectServerModbus(self.id)
         sensore = self.env['account.sensore'].browse(id) 
         value = client.write_coil(22, False, sensore.slave_id)
-        sensore.valore_bool = value
+        self.valore_bool = value
         client.close()
         if value:
             return value
