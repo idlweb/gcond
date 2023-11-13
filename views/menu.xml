@@ -83,7 +83,7 @@
               action="action_account_sensor_view_kanban"/>
     
     <menuitem name="Gestione sensori" id="gcond.menu_table_sensor_view_tree"  parent="gcond.menu_root" 
-              action="action_account_sensor_view_tree"/>
+              action="action_account_sensor_view"/>
 
 </odoo>
 
