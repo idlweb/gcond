@@ -15,8 +15,8 @@
     </record>
 
     <record id="acoount_sensore_view_tree" model="ir.ui.view">
-        <field name="name">model_name.view.tree</field>
-        <field name="model">model_name</field>
+        <field name="name">account.sensore.view.tree</field>
+        <field name="model">account.sensore</field>
         <field name="arch" type="xml">
             <tree string="">
                 <field name="categoria_sensore"/>
