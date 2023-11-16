@@ -57,7 +57,7 @@
                                 </div>            
                                 <field name="valore_decimale_libero" widget="gauge" width="150px" height="300px" cursor="pointer"
                                 options="{'max_field': 'max_rate'}" /> 
-                                <field name="valore_decimale_libero" widget="int_gauge"/>                                                     
+                                <!--field name="valore_decimale_libero" widget="int_gauge"/-->  
                             </div>
                         </t>
                 </templates>
