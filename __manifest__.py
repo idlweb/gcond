@@ -15,7 +15,7 @@
     'depends' : ['web','website','base','account'],
     'data': [
         'security/ir.model.access.csv',
-        'views/templates.xml',
+        #'views/templates.xml',
         'views/account_condominium_table_view.xml',
         'views/account_condominium_view.xml',
         'views/account_condomino_view.xml',
@@ -25,6 +25,8 @@
     ],
     'assets': {
         'web.assets_backend': [
+            'https://unpkg.com/chart.js@2.8.0/dist/Chart.bundle.js',
+            'https://unpkg.com/chartjs-gauge@0.3.0/dist/chartjs-gauge.js',
             'gcond/static/src/js/gauge_widget.js',
         ],
     },
