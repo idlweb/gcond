@@ -25,6 +25,11 @@ dodoo.define('gauge_field', function (require) {
             // Svuota il contenitore
             this.$el.empty();
           
+            // Aggiungi un elemento <div> con l'id #chart
+            //const chart = document.createElement('div');
+            //chart.id = 'chart';
+            //this.$el.append(chart);
+
             // Crea il grafico a indicatore
             const ctx = this.$el.find('#chart').get(0).getContext('2d');
 
