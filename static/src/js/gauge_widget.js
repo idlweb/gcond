@@ -15,7 +15,8 @@ odoo.define('gauge_field', function (require) {
         init: function (parent, name, record, options) {
             //...
             this._super.apply(this, arguments);
-            console.log(parent, name, record, options)
+            console.log("^^^^^^^^^^^^");
+            console.log(parent, name, record, options);
         },
 
         _render: function () {
@@ -44,7 +45,7 @@ odoo.define('gauge_field', function (require) {
                         responsive: true,
                         title: {
                             display: true,
-                            text: 'Gauge chart'
+                            text: 'Indicatore serbatoio A'
                         },
                         layout: {
                             padding: {
