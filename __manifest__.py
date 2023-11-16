@@ -25,6 +25,7 @@
     ],
     'assets': {
         'web.assets_backend': [
+            'gcond/static/src/js/gauge_widget.js',
         ],
     },
     'demo': [
