@@ -12,12 +12,11 @@ odoo.define('gauge_field', function (require) {
         // including the totalColors property, 
         // which specifies the number of colors that the widget should display
         //
-        init: function (record) {
+        init: function () {
             //...
             this._super.apply(this, arguments);
-            this.value = this.field.value;
             //this.record = record;
-            console.log(this.record);
+            console.log(this.record.partner.data.nome;);
         },
 
         _render: function () {
