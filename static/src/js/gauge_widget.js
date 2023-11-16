@@ -31,7 +31,7 @@ odoo.define('gauge_field', function (require) {
             const ctx = this.$el.find('#chart').get(0).getContext('2d');
             
             const config = {
-                    type: 'gauge',
+                    type: 'doughnut',
                     data: {
                         //labels: ['Success', 'Warning', 'Warning', 'Error'],
                         datasets: [{
