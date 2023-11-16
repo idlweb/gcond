@@ -6,7 +6,7 @@ odoo.define('gauge_field', function (require) {
     
     var gauge_field = AbstractField.extend({
         className: 'o_int_gauge', // => costante !
-        tagName: '<canvas>', //property specifies the HTML tag name for the widget's element.
+        // tagName: '<canvas>', //property specifies the HTML tag name for the widget's element.
         supportedFieldTypes: ['float'], //property specifies the field types that the widget supports.
         // init method initializes some internal properties, 
         // including the totalColors property, 
