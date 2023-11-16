@@ -7,7 +7,7 @@ dodoo.define('gauge_field', function (require) {
     var gauge_field = AbstractField.extend({
         className: 'o_int_gauge', // => costante !
         tagName: '<canvas id="chart"></canvas>', //property specifies the HTML tag name for the widget's element.
-        supportedFieldTypes: ['integer'], //property specifies the field types that the widget supports.
+        supportedFieldTypes: ['float'], //property specifies the field types that the widget supports.
         // init method initializes some internal properties, 
         // including the totalColors property, 
         // which specifies the number of colors that the widget should display
@@ -21,49 +21,49 @@ dodoo.define('gauge_field', function (require) {
             // Svuota il contenitore
             this.$el.empty();
           
-            // Aggiungi un elemento <div> con l'id #chart
+            //Aggiungi un elemento <div> con l'id #chart
             //const chart = document.createElement('div');
             //chart.id = 'chart';
             //this.$el.append(chart);
 
             // Crea il grafico a indicatore
             const ctx = this.$el.find('#chart').get(0).getContext('2d');
-
+            alert(ctx);
             const config = {
                     type: 'gauge',
                     data: {
                     //labels: ['Success', 'Warning', 'Warning', 'Error'],
-                    datasets: [{
-                        data: data,
-                        value: value,
-                        backgroundColor: ['green', 'yellow', 'orange', 'red'],
-                        borderWidth: 2
-                    }]
+                        datasets: [{
+                            data: data,
+                            value: value,
+                            backgroundColor: ['green', 'yellow', 'orange', 'red'],
+                            borderWidth: 2
+                        }]
                     },
                     options: {
-                    responsive: true,
-                    title: {
-                        display: true,
-                        text: 'Gauge chart'
-                    },
-                    layout: {
-                        padding: {
-                        bottom: 30
+                        responsive: true,
+                        title: {
+                            display: true,
+                            text: 'Gauge chart'
+                        },
+                        layout: {
+                            padding: {
+                            bottom: 30
+                            }
+                        },
+                        needle: {
+                            // Needle circle radius as the percentage of the chart area width
+                            radiusPercentage: 2,
+                            // Needle width as the percentage of the chart area width
+                            widthPercentage: 3.2,
+                            // Needle length as the percentage of the interval between inner radius (0%) and outer radius (100%) of the arc
+                            lengthPercentage: 80,
+                            // The color of the needle
+                            color: 'rgba(0, 0, 0, 1)'
+                        },
+                        valueLabel: {
+                            formatter: Math.round
                         }
-                    },
-                    needle: {
-                        // Needle circle radius as the percentage of the chart area width
-                        radiusPercentage: 2,
-                        // Needle width as the percentage of the chart area width
-                        widthPercentage: 3.2,
-                        // Needle length as the percentage of the interval between inner radius (0%) and outer radius (100%) of the arc
-                        lengthPercentage: 80,
-                        // The color of the needle
-                        color: 'rgba(0, 0, 0, 1)'
-                    },
-                    valueLabel: {
-                        formatter: Math.round
-                    }
                     }
                 };
           
