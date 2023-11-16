@@ -28,7 +28,6 @@ dodoo.define('gauge_field', function (require) {
 
             // Crea il grafico a indicatore
             const ctx = this.$el.find('#chart').get(0).getContext('2d');
-            alert(ctx);
             const config = {
                     type: 'gauge',
                     data: {
@@ -68,6 +67,7 @@ dodoo.define('gauge_field', function (require) {
                 };
           
             this.gauge = new Chart(ctx, config);
+            this._setValue(data.val.toString());
         },
     
     });
