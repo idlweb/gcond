@@ -67,7 +67,7 @@ odoo.define('gauge_field', function (require) {
                 };
           
             this.gauge = new Chart(ctx, config);
-            this._setValue(data.val.toString());
+            //this._setValue(data.val.toString());
         },
     
     });
