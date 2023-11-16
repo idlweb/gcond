@@ -23,6 +23,10 @@
         'views/account_sensore.xml',
         'views/menu.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+        ],
+    },
     'demo': [
         #'demo/account_demo.xml',
     ],
