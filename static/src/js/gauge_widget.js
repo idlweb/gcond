@@ -28,12 +28,13 @@ odoo.define('gauge_field', function (require) {
 
             // Crea il grafico a indicatore
             const ctx = this.$el.find('#chart').get(0).getContext('2d');
+            
             const config = {
                     type: 'gauge',
                     data: {
                     //labels: ['Success', 'Warning', 'Warning', 'Error'],
                         datasets: [{
-                            data: data,
+                            data: [10,12,20,5],
                             value: value,
                             backgroundColor: ['green', 'yellow', 'orange', 'red'],
                             borderWidth: 2
@@ -67,10 +68,14 @@ odoo.define('gauge_field', function (require) {
                 };
           
             this.gauge = new Chart(ctx, config);
-            //this._setValue(data.val.toString());
+            
         },
     
     });
+
+    //var $target = $(ev.currentTarget);
+    //var data = $target.data();
+    //this._setValue(data.val.toString());
     
     fieldRegistry.add('int_gauge', gauge_field);
     
