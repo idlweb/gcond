@@ -16,7 +16,7 @@ odoo.define('gauge_field', function (require) {
             //...
             this._super.apply(this, arguments);
             //this.record = record;
-            console.log(this.record.valore_decimale_libero.value);
+            console.log(this.record.valore_decimale_libero);
         },
 
         _render: function () {
