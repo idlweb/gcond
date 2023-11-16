@@ -31,7 +31,7 @@ odoo.define('gauge_field', function (require) {
             const ctx = this.$el.find('#chart').get(0).getContext('2d');
             
             const config = {
-                    type: 'doughnut',
+                    type: 'bar',
                     data: {
                         //labels: ['Success', 'Warning', 'Warning', 'Error'],
                         datasets: [{
@@ -42,7 +42,7 @@ odoo.define('gauge_field', function (require) {
                         }]
                     },
                     options: {
-                        responsive: false,
+                        responsive: true,
                         title: {
                             display: true,
                             text: 'Indicatore serbatoio A'
