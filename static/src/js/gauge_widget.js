@@ -1,4 +1,4 @@
-dodoo.define('gauge_field', function (require) {
+odoo.define('gauge_field', function (require) {
     "use strict";
     
     var AbstractField = require('web.AbstractField'); //class is a base class for Odoo widgets that provides basic functionality for displaying and editing fields in Odoo forms.
