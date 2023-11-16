@@ -15,8 +15,8 @@ odoo.define('gauge_field', function (require) {
         init: function (record) {
             //...
             this._super.apply(this, arguments);
-            this.data = record.data;
-            console.log(data);
+            this.record = record;
+            console.log(this.record);
         },
 
         _render: function () {
