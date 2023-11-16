@@ -1,4 +1,4 @@
-odoo.define('gauge_field', function (require) {
+dodoo.define('gauge_field', function (require) {
     "use strict";
     
     var AbstractField = require('web.AbstractField'); //class is a base class for Odoo widgets that provides basic functionality for displaying and editing fields in Odoo forms.
@@ -6,7 +6,7 @@ odoo.define('gauge_field', function (require) {
     
     var gauge_field = AbstractField.extend({
         className: 'o_int_gauge', // => costante !
-        tagName: 'div', //property specifies the HTML tag name for the widget's element.
+        tagName: '<canvas id="chart"></canvas>', //property specifies the HTML tag name for the widget's element.
         supportedFieldTypes: ['integer'], //property specifies the field types that the widget supports.
         events: {
             // forte, associa il click event a tutti gli elemnti con questa classe!
