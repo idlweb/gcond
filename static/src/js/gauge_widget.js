@@ -15,7 +15,7 @@ odoo.define('gauge_field', function (require) {
         init: function (record) {
             //...
             this._super.apply(this, arguments);
-            const value = this.field.value;
+            this.value = this.field.value;
             //this.record = record;
             console.log(this.record);
         },
@@ -38,7 +38,7 @@ odoo.define('gauge_field', function (require) {
                         //labels: ['Success', 'Warning', 'Warning', 'Error'],
                         datasets: [{
                             data: [10,2,3,5],
-                            value: value,
+                            value: this.value,
                             backgroundColor: ['green', 'yellow', 'orange', 'red'],
                             borderWidth: 2
                         }]
