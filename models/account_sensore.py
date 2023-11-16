@@ -26,7 +26,7 @@ class GcondAccountSensore(models.Model):
     protoc_trasf_dati = fields.Char(string='Protocollo di trasferimento dati')
     protoc_conn = fields.Char(string='Protocollo di connessione')
     res_partner_id = fields.Many2one('res.partner', string='Partner')
-    progetto_id = fields.Many2one('project.project', string='Progetto')
+    progetto_id = fields.Many2one('crm.lead', string='Progetto')
     id_registro_plc = fields.Integer(string='ID registro PLC')
     slave_id = fields.Integer(string='ID slave')
     tipo_registro_plc = fields.Char(string='Tipo registro PLC')
@@ -42,7 +42,7 @@ class GcondAccountSensore(models.Model):
     # Relazioni
 
     partner = fields.Many2one('res.partner', string='Partner', related='res_partner_id', store=True)
-    progetto = fields.Many2one('project.project', string='Progetto', related='progetto_id', store=True)
+    progetto = fields.Many2one('crm.lead', string='Progetto', related='progetto_id', store=True)
 
     #logica di business
 
