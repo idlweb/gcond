@@ -16,7 +16,6 @@ odoo.define('gauge_field', function (require) {
             //...
             this._super.apply(this, arguments);
             //this.record = record;
-            console.log(this.record.valore_decimale_libero.integerValue());
         },
 
         _render: function () {
@@ -37,7 +36,7 @@ odoo.define('gauge_field', function (require) {
                         //labels: ['Success', 'Warning', 'Warning', 'Error'],
                         datasets: [{
                             data: [10,2,3,5],
-                            value: 4,
+                            value: this.value,
                             backgroundColor: ['green', 'yellow', 'orange', 'red'],
                             borderWidth: 2
                         }]
