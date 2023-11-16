@@ -15,27 +15,28 @@ odoo.define('gauge_field', function (require) {
         init: function (record) {
             //...
             this._super.apply(this, arguments);
-            console.log(record.ctx.data);
+            console.log(record.ctx);
         },
 
         _render: function () {
             // Svuota il contenitore
             this.$el.empty();
+
             //Aggiungi un elemento <div> con l'id #chart
             const chart = document.createElement('canvas');
             chart.id = 'chart';
             this.$el.append(chart);
-
+            
             // Crea il grafico a indicatore
             const ctx = this.$el.find('#chart').get(0).getContext('2d');
             
             const config = {
                     type: 'gauge',
                     data: {
-                    //labels: ['Success', 'Warning', 'Warning', 'Error'],
+                        labels: ['Success', 'Warning', 'Warning', 'Error'],
                         datasets: [{
                             data: [10,12,20,5],
-                            value: this.record.valore_decimale_libero.raw_value,
+                            value: record.fields['valore_decimale_libero'].value,
                             backgroundColor: ['green', 'yellow', 'orange', 'red'],
                             borderWidth: 2
                         }]
