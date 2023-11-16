@@ -6,7 +6,7 @@ odoo.define('gauge_field', function (require) {
     
     var gauge_field = AbstractField.extend({
         className: 'o_int_gauge', // => costante !
-        tagName: '<canvas id="chart"></canvas>', //property specifies the HTML tag name for the widget's element.
+        tagName: '<canvas>', //property specifies the HTML tag name for the widget's element.
         supportedFieldTypes: ['float'], //property specifies the field types that the widget supports.
         // init method initializes some internal properties, 
         // including the totalColors property, 
@@ -22,9 +22,9 @@ odoo.define('gauge_field', function (require) {
             this.$el.empty();
           
             //Aggiungi un elemento <div> con l'id #chart
-            //const chart = document.createElement('div');
-            //chart.id = 'chart';
-            //this.$el.append(chart);
+            const chart = document.createElement('canvas');
+            chart.id = 'chart';
+            this.$el.append(chart);
 
             // Crea il grafico a indicatore
             const ctx = this.$el.find('#chart').get(0).getContext('2d');
