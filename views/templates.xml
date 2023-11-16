@@ -1,0 +1,10 @@
+<odoo>
+ <template id="assets_end" inherit_id="web.assets_backend">
+    <xpath expr="." position="inside">
+        <script src="https://unpkg.com/chart.js@2.8.0/dist/Chart.bundle.js"></script>
+        <script src="https://unpkg.com/chartjs-gauge@0.3.0/dist/chartjs-gauge.js"></script>
+        <script src="/my_library /static/src/js/gauge_widget.js" type="text/javascript" />
+        <!--link href="/my_library/static/src/scss/field_widget.scss" rel="stylesheet" type="text/scss" /-->
+    </xpath>
+ </template>
+</odoo>
