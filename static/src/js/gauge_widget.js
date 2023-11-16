@@ -20,7 +20,6 @@ odoo.define('gauge_field', function (require) {
         _render: function () {
             // Svuota il contenitore
             this.$el.empty();
-          
             //Aggiungi un elemento <div> con l'id #chart
             const chart = document.createElement('canvas');
             chart.id = 'chart';
@@ -35,7 +34,7 @@ odoo.define('gauge_field', function (require) {
                     //labels: ['Success', 'Warning', 'Warning', 'Error'],
                         datasets: [{
                             data: [10,12,20,5],
-                            value: this.this.field.integerValue,
+                            value: this.value.data,
                             backgroundColor: ['green', 'yellow', 'orange', 'red'],
                             borderWidth: 2
                         }]
