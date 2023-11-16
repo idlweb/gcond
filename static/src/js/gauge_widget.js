@@ -8,10 +8,6 @@ dodoo.define('gauge_field', function (require) {
         className: 'o_int_gauge', // => costante !
         tagName: '<canvas id="chart"></canvas>', //property specifies the HTML tag name for the widget's element.
         supportedFieldTypes: ['integer'], //property specifies the field types that the widget supports.
-        events: {
-            // forte, associa il click event a tutti gli elemnti con questa classe!
-            'click .gauge_click': 'clickRandom',  //property specifies the event handlers for the widget.
-        },
         // init method initializes some internal properties, 
         // including the totalColors property, 
         // which specifies the number of colors that the widget should display
@@ -73,13 +69,6 @@ dodoo.define('gauge_field', function (require) {
           
             this.gauge = new Chart(ctx, config);
         },
-    
-       
-        clickRandom: function (ev) {
-            var $target = $(ev.currentTarget);
-            var data = $target.data();
-            this._setValue(data.val.toString());
-        }
     
     });
     
