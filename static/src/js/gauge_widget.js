@@ -35,14 +35,14 @@ odoo.define('gauge_field', function (require) {
                     data: {
                         //labels: ['Success', 'Warning', 'Warning', 'Error'],
                         datasets: [{
-                            data: [100],
+                            data: [18,12,6,9],
                             value: this.value,
                             backgroundColor: ['green', 'yellow', 'orange', 'red'],
                             borderWidth: 2
                         }]
                     },
                     options: {
-                        responsive: true,
+                        responsive: false,
                         title: {
                             display: true,
                             text: 'Indicatore serbatoio A'
