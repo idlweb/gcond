@@ -55,7 +55,7 @@
                                         <span>accendi</span>
                                     </button>
                                 </div>            
-                                <field name="valore_decimale_libero" widget="int_gauge"/>  
+                                <field name="valore_decimale_libero" widget="gauge_field"/>  
                             </div>
                         </t>
                 </templates>
