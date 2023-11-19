@@ -78,7 +78,7 @@ odoo.define('gauge_field', function (require) {
     //var data = $target.data();
     //this._setValue(data.val.toString());
     
-    fieldRegistry.add('int_gauge', gauge_field);
+    fieldRegistry.add('gauge_field', gauge_field);
     
     //Finally, the function returns an object that contains the colorField widget.
     return {
