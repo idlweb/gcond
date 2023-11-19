@@ -25,6 +25,7 @@ odoo.define('gauge_field', function (require) {
             //Aggiungi un elemento <div> con l'id #chart
             const chart = document.createElement('canvas');
             chart.id = 'chart';
+            chart.style = 'display: block;';
             this.$el.append(chart);
             
             // Crea il grafico a indicatore
