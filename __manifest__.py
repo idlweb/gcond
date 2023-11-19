@@ -27,6 +27,7 @@
             'https://unpkg.com/chart.js@2.8.0/dist/Chart.bundle.js',
             'https://unpkg.com/chartjs-gauge@0.3.0/dist/chartjs-gauge.js',
             'gcond/static/src/js/gauge_widget.js',
+            'gcond/static/src/css/gauge_widget.scss',
         ],
     },
     'demo': [
