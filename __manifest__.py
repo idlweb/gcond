@@ -36,7 +36,7 @@
             'gcond/static/src/css/field_widget.scss',
         ],
         'web.assets_qweb': [
-        'gcond/static/src/xml/qweb_template.xml',
+            'gcond/static/src/xml/qweb_template.xml',
         ],
     },    
     'demo': [
