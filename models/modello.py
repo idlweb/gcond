@@ -24,6 +24,6 @@ class Base(models.AbstractModel):
                 result_dict[m2m_record.id]['children'].append({
                     'name': record.display_name,
                     'id': record.id,
-                    'condomino': record.condomino_id, 
+                    'descrizione': record.description, 
                 })
         return result_dict
