@@ -35,10 +35,10 @@
             'gcond/static/src/js/m2m_group_renderer.js',
             'gcond/static/src/css/field_widget.scss',
         ],
-    },
-     "qweb": [ 
+        'web.assets_qweb': [
         'gcond/static/src/xml/qweb_template.xml',
-    ],
+        ],
+    },    
     'demo': [
         #'demo/account_demo.xml',
     ],
