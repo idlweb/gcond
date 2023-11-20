@@ -19,7 +19,7 @@
                         </t>
                     </ul>
                     <div class="card-body">
-                        <a href="#" class="btn btn-sm btn-primary o_primay_button" t-att-data-group="group">View books</a>
+                        <a href="#" class="btn btn-sm btn-primary o_primay_button" t-att-data-group="group">Detaglio tabella</a>
                     </div>
                 </div>
             </div>
