@@ -12,7 +12,7 @@ class Saldo(http.Controller):
                 'saldo': request.env['account.move'].search([]),
             })
 
-    @http.route('/books/submit_pag', type='http', auth="user", website=True)
+    @http.route('/saldo/submit_pag', type='http', auth="user", website=True)
     def saldo_pago(self, **post):
         if post.get('book_id'):
             conto_id = int(post.get('conto_id'))
@@ -24,7 +24,7 @@ class Saldo(http.Controller):
             })
             return request.redirect('/saldo/submit_pag?submitted=1')
 
-        return request.render('gcond.conto_pag_form', {
+        return request.render('gcond.conto_pago_form', {
             'saldo': request.env['account.move'].search([]),
             'submitted': post.get('submitted', False)
         })
