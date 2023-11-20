@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
 <template>
     <t t-name="ViewM2mGroup">
         <div class="row ml16 mr16">
@@ -33,3 +34,4 @@
         </button>
     </div>
 </template>
+</odoo>
