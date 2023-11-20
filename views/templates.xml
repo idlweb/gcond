@@ -36,6 +36,44 @@
         </t>
     </template>
 
+    <template id="conto_pago_form" name="Pagamento saldo contabile">
+        <t t-call="website.layout">
+            <div class="container mt32">
+                <t t-if="submitted">
+                    <h3 class="alert alert-success mt16 mb16">
+                        <i class="fa fa-thumbs-up"/>
+                        Pagamento submitted successfully
+                    </h3>
+                    <h1> Riferisci altri pagamenti </h1>
+                </t>
+                <t t-else="">
+                    <h1> Pagamento non effettuato </h1>
+                </t>
+                <div class="row mt16">
+                    <div class="col-6">
+                        <form method="post">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="form-group">
+                                <label>Select Book</label>
+                                <select class="form-control" name="id">
+                                    <t t-foreach="saldo" t-as="conto">
+                                        <option t-att-value="conto.id">
+                                            <t t-esc="conto.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Description debito</label>
+                                <textarea name="issue_description" class="form-control" placeholder="e.g. pages are missing"/>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
 
 
 </odoo>
