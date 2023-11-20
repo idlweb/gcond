@@ -25,5 +25,6 @@ class Base(models.AbstractModel):
                     'name': record.display_name,
                     'id': record.id,
                     'descrizione': record.description, 
+                    'pomodoro' : 'rosso',
                 })
         return result_dict

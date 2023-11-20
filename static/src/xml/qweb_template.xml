@@ -20,6 +20,10 @@
                                 <i class="fa fa-user"/>
                                 <t t-esc="child.descrizione"/>
                             </li>
+                             <li class="list-group-item">
+                                <i class="fa fa-user"/>
+                                <t t-esc="child.pomodoro"/>
+                            </li>
                         </t>
                     </ul>
                     <div class="card-body">
