@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<templates>
+<template>
     <t t-name="ViewM2mGroup">
         <div class="row ml16 mr16">
             <div t-foreach="groups" t-as="group" class="col-3">
@@ -32,4 +32,4 @@
                 Add Record
         </button>
     </div>
-</templates>
+</template>
