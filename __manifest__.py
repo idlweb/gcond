@@ -37,7 +37,7 @@
         ],
     },
      "qweb": [ 
-        'static/src/xml/qweb_template.xml',
+        'gcond/static/src/xml/qweb_template.xml',
     ],
     'demo': [
         #'demo/account_demo.xml',
