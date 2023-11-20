@@ -6,8 +6,8 @@ dictionary, you can use the delegate=True attribute in the Many2one field defini
 This will work exactly like the _inherits option
 """
 
-class LibraryMember(models.Model):
-    _name = 'library.member'
+class CondominoMember(models.Model):
+    _name = 'condomino.member'
     partner_id = fields.Many2one('res.partner', 
     ondelete='cascade', delegate=True)
     date_start = fields.Date('Member Since')
