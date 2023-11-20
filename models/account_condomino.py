@@ -26,7 +26,7 @@ class GcondAccountCondomino(models.Model):
     
     
     company_type = fields.Selection(string='Company Type',
-        selection=[('person', 'Individual'), ('company', 'Company'), ('condominio','Condominio')],
+        selection=[('person', 'Individual'), ('company', 'Company'), ('condomino','Condomino')],
         compute='_compute_company_type', inverse='_write_company_type')
     
 
@@ -35,7 +35,7 @@ class GcondAccountCondomino(models.Model):
     def _compute_company_type(self):
         for partner in self:
             if self.condominio_id:
-                self.company_type = 'condominio'
+                self.company_type = 'condomino'
                 self.is_condominio = True
             else:
                 partner.company_type = 'company' if partner.is_company else 'person'
@@ -44,7 +44,7 @@ class GcondAccountCondomino(models.Model):
 
     def _write_company_type(self):
         for partner in self:
-            if partner.company_type == 'condominio':
+            if partner.company_type == 'condomino':
                partner.is_condominio = True
             elif partner.company_type == 'company':
                partner.is_company = True
@@ -52,7 +52,7 @@ class GcondAccountCondomino(models.Model):
 
     @api.onchange('company_type')
     def onchange_company_type(self):
-        if self.company_type == 'condominio':
+        if self.company_type == 'condomino':
            self.is_condominio = True
         else:
            self.is_company = (self.company_type == 'company')
