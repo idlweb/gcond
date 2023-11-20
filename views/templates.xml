@@ -12,7 +12,7 @@
 
             <div class="container">
                 <p>Sono una pagina web accessibile da una rotta (link web)</p>
-                <t t-foreach="conti" t-as="conto">
+                <t t-foreach="saldo" t-as="conto">
                     <div t-attf-class="card mt-3 #{'bg-info' if book_odd else ''}" >
                         <div class="card-body" id="card_body">
                             <h3 t-field="conto.name"/>
