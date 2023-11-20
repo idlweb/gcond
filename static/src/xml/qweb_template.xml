@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<template>
+<template id="ViewM2mGroup">
     <t t-name="ViewM2mGroup">
         <div class="row ml16 mr16">
             <div t-foreach="groups" t-as="group" class="col-3">
