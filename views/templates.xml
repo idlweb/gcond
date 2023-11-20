@@ -12,17 +12,17 @@
 
             <div class="container">
                 <p>Sono una pagina web accessibile da una rotta (link web)</p>
-                <!--t t-foreach="conti" t-as="conto">
+                <t t-foreach="conti" t-as="conto">
                     <div t-attf-class="card mt-3 #{'bg-info' if book_odd else ''}" >
                         <div class="card-body" id="card_body">
                             <h3 t-field="conto.name"/>
-                            <t t-if="book.date_release">
-                                <div t-field="book.date_release" class="text-muted"/>
+                            <t t-if="conto.amount_total">
+                                <div t-field="conto.amount_total" class="text-muted"/>
                             </t>
-                            <b class="mt8"> Authors </b>
+                            <b class="mt8"> Dettagli </b>
                             <ul>
-                                <li t-foreach="book.author_ids" t-as="author">
-                                    <span t-esc="author.name" />
+                                <li t-foreach="conto.line_ids" t-as="riga">
+                                    <span t-esc="riga.debit" />
                                 </li>
                             </ul>
                         </div>
