@@ -33,7 +33,6 @@
             'gcond/static/src/js/m2m_group_model.js',
             'gcond/static/src/js/m2m_group_controller.js',
             'gcond/static/src/js/m2m_group_renderer.js',
-            'gcond/static/src/css/field_widget.scss',
         ],
         'web.assets_qweb': [
             'gcond/static/src/xml/qweb_template.xml',
