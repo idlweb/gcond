@@ -10,6 +10,7 @@ odoo.define('m2m_group.Model', function (require) {
         __load: function (params) {
             this.modelName = params.modelName;
             this.domain = params.domain;
+            alert(params.domain);
             this.m2m_field = params.m2m_field;
             return this._fetchData();
         },
