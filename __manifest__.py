@@ -29,6 +29,11 @@
             'https://unpkg.com/chartjs-gauge@0.3.0/dist/chartjs-gauge.js',
             'gcond/static/src/js/gauge_widget.js',
             'gcond/static/src/css/gauge_widget.scss',
+            'gcond/static/src/js/m2m_group_view.js',
+            'gcond/static/src/js/m2m_group_model.js',
+            'gcond/static/src/js/m2m_group_controller.js',
+            'gcond/static/src/js/m2m_group_renderer.js',
+            'gcond/static/src/scss/field_widget.scss',
         ],
     },
     'demo': [
