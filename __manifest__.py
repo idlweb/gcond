@@ -33,7 +33,7 @@
             'gcond/static/src/js/m2m_group_model.js',
             'gcond/static/src/js/m2m_group_controller.js',
             'gcond/static/src/js/m2m_group_renderer.js',
-            'gcond/static/src/scss/field_widget.scss',
+            'gcond/static/src/css/field_widget.scss',
         ],
     },
     'demo': [
