@@ -49,8 +49,7 @@
             <field name="arch" type="xml">
                 <field name="condominio_id"/> 
                 <m2m_group m2m_field="table_ids" color_field="color">  
-                    <field name="condominio_id.name"/> 
-                    <field name="condominio_id.name"/> 
+                    <field name="condominio_id"/>                     
                 </m2m_group>
             </field>
         </record>   
