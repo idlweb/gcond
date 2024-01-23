@@ -58,6 +58,9 @@ class AccountMove(models.Model):
         
         move = self
         amount = self.amount_total
+        details = self.invoice_line_ids
+        account_id = details.account_id
+
         # TO-DO da dove prendo self.code_table 
         # Ip.n1 -> lo prendiamo dal context (vediamo quando
         # inserirlo)
@@ -66,7 +69,7 @@ class AccountMove(models.Model):
 
         """
         table = self.env['account.condominio.table.master'].search([('account_id', '=', self.id)], limit=1)
-        document_number = self.document_number
+        document_number = self.ref
         account_id = self.account_id
         charges = self.distribute_charges(amount, table, document_number, account_id)        
 
