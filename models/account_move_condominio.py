@@ -56,7 +56,8 @@ class AccountMove(models.Model):
         if self.state != 'draft':
             raise ValueError('The invoice must be in draft state.')
         
-        amount = self.amount
+        move = self
+        amount = move.get('amount')
         # TO-DO da dove prendo self.code_table 
         # Ip.n1 -> lo prendiamo dal context (vediamo quando
         # inserirlo)
