@@ -70,7 +70,6 @@ class AccountMove(models.Model):
         """
         table = self.env['account.condominio.table.master'].search([('account_id', '=', self.id)], limit=1)
         document_number = self.ref
-        account_id = self.account_id
         charges = self.distribute_charges(amount, table, document_number, account_id)        
 
 
