@@ -20,7 +20,7 @@ class AccountMove(models.Model):
         charges = []
 
         # Check if the condominium is included in the distribution table.
-        if table.get(self.id) is None:
+       if table.get(self.id) is None :
             raise ValueError('The condominium is not included in the distribution table.')
 
         # Calculate the condominium's share of the charge.
