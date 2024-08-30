@@ -50,7 +50,7 @@ class AccountMove(models.Model):
 
         return charges
 
-     def button_distribute_charges(self):
+    def button_distribute_charges(self):
         if self.state != 'posted':
             raise UserError('The invoice must be posted before distributing charges.')
 
