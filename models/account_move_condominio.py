@@ -57,6 +57,6 @@ class AccountMove(models.Model):
         amount = self.amount_total
         table = self.distribution_table_id
         document_number = self.name
-        account_id = self.env['account.account'].search([('code', '=', '400000')], limit=1).id
+        account_id = self.env['account.account'].search([('code', '=', '410100')], limit=1).id
 
         self.distribute_charges(amount, table, document_number, account_id)
