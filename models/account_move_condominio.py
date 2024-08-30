@@ -9,7 +9,7 @@ from . import account_condominio_table_master
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    distribution_table_id = fields.Many2one('account.condominio.table', string='Distribution Table')
+    #distribution_table_id = fields.Many2one('account.condominio.table', string='Distribution Table')
     """
         sembra corretto anche il ricorso al 'code_table'
         ottengo la tabella intera ma il code_table da dove lo vado a prendere?
