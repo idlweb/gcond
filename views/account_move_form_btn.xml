@@ -7,7 +7,7 @@
             <xpath expr="//header" position="inside">
                 <button name="button_distribute_charges" string="Distribute Charges" type="object" class="btn-primary"/>
             </xpath>
-            <xpath expr="//form/sheet" position="inside">
+            <xpath expr="//sheet" position="inside">
                 <field name="distribution_table_id"/>
             </xpath>
         </field>
