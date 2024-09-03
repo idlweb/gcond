@@ -4,19 +4,18 @@
 """
 
 from odoo import models, fields, api
-#from . import account_condominio_table_master
-
+from . import account_condominio_table_master
+from odoo.exceptions import ValidationError, UserError
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
     distribution_table_id = fields.Many2one('account.condominio.table', string='Distribution Table')
-    
     """
         sembra corretto anche il ricorso al 'code_table'
         ottengo la tabella intera ma il code_table da dove lo vado a prendere?
     """
-    """
+
     def distribute_charges(self, amount, table, document_number, account_id):
         charges = []
 
@@ -32,7 +31,7 @@ class AccountMove(models.Model):
 
 
             # Create a journal entry for the charge
-            
+            """
             account_move = self.env['account.move'].create({
                 'journal_id': self.env['account.journal'].search([('type', '=', 'general')], limit=1).id,
                 'date': fields.Date.today(),
@@ -51,7 +50,8 @@ class AccountMove(models.Model):
             })
 
             charges.append(account_move)
-
+            """
+            
         return charges
 
     def button_distribute_charges(self):
@@ -67,24 +67,22 @@ class AccountMove(models.Model):
         # revisione completa della logica di distribuzione delle quote
         for line in self.get_debit_entries():
             self.distribute_charges(line.debit, table, document_number, line.account_id)
-            raise ValidationError(line)
         return True
 
     def get_debit_entries(self):
         """
-        #Ottiene tutte le voci presenti nella sezione 'dare' (debit) della registrazione contabile.
+        Ottiene tutte le voci presenti nella sezione 'dare' (debit) della registrazione contabile.
         """
         debit_entries = self.line_ids.filtered(lambda line: line.debit > 0)
         return debit_entries
 
     def check_account_entries(self, debit_entries):
         """
-        #Check if all the entries in the account_ids field of account_condominio_table_master are present.
+        Check if all the entries in the account_ids field of account_condominio_table_master are present.
         """
         account_ids = self.distribution_table_id.account_ids
         debit_entries = debit_entries.filtered(lambda account: account.account_id in account_ids.mapped('account_id'))
         
         return debit_entries
-"""
            
      
