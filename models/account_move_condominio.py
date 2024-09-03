@@ -52,7 +52,7 @@ class AccountMove(models.Model):
             charges.append(account_move)
             """
 
-        return charges
+        return True
 
     def button_distribute_charges(self):
         if self.state != 'posted':
