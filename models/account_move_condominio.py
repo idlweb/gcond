@@ -4,7 +4,7 @@
 """
 
 from odoo import models, fields, api
-from . import account_condominio_table_master
+#from . import account_condominio_table_master
 from odoo.exceptions import ValidationError, UserError
 
 class AccountMove(models.Model):

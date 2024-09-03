@@ -21,7 +21,7 @@ class AccountCondominioTableMaster(models.Model):
     code_table = fields.Char(string='Codice tabella')
     description = fields.Char(string='Descrizione')
     account_ids = fields.One2many('account.account', 'distribution_table_id', string='Accounts')
-    account_id = fields.Many2one('account.account', string='Conto di contabilità')
+    #account_id = fields.Many2one('account.account', string='Conto di contabilità')
     condominio_id = fields.Many2one(
         comodel_name='account.condominio',  
         string='Condominio di appartenenza',
