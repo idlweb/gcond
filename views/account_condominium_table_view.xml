@@ -26,7 +26,7 @@
                             <field name="description" required="True"/>
                             <field name="code_table" required="True"/>                            
                             <field name="condominio_id" required="True"/>   
-                            <field name="account_ids" widget="one2many_tags"/>    
+                            <field name="account_ids" required="True"/>    
                             <field name="table_ids" widget="field.tree" relation="account.condominio.table" target="new">
                                 <tree string="Dettaglio tabella di ripartizione">
                                     <field name="id"/>
