@@ -21,6 +21,7 @@ class AccountCondominioTableMaster(models.Model):
     code_table = fields.Char(string='Codice tabella')
     description = fields.Char(string='Descrizione')
     account_ids = fields.Many2many('account.account',  string='Conti di contabilità')
+    percentuale = fields.Float(string='Percentuale')
     color = fields.Integer()
     
     condominio_id = fields.Many2one(
