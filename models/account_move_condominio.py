@@ -13,47 +13,81 @@ class AccountMove(models.Model):
     distribution_table_ids = fields.One2many('account.condominio.table', string='Distribution Table')
 
 
-    def distribute_charges(self, amount, table, document_number, account_id):
+
+    def get_condominio_distribution_table(self, condominio_id):
+        """ """
+        return self.distribution_table_ids.filtered(lambda table: table.condominio_id.id == condominio_id)
+
+    
+
+    def distribute_charges(self, document_number):
         charges = []
         context = self.env.context
         raise UserError(context)
+        
+        journal = self.journal_id
+        condominio_id = journal.condominio_id.id
+        
+        # Iterate over each cost line. get_debit_entries() contiene tutte le voci presenti nella sezione 'dare' (debit) della registrazione contabile. 
+        for line in self.get_debit_entries():
+  
+            # Get the amount of the cost entry
+            amount = line.debit
+            # Get the account_condominio_table_master record associated with the debit/cost entry
+            account_condominio_table = self.env['account.condominio.table.master'].search([
+                ('condominio_id', '=', condominio_id),
+                ('account_ids', 'in', [line.account_id.id])
+            ])
+            if not account_condominio_table:
+                raise UserError(f"No account_condominio_table_master record found for current condominium and cost entry.")
 
-        """ ERRATO """
-        # Check if the distribution table is set
-        if not self.distribution_table_id:
-            raise ValueError('The distribution table is not set for this invoice.')
-
-        # Iterate over each condomino in the distribution table
-        for line in self.distribution_table_id:
-            condomino = line.condomino_id
-            share = line.quote / 100.0
-            charge = amount * share
-
-
-            # Create a journal entry for the charge
-            """
-            account_move = self.env['account.move'].create({
-                'journal_id': self.env['account.journal'].search([('type', '=', 'general')], limit=1).id,
-                'date': fields.Date.today(),
-                'line_ids': [
-                    {
-                        'account_id': self.account_id.id,
-                        'name': self.name,
-                        'debit': charge,
-                    },
-                    {
-                        'account_id': account_id,
-                        'name': self.name,
-                        'credit': charge,
-                    },
-                ],
-            })
-
-            charges.append(account_move)
-            """
             
+            for dettaglio_ripartizione in account_condominio_table:
+                
+                amount = (amount * account_condominio_table.percentuale)/100
+
+                """
+                unit_of_measure = fields.Char(string='Unit Of Measure')
+                value_distribution = fields.Float(string='Value Distribution')
+                quote = fields.Float(string='Percentuale di Competenza')
+                table_id = fields.Many2one('account.condominio.table.master', string='Appartiene alla Tabella', required=False)
+                condomino_id = fields.Many2one('res.partner', string='Condomino', required=False)
+                """
+
+                account_condominio_table_records = self.env['account.condominio.table'].search([
+                    ('table_id', '=', dettaglio_ripartizione.id),
+                ])
+
+                amount = amount / 1000 
+
+                for account_condominio_table_record in account_condominio_table_records:
+                    # Calculate the share for the partner
+                    
+                    charge = (amount * account_condominio_table_record.value_distribution)*quote/100
+
+                    # Create a journal entry for the charge
+                    account_move = self.env['account.move'].create({
+                        'journal_id': self.env['account.journal'].search([('type', '=', 'general')], limit=1).id,
+                        'date': fields.Date.today(),
+                        'line_ids': [
+                            {
+                                'account_id': account_condominio_table_record.condomino_id.id,
+                                'name': document_number,
+                                'debit': charge,
+                            },
+                            {
+                                'account_id': account_id,
+                                'name': document_number,
+                                'credit': charge,
+                            },
+                        ],
+                    })
+
+                    charges.append(account_move)
+                                            
         return charges
 
+    # Non c'è bisogno di ricavere l'id del condominio dal nome del giornale perchè è già presente nel modello account.journal
     def get_condominio_id(self, journal_name):
         journal = self.env['account.journal'].search([('name', '=', journal_name)], limit=1)
         if not journal:
@@ -64,23 +98,21 @@ class AccountMove(models.Model):
         if self.state != 'posted':
             raise UserError('The invoice must be posted before distributing charges.')
 
-        amount = self.amount_total
-        table = self.distribution_table_id
-        document_number = self.name
         
+        document_number = self.name
         
         # Iterate over each cost line and distribute the charges
         # revisione completa della logica di distribuzione delle quote
-        for line in self.get_debit_entries():
-            self.distribute_charges(line.debit, table, document_number, line.account_id)
-        return True
+        
+        self.distribute_charges(document_number)
+        
 
     def get_debit_entries(self):
         """
         Ottiene tutte le voci presenti nella sezione 'dare' (debit) della registrazione contabile.
         """
         debit_entries = self.line_ids.filtered(lambda line: line.debit > 0)
-        return debit_entries
+        return self.check_account_entries(debit_entries)
 
     def check_account_entries(self, debit_entries):
         """
@@ -88,7 +120,6 @@ class AccountMove(models.Model):
         """
         account_ids = self.distribution_table_id.account_ids
         debit_entries = debit_entries.filtered(lambda account: account.account_id in account_ids.mapped('account_id'))
-        
         return debit_entries
            
      
