@@ -10,15 +10,15 @@ from odoo.exceptions import ValidationError, UserError
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    distribution_table_id = fields.Many2one('account.condominio.table', string='Distribution Table')
-    """
-        sembra corretto anche il ricorso al 'code_table'
-        ottengo la tabella intera ma il code_table da dove lo vado a prendere?
-    """
+    distribution_table_ids = fields.One2many('account.condominio.table', string='Distribution Table')
+
 
     def distribute_charges(self, amount, table, document_number, account_id):
         charges = []
+        context = self.env.context
+        raise UserError(context)
 
+        """ ERRATO """
         # Check if the distribution table is set
         if not self.distribution_table_id:
             raise ValueError('The distribution table is not set for this invoice.')
@@ -53,6 +53,12 @@ class AccountMove(models.Model):
             """
             
         return charges
+
+    def get_condominio_id(self, journal_name):
+        journal = self.env['account.journal'].search([('name', '=', journal_name)], limit=1)
+        if not journal:
+            raise ValueError('Journal not found.')
+        return journal.condominio_id.id
 
     def button_distribute_charges(self):
         if self.state != 'posted':
