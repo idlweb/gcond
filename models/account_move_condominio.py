@@ -22,7 +22,7 @@ class AccountMove(models.Model):
     def distribute_charges(self, document_number):
         charges = []
         context = self.env.context
-        raise UserError(context)
+        #raise UserError(context)
         
         journal = self.journal_id
         condominio_id = journal.condominio_id.id
@@ -42,7 +42,7 @@ class AccountMove(models.Model):
 
             
             for dettaglio_ripartizione in account_condominio_table:
-                
+                raise UserError("Accesso al blocco dei records")
                 amount = (amount * account_condominio_table.percentuale)/100
 
                 """
@@ -73,6 +73,7 @@ class AccountMove(models.Model):
                         'line_ids': [
                             {
                                 'account_id': line.account_id.id,
+                                'partner_id': account_condominio_table_record.condomino_id.id,
                                 'name': document_number,
                                 'debit': charge,
                             }
