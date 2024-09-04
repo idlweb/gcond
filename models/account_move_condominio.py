@@ -68,19 +68,14 @@ class AccountMove(models.Model):
 
                     # Create a journal entry for the charge
                     account_move = self.env['account.move'].create({
-                        'journal_id': self.env['account.journal'].search([('type', '=', 'general')], limit=1).id,
+                        'journal_id': self.journal_id,
                         'date': fields.Date.today(),
                         'line_ids': [
                             {
-                                'account_id': account_condominio_table_record.condomino_id.id,
+                                'account_id': line.account_id.id,
                                 'name': document_number,
                                 'debit': charge,
-                            },
-                            {
-                                'account_id': account_id,
-                                'name': document_number,
-                                'credit': charge,
-                            },
+                            }
                         ],
                     })
 
