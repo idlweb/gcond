@@ -15,7 +15,6 @@ class AccountMove(models.Model):
 
     """
     def get_condominio_distribution_table(self, condominio_id):
-        """ """
         return self.distribution_table_ids.filtered(lambda table: table.condominio_id.id == condominio_id)
     """
     
@@ -96,17 +95,10 @@ class AccountMove(models.Model):
 
     def button_distribute_charges(self):
         if self.state != 'posted':
-            raise UserError('The invoice must be posted before distributing charges.')
-
-        
+            raise UserError('The invoice must be posted before distributing charges.')     
         document_number = self.name
-        
-        # Iterate over each cost line and distribute the charges
-        # revisione completa della logica di distribuzione delle quote
-        
         self.distribute_charges(document_number)
         
-
     def get_debit_entries(self):
         """
         Ottiene tutte le voci presenti nella sezione 'dare' (debit) della registrazione contabile.
