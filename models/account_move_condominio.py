@@ -112,14 +112,12 @@ class AccountMove(models.Model):
         Ottiene tutte le voci presenti nella sezione 'dare' (debit) della registrazione contabile.
         """
         debit_entries = self.line_ids.filtered(lambda line: line.debit > 0)
-        return self.check_account_entries(debit_entries)
+        return debit_entries
 
+    """
     def check_account_entries(self, debit_entries):
-        """
-        Check if all the entries in the account_ids field of account_condominio_table_master are present.
-        """
         account_ids = self.distribution_table_id.account_ids
         debit_entries = debit_entries.filtered(lambda account: account.account_id in account_ids.mapped('account_id'))
         return debit_entries
-           
+    """    
      
