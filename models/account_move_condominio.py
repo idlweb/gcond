@@ -32,6 +32,7 @@ class AccountMove(models.Model):
   
             # Get the amount of the cost entry
             amount = line.debit
+            raise UserError(amount)
             # Get the account_condominio_table_master record associated with the debit/cost entry
             account_condominio_table = self.env['account.condominio.table.master'].search([
                 ('condominio_id', '=', condominio_id),
