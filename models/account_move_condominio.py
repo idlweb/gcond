@@ -10,14 +10,14 @@ from odoo.exceptions import ValidationError, UserError
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    distribution_table_ids = fields.One2many('account.condominio.table', string='Distribution Table')
+    #distribution_table_ids = fields.One2many('account.condominio.table', string='Distribution Table')
 
 
-
+    """
     def get_condominio_distribution_table(self, condominio_id):
         """ """
         return self.distribution_table_ids.filtered(lambda table: table.condominio_id.id == condominio_id)
-
+    """
     
 
     def distribute_charges(self, document_number):
