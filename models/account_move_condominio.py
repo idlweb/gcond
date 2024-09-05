@@ -39,14 +39,14 @@ class AccountMove(models.Model):
             # Get the account_condominio_table_master record associated with the debit/cost entry
             account_condominio_table = self.env['account.condominio.table.master'].search([
                 ('condominio_id', '=', condominio_id),
-                ('account_ids', 'in', [line.account_id.id])
+                ('account_ids', 'in', [130,131,132])
             ])
 
-            raise UserError(line.account_id.id)
             
             if not account_condominio_table:
                 raise UserError("No account_condominio_table_master record found for current condominium and cost entry.")
 
+            raise UserError(line.account_id.id)
             
             for dettaglio_ripartizione in account_condominio_table:
                 raise UserError("Accesso al blocco dei records")
