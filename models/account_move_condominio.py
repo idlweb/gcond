@@ -42,7 +42,7 @@ class AccountMove(models.Model):
                 #('account_ids', 'in', [line.account_id.id])
             ])
 
-            raise UserError(journal.condominio_id)
+            raise UserError(journal.condominio_id.id)
             
             if not account_condominio_table:
                 raise UserError("No account_condominio_table_master record found for current condominium and cost entry.")
