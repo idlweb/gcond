@@ -45,9 +45,7 @@ class AccountMove(models.Model):
             
             if not account_condominio_table:
                 raise UserError("No account_condominio_table_master record found for current condominium and cost entry.")
-
-            raise UserError(account_condominio_table)
-            
+                       
             for dettaglio_ripartizione in account_condominio_table:
                 raise UserError("Accesso al blocco dei records")
                 amount = (amount * account_condominio_table.percentuale)/100
