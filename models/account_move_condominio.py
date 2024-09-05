@@ -72,6 +72,8 @@ class AccountMove(models.Model):
                     #raise UserError(charge)
 
                     # Create a journal entry for the charge
+                    from decimal import Decimal
+                    
                     account_move = self.env['account.move'].create({
                         'journal_id': self.journal_id.id,
                         'date': fields.Date.today(),
@@ -80,7 +82,7 @@ class AccountMove(models.Model):
                                 #'account_id': line.account_id.id,
                                 'partner_id': account_condominio_table_record.condomino_id.id,
                                 'name': document_number,
-                                'debit': charge,
+                                'debit': Decimal(charge),
                             }
                         ],
                     })
