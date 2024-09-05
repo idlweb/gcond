@@ -47,7 +47,7 @@ class AccountMove(models.Model):
                 raise UserError("No account_condominio_table_master record found for current condominium and cost entry.")
                        
             for dettaglio_ripartizione in account_condominio_table:
-                raise UserError("Accesso al blocco dei records")
+                #raise UserError("Accesso al blocco dei records")
                 amount = (amount * account_condominio_table.percentuale)/100
 
                 """
@@ -69,7 +69,7 @@ class AccountMove(models.Model):
                     
                     charge = (amount * account_condominio_table_record.value_distribution)*quote/100
                     
-                    raise UserError(charge)
+                    #raise UserError(charge)
 
                     # Create a journal entry for the charge
                     account_move = self.env['account.move'].create({
