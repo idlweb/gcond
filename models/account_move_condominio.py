@@ -67,7 +67,7 @@ class AccountMove(models.Model):
                 for account_condominio_table_record in account_condominio_table_records:
                     # Calculate the share for the partner
                     
-                    charge = (amount * account_condominio_table_record.value_distribution)*quote/100
+                    charge = (amount * account_condominio_table_record.value_distribution)*account_condominio_table_record.quote/100
                     
                     #raise UserError(charge)
 
