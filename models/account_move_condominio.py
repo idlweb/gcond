@@ -25,6 +25,9 @@ class AccountMove(models.Model):
         #raise UserError(context)
         
         journal = self.journal_id
+        if not journal:
+            raise UserError("Journal not found.")
+        
         condominio_id = journal.condominio_id.id
         
         # Iterate over each cost line. get_debit_entries() contiene tutte le voci presenti nella sezione 'dare' (debit) della registrazione contabile. 
@@ -38,7 +41,9 @@ class AccountMove(models.Model):
                 ('condominio_id', '=', condominio_id),
                 #('account_ids', 'in', [line.account_id.id])
             ])
+
             raise UserError(condominio_id)
+            
             if not account_condominio_table:
                 raise UserError("No account_condominio_table_master record found for current condominium and cost entry.")
 
