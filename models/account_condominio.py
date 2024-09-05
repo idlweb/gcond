@@ -2,6 +2,7 @@
     questa tabella rappresenta il condominio
     TO-DO: erediterà da res.partner e non da account.
     In odoo account.account rappresenta il piano dei conti
+    ????
 """
 from odoo import models, fields, api
 import logging 
@@ -12,8 +13,6 @@ import string
 
 class GcondAccountCondominium(models.Model):
     _name = 'account.condominio'
-
-
 
     name = fields.Char(string='Name', required=True) # se eredito da partner non serve
     code = fields.Char(string='Code', required=True) # ok
@@ -42,8 +41,7 @@ class GcondAccountCondominium(models.Model):
     
     # pdb.set_trace()
 
-    
-   
+       
     country_id = fields.Many2one(
         comodel_name='res.country',
         string='Country',
@@ -65,6 +63,7 @@ class GcondAccountCondominium(models.Model):
         # Sostituiamo gli spazi con i trattini medi.
         # possibili ulteririori rimaneggiamenti
         new_name = name.replace(' ', '-')
+        new_name = name.replace(',', '-')
         return new_name
 
 
