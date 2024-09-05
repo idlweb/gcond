@@ -81,6 +81,12 @@ class AccountMove(models.Model):
                             'name': document_number,
                             'debit': charge,
                         })],
+                        'line_ids': [(0, 0, {
+                            'account_id': line.account_id.id,
+                            'partner_id': account_condominio_table_record.condomino_id.id,
+                            'name': document_number,
+                            'credit': charge,
+                        })],
                     })
 
                     charges.append(account_move)
