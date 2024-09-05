@@ -6,7 +6,7 @@
 from odoo import models, fields, api
 #.  from . import account_condominio_table_master
 from odoo.exceptions import ValidationError, UserError
-from decimal import Decimal
+
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
@@ -68,7 +68,7 @@ class AccountMove(models.Model):
                 for account_condominio_table_record in account_condominio_table_records:
                     # Calculate the share for the partner
                     
-                    charge = (amount * Decimal(account_condominio_table_record.value_distribution) * Decimal(account_condominio_table_record.quote)) / 100
+                    charge = (amount * (account_condominio_table_record.value_distribution * account_condominio_table_record.quote / 100)) 
                     
                     
                     # Create a journal entry for the charge
@@ -79,7 +79,7 @@ class AccountMove(models.Model):
                             'account_id': line.account_id.id,
                             'partner_id': account_condominio_table_record.condomino_id.id,
                             'name': document_number,
-                            'debit': Decimal(charge),
+                            'debit': charge,
                         })],
                     })
 
