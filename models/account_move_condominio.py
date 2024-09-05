@@ -46,7 +46,7 @@ class AccountMove(models.Model):
             if not account_condominio_table:
                 raise UserError("No account_condominio_table_master record found for current condominium and cost entry.")
 
-            raise UserError(line.account_id.id)
+            raise UserError(account_condominio_table)
             
             for dettaglio_ripartizione in account_condominio_table:
                 raise UserError("Accesso al blocco dei records")
@@ -79,7 +79,7 @@ class AccountMove(models.Model):
                         'date': fields.Date.today(),
                         'line_ids': [
                             {
-                                'account_id': line.account_id.id,
+                                #'account_id': line.account_id.id,
                                 'partner_id': account_condominio_table_record.condomino_id.id,
                                 'name': document_number,
                                 'debit': charge,
