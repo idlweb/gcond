@@ -28,7 +28,7 @@ class AccountMove(models.Model):
         if not journal:
             raise UserError("Journal not found.")
         
-        condominio_id = journal.condominio_id
+        condominio_id = journal.condominio_id.id
         
         # Iterate over each cost line. get_debit_entries() contiene tutte le voci presenti nella sezione 'dare' (debit) della registrazione contabile. 
         for line in self.get_debit_entries():
