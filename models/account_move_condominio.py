@@ -74,16 +74,17 @@ class AccountMove(models.Model):
                     # Create a journal entry for the charge
                     from decimal import Decimal
                     
-                    account_move = self.env['account.move'].create([{
+                    # Create a journal entry for the charge
+                    account_move = self.env['account.move'].create({
                         'journal_id': self.journal_id.id,
                         'date': fields.Date.today(),
-                        'line_ids': [{
-                            #'account_id': line.account_id.id,
+                        'line_ids': [(0, 0, {
+                            'account_id': line.account_id.id,
                             'partner_id': account_condominio_table_record.condomino_id.id,
                             'name': document_number,
                             'debit': Decimal(charge),
-                        }],
-                    }])
+                        })],
+                    })
 
                     charges.append(account_move)
                                             
