@@ -39,10 +39,10 @@ class AccountMove(models.Model):
             # Get the account_condominio_table_master record associated with the debit/cost entry
             account_condominio_table = self.env['account.condominio.table.master'].search([
                 ('condominio_id', '=', condominio_id),
-                #('account_ids', 'in', [line.account_id.id])
+                ('account_ids', 'in', [line.account_id.id])
             ])
 
-            raise UserError(journal.condominio_id)
+            raise UserError(line.account_id.id)
             
             if not account_condominio_table:
                 raise UserError("No account_condominio_table_master record found for current condominium and cost entry.")
@@ -75,7 +75,7 @@ class AccountMove(models.Model):
 
                     # Create a journal entry for the charge
                     account_move = self.env['account.move'].create({
-                        'journal_id': self.journal_id,
+                        'journal_id': self.journal_id.id,
                         'date': fields.Date.today(),
                         'line_ids': [
                             {
