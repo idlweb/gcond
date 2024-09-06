@@ -52,15 +52,6 @@ class AccountMove(models.Model):
             for dettaglio_ripartizione in account_condominio_table:
                 #raise UserError("Accesso al blocco dei records")
                 amount = (amount * account_condominio_table.percentuale)/100
-
-                """
-                unit_of_measure = fields.Char(string='Unit Of Measure')
-                value_distribution = fields.Float(string='Value Distribution')
-                quote = fields.Float(string='Percentuale di Competenza')
-                table_id = fields.Many2one('account.condominio.table.master', string='Appartiene alla Tabella', required=False)
-                condomino_id = fields.Many2one('res.partner', string='Condomino', required=False)
-                """
-
                 account_condominio_table_records = self.env['account.condominio.table'].search([
                     ('table_id', '=', dettaglio_ripartizione.id),
                 ])
