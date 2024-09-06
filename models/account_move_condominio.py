@@ -11,9 +11,6 @@ from odoo.exceptions import ValidationError, UserError
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    #distribution_table_ids = fields.One2many('account.condominio.table', string='Distribution Table')
-
-
     """
     def get_condominio_distribution_table(self, condominio_id):
         return self.distribution_table_ids.filtered(lambda table: table.condominio_id.id == condominio_id)
@@ -31,6 +28,7 @@ class AccountMove(models.Model):
         
         condominio_id = journal.condominio_id.id
         debit_entries = self.get_debit_entries()
+        debit_entries = self.check_account_entries(debit_entries)
         account_ids = debit_entries.mapped('account_id.id')
 
         # Iterate over each cost line. get_debit_entries() contiene tutte le voci presenti nella sezione 'dare' (debit) della registrazione contabile. 
@@ -108,10 +106,10 @@ class AccountMove(models.Model):
         debit_entries = self.line_ids.filtered(lambda line: line.debit > 0)
         return debit_entries
 
-    """
+    
     def check_account_entries(self, debit_entries):
         account_ids = self.distribution_table_id.account_ids
         debit_entries = debit_entries.filtered(lambda account: account.account_id in account_ids.mapped('account_id'))
         return debit_entries
-    """    
+     
      
