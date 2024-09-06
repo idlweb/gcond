@@ -30,7 +30,9 @@ class AccountMove(models.Model):
             raise UserError("Journal not found.")
         
         condominio_id = journal.condominio_id.id
-        
+        debit_entries = self.get_debit_entries()
+        account_ids = debit_entries.mapped('account_id.id')
+
         # Iterate over each cost line. get_debit_entries() contiene tutte le voci presenti nella sezione 'dare' (debit) della registrazione contabile. 
         for line in self.get_debit_entries():
   
@@ -40,7 +42,7 @@ class AccountMove(models.Model):
             # Get the account_condominio_table_master record associated with the debit/cost entry
             account_condominio_table = self.env['account.condominio.table.master'].search([
                 ('condominio_id', '=', condominio_id),
-                #('account_ids', 'in', [130,131,132])
+                ('account_ids', 'in', account_ids)
             ])
 
             
