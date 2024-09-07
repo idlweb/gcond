@@ -30,6 +30,7 @@ class AccountMove(models.Model):
         debit_entries = self.get_debit_entries()
         debit_entries = self.check_account_entries(debit_entries)
         account_ids = debit_entries.mapped('account_id.id')
+        raise UserError(account_ids)
 
         # Iterate over each cost line. get_debit_entries() contiene tutte le voci presenti nella sezione 'dare' (debit) della registrazione contabile. 
         for line in self.get_debit_entries():
