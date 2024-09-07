@@ -14,7 +14,6 @@
     'images' : ['images/accounts.jpeg','images/bank_statement.jpeg','images/cash_register.jpeg','images/chart_of_accounts.jpeg','images/customer_invoice.jpeg','images/journal_entries.jpeg'],
     'depends' : ['web','website','base','account'],
     'data': [
-        'data/sequence_data.xml',
         'security/ir.model.access.csv',
         'views/account_condominium_table_view.xml',
         'views/account_condominium_view.xml',
@@ -23,6 +22,7 @@
         'views/account_sensore.xml',
         'views/menu.xml',
         'views/templates.xml',
+        'data/sequence_data.xml',
     ],
     'assets': {
         'web.assets_backend': [
