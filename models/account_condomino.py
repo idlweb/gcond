@@ -2,6 +2,7 @@ from odoo import models, fields, api
 import logging 
 _logger = logging.getLogger(__name__)
 import pdb
+from odoo.exceptions import ValidationError, UserError
 
 class GcondAccountCondomino(models.Model):
     #_name = 'account.condomino'
@@ -62,6 +63,7 @@ class GcondAccountCondomino(models.Model):
 
     @api.model
     def create(self, vals):
+        _logger.debug("Creating a new partner with vals: %s", vals)
         condominio = self.env['account.condominio'].browse(vals['condominio_id'])
         raise UserError(f"Condominio {condominio.name} non trovato")
         partner = super(GcondAccountCondomino, self).create(vals)
