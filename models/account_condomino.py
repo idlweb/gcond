@@ -30,11 +30,6 @@ class GcondAccountCondomino(models.Model):
         compute='_compute_company_type', inverse='_write_company_type')
     
 
-    account_id = fields.Many2one( 
-        comodel_name='account.account', 
-        string='conto_condomino',
-        help="Utilizzo per contabilità",)
-
 
     @api.depends('is_company')
     def _compute_company_type(self):
@@ -61,9 +56,6 @@ class GcondAccountCondomino(models.Model):
            self.is_condominio = True
         else:
            self.is_company = (self.company_type == 'company')
-
-
-
 
 
     """
