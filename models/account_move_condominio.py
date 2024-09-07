@@ -27,10 +27,6 @@ class AccountMove(models.Model):
             raise UserError("Journal not found.")
         
         condominio_id = journal.condominio_id.id
-        debit_entries = self.get_debit_entries()
-        debit_entries = self.check_account_entries(debit_entries)
-        account_ids = debit_entries.mapped('account_id.id')
-        raise UserError(account_ids)
 
         # Iterate over each cost line. get_debit_entries() contiene tutte le voci presenti nella sezione 'dare' (debit) della registrazione contabile. 
         for line in self.get_debit_entries():
@@ -41,7 +37,7 @@ class AccountMove(models.Model):
             # Get the account_condominio_table_master record associated with the debit/cost entry
             account_condominio_table = self.env['account.condominio.table.master'].search([
                 ('condominio_id', '=', condominio_id),
-                ('account_ids', 'in', account_ids)
+                #('account_ids', 'in', [line.account_id.id])
             ])
 
             
@@ -49,41 +45,42 @@ class AccountMove(models.Model):
                 raise UserError("No account_condominio_table_master record found for current condominium and cost entry.")
                        
             for dettaglio_ripartizione in account_condominio_table:
-                #raise UserError("Accesso al blocco dei records")
                 amount = (amount * account_condominio_table.percentuale)/100
-                account_condominio_table_records = self.env['account.condominio.table'].search([
-                    ('table_id', '=', dettaglio_ripartizione.id),
-                ])
+                
+                if line.account_id.id in dettaglio_ripartizione.account_ids.ids:
+                    account_condominio_table_records = self.env['account.condominio.table'].search([
+                        ('table_id', '=', dettaglio_ripartizione.id),
+                    ])
 
-                amount = amount / 1000 
+                    amount = amount / 1000 
 
-                for account_condominio_table_record in account_condominio_table_records:
-                    # Calculate the share for the partner
-                    
-                    charge = (amount * (account_condominio_table_record.value_distribution * account_condominio_table_record.quote / 100)) 
-                    
-                    
-                    # Create a journal entry for the charge
-                    account_move = self.env['account.move'].create({
-                        'journal_id': self.journal_id.id,
-                        'date': fields.Date.today(),
-                        'line_ids': [
-                            (0, 0, {
-                                'account_id': line.account_id.id,
-                                'partner_id': account_condominio_table_record.condomino_id.id,
-                                'name': document_number,
-                                'debit': charge,
-                            }),
-                            (0, 0, {
-                                'account_id': line.account_id.id,
-                                'partner_id': account_condominio_table_record.condomino_id.id,
-                                'name': document_number,
-                                'credit': charge,
-                            })
-                        ],
-                    })
+                    for account_condominio_table_record in account_condominio_table_records:
+                        # Calculate the share for the partner
+                        
+                        charge = (amount * (account_condominio_table_record.value_distribution * account_condominio_table_record.quote / 100)) 
+                        
+                        
+                        # Create a journal entry for the charge
+                        account_move = self.env['account.move'].create({
+                            'journal_id': self.journal_id.id,
+                            'date': fields.Date.today(),
+                            'line_ids': [
+                                (0, 0, {
+                                    'account_id': line.account_id.id,
+                                    'partner_id': account_condominio_table_record.condomino_id.id,
+                                    'name': document_number,
+                                    'debit': charge,
+                                }),
+                                (0, 0, {
+                                    'account_id': line.account_id.id,
+                                    'partner_id': account_condominio_table_record.condomino_id.id,
+                                    'name': document_number,
+                                    'credit': charge,
+                                })
+                            ],
+                        })
 
-                    charges.append(account_move)
+                        charges.append(account_move)
                                             
         return charges
 
@@ -107,10 +104,12 @@ class AccountMove(models.Model):
         debit_entries = self.line_ids.filtered(lambda line: line.debit > 0)
         return debit_entries
 
-    
-    def check_account_entries(self, debit_entries):
-        account_ids = self.distribution_table_id.account_ids
+    """
+    def check_account_entries(self, debit_entries,condominio_id):
+        account_condominio_table = self.env['account.condominio.table.master'].search([
+                ('condominio_id', '=', condominio_id)])
+        account_ids = account_condominio_table.account_ids
         debit_entries = debit_entries.filtered(lambda account: account.account_id in account_ids.mapped('account_id'))
         return debit_entries
-     
+    """
      
