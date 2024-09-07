@@ -69,6 +69,7 @@ class GcondAccountCondomino(models.Model):
         partner = super(GcondAccountCondomino, self).create(vals)
         partner.is_condominio = True
         if partner.is_condominio:
+            raise UserError(f"Codice { self.env['ir.sequence'].next_by_code('account.account') } ")
             ass_account = self.env['account.account'].create({
                 'name': f"{partner.name}-{condominio.name}",
                 'code': self.env['ir.sequence'].next_by_code('account.account'),
@@ -78,7 +79,7 @@ class GcondAccountCondomino(models.Model):
             })
             
             partner.conto_id = ass_account.id
-            raise UserError(f"Conto {ass_account.name} ")
+            
         return partner
 
 
