@@ -29,7 +29,7 @@ class AccountMove(models.Model):
 
         # Da approfondire
         # debit_entries = debit_entries.filtered(lambda account: account.account_id in account_ids.mapped('account_id'))
-
+        """"""
         # Iterate over each cost line. get_debit_entries() contiene tutte le voci presenti nella sezione 'dare' (debit) della registrazione contabile. 
         for line in self.get_debit_entries():
   
