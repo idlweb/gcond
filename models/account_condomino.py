@@ -63,6 +63,7 @@ class GcondAccountCondomino(models.Model):
     @api.model
     def create(self, vals):
         condominio = self.env['account.condominio'].browse(vals['condominio_id'])
+        raise UserError(f"Condominio {condominio.name} non trovato")
         partner = super(GcondAccountCondomino, self).create(vals)
         if partner.is_condominio:
             ass_account = self.env['account.account'].create({
