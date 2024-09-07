@@ -30,6 +30,10 @@ class GcondAccountCondomino(models.Model):
         compute='_compute_company_type', inverse='_write_company_type')
     
 
+    account_id = fields.Many2one(
+        'account.account', string='Account',
+        help="Account for this partner")
+
 
     @api.depends('is_company')
     def _compute_company_type(self):
@@ -56,6 +60,23 @@ class GcondAccountCondomino(models.Model):
            self.is_condominio = True
         else:
            self.is_company = (self.company_type == 'company')
+    
+
+    @api.model
+    def create(self, vals):
+        condominio = self.env['account.condominio'].browse(vals['condominio_id'])
+        partner = super(GcondAccountCondomino, self).create(vals)
+        if partner.is_condominio:
+            account = self.env['account.account'].create({
+                'name': f"{partner.name}-{condominio.name}",
+                'code': self.env['ir.sequence'].next_by_code('account.account'),
+                'user_type_id': self.env.ref('account.data_account_type_receivable').id,
+                'reconcile': True,
+                'company_id': partner.company_id.id,
+                'condominio_id': partner.condominio_id.id,
+            })
+            partner.account_id = account.id
+        return partner
 
 
     """
