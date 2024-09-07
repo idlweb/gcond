@@ -65,11 +65,10 @@ class GcondAccountCondomino(models.Model):
     def create(self, vals):
         _logger.debug("Creating a new partner with vals: %s", vals)
         condominio = self.env['account.condominio'].browse(vals['condominio_id'])
-        #raise UserError(f"Condominio {condominio.name} non trovato")
         partner = super(GcondAccountCondomino, self).create(vals)
         partner.is_condominio = True
         if partner.is_condominio:
-            #raise UserError(f"Codice { self.env['ir.sequence'].next_by_code('account.account') } ")
+            raise UserError(f"Codice { self.env['ir.sequence'].next_by_code('account.account') } ")
             ass_account = self.env['account.account'].create({
                 'name': f"{partner.name}-{condominio.name}",
                 'code': self.env['ir.sequence'].next_by_code('account.account.condomino'),
