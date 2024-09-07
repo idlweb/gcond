@@ -24,7 +24,7 @@ class GcondAccountCondomino(models.Model):
         string='Tipologia condomino',
         default='proprietario',)
     
-    #conto_id = fields.Many2one(comodel_name='account.account', string='Contabilità', ondelete='set null')
+    conto_id = fields.Many2one(comodel_name='account.account', string='Contabilità', ondelete='set null')
 
 
     company_type = fields.Selection(string='Company Type',
