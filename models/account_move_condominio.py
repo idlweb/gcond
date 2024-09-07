@@ -28,6 +28,9 @@ class AccountMove(models.Model):
         
         condominio_id = journal.condominio_id.id
 
+        # Da approfondire
+        # debit_entries = debit_entries.filtered(lambda account: account.account_id in account_ids.mapped('account_id'))
+
         # Iterate over each cost line. get_debit_entries() contiene tutte le voci presenti nella sezione 'dare' (debit) della registrazione contabile. 
         for line in self.get_debit_entries():
   
@@ -37,10 +40,8 @@ class AccountMove(models.Model):
             # Get the account_condominio_table_master record associated with the debit/cost entry
             account_condominio_table = self.env['account.condominio.table.master'].search([
                 ('condominio_id', '=', condominio_id),
-                #('account_ids', 'in', [line.account_id.id])
             ])
-
-            
+           
             if not account_condominio_table:
                 raise UserError("No account_condominio_table_master record found for current condominium and cost entry.")
                        
