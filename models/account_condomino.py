@@ -67,6 +67,7 @@ class GcondAccountCondomino(models.Model):
         condominio = self.env['account.condominio'].browse(vals['condominio_id'])
         partner = super(GcondAccountCondomino, self).create(vals)
         partner.is_condominio = True
+        company_id = self.env.user.company_id.id
         if partner.is_condominio:
             sequence_code = 'account.account.condomino'
             account_code = self.env['ir.sequence'].next_by_code(sequence_code)
@@ -79,7 +80,7 @@ class GcondAccountCondomino(models.Model):
                 'code': account_code,
                 'user_type_id': self.env.ref('account.data_account_type_receivable').id,
                 'reconcile': True,
-                'company_id': partner.company_id.id,
+                'company_id':company_id,
                 #'condominio_id': partner.condominio_id.id,
             })
             partner.conto_id = ass_account.id
