@@ -59,7 +59,7 @@ class GcondAccountCondomino(models.Model):
         else:
            self.is_company = (self.company_type == 'company')
     
-"""
+
     @api.model
     def create(self, vals):
         condominio = self.env['account.condominio'].browse(vals['condominio_id'])
@@ -76,7 +76,7 @@ class GcondAccountCondomino(models.Model):
             partner.conto_id = ass_account.id
         return partner
 
-"""
+
 
 """
     def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
