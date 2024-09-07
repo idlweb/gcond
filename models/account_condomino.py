@@ -30,8 +30,7 @@ class GcondAccountCondomino(models.Model):
         compute='_compute_company_type', inverse='_write_company_type')
     
 
-   account_id = fields.Many2one(
-        'account.account', string='conto_condomino',
+   account_id = fields.Many2one( comodel_name='account.account', string='conto_condomino',
         help="Utilizzo per contabilità")
 
 
