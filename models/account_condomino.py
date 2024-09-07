@@ -59,10 +59,26 @@ class GcondAccountCondomino(models.Model):
         else:
            self.is_company = (self.company_type == 'company')
     
+"""
+    @api.model
+    def create(self, vals):
+        condominio = self.env['account.condominio'].browse(vals['condominio_id'])
+        partner = super(GcondAccountCondomino, self).create(vals)
+        if partner.is_condominio:
+            ass_account = self.env['account.account'].create({
+                'name': f"{partner.name}-{condominio.name}",
+                'code': self.env['ir.sequence'].next_by_code('account.account'),
+                'user_type_id': self.env.ref('account.data_account_type_receivable').id,
+                'reconcile': True,
+                'company_id': partner.company_id.id,
+                'condominio_id': partner.condominio_id.id,
+            })
+            partner.conto_id = ass_account.id
+        return partner
 
+"""
 
-
-    """
+"""
     def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
         res = super(GcondAccountCondomino, self).fields_view_get(view_id='view_condomino_form', view_type=view_type, toolbar=toolbar, submenu=submenu)
 
@@ -76,7 +92,7 @@ class GcondAccountCondomino(models.Model):
             })
 
         return res
-    """
+"""
 
 
 
