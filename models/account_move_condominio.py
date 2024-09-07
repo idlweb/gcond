@@ -67,13 +67,15 @@ class AccountMove(models.Model):
                                 (0, 0, {
                                     'account_id': line.account_id.id,
                                     'partner_id': account_condominio_table_record.condomino_id.id,
-                                    'name': document_number,
+                                    'name': document_number, # etichetta
+                                    'analytic_account_id': account_condominio_table_record.condomino_id.id,  # Assegna il conto analitico
                                     'debit': charge,
                                 }),
                                 (0, 0, {
                                     'account_id': line.account_id.id,
                                     'partner_id': account_condominio_table_record.condomino_id.id,
                                     'name': document_number,
+                                    'analytic_account_id': account_condominio_table_record.condomino_id.id,  # Assegna il conto analitico
                                     'credit': charge,
                                 })
                             ],
