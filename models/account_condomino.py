@@ -66,6 +66,7 @@ class GcondAccountCondomino(models.Model):
         _logger.debug("Creating a new partner with vals: %s", vals)
         condominio = self.env['account.condominio'].browse(vals['condominio_id'])
         partner = super(GcondAccountCondomino, self).create(vals)
+        partner.is_condominio = True
         if partner.is_condominio:
             sequence_code = 'account.account.condomino'
             account_code = self.env['ir.sequence'].next_by_code(sequence_code)
