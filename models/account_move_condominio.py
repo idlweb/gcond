@@ -15,7 +15,6 @@ class AccountMove(models.Model):
     def get_condominio_distribution_table(self, condominio_id):
         return self.distribution_table_ids.filtered(lambda table: table.condominio_id.id == condominio_id)
     """
-    
 
     def distribute_charges(self, document_number):
         charges = []
@@ -59,7 +58,6 @@ class AccountMove(models.Model):
                         # Calculate the share for the partner
                         
                         charge = (amount * (account_condominio_table_record.value_distribution * account_condominio_table_record.quote / 100)) 
-                        
                         
                         # Create a journal entry for the charge
                         account_move = self.env['account.move'].create({
@@ -105,12 +103,3 @@ class AccountMove(models.Model):
         debit_entries = self.line_ids.filtered(lambda line: line.debit > 0)
         return debit_entries
 
-    """
-    def check_account_entries(self, debit_entries,condominio_id):
-        account_condominio_table = self.env['account.condominio.table.master'].search([
-                ('condominio_id', '=', condominio_id)])
-        account_ids = account_condominio_table.account_ids
-        debit_entries = debit_entries.filtered(lambda account: account.account_id in account_ids.mapped('account_id'))
-        return debit_entries
-    """
-     
