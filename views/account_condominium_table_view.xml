@@ -33,7 +33,7 @@
                                     <field name="id"/>
                                     <field name="table_id"/>
                                     <field name="unit_of_measure" label="udm"/>
-                                    <field name="value_distribution" label="valore"/>
+                                    <field name="value_distribution" sum="Total" label="valore"/>
                                     <field name="condomino_id" widget="res_partner_many2one" label="condomino"/>                                    
                                     <field name="quote" label="%"/>                                                                
                                 </tree>
