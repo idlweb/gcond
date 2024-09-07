@@ -31,7 +31,7 @@ class GcondAccountCondomino(models.Model):
     
 
     account_id = fields.Many2one(
-        'account.account', string='Account',
+        comodel_name='account.account', string='Account',
         help="Account for this partner")
 
 
