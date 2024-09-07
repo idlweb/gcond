@@ -24,16 +24,13 @@ class GcondAccountCondomino(models.Model):
         string='Tipologia condomino',
         default='proprietario',)
     
-    
+    conto_id = fields.Many2one('account.account', string='Contabilità', ondelete='set null')
+
+
     company_type = fields.Selection(string='Company Type',
         selection=[('person', 'Individual'), ('company', 'Company'), ('condomino','Condomino')],
         compute='_compute_company_type', inverse='_write_company_type')
     
-    account_id = fields.Many2one(
-        comodel_name='account.account',
-        string='Account',
-        ondelete='set null',
-    )
     
 
     @api.depends('is_company')
@@ -63,7 +60,6 @@ class GcondAccountCondomino(models.Model):
            self.is_company = (self.company_type == 'company')
     
 
-
     @api.model
     def create(self, vals):
         condominio = self.env['account.condominio'].browse(vals['condominio_id'])
@@ -77,7 +73,7 @@ class GcondAccountCondomino(models.Model):
                 'company_id': partner.company_id.id,
                 'condominio_id': partner.condominio_id.id,
             })
-            partner.account_id = ass_account.id
+            partner.conto_id = ass_account.id
         return partner
 
     """
