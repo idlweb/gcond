@@ -71,7 +71,6 @@ class GcondAccountCondomino(models.Model):
         if partner.is_condominio:
             sequence_code = 'account.account.condomino'
             account_code = self.env['ir.sequence'].next_by_code(sequence_code)
-            raise UserError(f"Company id {partner.company_id.id}")
             if not account_code:
                 _logger.error("Sequence with code '%s' not found", sequence_code)
                 raise ValueError(f"Sequence with code '{sequence_code}' not found")
