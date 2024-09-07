@@ -67,7 +67,7 @@ class GcondAccountCondomino(models.Model):
         condominio = self.env['account.condominio'].browse(vals['condominio_id'])
         #raise UserError(f"Condominio {condominio.name} non trovato")
         partner = super(GcondAccountCondomino, self).create(vals)
-        raise UserError(f"Conodmino {partner.name} ")
+        partner.is_condominio = True
         if partner.is_condominio:
             ass_account = self.env['account.account'].create({
                 'name': f"{partner.name}-{condominio.name}",
@@ -77,6 +77,7 @@ class GcondAccountCondomino(models.Model):
                 'company_id': partner.company_id.id,
                 'condominio_id': partner.condominio_id.id,
             })
+            raise UserError(f"Conto {ass_account.name} ")
             partner.conto_id = ass_account.id
         return partner
 
