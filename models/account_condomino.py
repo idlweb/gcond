@@ -75,10 +75,10 @@ class GcondAccountCondomino(models.Model):
                 'user_type_id': self.env.ref('account.data_account_type_receivable').id,
                 'reconcile': True,
                 'company_id': partner.company_id.id,
-                'condominio_id': partner.condominio_id.id,
             })
-            raise UserError(f"Conto {ass_account.name} ")
+            
             partner.conto_id = ass_account.id
+            raise UserError(f"Conto {ass_account.name} ")
         return partner
 
 
