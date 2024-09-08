@@ -60,9 +60,10 @@ class AccountMove(models.Model):
                         charge = (amount * (account_condominio_table_record.value_distribution * account_condominio_table_record.quote / 100)) 
                         
                         # Create a journal entry for the charge
-                        account_move = self.env['account.move'].create({
-                            'journal_id': self.journal_id.id,
+                        account_move = self.env['account.move'].create({                        
+                            'journal_id': self.journal_id.id, #PURCHASE[18]
                             'date': fields.Date.today(),
+                            'move_type': 'entry',
                             'line_ids': [
                                 (0, 0, {
                                     'account_id': account_condominio_table_record.condomino_id.conto_id.id,
@@ -70,6 +71,7 @@ class AccountMove(models.Model):
                                     'name': document_number, # etichetta
                                     #'analytic_account_id': account_condominio_table_record.condomino_id.id,  # Assegna il conto analitico
                                     'debit': charge,
+                                    'credit': 0.0,
                                 }),
                                 (0, 0, {
                                     'account_id': line.account_id.id,
@@ -77,11 +79,13 @@ class AccountMove(models.Model):
                                     'name': document_number,
                                     #'analytic_account_id': account_condominio_table_record.condomino_id.id,  # Assegna il conto analitico
                                     'credit': charge,
+                                    'debit': 0.0,
                                 })
                             ],
                         })
 
                         charges.append(account_move)
+                        
                                             
         return charges
 
