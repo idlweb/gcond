@@ -57,21 +57,20 @@ class AccountMove(models.Model):
                     for account_condominio_table_record in account_condominio_table_records:
                         # Calculate the share for the partner
                         
-                        charge = (amount * (account_condominio_table_record.value_distribution * account_condominio_table_record.quote / 100)) 
+                        charge = ((amount * (account_condominio_table_record.value_distribution * account_condominio_table_record.quote / 100))) * 1.22
                         
                         # Create a journal entry for the charge
                         account_move = self.env['account.move'].create({                        
                             'journal_id': self.journal_id.id, #PURCHASE[18]
                             'date': fields.Date.today(),
                             'move_type': 'entry',
-                            'ref' : f"{account_condominio_table_record.condomino_id.id}-{line.account_id.id}",
                             'line_ids': [
                                 (0, 0, {
                                     'account_id': account_condominio_table_record.condomino_id.conto_id.id,
                                     'partner_id': account_condominio_table_record.condomino_id.id,
-                                    'name': document_number, # etichetta                                    
+                                    'name': document_number, # etichetta
                                     #'analytic_account_id': account_condominio_table_record.condomino_id.id,  # Assegna il conto analitico
-                                    'debit': charge * 1.22,
+                                    'debit': charge,
                                     'credit': 0.0,
                                 }),
                                 (0, 0, {
