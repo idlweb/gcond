@@ -70,7 +70,7 @@ class AccountMove(models.Model):
                                     'partner_id': account_condominio_table_record.condomino_id.id,
                                     'name': document_number, # etichetta
                                     #'analytic_account_id': account_condominio_table_record.condomino_id.id,  # Assegna il conto analitico
-                                    'debit': charge,
+                                    'debit': charge * 1.22,
                                     'credit': 0.0,
                                 }),
                                 (0, 0, {
