@@ -110,3 +110,24 @@ class AccountMove(models.Model):
         debit_entries = self.line_ids.filtered(lambda line: line.debit > 0)
         return debit_entries
 
+class AccountPaymentRegister(models.TransientModel):
+    _inherit = 'account.payment.register'
+
+    def create_payments(self):
+        res = super(AccountPaymentRegister, self).create_payments()
+        self._update_payment_state_and_reconcile()
+        return res
+
+    def _update_payment_state_and_reconcile(self):
+        raise UserError(self.payment_reference)
+        for payment in self.env['account.payment'].search([('payment_reference', '=', self.payment_reference)]):
+            for move in payment.move_line_ids.mapped('move_id'):
+                for line in move.line_ids:
+                    if line.account_id.user_type_id.type in ('receivable', 'payable'):
+                        line.payment_state = 'paid'
+                #self._reconcile_entries(move, payment)
+
+    def _reconcile_entries(self, move, payment):
+        lines_to_reconcile = (move.line_ids + payment.move_line_ids).filtered(lambda l: l.account_id.reconcile)
+        if lines_to_reconcile:
+            lines_to_reconcile.reconcile()   
