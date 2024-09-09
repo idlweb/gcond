@@ -114,17 +114,34 @@ class AccountPaymentRegister(models.TransientModel):
 
     def _create_payments(self):
         res = super(AccountPaymentRegister, self)._create_payments()
+        raise UserError(res)
         self._update_payment_state_and_reconcile()
         return res
 
     def _update_payment_state_and_reconcile(self):
         for payment in self.env['account.payment'].search([]):
             for move in payment.move_id:
+                raise UserError(move.name)
                 for line in move.line_ids:
                     if line.account_id.code.startswith('150') and line.account_id.user_type_id.type in ('receivable', 'payable'):
                         line.move_id.payment_state = 'paid'
-                        line.move_id.invoice_ids.filtered(lambda inv: inv.id == line.move_id.id).state = 'paid'
-                #self._reconcile_entries(move, payment)
+                        
+        # Get the values from the wizard to create the payment
+        payment_values = {
+            'partner_id': self.partner_id.id,
+            'journal_id': self.journal_id.id,
+            'payment_date': self.payment_date,
+            'communication': self.communication,
+            'payment_method_id': self.payment_method_id.id,
+            'payment_type': self.payment_type,
+            'amount': self.amount,
+            'currency_id': self.currency_id.id,
+        }
+        raise UserError(payment_values)
+        # Create the payment
+        # payment = self.env['account.payment'].create(payment_values)
+        
+      
 
     def _reconcile_entries(self, move, payment):
         lines_to_reconcile = (move.line_ids + payment.move_line_ids).filtered(lambda l: l.account_id.reconcile)
