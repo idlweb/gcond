@@ -118,12 +118,11 @@ class AccountPaymentRegister(models.TransientModel):
         return res
 
     def _update_payment_state_and_reconcile(self):        
-        for payment in self.env['account.payment'].search([]):
-            #raise UserError(payment.move_id.line_ids)
+        for payment in self.env['account.payment'].search([]):            
             for move in payment.move_id.line_ids:
                 for line in move:
                     if line.account_id.user_type_id.type in ('receivable', 'payable'):
-                        line.payment_state = 'paid'
+                        line.move_idpayment_state = 'paid'
                 #self._reconcile_entries(move, payment)
 
     def _reconcile_entries(self, move, payment):
