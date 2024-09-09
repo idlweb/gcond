@@ -122,7 +122,7 @@ class AccountPaymentRegister(models.TransientModel):
             for move in payment.move_id.line_ids:
                 for line in move:
                     if line.account_id.user_type_id.type in ('receivable', 'payable'):
-                        line.move_idpayment_state = 'paid'
+                        line.move_id.payment_state = 'paid'
                 #self._reconcile_entries(move, payment)
 
     def _reconcile_entries(self, move, payment):
