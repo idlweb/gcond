@@ -118,7 +118,7 @@ class AccountPaymentRegister(models.TransientModel):
         return res
 
     def _update_payment_state_and_reconcile(self):
-        raise UserError(self.payment_reference)
+        
         for payment in self.env['account.payment'].search([('payment_reference', '=', self.payment_reference)]):
             for move in payment.move_line_ids.mapped('move_id'):
                 for line in move.line_ids:
