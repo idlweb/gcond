@@ -115,13 +115,13 @@ class AccountPaymentRegister(models.TransientModel):
     def _create_payments(self):
         res = super(AccountPaymentRegister, self)._create_payments()
         raise UserError(res)
-        self._update_payment_state_and_reconcile()
+        #self._update_payment_state_and_reconcile()
         return res
 
     def _update_payment_state_and_reconcile(self):
         for payment in self.env['account.payment'].search([]):
             for move in payment.move_id:
-                raise UserError(move.name)
+                #raise UserError(move.name)
                 for line in move.line_ids:
                     if line.account_id.code.startswith('150') and line.account_id.user_type_id.type in ('receivable', 'payable'):
                         line.move_id.payment_state = 'paid'
@@ -137,7 +137,8 @@ class AccountPaymentRegister(models.TransientModel):
             'amount': self.amount,
             'currency_id': self.currency_id.id,
         }
-        raise UserError(payment_values)
+        #raise UserError(payment_values)
+        
         # Create the payment
         # payment = self.env['account.payment'].create(payment_values)
         
