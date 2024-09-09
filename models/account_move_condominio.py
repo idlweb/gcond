@@ -114,7 +114,8 @@ class AccountPaymentRegister(models.TransientModel):
 
     def _create_payments(self):
         res = super(AccountPaymentRegister, self)._create_payments()
-        raise UserError(res)
+        res.update
+        #raise UserError(res)
         #self._update_payment_state_and_reconcile()
         return res
 
