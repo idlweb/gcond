@@ -112,6 +112,12 @@ class AccountMove(models.Model):
 class AccountPaymentRegister(models.TransientModel):
     _inherit = 'account.payment.register'
 
+    def action_register_payment(self):
+        res = super(AccountMove, self).action_register_payment()
+        self._update_payment_state_and_reconcile()
+        return res
+
+
     def _create_payments(self):
         res = super(AccountPaymentRegister, self)._create_payments()
         res.update
@@ -138,7 +144,7 @@ class AccountPaymentRegister(models.TransientModel):
             'amount': self.amount,
             'currency_id': self.currency_id.id,
         }
-        #raise UserError(payment_values)
+        raise UserError(payment_values)
         
         # Create the payment
         # payment = self.env['account.payment'].create(payment_values)
