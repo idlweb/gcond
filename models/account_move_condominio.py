@@ -4,7 +4,6 @@
 """
 
 from odoo import models, fields, api
-#.  from . import account_condominio_table_master
 from odoo.exceptions import ValidationError, UserError
 
 
@@ -113,8 +112,8 @@ class AccountMove(models.Model):
 class AccountPaymentRegister(models.TransientModel):
     _inherit = 'account.payment.register'
 
-    def create_payments(self):
-        res = super(AccountPaymentRegister, self).create_payments()
+    def _create_payments(self):
+        res = super(AccountPaymentRegister, self)._create_payments()
         self._update_payment_state_and_reconcile()
         return res
 
