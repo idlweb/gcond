@@ -113,45 +113,38 @@ class AccountPaymentRegister(models.TransientModel):
     _inherit = 'account.payment.register'
 
     def action_register_payment(self):
-        res = super(AccountMove, self).action_register_payment()
+        res = super(AccountPaymentRegister, self).action_create_payment()
         self._update_payment_state_and_reconcile()
         return res
 
-
     def _create_payments(self):
+        payment_vals = {
+            'date': self.payment_date,
+            'amount': self.amount,
+            'payment_type': self.payment_type,
+            'partner_type': self.partner_type,
+            'ref': self.communication,
+            'journal_id': self.journal_id.id,
+            'currency_id': self.currency_id.id,
+            'partner_id': self.partner_id.id,
+            'partner_bank_id': self.partner_bank_id.id,
+            'payment_method_line_id': self.payment_method_line_id.id,
+            'destination_account_id': self.line_ids[0].account_id.id
+        }
         res = super(AccountPaymentRegister, self)._create_payments()
-        res.update
-        #raise UserError(res)
-        #self._update_payment_state_and_reconcile()
+        self._update_payment_state_and_reconcile(self.communication)
         return res
 
-    def _update_payment_state_and_reconcile(self):
-        for payment in self.env['account.payment'].search([]):
-            for move in payment.move_id:
-                #raise UserError(move.name)
-                for line in move.line_ids:
-                    if line.account_id.code.startswith('150') and line.account_id.user_type_id.type in ('receivable', 'payable'):
-                        line.move_id.payment_state = 'paid'
-                        
-        # Get the values from the wizard to create the payment
-        payment_values = {
-            'partner_id': self.partner_id.id,
-            'journal_id': self.journal_id.id,
-            'payment_date': self.payment_date,
-            'communication': self.communication,
-            'payment_method_id': self.payment_method_id.id,
-            'payment_type': self.payment_type,
-            'amount': self.amount,
-            'currency_id': self.currency_id.id,
-        }
-        raise UserError(payment_values)
-        
-        # Create the payment
-        # payment = self.env['account.payment'].create(payment_values)
-        
-      
+    def _update_payment_state_and_reconcile(self, key_update_move):
+        # Find the account.move line using the name field
+        move_lines = self.env['account.move'].search([('name', '=', key_update_move)])
+        for move_line in move_lines:
+            # Update the payment state to 'paid'
+            move_line.payment_state = 'paid'
+            # Reconcile the entries
+            # self._reconcile_entries(move_line)
 
-    def _reconcile_entries(self, move, payment):
-        lines_to_reconcile = (move.line_ids + payment.move_line_ids).filtered(lambda l: l.account_id.reconcile)
+    def _reconcile_entries(self, move):
+        lines_to_reconcile = move.line_ids.filtered(lambda l: l.account_id.reconcile)
         if lines_to_reconcile:
-            lines_to_reconcile.reconcile()   
+            lines_to_reconcile.reconcile()
