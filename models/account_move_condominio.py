@@ -112,11 +112,12 @@ class AccountMove(models.Model):
 class AccountPaymentRegister(models.TransientModel):
     _inherit = 'account.payment.register'
 
+    """
     def action_register_payment(self):
         res = super(AccountPaymentRegister, self).action_create_payment()
         self._update_payment_state_and_reconcile()
         return res
-
+    """
     def _create_payments(self):
           # Recupera il contesto
         context = self.env.context
