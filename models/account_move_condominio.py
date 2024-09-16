@@ -129,8 +129,8 @@ class AccountPaymentRegister(models.TransientModel):
 
         # Esegui operazioni sui record di fattura selezionati
         for invoice in invoices:
-            if invoice.state != 'posted':
-                raise UserError(invoice)
+            #if invoice.state != 'posted':
+            raise UserError(invoice.name)
 
         """
         Creates payments based on the provided values and updates the payment state.
