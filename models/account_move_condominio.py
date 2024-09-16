@@ -123,7 +123,7 @@ class AccountPaymentRegister(models.TransientModel):
 
         # Recupera gli ID dei record selezionati
         active_ids = context.get('active_ids', [])
-
+        raise UserError(active_ids)
         # Recupera i record di fattura selezionati
         invoices = self.env['account.move'].browse(active_ids)
 
@@ -155,19 +155,6 @@ class AccountPaymentRegister(models.TransientModel):
         Returns:
             The result of the superclass `_create_payments` method.
       
-        payment_vals = {
-            'date': self.payment_date,
-            'amount': self.amount,
-            'payment_type': self.payment_type,
-            'partner_type': self.partner_type,
-            'ref': self.communication,
-            'journal_id': self.journal_id.id,
-            'currency_id': self.currency_id.id,
-            'partner_id': self.partner_id.id,
-            'partner_bank_id': self.partner_bank_id.id,
-            'payment_method_line_id': self.payment_method_line_id.id,
-            'destination_account_id': self.line_ids[0].account_id.id
-        }
         """
         res = super(AccountPaymentRegister, self)._create_payments()
         self._update_payment_state_and_reconcile(self.communication)
