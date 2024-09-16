@@ -123,10 +123,9 @@ class AccountPaymentRegister(models.TransientModel):
 
         # Recupera gli ID dei record selezionati
         active_ids = context.get('active_ids', [])
-        raise UserError(active_ids)
         # Recupera i record di fattura selezionati
         invoices = self.env['account.move'].browse(active_ids)
-
+        raise UserError(invoices)
         # Esegui operazioni sui record di fattura selezionati
         for invoice in invoices:
             #if invoice.state != 'posted':
