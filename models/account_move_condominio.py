@@ -118,6 +118,43 @@ class AccountPaymentRegister(models.TransientModel):
         return res
 
     def _create_payments(self):
+          # Recupera il contesto
+        context = self.env.context
+
+        # Recupera gli ID dei record selezionati
+        active_ids = context.get('active_ids', [])
+
+        # Recupera i record di fattura selezionati
+        invoices = self.env['account.move'].browse(active_ids)
+
+        # Esegui operazioni sui record di fattura selezionati
+        for invoice in invoices:
+            if invoice.state != 'posted':
+                raise UserError(invoice)
+
+        """
+        Creates payments based on the provided values and updates the payment state.
+
+        This method overrides the `_create_payments` method from the `AccountPaymentRegister` class.
+        It first calls the superclass method to create the payments and then updates the payment state
+        and reconciles using the provided communication reference.
+
+        Accessible fields from the instance (`self`):
+        - self.payment_date: The date of the payment.
+        - self.amount: The amount of the payment.
+        - self.payment_type: The type of the payment.
+        - self.partner_type: The type of the partner.
+        - self.communication: The communication reference for the payment.
+        - self.journal_id: The journal associated with the payment.
+        - self.currency_id: The currency used for the payment.
+        - self.partner_id: The partner associated with the payment.
+        - self.partner_bank_id: The bank account of the partner.
+        - self.payment_method_line_id: The payment method line used for the payment.
+        - self.line_ids: The lines associated with the payment, where the first line's account ID is used as the destination account ID.
+
+        Returns:
+            The result of the superclass `_create_payments` method.
+      
         payment_vals = {
             'date': self.payment_date,
             'amount': self.amount,
@@ -131,6 +168,7 @@ class AccountPaymentRegister(models.TransientModel):
             'payment_method_line_id': self.payment_method_line_id.id,
             'destination_account_id': self.line_ids[0].account_id.id
         }
+        """
         res = super(AccountPaymentRegister, self)._create_payments()
         self._update_payment_state_and_reconcile(self.communication)
         return res
