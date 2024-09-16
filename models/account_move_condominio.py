@@ -120,16 +120,14 @@ class AccountPaymentRegister(models.TransientModel):
     def _create_payments(self):
           # Recupera il contesto
         context = self.env.context
-
         # Recupera gli ID dei record selezionati
         active_ids = context.get('active_ids', [])
         # Recupera i record di fattura selezionati
         invoices = self.env['account.move'].browse(active_ids)
-        raise UserError(invoices)
         # Esegui operazioni sui record di fattura selezionati
         for invoice in invoices:
-            #if invoice.state != 'posted':
-            raise UserError(invoice.name)
+            res = super(AccountPaymentRegister, self)._create_payments()
+            self._update_payment_state_and_reconcile(invoice.name)
 
         """
         Creates payments based on the provided values and updates the payment state.
@@ -155,8 +153,7 @@ class AccountPaymentRegister(models.TransientModel):
             The result of the superclass `_create_payments` method.
       
         """
-        res = super(AccountPaymentRegister, self)._create_payments()
-        self._update_payment_state_and_reconcile(self.communication)
+       
         return res
 
     def _update_payment_state_and_reconcile(self, key_update_move):
