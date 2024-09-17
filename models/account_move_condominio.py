@@ -36,55 +36,57 @@ class AccountMove(models.Model):
             amount = line.debit
             # raise UserError(line.account_id)
             # Get the account_condominio_table_master record associated with the debit/cost entry
-            account_condominio_table = self.env['account.condominio.table.master'].search([
+            account_condominio_tables = self.env['account.condominio.table.master'].search([
                 ('condominio_id', '=', condominio_id),
             ])
            
+
             if not account_condominio_table:
                 raise UserError("No account_condominio_table_master record found for current condominium and cost entry.")
-                       
-            for dettaglio_ripartizione in account_condominio_table:
-                amount = (amount * account_condominio_table.percentuale)/100
-                
-                if line.account_id.id in dettaglio_ripartizione.account_ids.ids:
-                    account_condominio_table_records = self.env['account.condominio.table'].search([
-                        ('table_id', '=', dettaglio_ripartizione.id),
-                    ])
 
-                    amount = amount / 1000 
+            for account_condominio_table in account_condominio_tables:
+                for dettaglio_ripartizione in account_condominio_table:
+                    amount = (amount * account_condominio_table.percentuale)/100
+                    
+                    if line.account_id.id in dettaglio_ripartizione.account_ids.ids:
+                        account_condominio_table_records = self.env['account.condominio.table'].search([
+                            ('table_id', '=', dettaglio_ripartizione.id),
+                        ])
 
-                    for account_condominio_table_record in account_condominio_table_records:
-                        # Calculate the share for the partner
-                        
-                        charge = ((amount * (account_condominio_table_record.value_distribution * account_condominio_table_record.quote / 100))) * 1.22
-                        
-                        # Create a journal entry for the charge
-                        account_move = self.env['account.move'].create({                        
-                            'journal_id': self.journal_id.id, #PURCHASE[18]
-                            'date': fields.Date.today(),
-                            'ref' : f"{account_condominio_table_record.condomino_id.name}-{line.account_id.name}",
-                            'move_type': 'entry',
-                            'line_ids': [
-                                (0, 0, {
-                                    'account_id': account_condominio_table_record.condomino_id.conto_id.id,
-                                    'partner_id': account_condominio_table_record.condomino_id.id,
-                                    'name': document_number, # etichetta
-                                    #'analytic_account_id': account_condominio_table_record.condomino_id.id,  # Assegna il conto analitico
-                                    'debit': charge,
-                                    'credit': 0.0,
-                                }),
-                                (0, 0, {
-                                    'account_id': line.account_id.id,
-                                    'partner_id': account_condominio_table_record.condomino_id.id,
-                                    'name': document_number,
-                                    #'analytic_account_id': account_condominio_table_record.condomino_id.id,  # Assegna il conto analitico
-                                    'credit': charge,
-                                    'debit': 0.0,
-                                })
-                            ],
-                        })
+                        amount = amount / 1000 
 
-                        charges.append(account_move)
+                        for account_condominio_table_record in account_condominio_table_records:
+                            # Calculate the share for the partner
+                            
+                            charge = ((amount * (account_condominio_table_record.value_distribution * account_condominio_table_record.quote / 100))) * 1.22
+                            
+                            # Create a journal entry for the charge
+                            account_move = self.env['account.move'].create({                        
+                                'journal_id': self.journal_id.id, #PURCHASE[18]
+                                'date': fields.Date.today(),
+                                'ref' : f"{account_condominio_table_record.condomino_id.name}-{line.account_id.name}",
+                                'move_type': 'entry',
+                                'line_ids': [
+                                    (0, 0, {
+                                        'account_id': account_condominio_table_record.condomino_id.conto_id.id,
+                                        'partner_id': account_condominio_table_record.condomino_id.id,
+                                        'name': document_number, # etichetta
+                                        #'analytic_account_id': account_condominio_table_record.condomino_id.id,  # Assegna il conto analitico
+                                        'debit': charge,
+                                        'credit': 0.0,
+                                    }),
+                                    (0, 0, {
+                                        'account_id': line.account_id.id,
+                                        'partner_id': account_condominio_table_record.condomino_id.id,
+                                        'name': document_number,
+                                        #'analytic_account_id': account_condominio_table_record.condomino_id.id,  # Assegna il conto analitico
+                                        'credit': charge,
+                                        'debit': 0.0,
+                                    })
+                                ],
+                            })
+
+                            charges.append(account_move)
                         
                                             
         return charges
