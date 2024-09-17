@@ -39,12 +39,11 @@ class AccountMove(models.Model):
             account_condominio_tables = self.env['account.condominio.table.master'].search([
                 ('condominio_id', '=', condominio_id),
             ])
-           
-
-            if not account_condominio_table:
-                raise UserError("No account_condominio_table_master record found for current condominium and cost entry.")
+                       
 
             for account_condominio_table in account_condominio_tables:
+                if not account_condominio_table:
+                    raise UserError("No account_condominio_table_master record found for current condominium and cost entry.")
                 for dettaglio_ripartizione in account_condominio_table:
                     amount = (amount * account_condominio_table.percentuale)/100
                     
