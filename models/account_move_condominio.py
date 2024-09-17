@@ -63,7 +63,7 @@ class AccountMove(models.Model):
                             account_move = self.env['account.move'].create({                        
                                 'journal_id': self.journal_id.id, #PURCHASE[18]
                                 'date': fields.Date.today(),
-                                'ref' : f"{account_condominio_table_record.condomino_id.name}-{line.account_id.name}",
+                                'ref' : f"{account_condominio_table_record.condomino_id.name}-{line.account_id.name}-{document_number}",
                                 'move_type': 'entry',
                                 'line_ids': [
                                     (0, 0, {
