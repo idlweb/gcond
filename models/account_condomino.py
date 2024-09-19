@@ -91,8 +91,7 @@ class GcondAccountCondomino(models.Model):
         id_partner = args[0]
         # Trova il conto associato al partner
         partner = self.env['res.partner'].search([('id', '=', id_partner)], limit=1)
-        account = self.env['account.account'].search([('name', 'ilike', partner.name)], limit=1)
-        raise UserError(self.name)
+        account = self.env['account.account'].search([('name', 'ilike', partner.name)], limit=1)        
         if not account:
             raise UserError("Nessun conto trovato per questo partner.")
         
