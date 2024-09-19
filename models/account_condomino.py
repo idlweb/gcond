@@ -88,9 +88,10 @@ class GcondAccountCondomino(models.Model):
 
     @api.model
     def action_view_account_situation(self, *args):
-        name = self.get_account_by_partner_name(self.name)
+        
         # Trova il conto associato al partner
-        account = self.env['account.account'].search([('name', 'ilike', name)], limit=1)
+        account = self.env['account.account'].search([('name', 'ilike', self.name)], limit=1)
+        raise UserError(account)
         if not account:
             raise UserError("Nessun conto trovato per questo partner.")
         
@@ -104,11 +105,6 @@ class GcondAccountCondomino(models.Model):
             'context': dict(self.env.context),
         }
        
-    def get_account_by_partner_name(self, partner_name):
-        account = self.env['account.account'].search([('name', 'ilike', partner_name)], limit=1)
-        if not account:
-            raise UserError(f"Nessun conto trovato per il partner con nome '{partner_name}'.")
-        return account
 
 """
     def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
