@@ -85,8 +85,9 @@ class GcondAccountCondomino(models.Model):
             partner.conto_id = ass_account.id
             
         return partner
-    @api.model
+    @api.multi
     def action_view_account_situation(self):
+        self.ensure_one()
         # Trova il conto associato al partner
         account = self.env['account.account'].search([('name', 'ilike', self.name)], limit=1)
         if not account:
@@ -101,6 +102,7 @@ class GcondAccountCondomino(models.Model):
             'domain': [('account_id', '=', account.id)],
             'context': dict(self.env.context),
         }
+       
 
 
 """
