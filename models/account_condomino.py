@@ -85,7 +85,7 @@ class GcondAccountCondomino(models.Model):
             partner.conto_id = ass_account.id
             
         return partner
-    @api.multi
+    @api.model
     def action_view_account_situation(self):
         self.ensure_one()
         # Trova il conto associato al partner
