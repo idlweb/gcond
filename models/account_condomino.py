@@ -85,7 +85,22 @@ class GcondAccountCondomino(models.Model):
             partner.conto_id = ass_account.id
             
         return partner
-
+    @api.model
+    def action_view_account_situation(self):
+        # Trova il conto associato al partner
+        account = self.env['account.account'].search([('name', 'ilike', self.name)], limit=1)
+        if not account:
+            raise UserError("Nessun conto trovato per questo partner.")
+        
+        # Restituisci l'azione per aprire la vista del conto
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Situazione Contabile',
+            'res_model': 'account.move.line',
+            'view_mode': 'tree,form',
+            'domain': [('account_id', '=', account.id)],
+            'context': dict(self.env.context),
+        }
 
 
 """
