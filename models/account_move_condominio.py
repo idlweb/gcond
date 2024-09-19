@@ -45,8 +45,7 @@ class AccountMove(models.Model):
                 if not account_condominio_table:
                     raise UserError("No account_condominio_table_master record found for current condominium and cost entry.")
                 for dettaglio_ripartizione in account_condominio_table:
-                    amount = (amount * account_condominio_table.percentuale)/100
-                    
+                    amount = (amount * account_condominio_table.percentuale)/100                    
                     if line.account_id.id in dettaglio_ripartizione.account_ids.ids:
                         account_condominio_table_records = self.env['account.condominio.table'].search([
                             ('table_id', '=', dettaglio_ripartizione.id),
@@ -55,8 +54,7 @@ class AccountMove(models.Model):
                         amount = amount / 1000 
 
                         for account_condominio_table_record in account_condominio_table_records:
-                            # Calculate the share for the partner
-                            
+                            # Calculate the share for the partner                            
                             charge = ((amount * (account_condominio_table_record.value_distribution * account_condominio_table_record.quote / 100))) * 1.22
                             
                             # Create a journal entry for the charge
