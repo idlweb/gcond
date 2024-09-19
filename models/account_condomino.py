@@ -88,7 +88,7 @@ class GcondAccountCondomino(models.Model):
 
     @api.model
     def action_view_account_situation(self, *args):
-        name = get_account_by_partner_name(self,  self.name)
+        name = self.get_account_by_partner_name(self,  self.name)
         # Trova il conto associato al partner
         account = self.env['account.account'].search([('name', 'ilike', name)], limit=1)
         if not account:
