@@ -27,17 +27,7 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
-            <xpath expr="//div[@class='oe_button_box']/button[last()]" position="after">
-                <button type="object" class="oe_stat_button" icon="fa-pencil-square-o" name="%(action_view_account_situation)d">
-                    <div class="o_form_field o_stat_info">
-                        <span class="o_stat_value">
-                            <field name="currency_id" invisible="1" can_create="true" can_write="true"/>
-                            <field name="total_invoiced" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                        </span>
-                        <span class="o_stat_text">Situazione Contabile</span>
-                    </div>
-                </button>
-            </xpath>
+            
             <field name="street" position="before">
                 <group>
                     <field name="condominio_id" label="Condominio appartenenza" />
