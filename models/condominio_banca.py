@@ -36,7 +36,7 @@ class AccountBankStatement(models.Model):
                         unpaid_line.move_id.payment_state = 'paid'
 
                 # Aggiorna lo stato della riga dell'estratto conto
-                line.amount_consumed = True
+                statement.amount_consumed = True
 
                 # Crea una scrittura contabile
                 """
