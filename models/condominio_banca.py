@@ -10,7 +10,7 @@ class AccountBankStatement(models.Model):
         for statement in self:
             for line in statement.line_ids:
                 raise UserError(line)
-                importo = line.amount                
+                importo = statement.amount                
                 partner = line.partner_id                    
                 if not partner:
                     raise UserError("Nessun partner associato a questa riga dell'estratto conto.")
