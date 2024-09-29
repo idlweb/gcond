@@ -9,7 +9,7 @@ class AccountBankStatement(models.Model):
     def action_consume_payment(self):
         for statement in self:
             for line in statement.line_ids:
-                raise UserError(line)
+                raise UserError(statement)
                 importo = statement.amount                
                 partner = line.partner_id                    
                 if not partner:
