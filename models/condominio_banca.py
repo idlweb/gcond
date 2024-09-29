@@ -11,6 +11,7 @@ class AccountBankStatement(models.Model):
             for line in statement.line_ids:
                 if self.env.context.get('active_id') == line.id:
                     partner = line.partner_id
+                    raise UserError(partner)
                     if not partner:
                         raise UserError("Nessun partner associato a questa riga dell'estratto conto.")
 
