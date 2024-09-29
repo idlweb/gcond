@@ -2,7 +2,7 @@ from odoo import models, fields, api
 from odoo.exceptions import UserError
 
 class AccountBankStatement(models.Model):
-    _inherit = 'account.bank.statement'
+    _inherit = 'account.bank.statement.line'
 
     amount_consumed = fields.Boolean(string='Importo Consumato', default=False)
 
