@@ -15,10 +15,10 @@ class AccountBankStatement(models.Model):
 
                 # Trova le righe della fattura non pagate
                 unpaid_lines = self.env['account.move.line'].search([
-                    ('partner_id', '=', partner.id),
+                    ('account_id', '=', partner.conto_id.id),
                     ('move_id.payment_state', '!=', 'paid')
                 ])
-                raise UserError("Non ci sono quote non pagate per questo partner.")
+                raise UserError(unpaid_lines)
                 if not unpaid_lines:
                     raise UserError(unpaid_lines)
 
