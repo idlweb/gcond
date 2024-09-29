@@ -9,6 +9,7 @@ class AccountBankStatement(models.Model):
     def action_consume_payment(self):
         for statement in self:
             for line in statement.line_ids:
+                raise UserError(line)
                 importo = line.amount                
                 partner = line.partner_id                    
                 if not partner:
@@ -19,7 +20,7 @@ class AccountBankStatement(models.Model):
                     ('account_id', '=', partner.conto_id.id),
                     ('move_id.payment_state', '!=', 'paid')
                 ])
-                #raise UserError(unpaid_lines)
+                
                 if not unpaid_lines:
                     raise UserError("Non ci sono quote non pagate per questo partner.")
 
