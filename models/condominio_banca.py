@@ -8,9 +8,8 @@ class AccountBankStatement(models.Model):
 
     def action_consume_payment(self):
         for statement in self:
-            for line in statement.line_ids:
-                raise UserError(line)
-                if self.env.context.get('active_id') == line.id:
+            for line in statement.line_ids:                
+                #if self.env.context.get('active_id') == line.id:
                     partner = line.partner_id                    
                     if not partner:
                         raise UserError("Nessun partner associato a questa riga dell'estratto conto.")
@@ -20,6 +19,7 @@ class AccountBankStatement(models.Model):
                         ('partner_id', '=', partner.id),
                         ('payment_state', '!=', 'paid')
                     ])
+                    raise UserError(unpaid_lines)
                     if not unpaid_lines:
                         raise UserError("Non ci sono quote non pagate per questo partner.")
 
