@@ -83,10 +83,10 @@ class AccountMove(models.Model):
                                 ],
                             })
 
-                            charges.append(account_move)
-                        
-                                            
+                            charges.append(account_move)                                
         return charges
+
+    
 
     # Non c'è bisogno di ricavere l'id del condominio dal nome del giornale perchè è già presente nel modello account.journal
     def get_condominio_id(self, journal_name):
