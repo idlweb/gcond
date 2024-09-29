@@ -22,6 +22,7 @@
         'views/account_sensore.xml',
         'views/menu.xml',
         'views/templates.xml',
+        'views/condominio_banca.xml',
         'data/sequence_data.xml',
     ],
     'assets': {

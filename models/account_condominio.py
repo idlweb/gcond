@@ -99,7 +99,7 @@ class GcondAccountCondominium(models.Model):
                     'condominio_id': int(id),
                 }])        
     
-
+ 
         return journal
     
    
