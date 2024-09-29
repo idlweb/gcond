@@ -20,9 +20,9 @@ class AccountBankStatement(models.Model):
                     ('account_id', '=', partner.conto_id.id),
                     ('move_id.payment_state', '!=', 'paid')
                 ])
-                raise UserError(unpaid_lines)
-                if not unpaid_lines:
-                    raise UserError("Non ci sono quote non pagate per questo partner.")
+                #raise UserError(unpaid_lines)
+                #if not unpaid_lines:
+                #    raise UserError("Non ci sono quote non pagate per questo partner.")
 
                 # Applica il pagamento alle quote
                 amount_to_consume = importo
