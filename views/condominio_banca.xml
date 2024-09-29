@@ -1,7 +1,7 @@
 <odoo>
-    <record id="view_bank_statement_line_tree_inherit" model="ir.ui.view">
-        <field name="name">account.view_bank_statement_line_tree.inherit</field>
-        <field name="model">account.bank.statement.line</field>
+    <record id="view_bank_statement_line_form_inherit" model="ir.ui.view">
+        <field name="name">account.view_bank_statement_line_form.inherit</field>
+        <field name="model">account.bank.statement</field>
         <field name="inherit_id" ref="account.view_bank_statement_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='line_ids']/tree//field[@name='amount']" position="after">
