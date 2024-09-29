@@ -6,7 +6,6 @@ class AccountBankStatement(models.Model):
 
     amount_consumed = fields.Boolean(string='Importo Consumato', default=False)
 
-    @api.mmodel
     def action_consume_payment(self):
         for statement in self:
             for line in statement.line_ids:
