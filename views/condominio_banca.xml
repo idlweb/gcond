@@ -4,6 +4,7 @@
         <field name="model">account.bank.statement.line</field>
         <field name="inherit_id" ref="account.view_bank_statement_line_tree"/>
         <field name="arch" type="xml">
+            <field name="amount_consumed" label="Condominio appartenenza"/>
             <xpath expr="//field[@name='amount']" position="after">
                 <button type="object" name="action_consume_payment" string="Consuma Pagamento" class="btn-primary" attrs="{'invisible': [('amount_consumed', '=', True)]}"/>
             </xpath>
