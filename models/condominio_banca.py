@@ -29,8 +29,8 @@ class AccountBankStatement(models.Model):
                 #    raise UserError("Non ci sono quote non pagate per questo partner.")
 
                 
-                #debug[0] = somma_quote
-                #debug[1] = importo
+                debug[0] = somma_quote
+                debug[1] = importo
                 
                 """
                     logica di calcolo:
