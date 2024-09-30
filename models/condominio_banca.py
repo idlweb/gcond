@@ -33,7 +33,7 @@ class AccountBankStatement(models.Model):
                     -considerare se il valore da pagare è minore del valore residuo
                     primo debito -> unpaid_line.debit o unpaid_line.balance
                 """
-            
+                raise UserError(unpaid_lines)
                 for unpaid_line in unpaid_lines:
                     if importo  >= unpaid_line.debit:
                         importo = importo - unpaid_line.debit 
