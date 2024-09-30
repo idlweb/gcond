@@ -11,7 +11,7 @@ class AccountBankStatement(models.Model):
         for statement in self:
             for line in statement.line_ids:  # line -> account.move.line
                 
-                importo = statement.amount + statement.amount_residual               
+                importo = statement.amount #+ statement.amount_residual               
                 partner = line.partner_id                    
                 if not partner:
                     raise UserError("Nessun partner associato a questa riga dell'estratto conto.")
