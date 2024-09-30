@@ -5,13 +5,12 @@ class AccountBankStatement(models.Model):
     _inherit = 'account.bank.statement.line'
 
     amount_consumed = fields.Boolean(string='Importo Consumato', default=False)
-    amount_re
 
     def action_consume_payment(self):
         for statement in self:
             for line in statement.line_ids:  # line -> account.move.line
                 
-                importo = statement.amount #+ statement.amount_residual               
+                importo = statement.amount + statement.amount_residual               
                 partner = line.partner_id                    
                 if not partner:
                     raise UserError("Nessun partner associato a questa riga dell'estratto conto.")
@@ -23,7 +22,7 @@ class AccountBankStatement(models.Model):
                 ])
             
                 # Calcola la somma dei valori del campo 'debit' per le righe delle fatture non pagate
-                #=========>somma_quote = self.somma_quote_da_pagare(partner.conto_id.id)
+                somma_quote = self.somma_quote_da_pagare(partner.conto_id.id)
                 #
                 #if not unpaid_lines:
                 #    raise UserError("Non ci sono quote non pagate per questo partner.")
@@ -34,8 +33,7 @@ class AccountBankStatement(models.Model):
                     -considerare se il valore da pagare è minore del valore residuo
                     primo debito -> unpaid_line.debit o unpaid_line.balance
                 """
-
-                """
+            
                 for unpaid_line in unpaid_lines:
                     if importo  >= unpaid_line.balance:
                         importo = importo - unpaid_line.debit 
@@ -44,10 +42,10 @@ class AccountBankStatement(models.Model):
                         if importo >= 0:
                             statement.amount_residual = importo
                         break
-                """
+
 
                 # Aggiorna lo stato della riga dell'estratto conto
-                #=========>statement.amount_consumed = True
+                statement.amount_consumed = True
 
                 # Crea una scrittura contabile
                 """
@@ -71,7 +69,7 @@ class AccountBankStatement(models.Model):
                 }
                 self.env['account.move'].create(move_vals)
                 """
-    """
+  
     def somma_quote_da_pagare(id):
         # Calcola la somma dei valori del campo 'debit' per le righe delle fatture non pagate
         debit_sum = self.env['account.move.line'].read_group(
@@ -83,4 +81,4 @@ class AccountBankStatement(models.Model):
             groupby=[]
         )[0]['debit']
         return debit_sum
-    """
+    
