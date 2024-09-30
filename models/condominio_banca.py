@@ -46,7 +46,7 @@ class AccountBankStatement(models.Model):
                         importo = importo - unpaid_line.debit 
                         unpaid_line.move_id.payment_state = 'paid'
                         debug[i] = unpaid_line.debit
-                        i++
+                        i = i + 1
                     else:                        
                         if importo >= 0:
                             statement.amount_residual = importo
