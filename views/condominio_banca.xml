@@ -5,7 +5,7 @@
         <field name="inherit_id" ref="account.view_bank_statement_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='line_ids']/tree//field[@name='amount']" position="after">
-                <button type="object" name="action_consume_payment" string="Consuma Pagamento" class="btn-primary" />
+                <button type="object" name="action_consume_payment" string="Consuma Pagamento" class="btn-primary" attrs="{'invisible': [('amount_consumed', '=', True)]}"/>
             </xpath>
         </field>
     </record>
