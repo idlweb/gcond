@@ -32,7 +32,7 @@ class AccountBankStatement(models.Model):
                 
                 debug.append(somma_quote) # ok
                 debug.append("^")
-                debug.append(importo) 
+                debug.append(statement.amount) 
                 
                 """
                     logica di calcolo:
