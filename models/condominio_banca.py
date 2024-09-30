@@ -9,7 +9,8 @@ class AccountBankStatement(models.Model):
     def action_consume_payment(self):
         for statement in self:
             for line in statement.line_ids:  # line -> account.move.line
-                
+                                
+
                 importo = statement.amount + statement.amount_residual               
                 partner = line.partner_id                    
                 if not partner:
@@ -27,22 +28,31 @@ class AccountBankStatement(models.Model):
                 #if not unpaid_lines:
                 #    raise UserError("Non ci sono quote non pagate per questo partner.")
 
+                
+                debug[0] = somma_quote
+                debug[1] = importo
+                
                 """
                     logica di calcolo:
                     -non ci sono valori residui da pagare ma valori residui da consumare
                     -considerare se il valore da pagare è minore del valore residuo
                     primo debito -> unpaid_line.debit o unpaid_line.balance
                 """
-                raise UserError(unpaid_lines)
+
+                i = 2
+                
                 for unpaid_line in unpaid_lines:
                     if importo  >= unpaid_line.debit:
                         importo = importo - unpaid_line.debit 
                         unpaid_line.move_id.payment_state = 'paid'
+                        debug[i] = unpaid_line.debit
+                        i++
                     else:                        
                         if importo >= 0:
                             statement.amount_residual = importo
                         break
-
+                    
+                raise UserError(debug)
 
                 # Aggiorna lo stato della riga dell'estratto conto
                 statement.amount_consumed = True
