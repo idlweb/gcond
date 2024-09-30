@@ -70,7 +70,7 @@ class AccountBankStatement(models.Model):
                 self.env['account.move'].create(move_vals)
                 """
   
-    def somma_quote_da_pagare(id):
+    def somma_quote_da_pagare(self, id):
         # Calcola la somma dei valori del campo 'debit' per le righe delle fatture non pagate
         debit_sum = self.env['account.move.line'].read_group(
             domain=[
