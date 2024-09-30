@@ -12,7 +12,7 @@ class AccountBankStatement(models.Model):
                                 
                 debug = []
 
-                importo = statement.amount + statement.amount_residual               
+                importo = statement.amount               
                 partner = line.partner_id                    
                 if not partner:
                     raise UserError("Nessun partner associato a questa riga dell'estratto conto.")
@@ -32,7 +32,7 @@ class AccountBankStatement(models.Model):
                 
                 debug.append(somma_quote) # ok
                 debug.append("^")
-                debug.append(statement.amount) 
+                debug.append(importo) 
                 
                 """
                     logica di calcolo:
@@ -43,10 +43,11 @@ class AccountBankStatement(models.Model):
 
                 for unpaid_line in unpaid_lines:
                     debug.append(unpaid_line.debit)
-                    if importo  >= unpaid_line.debit:
+                    debug.append("^")  
+                    if statement.amount  >= unpaid_line.debit:
                         importo = importo - unpaid_line.debit 
                         unpaid_line.move_id.payment_state = 'paid'
-                                        
+                        debug.append(importo)                
                     else:                        
                         if importo >= 0:
                             statement.amount_residual = importo
