@@ -30,8 +30,8 @@ class AccountBankStatement(models.Model):
                 #    raise UserError("Non ci sono quote non pagate per questo partner.")
 
                 
-                debug[0] = somma_quote
-                debug[1] = importo
+                debug.append(somma_quote)
+                debug.append(importo)
                 
                 """
                     logica di calcolo:
@@ -40,14 +40,11 @@ class AccountBankStatement(models.Model):
                     primo debito -> unpaid_line.debit o unpaid_line.balance
                 """
 
-                i = 2 
-                
                 for unpaid_line in unpaid_lines:
                     if importo  >= unpaid_line.debit:
                         importo = importo - unpaid_line.debit 
                         unpaid_line.move_id.payment_state = 'paid'
-                        debug[i] = unpaid_line.debit
-                        i = i + 1
+                        debug.append(unpaid_line.debit)                
                     else:                        
                         if importo >= 0:
                             statement.amount_residual = importo
