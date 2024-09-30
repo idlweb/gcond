@@ -35,14 +35,7 @@ class AccountBankStatement(models.Model):
                     primo debito -> unpaid_line.debit o unpaid_line.balance
                 """
 
-                for unpaid_line in unpaid_lines:
-                    if importo  >= unpaid_line.balance:
-                        importo = importo - unpaid_line.debit 
-                        unpaid_line.move_id.payment_state = 'paid'
-                    else:
-                        if importo >= 0:
-                            statement.amount_residual = importo
-                        break
+                
                   
 
                 # Aggiorna lo stato della riga dell'estratto conto
