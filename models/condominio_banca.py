@@ -10,6 +10,7 @@ class AccountBankStatement(models.Model):
         for statement in self:
             for line in statement.line_ids:  # line -> account.move.line
                                 
+                debug = []
 
                 importo = statement.amount + statement.amount_residual               
                 partner = line.partner_id                    
