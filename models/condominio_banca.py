@@ -52,7 +52,7 @@ class AccountBankStatement(models.Model):
                             statement.amount_residual = importo
                         break
                     
-                #raise UserError(debug)
+                raise UserError(debug)
 
                 # Aggiorna lo stato della riga dell'estratto conto
                 statement.amount_consumed = True
