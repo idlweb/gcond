@@ -32,7 +32,7 @@ class AccountBankStatement(models.Model):
                 
                 debug.append(somma_quote) # ok
                 debug.append("^")
-                debug.append(importo) 
+                debug.append(importo)     # ok
                 
                 """
                     logica di calcolo:
@@ -47,10 +47,15 @@ class AccountBankStatement(models.Model):
                     if statement.amount  >= unpaid_line.debit:
                         importo = importo - unpaid_line.debit 
                         unpaid_line.move_id.payment_state = 'paid'
-                        debug.append(importo)                
+                        debug.append("^") 
+                        debug.append(unpaid_line.move_id.payment_state)
+                        debug.append("____") 
+                        debug.append(importo)  # ok              
                     else:                        
                         if importo >= 0:
                             statement.amount_residual = importo
+                            debug.append("^") 
+                            debug.append(statement.amount_residual) 
                         break
                     
                 raise UserError(debug)
