@@ -47,7 +47,7 @@ class AccountBankStatement(models.Model):
                 """
 
                 # Aggiorna lo stato della riga dell'estratto conto
-                statement.amount_consumed = True
+                #=========>statement.amount_consumed = True
 
                 # Crea una scrittura contabile
                 """
@@ -71,7 +71,7 @@ class AccountBankStatement(models.Model):
                 }
                 self.env['account.move'].create(move_vals)
                 """
-
+    """
     def somma_quote_da_pagare(id):
         # Calcola la somma dei valori del campo 'debit' per le righe delle fatture non pagate
         debit_sum = self.env['account.move.line'].read_group(
@@ -83,3 +83,4 @@ class AccountBankStatement(models.Model):
             groupby=[]
         )[0]['debit']
         return debit_sum
+    """
