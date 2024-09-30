@@ -35,11 +35,10 @@ class AccountBankStatement(models.Model):
                 """
             
                 for unpaid_line in unpaid_lines:
-                    if importo  >= unpaid_line.balance:
+                    if importo  >= unpaid_line.debit:
                         importo = importo - unpaid_line.debit 
                         unpaid_line.move_id.payment_state = 'paid'
-                    else:
-                        raise UserError("importo incapinente a pagare tutte le quote")
+                    else:                        
                         if importo >= 0:
                             statement.amount_residual = importo
                         break
