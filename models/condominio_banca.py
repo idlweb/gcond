@@ -43,10 +43,10 @@ class AccountBankStatement(models.Model):
                     if statement.amount  >= unpaid_line.debit:
                         unpaid_line.move_id.payment_state = 'paid'
                         importo = importo - unpaid_line.debit                                  
-                    #else:                        
-                    #    if importo >= 0:
-                    #        statement.amount_residual = importo
-                    #    break                
+                    else:                        
+                        if importo >= 0:
+                            statement.amount_residual = importo
+                        break                
 
                 # Aggiorna lo stato della riga dell'estratto conto
                 statement.amount_consumed = True
