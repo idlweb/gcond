@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
+from decimal import Decimal
 
 class AccountBankStatement(models.Model):
     _inherit = 'account.bank.statement.line'
@@ -29,7 +30,7 @@ class AccountBankStatement(models.Model):
                     importo -= unpaid_line.debit
                 else:
                     if importo > 0:
-                        statement.amount_residual = round(importo, 2)
+                        statement.amount_residual = Decimal(importo).quantize(Decimal('0.01'))
                     break
 
             statement.amount_consumed = True
