@@ -46,7 +46,7 @@ class AccountBankStatement(models.Model):
                     debug.append("^")  
                     if statement.amount  >= unpaid_line.debit:
                         importo = importo - unpaid_line.debit 
-                        unpaid_line.move_id.payment_state = 'paid'
+                        unpaid_line.move_id.write({'payment_state': 'paid'})
                         debug.append("^") 
                         debug.append(unpaid_line.move_id.payment_state)
                         debug.append("____") 
