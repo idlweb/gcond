@@ -11,7 +11,7 @@ class AccountBankStatement(models.Model):
             if not statement.line_ids:
                 continue
 
-            importo = statement.amount
+            importo = statement.amount + statement.amount_residual
             partner = statement.line_ids[0].partner_id
             if not partner:
                 raise UserError("Nessun partner associato a questa riga dell'estratto conto.")
@@ -29,7 +29,7 @@ class AccountBankStatement(models.Model):
                     importo -= unpaid_line.debit
                 else:
                     if importo > 0:
-                        statement.amount_residual = importo
+                        statement.amount_residual = round(importo, 2)
                     break
 
             statement.amount_consumed = True
@@ -44,4 +44,3 @@ class AccountBankStatement(models.Model):
             groupby=[]
         )
         return result[0]['debit'] if result else 0
-    
