@@ -29,11 +29,6 @@ class AccountBankStatement(models.Model):
                 #if not unpaid_lines:
                 #    raise UserError("Non ci sono quote non pagate per questo partner.")
 
-                
-                debug.append(somma_quote) # ok
-                debug.append("^")
-                debug.append(importo)     # ok
-                
                 """
                     logica di calcolo:
                     -non ci sono valori residui da pagare ma valori residui da consumare
@@ -44,21 +39,14 @@ class AccountBankStatement(models.Model):
                 for unpaid_line in unpaid_lines:
                     debug.append(unpaid_line.debit)
                     debug.append("^")  
+                    unpaid_line.move_id.payment_state = 'paid'
                     if statement.amount  >= unpaid_line.debit:
                         importo = importo - unpaid_line.debit 
-                        unpaid_line.move_id.write({'payment_state': 'paid'})
-                        debug.append("^") 
-                        debug.append(unpaid_line.move_id.payment_state)
-                        debug.append("____") 
-                        debug.append(importo)  # ok              
+                        #unpaid_line.move_id.payment_state = 'paid'         
                     else:                        
                         if importo >= 0:
                             statement.amount_residual = importo
-                            debug.append("^") 
-                            debug.append(statement.amount_residual) 
-                        break
-                    
-                raise UserError(debug)
+                        break                
 
                 # Aggiorna lo stato della riga dell'estratto conto
                 statement.amount_consumed = True
