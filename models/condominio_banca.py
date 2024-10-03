@@ -30,10 +30,14 @@ class AccountBankStatement(models.Model):
                     importo -= unpaid_line.debit
                 else:
                     if importo > 0:
-                        statement.amount_residual = importo #Decimal(importo).quantize(Decimal('0.01'))
+                        #statement.amount_residual = importo #Decimal(importo).quantize(Decimal('0.01'))
+                        # Aggiorna il campo 'amount_residual' e salva le modifiche
+                        statement.write({'amount_residual': importo})                       
                     break
-           
-            statement.amount_consumed = True
+            
+            
+            #statement.amount_consumed = True
+            statement.write({'amount_consumed': True})
 
             """
             # Crea una scrittura contabile
