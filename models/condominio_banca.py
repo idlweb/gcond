@@ -29,10 +29,9 @@ class AccountBankStatement(models.Model):
                 somma_quote = self.somma_quote_da_pagare(partner.conto_id.id)
                 
                 # Aggiungi i valori di debug alla lista
-                debug.append(somma_quote)
-                debug.append("->")
-                debug.append(importo)
-                debug.append("->")
+                debug.append("-somma_quote:"+somma_quote)
+                debug.append("-importo estratto:"+importo)
+
                 
                 """
                     logica di calcolo:
@@ -43,18 +42,14 @@ class AccountBankStatement(models.Model):
                 
                 for unpaid_line in unpaid_lines:
                     if importo >= unpaid_line.debit:
+                        debug.append("-primo debito:"+unpaid_line.debit)
                         importo -= unpaid_line.debit 
                         unpaid_line.move_id.payment_state = 'paid'
-                        debug.append(unpaid_line.debit)
-                        debug.append("->")
-                        debug.append(importo)
-                        debug.append("->fine ciclo")
+                        debug.append("-importo ridotto:"+importo)
                     else:
-                        debug.append("=>")
-                        debug.append(importo)
                         if importo >= 0:
                             statement.amount_residual = importo
-
+                            debug.append("-residuo:"+importo)
                         break
 
             statement.amount_consumed = True
