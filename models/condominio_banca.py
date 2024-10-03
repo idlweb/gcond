@@ -58,7 +58,8 @@ class AccountBankStatement(models.Model):
 
             statement.amount_consumed = True
 
-        raise UserError(debug)
+            raise UserError(debug)
+            
             """
             # Crea una scrittura contabile
             move_vals = {
