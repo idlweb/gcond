@@ -12,7 +12,7 @@ class AccountBankStatement(models.Model):
             if not statement.line_ids:
                 continue
 
-            importo = statement.amount #+ self.get_previous_residual(statement.line_ids[0].partner_id.id)         
+            importo = statement.amount + self.get_previous_residual(statement.line_ids[0].partner_id.id)         
             partner = statement.line_ids[0].partner_id
             if not partner:
                 raise UserError("Nessun partner associato a questa riga dell'estratto conto.")
