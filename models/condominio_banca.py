@@ -12,7 +12,7 @@ class AccountBankStatement(models.Model):
             if not statement.line_ids:
                 continue
 
-            importo = statement.amount #+ self.get_previous_residual(statement.line_ids[0].partner_id.id)         
+            importo = statement.amount + self.get_previous_residual(statement.line_ids[0].partner_id.id)         
             partner = statement.line_ids[0].partner_id
             if not partner:
                 raise UserError("Nessun partner associato a questa riga dell'estratto conto.")
@@ -30,8 +30,9 @@ class AccountBankStatement(models.Model):
                     importo -= unpaid_line.debit
                 else:
                     if importo > 0:
-                        statement.amount_residual = Decimal(importo).quantize(Decimal('0.01'))
+                        statement.amount_residual = importo #Decimal(importo).quantize(Decimal('0.01'))
                     break
+            raise UserError(importo)   
 
             statement.amount_consumed = True
 
