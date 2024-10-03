@@ -9,32 +9,49 @@ class AccountBankStatement(models.Model):
 
     def action_consume_payment(self):
         for statement in self:
-            if not statement.line_ids:
-                continue
+            for line in statement.line_ids:  # line -> account.move.line
+                
+                # Inizializza una lista vuota per il debug
+                debug = []
+                
+                importo = statement.amount + statement.amount_residual               
+                partner = line.partner_id                    
+                if not partner:
+                    raise UserError("Nessun partner associato a questa riga dell'estratto conto.")
 
-            importo = statement.amount + self.get_previous_residual(statement.line_ids[0].partner_id.id)         
-            partner = statement.line_ids[0].partner_id
-            if not partner:
-                raise UserError("Nessun partner associato a questa riga dell'estratto conto.")
-
-            unpaid_lines = self.env['account.move.line'].search([
-                ('account_id', '=', partner.conto_id.id),
-                ('move_id.payment_state', '!=', 'paid')
-            ])
-
-            somma_quote = self.somma_quote_da_pagare(partner.conto_id.id)
-
-            for unpaid_line in unpaid_lines:
-                if importo >= unpaid_line.debit:
-                    unpaid_line.move_id.payment_state = 'paid'
-                    importo -= unpaid_line.debit
-                else:
-                    if importo > 0:
-                        statement.amount_residual = Decimal(importo).quantize(Decimal('0.01'))
-                    break
+                # Trova le righe della fattura non pagate
+                unpaid_lines = self.env['account.move.line'].search([
+                    ('account_id', '=', partner.conto_id.id),
+                    ('move_id.payment_state', '!=', 'paid')
+                ])
+            
+                # Calcola la somma dei valori del campo 'debit' per le righe delle fatture non pagate
+                somma_quote = self.somma_quote_da_pagare(partner.conto_id.id)
+                
+                # Aggiungi i valori di debug alla lista
+                debug.append(somma_quote)
+                debug.append(importo)
+                
+                """
+                    logica di calcolo:
+                    -non ci sono valori residui da pagare ma valori residui da consumare
+                    -considerare se il valore da pagare è minore del valore residuo
+                    primo debito -> unpaid_line.debit o unpaid_line.balance
+                """             
+                
+                for unpaid_line in unpaid_lines:
+                    if importo >= unpaid_line.debit:
+                        importo -= unpaid_line.debit 
+                        unpaid_line.move_id.payment_state = 'paid'
+                        debug.append(unpaid_line.debit)
+                    else:
+                        if importo >= 0:
+                            statement.amount_residual = importo
+                        break
 
             statement.amount_consumed = True
 
+            raise UserError(debug)
             """
             # Crea una scrittura contabile
             move_vals = {
