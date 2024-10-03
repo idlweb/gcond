@@ -13,18 +13,21 @@ class AccountBankStatement(models.Model):
                 
                 # Inizializza una lista vuota per il debug
                 debug = []
+                partnerTest = []
                 
                 importo = statement.amount #+ statement.amount_residual               
                 partner = line.partner_id                    
                 if not partner:
                     raise UserError("Nessun partner associato a questa riga dell'estratto conto.")
 
+                partnerTest.append(partner.conto_id.id)
+                
                 # Trova le righe della fattura non pagate
                 unpaid_lines = self.env['account.move.line'].search([
                     ('account_id', '=', partner.conto_id.id),
                     ('move_id.payment_state', '!=', 'paid')
                 ])
-                raise UserError(partner.conto_id.id)
+                
             
                 # Calcola la somma dei valori del campo 'debit' per le righe delle fatture non pagate
                 somma_quote = self.somma_quote_da_pagare(partner.conto_id.id)
@@ -54,7 +57,8 @@ class AccountBankStatement(models.Model):
                         break
 
             statement.amount_consumed = True
-            raise UserError(debug)
+            raise UserError(partnerTest)
+            #raise UserError(debug)
         
 
             """
