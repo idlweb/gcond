@@ -50,14 +50,16 @@ class AccountBankStatement(models.Model):
                         debug.append(importo)
                         debug.append("->fine ciclo")
                     else:
+                        debug.append("=>")
+                        debug.append(importo)
                         if importo >= 0:
                             statement.amount_residual = importo
 
                         break
 
             statement.amount_consumed = True
-
-        raise UserError(debug)
+            raise UserError(debug)
+        
 
             """
             # Crea una scrittura contabile
