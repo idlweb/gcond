@@ -32,8 +32,7 @@ class AccountBankStatement(models.Model):
                     if importo > 0:
                         statement.amount_residual = importo #Decimal(importo).quantize(Decimal('0.01'))
                     break
-            raise UserError(importo)   
-
+           
             statement.amount_consumed = True
 
             """
