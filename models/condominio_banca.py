@@ -14,7 +14,7 @@ class AccountBankStatement(models.Model):
                 # Inizializza una lista vuota per il debug
                 debug = []
                 
-                importo = statement.amount + statement.amount_residual               
+                importo = statement.amount #+ statement.amount_residual               
                 partner = line.partner_id                    
                 if not partner:
                     raise UserError("Nessun partner associato a questa riga dell'estratto conto.")
@@ -30,7 +30,9 @@ class AccountBankStatement(models.Model):
                 
                 # Aggiungi i valori di debug alla lista
                 debug.append(somma_quote)
+                debug.append("->")
                 debug.append(importo)
+                debug.append("->")
                 
                 """
                     logica di calcolo:
@@ -44,14 +46,19 @@ class AccountBankStatement(models.Model):
                         importo -= unpaid_line.debit 
                         unpaid_line.move_id.payment_state = 'paid'
                         debug.append(unpaid_line.debit)
+                        debug.append("->")
+                        debug.append(importo)
+                        debug.append("->fine ciclo")
                     else:
                         if importo >= 0:
                             statement.amount_residual = importo
+                            debug.append("->")
+                            debug.append(importo)
                         break
 
             statement.amount_consumed = True
 
-            raise UserError(debug)
+        raise UserError(debug)
             """
             # Crea una scrittura contabile
             move_vals = {
