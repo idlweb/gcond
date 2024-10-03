@@ -68,6 +68,7 @@ class AccountBankStatement(models.Model):
             residual = previous_statements.amount_residual
             previous_statements.amount_residual = 0
             return residual
+        raise UserError(residual)
         return 0
 
 
