@@ -105,6 +105,5 @@ class AccountBankStatement(models.Model):
             ],
             fields=['debit:sum'],
             groupby=[]
-        )
-        raise UserError(result[0]['debit'])
-        return result[0]['debit'] if result else 0
+        )        
+        return result[0]['debit'] 
