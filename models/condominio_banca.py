@@ -19,8 +19,6 @@ class AccountBankStatement(models.Model):
                 partner = line.partner_id                    
                 if not partner:
                     raise UserError("Nessun partner associato a questa riga dell'estratto conto.")
-
-                partnerTest.append(partner.conto_id.id)
                 
                 # Trova le righe della fattura non pagate
                 unpaid_lines = self.env['account.move.line'].search([
@@ -57,7 +55,6 @@ class AccountBankStatement(models.Model):
                         break
 
             statement.amount_consumed = True
-            raise UserError(partnerTest)
             #raise UserError(debug)
         
 
