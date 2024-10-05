@@ -51,12 +51,12 @@ class AccountBankStatement(models.Model):
                     else:
                         if importo > 0:
                             statement.amount_residual = importo
-                            debug.append("-residuo:"+str(importo))
+                            #debug.append("-residuo:"+str(importo))
                             importo = 0
                         else:
-                            statement.amount_residual = importo
-                            debug.append("-residuo:"+str(importo))
-                        unpaid_line.move_id.payment_state = 'partial'
+                            statement.amount_residual = 0
+                            #debug.append("-residuo:"+str(importo))
+                        #unpaid_line.move_id.payment_state = 'partial'
                         break
 
             statement.amount_consumed = True
