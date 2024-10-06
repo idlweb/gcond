@@ -35,12 +35,6 @@ class AccountBankStatement(models.Model):
                 #debug.append("-importo estratto:"+str(importo))
 
                 """
-                    logica di calcolo:
-                    -non ci sono valori residui da pagare ma valori residui da consumare
-                    -considerare se il valore da pagare è minore del valore residuo
-                    primo debito -> unpaid_line.debit o unpaid_line.balance
-                """             
-                
                 for unpaid_line in unpaid_lines:
                     if importo >= unpaid_line.debit:                         
                         unpaid_line.move_id.payment_state = 'paid'
@@ -57,8 +51,9 @@ class AccountBankStatement(models.Model):
                             debug['importo_consumato'] = importo
                         #unpaid_line.move_id.payment_state = 'partial'
                         break
-
+                           
             statement.amount_consumed = True
+            """
             
             raise UserError(str(debug))
         
