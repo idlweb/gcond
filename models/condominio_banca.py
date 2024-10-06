@@ -28,6 +28,7 @@ class AccountBankStatement(models.Model):
                 
                 # Calcola la somma dei valori del campo 'debit' per le righe delle fatture non pagate
                 somma_quote = self.somma_quote_da_pagare(partner.conto_id.id)
+                raise UserError(somma_quote)
                 
                 # Aggiungi i valori di debug alla lista
                 debug.append("-somma_quote:"+str(somma_quote))
@@ -41,19 +42,19 @@ class AccountBankStatement(models.Model):
                 """             
                 
                 for unpaid_line in unpaid_lines:
-                    if importo >= unpaid_line.debit:
-                        debug.append("-primo addebito:"+str(unpaid_line.debit))
-                        importo -= unpaid_line.debit 
+                    if importo >= unpaid_line.debit:                         
                         unpaid_line.move_id.payment_state = 'paid'
-                        debug.append("-importo ridotto:"+str(importo))
+                        importo -= unpaid_line.debit
+                        debug['primo_addebito'] = unpaid_line.debit
+                        debug['importo_ridotto'] = importo
                     else:
                         if importo > 0:
                             statement.amount_residual = importo
-                            debug.append("-residuo importo>0:"+str(importo))
+                            debug['importo_residuo'] = importo
                             importo = 0
                         else:
                             statement.amount_residual = 0
-                            debug.append("-residuo:"+str(importo))
+                            debug['importo_consumato'] = importo
                         #unpaid_line.move_id.payment_state = 'partial'
                         break
 
@@ -97,7 +98,7 @@ class AccountBankStatement(models.Model):
             return residual
         return 0
 
-
+    """
     def somma_quote_da_pagare(self, account_id):
         result = self.env['account.move.line'].read_group(
             domain=[
@@ -108,3 +109,11 @@ class AccountBankStatement(models.Model):
             groupby=[]
         )        
         return result[0]['debit'] 
+    """
+    def somma_quote_da_pagare(self, account_id):
+        move_lines = self.env['account.move.line'].search([
+            ('account_id', '=', account_id),
+            ('move_id.payment_state', '!=', 'paid')
+        ])
+        somma_quote = sum(line.debit for line in move_lines)
+        return somma_quote
