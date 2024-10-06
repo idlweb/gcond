@@ -33,8 +33,7 @@ class AccountBankStatement(models.Model):
                 debug['somma_quote'] = somma_quote
 
                 for unpaid_line in unpaid_lines:
-                    debug['linea_debito'] = unpaid_line.debit
-                    debug['linea_debito'] = "\n"
+                    debug['linea_debito'] = unpaid_line.debit                    
 
                 """
                 for unpaid_line in unpaid_lines:
