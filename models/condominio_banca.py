@@ -11,8 +11,8 @@ class AccountBankStatement(models.Model):
         for statement in self:
             for line in statement.line_ids:  # line -> account.move.line
                 
-                # Inizializza una lista vuota per il debug
-                debug = []
+                # Inizializza un dizionario vuoto per il debug
+                debug = {}
                 partnerTest = []
                 
                 importo = statement.amount #+ statement.amount_residual               
@@ -30,7 +30,7 @@ class AccountBankStatement(models.Model):
                 somma_quote = self.somma_quote_da_pagare(partner.conto_id.id)
                 #raise UserError(somma_quote)
                 
-                # Aggiungi i valori di debug alla lista
+                # Aggiungi i valori di debug al dizionario
                 debug['somma_quote'] = somma_quote
                 #debug.append("-importo estratto:"+str(importo))
 
