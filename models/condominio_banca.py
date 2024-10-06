@@ -40,11 +40,13 @@ class AccountBankStatement(models.Model):
                 # Importante
                 debug['linea_debito'] = [unpaid_line.debit for unpaid_line in unpaid_lines]
 
-                for unpaid_line in unpaid_lines:
+                for unpaid_line in unpaid_lines:                    
                     if importo >= unpaid_line.debit:
+                        unpaid_line.move_id.payment_state = 'paid'
                         importo -= unpaid_line.debit
-                        debug['payment_state'] = unpaid_line.move_id.payment_state
-                        #unpaid_line.move_id.payment_state = 'paid'
+                        debug['payment_state'] = unpaid_line.move_id.payment_state.
+                        statement.write({'amount_residual': importo})
+                        #
                         debug['riduzioni'] = [importo]
 
 
