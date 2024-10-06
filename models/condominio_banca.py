@@ -35,8 +35,8 @@ class AccountBankStatement(models.Model):
                 # Aggiungi i valori di debug al dizionario
                 debug['somma_quote'] = somma_quote
 
-                for unpaid_line in unpaid_lines:
-                    debug['linea_debito'] = unpaid_line.debit                    
+                # Importante
+                debug['linea_debito'] = [unpaid_line.debit for unpaid_line in unpaid_lines]
 
                 """
                 for unpaid_line in unpaid_lines:
