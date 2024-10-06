@@ -28,11 +28,13 @@ class AccountBankStatement(models.Model):
                 
                 # Calcola la somma dei valori del campo 'debit' per le righe delle fatture non pagate
                 somma_quote = self.somma_quote_da_pagare(partner.conto_id.id)
-                #raise UserError(somma_quote)
                 
                 # Aggiungi i valori di debug al dizionario
                 debug['somma_quote'] = somma_quote
-                #debug.append("-importo estratto:"+str(importo))
+
+                for unpaid_line in unpaid_lines:
+                    debug['linea_debito'] = unpaid_line.debit
+                    debug['linea_debito'] = "\n"
 
                 """
                 for unpaid_line in unpaid_lines:
@@ -54,7 +56,7 @@ class AccountBankStatement(models.Model):
                            
             statement.amount_consumed = True
             """
-            
+
             raise UserError(str(debug))
         
 
