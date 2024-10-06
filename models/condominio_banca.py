@@ -15,8 +15,12 @@ class AccountBankStatement(models.Model):
                 debug = {}
                 partnerTest = []
                 
-                importo = statement.amount #+ statement.amount_residual               
-                partner = line.partner_id                    
+                importo = statement.amount #+ statement.amount_residual     
+                debug['importo'] = importo
+
+                partner = line.partner_id
+                debug['partner'] = partner
+
                 if not partner:
                     raise UserError("Nessun partner associato a questa riga dell'estratto conto.")
                 
@@ -35,6 +39,12 @@ class AccountBankStatement(models.Model):
 
                 # Importante
                 debug['linea_debito'] = [unpaid_line.debit for unpaid_line in unpaid_lines]
+
+                for unpaid_line in unpaid_lines:
+                    if importo >= unpaid_line.debit:
+                        importo -= unpaid_line.debit
+                        debug['riduzioni'] = [importo -= unpaid_line.debit]
+
 
                 """
                 for unpaid_line in unpaid_lines:
