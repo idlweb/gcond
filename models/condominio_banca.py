@@ -43,7 +43,7 @@ class AccountBankStatement(models.Model):
                 for unpaid_line in unpaid_lines:
                     if importo >= unpaid_line.debit:
                         importo -= unpaid_line.debit
-                        unpaid_line.move_id.payment_state = 'paid'
+                        #unpaid_line.move_id.payment_state = 'paid'
                         debug['riduzioni'] = [importo]
 
 
