@@ -45,7 +45,6 @@ class AccountBankStatement(models.Model):
                         unpaid_line.move_id.payment_state = 'paid'
                         importo -= unpaid_line.debit
                         debug['payment_state'] = unpaid_line.move_id.payment_state
-                        statement.write({'amount_residual': importo})
                         debug['riduzioni'] = [importo]
 
 
@@ -70,7 +69,7 @@ class AccountBankStatement(models.Model):
             statement.amount_consumed = True
             """
 
-            raise UserError(str(debug))
+            #raise UserError(str(debug))
         
 
             """
