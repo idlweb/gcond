@@ -26,17 +26,13 @@ class AccountBankStatement(models.Model):
                     ('move_id.payment_state', '!=', 'paid')
                 ])
                 
-            
                 # Calcola la somma dei valori del campo 'debit' per le righe delle fatture non pagate
                 somma_quote = self.somma_quote_da_pagare(partner.conto_id.id)
-                
-                raise UserError(somma_quote)
                 
                 # Aggiungi i valori di debug alla lista
                 debug.append("-somma_quote:"+str(somma_quote))
                 #debug.append("-importo estratto:"+str(importo))
 
-                
                 """
                     logica di calcolo:
                     -non ci sono valori residui da pagare ma valori residui da consumare
