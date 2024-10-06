@@ -42,7 +42,7 @@ class AccountBankStatement(models.Model):
 
                 for unpaid_line in unpaid_lines:                    
                     if importo >= unpaid_line.debit:
-                        unpaid_line.move_id.payment_state = 'paid'
+                        #unpaid_line.move_id.write({'payment_state': 'paid'})
                         importo -= unpaid_line.debit
                         debug['payment_state'] = unpaid_line.move_id.payment_state
                         statement.write({'amount_residual': importo})
