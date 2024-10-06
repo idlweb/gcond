@@ -26,9 +26,7 @@ class AccountBankStatement(models.Model):
                     ('move_id.payment_state', '!=', 'paid')
                 ])
 
-                raise UserError(unpaid_lines)
-             
-                
+                               
                 # Calcola la somma dei valori del campo 'debit' per le righe delle fatture non pagate
                 somma_quote = self.somma_quote_da_pagare(partner.conto_id.id)
                 
