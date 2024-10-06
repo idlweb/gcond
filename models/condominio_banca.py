@@ -31,7 +31,7 @@ class AccountBankStatement(models.Model):
                 #raise UserError(somma_quote)
                 
                 # Aggiungi i valori di debug alla lista
-                debug['somma quote'] = somma_quote
+                debug['somma_quote'] = somma_quote
                 #debug.append("-importo estratto:"+str(importo))
 
                 """
