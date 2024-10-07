@@ -46,10 +46,10 @@ class AccountBankStatement(models.Model):
 
                     if importo >= unpaid_line.debit:
                         #unpaid_line.move_id.payment_state = 'paid'
-                        debug['debito'+str(k)] = unpaid_line.debit
-                        importo -= unpaid_line.debit
+                        debug['debito'+str(k)] = round(unpaid_line.debit, 2)
+                        importo -= round(unpaid_line.debit, 2)
                         debug['payment_state'+str(k)] = unpaid_line.move_id.payment_state
-                        debug['riduzioni'+str(k)] = importo
+                        debug['riduzioni'+str(k)] = round(importo, 2)
                         k += 1
                     else:
                         if importo > 0:
