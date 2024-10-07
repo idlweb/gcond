@@ -28,7 +28,11 @@ class AccountBankStatement(models.Model):
                 # Trova le righe della fattura non pagate
                 unpaid_lines = self.env['account.move.line'].search([
                     ('account_id', '=', partner.conto_id.id),
-                    ('move_id.payment_state', '!=', 'paid')
+                    ('move_id.payment_state', '!=', 'paid'),
+                    #('move_id.payment_state', '!=', False),
+                    #('move_id.payment_state', 'IS', None)
+                    #('move_id.payment_state', '=', partner.conto_id.id) if partner.conto_id.id is not None else ('account_id', 'IS', None),
+                    ('debit', '!=', 0),
                 ])
 
                                
@@ -46,6 +50,8 @@ class AccountBankStatement(models.Model):
                     if importo >= unpaid_line.debit:
                         k += 1
                         debug['ciclo:'+str(unpaid_line.move_id.id)] = k
+                        debug['conto_riferimento'+str(k)] = unpaid_line.move_id.id
+                        debug['stato'+str(k)] = unpaid_line.move_id.payment_state
                         #debug['debito'+str(k)] = round(unpaid_line.debit, 2)
                         #move = self.env['account.move'].browse(unpaid_line.move_id.id)
                         #move.payment_state = 'paid'
