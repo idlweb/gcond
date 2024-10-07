@@ -55,20 +55,9 @@ class AccountBankStatement(models.Model):
                         #debug['debito'+str(k)] = round(unpaid_line.debit, 2)
                         #move = self.env['account.move'].browse(unpaid_line.move_id.id)
                         #move.payment_state = 'paid'
-                    """
-                    if importo >= unpaid_line.debit:
-                        debug['debito'+str(k)] = round(unpaid_line.debit, 2)
-                        importo -= round(unpaid_line.debit, 2)
-                        move = self.env['account.move'].browse(unpaid_line.move_id.id)
-                        move.payment_state = 'paid'
-                        debug['riduzioni'+str(k)] = round(importo, 2)
-                        k += 1
-                    else:
-                        statement.amount_residual = round(importo, 2)
-                        break  # Exit the loop if the condition is not met                                               
-                    """  
+                   
 
-            #raise UserError(str(debug))
+            raise UserError(str(debug))
         
 
             """
