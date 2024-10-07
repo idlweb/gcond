@@ -51,6 +51,7 @@ class AccountBankStatement(models.Model):
                         debug['importo_quota'+str(k)] = unpaid_line.debit         
                         debug['stato'+str(k)] = unpaid_line.move_id.payment_state
                         unpaid_line.move_id.payment_state = 'paid'
+                        debug['verifica_residuo'+str(k)] = importo 
                         #debug['debito'+str(k)] = round(unpaid_line.debit, 2)
                         #move = self.env['account.move'].browse(unpaid_line.move_id.id)
                         #move.payment_state = 'paid'
