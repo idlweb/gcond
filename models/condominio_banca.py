@@ -48,7 +48,7 @@ class AccountBankStatement(models.Model):
                         debug['debito'+str(k)] = round(unpaid_line.debit, 2)
                         importo -= round(unpaid_line.debit, 2)
                         move = self.env['account.move'].browse(unpaid_line.move_id.id)
-                        move.payment_state = 'paid'
+                        #move.payment_state = 'paid'
                         debug['payment_state'+str(move.id)] = move.payment_state
                         debug['riduzioni'+str(k)] = round(importo, 2)
                         k += 1
