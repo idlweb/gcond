@@ -55,7 +55,7 @@ class AccountBankStatement(models.Model):
                    
 
             for key, value in debug.items():
-                self.mark_as_paid(self, value)
+                self.mark_as_paid(value)
 
             #raise UserError(str(debug))
         
