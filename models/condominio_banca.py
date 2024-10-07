@@ -68,7 +68,7 @@ class AccountBankStatement(models.Model):
                         break  # Exit the loop if the condition is not met                                               
                     """  
 
-            raise UserError(str(debug))
+            #raise UserError(str(debug))
         
 
             """
