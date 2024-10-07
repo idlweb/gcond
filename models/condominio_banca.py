@@ -40,12 +40,14 @@ class AccountBankStatement(models.Model):
                 # Importante
                 debug['linea_debito'] = [unpaid_line.debit for unpaid_line in unpaid_lines]
 
-                for unpaid_line in unpaid_lines:                    
+                for unpaid_line in unpaid_lines:
                     if importo >= unpaid_line.debit:
                         unpaid_line.move_id.payment_state = 'paid'
                         importo -= unpaid_line.debit
                         debug['payment_state'] = unpaid_line.move_id.payment_state
                         debug['riduzioni'] = [importo]
+                    else:
+                        break
 
 
                 """
