@@ -50,7 +50,7 @@ class AccountBankStatement(models.Model):
                         debug['ciclo:'+str(unpaid_line.move_id.id)] = k      
                         debug['importo_quota'+str(k)] = unpaid_line.debit         
                         debug['stato'+str(k)] = unpaid_line.move_id.payment_state
-                        unpaid_line.move_id.payment_state = 'paid'
+                        self.mark_as_paid(unpaid_line.move_id.id)                      
                         debug['verifica_residuo'+str(k)] = round(importo, 2) 
                         #debug['debito'+str(k)] = round(unpaid_line.debit, 2)
                         #move = self.env['account.move'].browse(unpaid_line.move_id.id)
@@ -93,6 +93,13 @@ class AccountBankStatement(models.Model):
             }
             self.env['account.move'].create(move_vals)
             """
+
+
+    def mark_as_paid(self, move_id):
+        move = self.env['account.move'].browse(move_id)
+        if move.payment_state is None:
+             move.payment_state = 'paid'
+
 
     def get_previous_residual(self, partner_id):
         previous_statements = self.env['account.bank.statement.line'].search([
