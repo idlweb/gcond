@@ -74,7 +74,7 @@ class AccountBankStatement(models.Model):
             for key, value in debug.items():
                 self.mark_as_paid(value)
 
-            line.amount_consumed = True
+            statement.amount_consumed = True
 
             #raise UserError(str(debug))
         
