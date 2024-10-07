@@ -69,6 +69,7 @@ class AccountBankStatement(models.Model):
                     else:
                         if importo > 0:
                             statement.amount_residual =  round(importo, 2)
+                            self.env.cr.flush() 
                    
 
             for key, value in debug.items():
