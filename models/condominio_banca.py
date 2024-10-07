@@ -40,12 +40,14 @@ class AccountBankStatement(models.Model):
                 # Importante
                 debug['linea_debito'] = [unpaid_line.debit for unpaid_line in unpaid_lines]
 
+                k = 0
                 for unpaid_line in unpaid_lines:
+
                     if importo >= unpaid_line.debit:
                         unpaid_line.move_id.payment_state = 'paid'
                         importo -= unpaid_line.debit
-                        debug['payment_state'] = unpaid_line.move_id.payment_state
-                        debug['riduzioni'] = [importo]
+                        debug['payment_state'+k] = [unpaid_line.move_id.payment_state]
+                        debug['riduzioni'+k] = [importo]
                     else:
                         if importo > 0:
                             unpaid_line.move_id.payment_state = 'partial'
@@ -54,7 +56,7 @@ class AccountBankStatement(models.Model):
                         else:
                             unpaid_line.move_id.payment_state = 'not_paid'
                             debug['payment_state'] = unpaid_line.move_id.payment_state
-
+                    k++
 
                 """
                 for unpaid_line in unpaid_lines:
