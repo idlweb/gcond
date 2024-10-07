@@ -52,7 +52,7 @@ class AccountBankStatement(models.Model):
                             debug['payment_state'] = unpaid_line.move_id.payment_state
                             importo = 0
                         else:
-                            unpaid_line.move_id.payment_state = 'unpaid'
+                            unpaid_line.move_id.payment_state = 'not_paid'
                             debug['payment_state'] = unpaid_line.move_id.payment_state
 
 
