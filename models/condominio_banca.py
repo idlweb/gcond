@@ -77,7 +77,7 @@ class AccountBankStatement(models.Model):
             statement.amount_consumed = True
             """
 
-            #raise UserError(str(debug))
+        raise UserError(str(debug))
         
 
             """
