@@ -33,20 +33,22 @@ class AccountBankStatement(models.Model):
 
                                
                 # Calcola la somma dei valori del campo 'debit' per le righe delle fatture non pagate
-                somma_quote = self.somma_quote_da_pagare(partner.conto_id.id)
+                #=> somma_quote = self.somma_quote_da_pagare(partner.conto_id.id)
                 
                 # Aggiungi i valori di debug al dizionario
-                debug['somma_quote'+str(i)] = somma_quote
+                #=> debug['somma_quote'+str(i)] = somma_quote
 
                 # Importante
-                debug['linea_debito'] = [unpaid_line.debit for unpaid_line in unpaid_lines]
+                #=> debug['linea_debito'] = [unpaid_line.debit for unpaid_line in unpaid_lines]
 
                 k = 0
                 for unpaid_line in unpaid_lines:
                     if importo >= unpaid_line.debit:
-                        debug['debito'+str(k)] = round(unpaid_line.debit, 2)
-                        move = self.env['account.move'].browse(unpaid_line.move_id.id)
-                        move.payment_state = 'paid'
+                        k += 1
+                        debug['ciclo:'+str(k)] = k
+                        #debug['debito'+str(k)] = round(unpaid_line.debit, 2)
+                        #move = self.env['account.move'].browse(unpaid_line.move_id.id)
+                        #move.payment_state = 'paid'
                     """
                     if importo >= unpaid_line.debit:
                         debug['debito'+str(k)] = round(unpaid_line.debit, 2)
@@ -58,11 +60,9 @@ class AccountBankStatement(models.Model):
                     else:
                         statement.amount_residual = round(importo, 2)
                         break  # Exit the loop if the condition is not met                                               
-                    """
-                i += 1
-             
+                    """  
 
-            #raise UserError(str(debug))
+            raise UserError(str(debug))
         
 
             """
