@@ -46,6 +46,7 @@ class AccountBankStatement(models.Model):
                 for unpaid_line in unpaid_lines:
                     if importo >= unpaid_line.debit:
                         k += 1
+                        importo -= round(unpaid_line.debit, 2)
                         debug['ciclo:'+str(unpaid_line.move_id.id)] = k      
                         debug['importo_quota'+str(k)] = unpaid_line.debit         
                         debug['stato'+str(k)] = unpaid_line.move_id.payment_state
