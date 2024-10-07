@@ -46,9 +46,10 @@ class AccountBankStatement(models.Model):
 
                     if importo >= unpaid_line.debit:
                         #unpaid_line.move_id.payment_state = 'paid'
+                        debug['debito'+str(k)] = unpaid_line.debit
                         importo -= unpaid_line.debit
-                        #debug['payment_state'+str(k)] = [unpaid_line.move_id.payment_state]
-                        debug['riduzioni'+str(k)] = [importo]
+                        debug['payment_state'+str(k)] = unpaid_line.move_id.payment_state
+                        debug['riduzioni'+str(k)] = importo
                         k += 1
                     else:
                         if importo > 0:
@@ -56,26 +57,7 @@ class AccountBankStatement(models.Model):
                             importo = 0                       
                     
                 i += 1
-                """
-                for unpaid_line in unpaid_lines:
-                    if importo >= unpaid_line.debit:                         
-                        unpaid_line.move_id.payment_state = 'paid'
-                        importo -= unpaid_line.debit
-                        debug['primo_addebito'] = unpaid_line.debit
-                        debug['importo_ridotto'] = importo
-                    else:
-                        if importo > 0:
-                            statement.amount_residual = importo
-                            debug['importo_residuo'] = importo
-                            importo = 0
-                        else:
-                            statement.amount_residual = 0
-                            debug['importo_consumato'] = importo
-                        #unpaid_line.move_id.payment_state = 'partial'
-                        break
-                           
-            statement.amount_consumed = True
-            """
+             
 
             raise UserError(str(debug))
         
