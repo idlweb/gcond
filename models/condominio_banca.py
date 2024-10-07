@@ -16,10 +16,15 @@ class AccountBankStatement(models.Model):
                 debug = {}
                 partnerTest = []
                 
+                partner = line.partner_id
+                #debug['partner'] = partner
 
+                if not partner:
+                    raise UserError("Nessun partner associato a questa riga dell'estratto conto.")
 
-                residual_sum = sum(line.amount_residual for line in statement.line_ids if line.partner_id == partner)
+                residual_sum = sum(lineR.amount_residual for lineR in statement.line_ids if lineR.partner_id == partner)
                 importo = statement.amount + residual_sum
+                #debug['importo'] = importo
 
                 # Azzera i residui degli estratti conto precedenti
                 previous_statements = self.env['account.bank.statement.line'].search([
@@ -28,14 +33,8 @@ class AccountBankStatement(models.Model):
                 ])
                 for prev_statement in previous_statements:
                     prev_statement.amount_residual = 0
-
-                #debug['importo'] = importo
-
-                partner = line.partner_id
-                #debug['partner'] = partner
-
-                if not partner:
-                    raise UserError("Nessun partner associato a questa riga dell'estratto conto.")
+                
+                
                 
                 # Trova le righe della fattura non pagate
                 unpaid_lines = self.env['account.move.line'].search([
