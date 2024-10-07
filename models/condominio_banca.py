@@ -16,7 +16,19 @@ class AccountBankStatement(models.Model):
                 debug = {}
                 partnerTest = []
                 
-                importo = statement.amount #+ statement.amount_residual     
+
+
+                residual_sum = sum(line.amount_residual for line in statement.line_ids if line.partner_id == partner)
+                importo = statement.amount + residual_sum
+
+                # Azzera i residui degli estratti conto precedenti
+                previous_statements = self.env['account.bank.statement.line'].search([
+                    ('partner_id', '=', partner.id),
+                    ('amount_consumed', '=', True)
+                ])
+                for prev_statement in previous_statements:
+                    prev_statement.amount_residual = 0
+
                 #debug['importo'] = importo
 
                 partner = line.partner_id
@@ -48,14 +60,22 @@ class AccountBankStatement(models.Model):
                         k += 1
                         importo -= round(unpaid_line.debit, 2)
                         debug['ciclo:'+str(k)] = unpaid_line.move_id.id   
+                        """
+                            Appunti per il debug
+                        """
                         #debug['importo_quota'+str(k)] = unpaid_line.debit         
                         #debug['stato'+str(k)] = unpaid_line.move_id.payment_state                        
                         #debug['verifica_residuo'+str(k)] = round(importo, 2) 
                         #debug['debito'+str(k)] = round(unpaid_line.debit, 2)
+                    else:
+                        if importo > 0:
+                            line.amount_residual =  round(importo, 2)
                    
 
             for key, value in debug.items():
                 self.mark_as_paid(value)
+
+            line.amount_consumed = True
 
             #raise UserError(str(debug))
         
@@ -102,7 +122,7 @@ class AccountBankStatement(models.Model):
             return residual
         return 0
 
-    """
+    """ SOLUZIONE DIVERSA
     def somma_quote_da_pagare(self, account_id):
         result = self.env['account.move.line'].read_group(
             domain=[
@@ -114,6 +134,7 @@ class AccountBankStatement(models.Model):
         )        
         return result[0]['debit'] 
     """
+
     def somma_quote_da_pagare(self, account_id):
         move_lines = self.env['account.move.line'].search([
             ('account_id', '=', account_id),
