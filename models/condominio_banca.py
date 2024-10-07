@@ -23,6 +23,7 @@ class AccountBankStatement(models.Model):
                     raise UserError("Nessun partner associato a questa riga dell'estratto conto.")
 
                 residual_sum = sum(lineR.amount_residual for lineR in statement.line_ids if lineR.partner_id == partner)
+                raise UserError(residual_sum)
                 importo = statement.amount #+ residual_sum
                 #debug['importo'] = importo
 
