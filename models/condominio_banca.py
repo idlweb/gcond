@@ -9,6 +9,7 @@ class AccountBankStatement(models.Model):
 
     def action_consume_payment(self):
         for statement in self:
+            i = 0
             for line in statement.line_ids:  # line -> account.move.line
                 
                 # Inizializza un dizionario vuoto per il debug
@@ -35,7 +36,7 @@ class AccountBankStatement(models.Model):
                 somma_quote = self.somma_quote_da_pagare(partner.conto_id.id)
                 
                 # Aggiungi i valori di debug al dizionario
-                debug['somma_quote'] = somma_quote
+                debug['somma_quote'+str(i)] = somma_quote
 
                 # Importante
                 debug['linea_debito'] = [unpaid_line.debit for unpaid_line in unpaid_lines]
@@ -57,7 +58,7 @@ class AccountBankStatement(models.Model):
                             unpaid_line.move_id.payment_state = 'not_paid'
                             debug['payment_state'] = unpaid_line.move_id.payment_state
                     k += 1
-
+                i += 1
                 """
                 for unpaid_line in unpaid_lines:
                     if importo >= unpaid_line.debit:                         
