@@ -59,7 +59,7 @@ class AccountBankStatement(models.Model):
                 i += 1
              
 
-            raise UserError(str(debug))
+            #raise UserError(str(debug))
         
 
             """
