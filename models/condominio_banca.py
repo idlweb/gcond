@@ -44,6 +44,7 @@ class AccountBankStatement(models.Model):
                 k = 0
                 for unpaid_line in unpaid_lines:
                     if importo >= unpaid_line.debit:
+                        debug['debito'+str(k)] = round(unpaid_line.debit, 2)
                         move = self.env['account.move'].browse(unpaid_line.move_id.id)
                         move.payment_state = 'paid'
                     """
