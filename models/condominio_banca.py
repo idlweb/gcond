@@ -51,12 +51,8 @@ class AccountBankStatement(models.Model):
                         debug['riduzioni'+str(k)] = [importo]
                     else:
                         if importo > 0:
-                            unpaid_line.move_id.payment_state = 'partial'
-                            debug['payment_state'] = unpaid_line.move_id.payment_state
-                            importo = 0
-                        else:
-                            unpaid_line.move_id.payment_state = 'not_paid'
-                            debug['payment_state'] = unpaid_line.move_id.payment_state
+                            statement.amount_residual = importo                           
+                            importo = 0                       
                     k += 1
                 i += 1
                 """
