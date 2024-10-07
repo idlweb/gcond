@@ -53,7 +53,7 @@ class AccountBankStatement(models.Model):
                         debug['riduzioni'+str(k)] = round(importo, 2)
                         k += 1
                     else:
-                        statement.amount_residual = importo                           
+                        statement.amount_residual = round(importo, 2)                           
                                                
                     
                 i += 1
