@@ -56,7 +56,7 @@ class AccountBankStatement(models.Model):
                         else:
                             unpaid_line.move_id.payment_state = 'not_paid'
                             debug['payment_state'] = unpaid_line.move_id.payment_state
-                    k++
+                    k += 1
 
                 """
                 for unpaid_line in unpaid_lines:
