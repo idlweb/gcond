@@ -17,10 +17,10 @@ class AccountBankStatement(models.Model):
                 partnerTest = []
                 
                 importo = statement.amount #+ statement.amount_residual     
-                debug['importo'] = importo
+                #debug['importo'] = importo
 
                 partner = line.partner_id
-                debug['partner'] = partner
+                #debug['partner'] = partner
 
                 if not partner:
                     raise UserError("Nessun partner associato a questa riga dell'estratto conto.")
@@ -47,17 +47,17 @@ class AccountBankStatement(models.Model):
                     if importo >= unpaid_line.debit:
                         k += 1
                         importo -= round(unpaid_line.debit, 2)
-                        debug['ciclo:'+str(unpaid_line.move_id.id)] = k      
-                        debug['importo_quota'+str(k)] = unpaid_line.debit         
-                        debug['stato'+str(k)] = unpaid_line.move_id.payment_state
-                        self.mark_as_paid(unpaid_line.move_id.id)                      
-                        debug['verifica_residuo'+str(k)] = round(importo, 2) 
+                        debug['ciclo:'+str(k)] = unpaid_line.move_id.id   
+                        #debug['importo_quota'+str(k)] = unpaid_line.debit         
+                        #debug['stato'+str(k)] = unpaid_line.move_id.payment_state                        
+                        #debug['verifica_residuo'+str(k)] = round(importo, 2) 
                         #debug['debito'+str(k)] = round(unpaid_line.debit, 2)
-                        #move = self.env['account.move'].browse(unpaid_line.move_id.id)
-                        #move.payment_state = 'paid'
                    
 
-            raise UserError(str(debug))
+            for key, value in debug.items():
+                self.mark_as_paid(self, value)
+
+            #raise UserError(str(debug))
         
 
             """
