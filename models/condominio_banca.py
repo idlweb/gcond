@@ -68,7 +68,7 @@ class AccountBankStatement(models.Model):
                         #debug['debito'+str(k)] = round(unpaid_line.debit, 2)
                     else:
                         if importo > 0:
-                            line.amount_residual =  round(importo, 2)
+                            statement.amount_residual =  round(importo, 2)
                    
 
             for key, value in debug.items():
