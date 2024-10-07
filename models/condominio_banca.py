@@ -98,7 +98,8 @@ class AccountBankStatement(models.Model):
     def mark_as_paid(self, move_id):
         move = self.env['account.move'].browse(move_id)
         if move.payment_state is None:
-             move.payment_state = 'paid'
+            move.payment_state = 'paid'
+            self.env.cr.flush() 
 
 
     def get_previous_residual(self, partner_id):
