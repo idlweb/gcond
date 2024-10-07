@@ -29,11 +29,8 @@ class AccountBankStatement(models.Model):
                 unpaid_lines = self.env['account.move.line'].search([
                     ('account_id', '=', partner.conto_id.id),
                     ('move_id.payment_state', '!=', 'paid'),
-                    #('move_id.payment_state', '!=', False),
-                    #('move_id.payment_state', 'IS', None)
-                    #('move_id.payment_state', '=', partner.conto_id.id) if partner.conto_id.id is not None else ('account_id', 'IS', None),
                     ('debit', '!=', 0),
-                ])
+                ], order='debit asc')
 
                                
                 # Calcola la somma dei valori del campo 'debit' per le righe delle fatture non pagate
