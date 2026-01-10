@@ -40,7 +40,7 @@
     <record model="ir.actions.act_window" id="action_account_table_master_view_tree" >
         <field name="name">Tabelle di ripartizione</field>
         <field name="res_model">account.condominio.table.master</field>
-        <field name="view_mode">tree,m2m_group,form</field>
+        <field name="view_mode">list,m2m_group,form</field>
     </record>
 
     <record model="ir.actions.act_window" id="action_account_sensor_view_kanban" >
