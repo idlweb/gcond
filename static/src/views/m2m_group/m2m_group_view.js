@@ -1,19 +1,25 @@
 /** @odoo-module */
 
 import { registry } from "@web/core/registry";
-import { standardViewProps } from "@web/views/standard_view_props";
 import { M2mGroupController } from "./m2m_group_controller";
 import { M2mGroupRenderer } from "./m2m_group_renderer";
 
 export const m2mGroupView = {
     type: "m2m_group",
-    display_name: "Author",
+    display_name: "M2M Group",
     icon: "fa-id-card-o",
     multiRecord: true,
     Controller: M2mGroupController,
     Renderer: M2mGroupRenderer,
-    props: {
-        ...standardViewProps,
+
+    props: (genericProps, view) => {
+        const { arch, relatedModels, resModel } = genericProps;
+        return {
+            ...genericProps,
+            Model: view.Model,
+            Renderer: M2mGroupRenderer,
+            buttonTemplate: arch.getAttribute("button_template"),
+        };
     },
 };
 
