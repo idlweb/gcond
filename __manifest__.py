@@ -31,10 +31,10 @@
             'https://unpkg.com/chartjs-gauge@0.3.0/dist/chartjs-gauge.js',
             'gcond/static/src/components/gauge_field/gauge_field.js',
             'gcond/static/src/components/gauge_field/gauge_field.xml',
-            'gcond/static/src/views/m2m_group/m2m_group_view.js',
             'gcond/static/src/views/m2m_group/m2m_group_controller.js',
             'gcond/static/src/views/m2m_group/m2m_group_renderer.js',
             'gcond/static/src/views/m2m_group/m2m_group.xml',
+            'gcond/static/src/views/m2m_group/m2m_group_view.js',
             # Legacy files removed
         ],
         'web.assets_qweb': [
