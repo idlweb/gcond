@@ -7,27 +7,37 @@ _logger = logging.getLogger(__name__)
 class AccountBankStatement(models.Model):
     _inherit = 'account.bank.statement'
 
+    # Logic moved to line model for Odoo 18 compatibility with list views
+
+
+class AccountBankStatementLine(models.Model):
+    _inherit = 'account.bank.statement.line'
+
+    amount_consumed = fields.Boolean(string='Importo Consumato', default=False)
+    # amount_residual = fields.Float(string='Amount Residual') # Re-adding if needed
+
     def action_consume_payment(self):
         """
-        Action to consume payments for all lines in the statement.
+        Action to consume payments for the selected line(s).
         """
-        for statement in self:
-            for line in statement.line_ids:
-                if line.amount_consumed:
-                    continue
-                
-                if not line.partner_id:
-                    raise UserError("Nessun partner associato a questa riga dell'estratto conto: %s" % line.name)
-                
-                # Logic to process the line
-                self._process_single_line(line)
-                
-                line.amount_consumed = True
+        for line in self:
+            if line.amount_consumed:
+                continue
+            
+            if not line.partner_id:
+                raise UserError("Nessun partner associato a questa riga dell'estratto conto: %s" % line.name)
+            
+            # Logic to process the line
+            line._process_single_line()
+            
+            line.amount_consumed = True
 
-    def _process_single_line(self, line):
+    def _process_single_line(self):
         """
         Refactored logic to process a single bank statement line.
         """
+        self.ensure_one()
+        line = self
         importo = line.amount
         partner = line.partner_id
         
@@ -57,13 +67,3 @@ class AccountBankStatement(models.Model):
                 # (This requires finding the move line of the statement)
                 # statement_move_lines = line.move_id.line_ids.filtered(lambda l: l.account_id == partner.conto_id) # Hypothetical
                 pass
-                
-        # Update residual if needed (Original logic had residual logic)
-        # line.amount_residual = round(importo, 2) # Field might not exist on Line in Odoo 18 stock
-
-
-class AccountBankStatementLine(models.Model):
-    _inherit = 'account.bank.statement.line'
-
-    amount_consumed = fields.Boolean(string='Importo Consumato', default=False)
-    # amount_residual = fields.Float(string='Amount Residual') # Re-adding if needed
