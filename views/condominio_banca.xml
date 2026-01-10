@@ -1,4 +1,5 @@
 <odoo>
+    <!-- 
     <record id="view_bank_statement_line_tree_inherit" model="ir.ui.view">
         <field name="name">account.view_bank_statement_line_tree.inherit</field>
         <field name="model">account.bank.statement.line</field>
@@ -7,8 +8,9 @@
             <xpath expr="//field[@name='amount']" position="after">
                 <field name="amount_consumed" string="Importo Consumato" optional="hide" help="Indica se questa riga è stata elaborata per la riconciliazione automatica."/>
                 <button type="object" name="action_consume_payment" string="Consuma Pagamento" class="btn-primary" help="Avvia la procedura di riconciliazione per questa riga."/>     
-                <!-- field amount_residual is not on line model in standard Odoo 18, removing to avoid crash unless custom added -->
+                <field amount_residual is not on line model in standard Odoo 18, removing to avoid crash unless custom added >
             </xpath>
         </field>
-    </record>
+    </record> 
+    -->
 </odoo>
