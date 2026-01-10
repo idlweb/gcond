@@ -3,6 +3,7 @@
 import { Component, onWillStart, useState } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
+import { standardViewProps } from "@web/views/standard_view_props";
 
 export class M2mGroupController extends Component {
     static template = "gcond.M2mGroupView";
