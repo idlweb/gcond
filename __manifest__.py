@@ -12,7 +12,7 @@
     'author': 'Vangi & Bard ',
     'website': 'https://www.odoo.com/app/invoicing',
     'images' : ['images/accounts.jpeg','images/bank_statement.jpeg','images/cash_register.jpeg','images/chart_of_accounts.jpeg','images/customer_invoice.jpeg','images/journal_entries.jpeg'],
-    'depends' : ['web','website','base','account'],
+    'depends' : ['web','website','base','account','crm'],
     'data': [
         'security/ir.model.access.csv',
         'views/account_condominium_table_view.xml',
