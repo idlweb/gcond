@@ -77,7 +77,7 @@ class GcondAccountCondomino(models.Model):
             ass_account = self.env['account.account'].create({
                 'name': f"{partner.name}-{condominio.name}",
                 'code': account_code,
-                'user_type_id': self.env.ref('account.data_account_type_receivable').id,
+                'account_type': 'asset_receivable',
                 'reconcile': True,
                 'company_id':company_id,
                 #'condominio_id': partner.condominio_id.id,
