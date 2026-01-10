@@ -26,6 +26,12 @@ class AccountCondominioTableMaster(models.Model):
         help='Tipologia di spesa gestita da questa tabella (es. Acqua, Riscaldamento).',
         required=True
     )
+    
+    condominio_id = fields.Many2one(
+        'account.condominio',
+        string='Condominio',
+        required=True
+    )
     # account_ids removed in favor of expense_type_id architecture
 
     _sql_constraints = [

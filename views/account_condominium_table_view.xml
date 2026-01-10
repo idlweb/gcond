@@ -27,7 +27,7 @@
                             <field name="code_table" required="True"/>                            
                             <field name="condominio_id" required="True"/>
                             <field name="expense_type_id" required="True" options="{'no_create': True}"/>
-                            <field name="percentuale" required="True"/>
+                            <!-- <field name="percentuale" required="True"/> -->
                             <!-- account_ids removed -->
                             <field name="table_ids" widget="one2many" relation="account.condominio.table" target="new">
                                 <list string="Dettaglio tabella di ripartizione" editable="bottom">
