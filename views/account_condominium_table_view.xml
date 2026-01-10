@@ -1,15 +1,16 @@
 <odoo>
 
         <record id="view_account_condominium_table_master_tree" model="ir.ui.view">
-            <field name="name">account_condominium_table.tree</field>
+            <field name="name">account_condominium_table.list</field>
             <field name="model">account.condominio.table.master</field>
             <field name="arch" type="xml">
-                <tree string="">
-                     <field name="name" required="True"/>                       
-                     <field name="description" required="True"/>
-                     <field name="code_table" required="True"/>
-                     <field name="condominio_id" required="True"/> 
-                </tree>
+                <list string="">
+                     <field name="name" optional="show"/>                       
+                     <field name="description" optional="hide"/>
+                     <field name="code_table" optional="show"/>
+                     <field name="condominio_id" optional="show"/> 
+                     <field name="expense_type_id" optional="show"/>
+                </list>
             </field>
         </record>
 
@@ -21,22 +22,20 @@
                 <form string="">
                     <sheet>
                         <group>
-                            <field name="id"/>                            
                             <field name="name" required="True"/>                            
                             <field name="description" required="True"/>
                             <field name="code_table" required="True"/>                            
                             <field name="condominio_id" required="True"/>
+                            <field name="expense_type_id" required="True" options="{'no_create': True}"/>
                             <field name="percentuale" required="True"/>
-                            <field name="account_ids" widget="many2many_tags"  required="False"/>    
-                            <field name="table_ids" widget="field.tree" relation="account.condominio.table" target="new">
-                                <tree string="Dettaglio tabella di ripartizione">
-                                    <field name="id"/>
-                                    <field name="table_id"/>
-                                    <field name="unit_of_measure" label="udm"/>
-                                    <field name="value_distribution" sum="Total" label="valore"/>
-                                    <field name="condomino_id" widget="res_partner_many2one" label="condomino"/>                                    
-                                    <field name="quote" label="%"/>                                                                
-                                </tree>
+                            <!-- account_ids removed -->
+                            <field name="table_ids" widget="one2many" relation="account.condominio.table" target="new">
+                                <list string="Dettaglio tabella di ripartizione" editable="bottom">
+                                    <field name="condomino_id" widget="res_partner_many2one" />
+                                    <field name="unit_of_measure" />
+                                    <field name="value_distribution" sum="Total" />
+                                    <field name="quote" />                                                                
+                                </list>
                             </field>                            
                         </group>
                     </sheet>

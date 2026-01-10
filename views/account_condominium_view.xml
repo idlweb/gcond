@@ -3,12 +3,12 @@
         <field name="name">Condominium Tables</field>
         <field name="model">account.condominio</field>
         <field name="arch" type="xml">
-            <tree string="Condominium Tables">
+            <list string="Condominium Tables">
                 <field name="id"/>
                 <field name="name"/>
                 <field name="code"/>
                 <field name="description"/>
-            </tree>
+            </list>
         </field>
     </record>
     <!-- model.name form view -->
@@ -19,22 +19,41 @@
             <form string="">
                 <sheet>
                     <group>
-                        <field name="name" label="Name"/>
-                        <field name="code" label="code"/>
-                        <field name="description" label="description"/>
-                        <field name="vat" label="vat"/>
-                        <field name="address" label="address"/>
-                        <field name="city" label="city"/>
-                        <field name="zip" label="zip"/>
-                        <field name="country_id" label="country_id"/>
-                        <field name="phone" label="phone"/>
-                        <field name="email" label="email"/>                
-                        <field name="payable_account_id" label="payable_account_id"/>      
-                        <field name="receivable_account_id" label="receivable_account_id"/>   
-                        <field name="journal_id" label="journal_id"/>   
+                        <field name="name" />
+                        <field name="code" />
+                        <field name="description"/>
+                        <field name="vat" />
+                        <field name="address" />
+                        <field name="city" />
+                        <field name="zip" />
+                        <field name="country_id" />
+                        <field name="phone" />
+                        <field name="email" />                
+                        <field name="payable_account_id" />      
+                        <field name="receivable_account_id" />   
+                        <field name="journal_id" />   
                     </group>
                 </sheet>
             </form>
         </field>
+    </record>
+
+    <!-- EXPENSE TYPE VIEWS -->
+    <record id="view_gcond_expense_type_tree" model="ir.ui.view">
+        <field name="name">gcond.expense.type.list</field>
+        <field name="model">gcond.expense.type</field>
+        <field name="arch" type="xml">
+            <list string="Tipi di Spesa" editable="bottom">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="description"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_gcond_expense_type" model="ir.actions.act_window">
+        <field name="name">Tipi di Spesa</field>
+        <field name="res_model">gcond.expense.type</field>
+        <field name="view_mode">list,form</field>
     </record>
 </odoo>

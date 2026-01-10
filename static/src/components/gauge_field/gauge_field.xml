@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="gcond.GaugeField" owl="1">
+        <div class="o_field_widget o_field_gauge">
+            <canvas t-ref="chart" style="max-height: 200px; width: 100%;"></canvas>
+        </div>
+    </t>
+</templates>

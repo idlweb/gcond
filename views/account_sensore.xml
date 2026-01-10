@@ -18,13 +18,13 @@
         <field name="name">account.sensore.view.tree</field>
         <field name="model">account.sensore</field>
         <field name="arch" type="xml">
-            <tree string="">
+            <list string="Sensori">
                 <field name="categoria_sensore"/>
                 <field name="nome"/>
                 <field name="descrizione"/>  
                 <field name="progetto"/> 
                 <field name="partner"/>  
-            </tree>
+            </list>
         </field>
     </record>
 

@@ -20,15 +20,20 @@ class AccountCondominioTableMaster(models.Model):
     name = fields.Char(string='Name', required=True)
     code_table = fields.Char(string='Codice tabella')
     description = fields.Char(string='Descrizione')
-    account_ids = fields.Many2many('account.account',  string='Conti di contabilità')
-    percentuale = fields.Float(string='Percentuale')
-    color = fields.Integer()
-    
-    condominio_id = fields.Many2one(
-        comodel_name='account.condominio',  
-        string='Condominio di appartenenza',
+    expense_type_id = fields.Many2one(
+        'gcond.expense.type',
+        string='Tipo di Spesa',
+        help='Tipologia di spesa gestita da questa tabella (es. Acqua, Riscaldamento).',
+        required=True
     )
-  
+    # account_ids removed in favor of expense_type_id architecture
+
+    _sql_constraints = [
+        ('unique_expense_type_per_condominio', 
+         'unique(condominio_id, expense_type_id)', 
+         'Può esistere una sola tabella di ripartizione per questo tipo di spesa in questo condominio!')
+    ]
+    
     table_ids = fields.One2many('account.condominio.table', 'table_id', string='Righe tabelle condominiali')
     
     #condominio_id_old = fields.Integer(string='Condominio ID vecchio')

@@ -4,10 +4,10 @@
         <field name="model">account.bank.statement</field>
         <field name="inherit_id" ref="account.view_bank_statement_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='line_ids']/tree//field[@name='amount']" position="after">
-                <!--field name="amount_consumed" string="utilizzato" /-->
-                <button type="object" name="action_consume_payment" string="Consuma Pagamento" class="btn-primary"/>     
-                <field name="amount_residual"></field>           
+            <xpath expr="//field[@name='line_ids']//field[@name='amount']" position="after">
+                <field name="amount_consumed" string="Importo Consumato" optional="hide" help="Indica se questa riga è stata elaborata per la riconciliazione automatica."/>
+                <button type="object" name="action_consume_payment" string="Consuma Pagamento" class="btn-primary" help="Avvia la procedura di riconciliazione per questa riga."/>     
+                <!-- field amount_residual is not on line model in standard Odoo 18, removing to avoid crash unless custom added -->
             </xpath>
         </field>
     </record>

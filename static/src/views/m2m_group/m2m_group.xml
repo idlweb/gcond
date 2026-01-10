@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="gcond.M2mGroupView" owl="1">
+        <Layout display="props.display" className="'h-100'">
+            <t t-component="props.Renderer" groups="state.groups" />
+        </Layout>
+    </t>
+
+    <t t-name="gcond.M2mGroupRenderer" owl="1">
+        <div class="o_m2m_group_renderer row ml16 mr16">
+            <!-- Simplified rendering matching legacy QWeb structure but adapted -->
+            <!-- Note: Legacy 'groups' structure was likely complex object. 
+                 Optimizing to iterate props.groups assuming it's an array of records for now. -->
+            
+            <t t-foreach="props.groups" t-as="record" t-key="record.id">
+                <div class="col-3">
+                    <div class="card mt16">
+                        <!-- Assuming standard image field or similar -->
+                        <!-- <img class="card-img-top" t-attf-src="/web/image/#{props.resModel}/#{record.id}/image_1920"/> -->
+                        <div class="card-body">
+                            <h5 class="card-title mt8">
+                                <t t-esc="record.name"/>
+                            </h5>
+                        </div>
+                        <!-- Children rendering would go here if we knew the relation field -->
+                        <div class="card-body">
+                             <!-- Action Buttons -->
+                             <button class="btn btn-sm btn-primary">Dettagli</button>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </t>
+
+</templates>

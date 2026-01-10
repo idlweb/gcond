@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name' : 'Gcond',
-    'version' : '1.2',
+    'version' : '18.0.1.2.0',
     'summary': 'Invoices & Payments',
     'sequence': 10,
     'description': """
@@ -29,15 +29,16 @@
         'web.assets_backend': [
             'https://unpkg.com/chart.js@2.8.0/dist/Chart.bundle.js',
             'https://unpkg.com/chartjs-gauge@0.3.0/dist/chartjs-gauge.js',
-            'gcond/static/src/js/gauge_widget.js',
-            'gcond/static/src/css/gauge_widget.scss',
-            'gcond/static/src/js/m2m_group_view.js',
-            'gcond/static/src/js/m2m_group_model.js',
-            'gcond/static/src/js/m2m_group_controller.js',
-            'gcond/static/src/js/m2m_group_renderer.js',
+            'gcond/static/src/components/gauge_field/gauge_field.js',
+            'gcond/static/src/components/gauge_field/gauge_field.xml',
+            'gcond/static/src/views/m2m_group/m2m_group_view.js',
+            'gcond/static/src/views/m2m_group/m2m_group_controller.js',
+            'gcond/static/src/views/m2m_group/m2m_group_renderer.js',
+            'gcond/static/src/views/m2m_group/m2m_group.xml',
+            # Legacy files removed
         ],
         'web.assets_qweb': [
-            'gcond/static/src/xml/qweb_template.xml',
+            # 'gcond/static/src/xml/qweb_template.xml', # Legacy - checking if still needed for M2m
         ],
     },    
     'demo': [

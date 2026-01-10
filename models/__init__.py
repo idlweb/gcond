@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from . import gcond_expense_type
+from . import account_account_extension
 from . import account_condominio
 from . import account_condominio_table
 from . import account_condominio_table_master

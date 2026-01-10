@@ -169,3 +169,36 @@ class AccountPaymentRegister(models.TransientModel):
         lines_to_reconcile = move.line_ids.filtered(lambda l: l.account_id.reconcile)
         if lines_to_reconcile:
             lines_to_reconcile.reconcile()
+
+
+class AccountMoveLine(models.Model):
+    _inherit = 'account.move.line'
+
+    distribution_table_id = fields.Many2one(
+        'account.condominio.table.master',
+        string='Tabella Ripartizione',
+        help='Tabella usata per ripartire questo costo.'
+    )
+
+    @api.onchange('account_id')
+    def _onchange_account_id_gcond(self):
+        for line in self:
+            if not line.account_id or not line.account_id.expense_type_id:
+                continue
+            
+            # Tentiamo di recuperare il condominio dal move (fattura)
+            condominio_id = False
+            if line.move_id and line.move_id.journal_id and line.move_id.journal_id.condominio_id:
+                condominio_id = line.move_id.journal_id.condominio_id.id
+            
+            # Se siamo in un contesto dove il move non è ancora salvato, potremmo non avere il journal
+            # Ma di solito in una fattura il journal è settato.
+            
+            if condominio_id:
+                table = self.env['account.condominio.table.master'].search([
+                    ('condominio_id', '=', condominio_id),
+                    ('expense_type_id', '=', line.account_id.expense_type_id.id)
+                ], limit=1)
+                
+                if table:
+                    line.distribution_table_id = table.id
