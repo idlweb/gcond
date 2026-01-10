@@ -2,7 +2,7 @@
 
 import { registry } from "@web/core/registry";
 import { standardFieldProps } from "@web/views/fields/standard_field_props";
-import { Component, onMounted, useRef, useEffect } from "@odoo/owl";
+import { Component, onMounted, onWillUnmount, useRef, useEffect } from "@odoo/owl";
 import { loadBundle } from "@web/core/assets";
 
 export class GaugeField extends Component {
@@ -13,6 +13,7 @@ export class GaugeField extends Component {
 
     setup() {
         this.chartRef = useRef("chart");
+        this.chartInstance = null;
 
         onMounted(() => {
             this.renderChart();
@@ -21,6 +22,13 @@ export class GaugeField extends Component {
         useEffect(() => {
             this.renderChart();
         }, () => [this.props.record.data[this.props.name]]);
+
+        onWillUnmount(() => {
+            if (this.chartInstance) {
+                this.chartInstance.destroy();
+                this.chartInstance = null;
+            }
+        });
     }
 
     async renderChart() {
