@@ -6,8 +6,8 @@
         <field name="inherit_id" ref="base.view_partner_tree" />
         <field name="arch" type="xml">
             <field name="email" position="before">
-                <field name="is_condominio" string="Edificio" optional="show"/>
-                <field name="condominio_id" string="Appartiene a" optional="show"/>
+                <field name="is_condominio" string="Edificio" optional="hide"/>
+                <field name="condominio_id" string="Condominio"/>
             </field>
         </field>
     </record>

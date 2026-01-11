@@ -6,9 +6,10 @@
     </record>
 
     <record model="ir.actions.act_window" id="gcond.action_all_condomini">
-        <field name="name">All Contacts</field>
+        <field name="name">Residenti (Condomini)</field>
         <field name="res_model">res.partner</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_residents': 1}</field>
     </record>
     
 
