@@ -77,46 +77,23 @@ class AccountCondominioTableMaster(models.Model):
 
     @api.onchange('condominio_id')
     def onchange_condominio_id(self):
-        
         if not self.condominio_id:
-             pass
-            # Se il condominio_id non è impostato, disabilitiamo la funzione onchange
-        else:
-            if self.condominio_id != self._origin.condominio_id:  
-                # _origin è il valore precedente, condominio_id il new                    
-                _logger.info('il valore di condominio è %s, quello precedente è %s', self.condominio_id, self._origin.condominio_id) 
-                
-                """
-                # Utilizza il metodo per cancellare tutte le ricorrenze
-                context_copy = self.env.context.copy()
-                # Aggiorna la copia del context
-                context_copy.update({'table_ids': []})
-                # Aggiorna il context originale
-                self.env.context = context_copy
-                """
-
-                self.write({'table_ids': []})
-                self.table_ids = self.env.context.get('table_ids')                
-                condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])               
-                for condomino in condomini:
-                    record = self.env['account.condominio.table'].create({
-                        'table_id': self.id,
-                        'condomino_id': condomino.id,
-                        'quote' : 100,
-                    })
-            else:
-                self.write({'table_ids': []})
-                self.table_ids = self.env.context.get('table_ids')
-                self.condominio_id = self._origin.condominio_id
-                condomini = self.env['res.partner'].search([('condominio_id.id', '=', self.condominio_id.id)])                           
-                for condomino in condomini:
-                    record = self.env['account.condominio.table'].create({
-                        'table_id': self.id,
-                        'condomino_id': condomino.id,
-                        'quote' : 100,
-                    })
+            self.table_ids = [(5, 0, 0)]
+            return
             
-        return []
+        # Trova tutti i partner associati al condominio scelto
+        condomini = self.env['res.partner'].search([('condominio_id', '=', self.condominio_id.id)])
+        
+        lines = []
+        for condomino in condomini:
+            lines.append((0, 0, {
+                'condomino_id': condomino.id,
+                'quote': 100.0,
+            }))
+        
+        # Pulisce le righe esistenti e aggiunge i nuovi condomini
+        self.table_ids = [(5, 0, 0)] + lines
+        return {}
 
 
     
