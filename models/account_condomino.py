@@ -61,30 +61,33 @@ class GcondAccountCondomino(models.Model):
            self.is_company = (self.company_type == 'company')
     
 
-    @api.model
-    def create(self, vals):
-        _logger.debug("Creating a new partner with vals: %s", vals)
-        condominio = self.env['account.condominio'].browse(vals['condominio_id'])
-        partner = super(GcondAccountCondomino, self).create(vals)
-        partner.is_condominio = True
-        company_id = self.env.user.company_id.id
-        if partner.is_condominio:
-            sequence_code = 'account.account.condomino'
-            account_code = self.env['ir.sequence'].next_by_code(sequence_code)
-            if not account_code:
-                _logger.error("Sequence with code '%s' not found", sequence_code)
-                raise ValueError(f"Sequence with code '{sequence_code}' not found")
-            ass_account = self.env['account.account'].create({
-                'name': f"{partner.name}-{condominio.name}",
-                'code': account_code,
-                'user_type_id': self.env.ref('account.data_account_type_receivable').id,
-                'reconcile': True,
-                'company_id':company_id,
-                #'condominio_id': partner.condominio_id.id,
-            })
-            partner.conto_id = ass_account.id
-            
-        return partner
+    @api.model_create_multi
+    def create(self, vals_list):
+        _logger.debug("Creating new partners with vals_list: %s", vals_list)
+        for vals in vals_list:
+            if vals.get('company_type') == 'condomino':
+                vals['is_condominio'] = True
+        
+        partners = super(GcondAccountCondomino, self).create(vals_list)
+        
+        for partner in partners:
+            if partner.is_condominio and partner.condominio_id:
+                sequence_code = 'account.account.condomino'
+                account_code = self.env['ir.sequence'].next_by_code(sequence_code)
+                if not account_code:
+                    _logger.error("Sequence with code '%s' not found", sequence_code)
+                    continue
+                
+                ass_account = self.env['account.account'].create({
+                    'name': f"{partner.name}-{partner.condominio_id.name}",
+                    'code': account_code,
+                    'account_type': 'asset_receivable', # Odoo 18 uses account_type
+                    'reconcile': True,
+                    'company_id': partner.company_id.id or self.env.company.id,
+                })
+                partner.conto_id = ass_account.id
+                
+        return partners
 
     @api.model
     def action_view_account_situation(self, *args):
