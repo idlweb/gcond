@@ -1,95 +1,55 @@
 from odoo import models, fields, api
 import logging 
 _logger = logging.getLogger(__name__)
-import pdb
 from odoo.exceptions import ValidationError, UserError
 
 class GcondAccountCondomino(models.Model):
-    #_name = 'account.condomino'
     _inherit = 'res.partner'
 
-
-    is_condominio = fields.Boolean(string='is a Condominio', default=False,
-        help="Check if the contact is a condominio (Building), NOT a resident")
-
+    is_condominio = fields.Boolean(
+        string='È un Condominio', 
+        default=False,
+        help="Seleziona se questo contatto rappresenta l'intero edificio (Condominio)")
 
     condominio_id = fields.Many2one(
         comodel_name='account.condominio',
         string='Condominio di appartenenza',
         ondelete='set null',
+        help="Il condominio (edificio) a cui appartiene questo contatto"
     )
-    
     
     type_condomino = fields.Selection(
         [('affuttuario', 'Affittuario'), ('proprietario', 'Proprietario')],
         string='Tipologia condomino',
         default='proprietario',)
     
-    conto_id = fields.Many2one(comodel_name='account.account', string='Contabilità', ondelete='set null')
+    conto_id = fields.Many2one(
+        comodel_name='account.account', 
+        string='Contabilità', 
+        ondelete='set null')
 
-
-    company_type = fields.Selection(string='Company Type',
-        selection=[('person', 'Individual'), ('company', 'Company'), ('condomino','Condomino')],
-        compute='_compute_company_type', inverse='_write_company_type')
-    
-    
-
-    @api.depends('is_company', 'condominio_id')
-    def _compute_company_type(self):
-        for partner in self:
-            if partner.condominio_id:
-                partner.company_type = 'condomino'
-                partner.is_condominio = False
-            else:
-                partner.company_type = 'company' if partner.is_company else 'person'
-                partner.is_condominio = False
-
-    def _write_company_type(self):
-        for partner in self:
-            if partner.company_type == 'condomino':
-                partner.is_condominio = False
-                partner.is_company = False
-            elif partner.company_type == 'company':
-                partner.is_company = True
-                partner.is_condominio = False
-            else:
-                partner.is_company = False
-                partner.is_condominio = False
-                
-
-    @api.onchange('company_type')
-    def onchange_company_type(self):
-        if self.company_type == 'condomino':
-           self.is_condominio = False
-           self.is_company = False
-        else:
-           self.is_company = (self.company_type == 'company')
-    
     @api.onchange('condominio_id')
     def _onchange_condominio_id(self):
         if self.condominio_id and self.condominio_id.partner_id:
             self.parent_id = self.condominio_id.partner_id.id
-            self.company_type = 'condomino'
+            # Se appartiene a un condominio, non è esso stesso l'edificio
             self.is_condominio = False
-    
 
     @api.model_create_multi
     def create(self, vals_list):
-        _logger.debug("Creating new partners with vals_list: %s", vals_list)
         for vals in vals_list:
-            if vals.get('company_type') == 'condomino' or vals.get('condominio_id'):
-                # Assicuriamoci che is_condominio sia False per i residenti
+            # Se stiamo creando un condomino (legato a un edificio), is_condominio deve essere False
+            if vals.get('condominio_id'):
                 vals['is_condominio'] = False
-                # Se è presente condominio_id, impostiamo il parent_id
-                if vals.get('condominio_id'):
-                    condominio = self.env['account.condominio'].browse(vals.get('condominio_id'))
-                    if condominio.partner_id:
-                        vals['parent_id'] = condominio.partner_id.id
+                condominio = self.env['account.condominio'].browse(vals.get('condominio_id'))
+                if condominio.partner_id:
+                    vals['parent_id'] = condominio.partner_id.id
         
         partners = super(GcondAccountCondomino, self).create(vals_list)
         
         for partner in partners:
-            if partner.is_condominio and partner.condominio_id:
+            # Logica per la creazione del conto contabile se condomino
+            if partner.condominio_id:
                 sequence_code = 'account.account.condomino'
                 account_code = self.env['ir.sequence'].next_by_code(sequence_code)
                 if not account_code:
@@ -107,12 +67,12 @@ class GcondAccountCondomino(models.Model):
         return partners
 
     def write(self, vals):
-        # Se viene cambiato il condominio, aggiorniamo il parent_id
         if 'condominio_id' in vals:
             if vals.get('condominio_id'):
                 condominio = self.env['account.condominio'].browse(vals.get('condominio_id'))
                 if condominio.partner_id:
                     vals['parent_id'] = condominio.partner_id.id
+                vals['is_condominio'] = False
             else:
                 vals['parent_id'] = False
         
@@ -131,20 +91,3 @@ class GcondAccountCondomino(models.Model):
             'domain': [('account_id', '=', self.conto_id.id)],
             'context': dict(self.env.context, search_default_account_id=self.conto_id.id),
         }
-       
-
-"""
-    def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
-        res = super(GcondAccountCondomino, self).fields_view_get(view_id='view_condomino_form', view_type=view_type, toolbar=toolbar, submenu=submenu)
-
-        if view_type == 'form' and res['model'] == 'res.partner':
-            res['fields'].append({
-                'name': 'is_condominio',
-                'invisible': True,
-                'on_change': 1,
-                'modifiers': {'invisible': True},
-                'id': 'is_condominio',
-            })
-
-        return res
-"""
