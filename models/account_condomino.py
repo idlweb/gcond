@@ -9,8 +9,8 @@ class GcondAccountCondomino(models.Model):
     _inherit = 'res.partner'
 
 
-    is_condominio = fields.Boolean(string='is a Condominio', default=True,
-        help="Check if the contact is a condominio, otherwise it is a person or a company")
+    is_condominio = fields.Boolean(string='is a Condominio', default=False,
+        help="Check if the contact is a condominio (Building), NOT a resident")
 
 
     condominio_id = fields.Many2one(
@@ -39,7 +39,7 @@ class GcondAccountCondomino(models.Model):
         for partner in self:
             if partner.condominio_id:
                 partner.company_type = 'condomino'
-                partner.is_condominio = True
+                partner.is_condominio = False
             else:
                 partner.company_type = 'company' if partner.is_company else 'person'
                 partner.is_condominio = False
@@ -47,7 +47,7 @@ class GcondAccountCondomino(models.Model):
     def _write_company_type(self):
         for partner in self:
             if partner.company_type == 'condomino':
-                partner.is_condominio = True
+                partner.is_condominio = False
                 partner.is_company = False
             elif partner.company_type == 'company':
                 partner.is_company = True
@@ -55,12 +55,13 @@ class GcondAccountCondomino(models.Model):
             else:
                 partner.is_company = False
                 partner.is_condominio = False
-               
+                
 
     @api.onchange('company_type')
     def onchange_company_type(self):
         if self.company_type == 'condomino':
-           self.is_condominio = True
+           self.is_condominio = False
+           self.is_company = False
         else:
            self.is_company = (self.company_type == 'company')
     
@@ -69,7 +70,7 @@ class GcondAccountCondomino(models.Model):
         if self.condominio_id and self.condominio_id.partner_id:
             self.parent_id = self.condominio_id.partner_id.id
             self.company_type = 'condomino'
-            self.is_condominio = True
+            self.is_condominio = False
     
 
     @api.model_create_multi
@@ -77,7 +78,8 @@ class GcondAccountCondomino(models.Model):
         _logger.debug("Creating new partners with vals_list: %s", vals_list)
         for vals in vals_list:
             if vals.get('company_type') == 'condomino' or vals.get('condominio_id'):
-                vals['is_condominio'] = True
+                # Assicuriamoci che is_condominio sia False per i residenti
+                vals['is_condominio'] = False
                 # Se è presente condominio_id, impostiamo il parent_id
                 if vals.get('condominio_id'):
                     condominio = self.env['account.condominio'].browse(vals.get('condominio_id'))
@@ -146,7 +148,3 @@ class GcondAccountCondomino(models.Model):
 
         return res
 """
-
-
-
-      

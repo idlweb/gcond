@@ -129,6 +129,7 @@ class GcondAccountCondominium(models.Model):
                 'email': record.email,
                 'vat': record.vat,
                 'company_type': 'company',
+                'is_condominio': True,
             }
             partner = self.env['res.partner'].create(partner_vals)
             record.partner_id = partner.id
