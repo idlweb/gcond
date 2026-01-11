@@ -30,11 +30,15 @@ class GcondAccountCondomino(models.Model):
 
     @api.depends('name', 'parent_id.name', 'condominio_id')
     def _compute_display_name(self):
-        super()._compute_display_name()
-        for partner in self:
-            if partner.condominio_id:
-                # Per i residenti, mostriamo solo il nome senza prefisso del palazzo
-                partner.display_name = partner.name
+        # Filtriamo i residenti per gestirli separatamente da Odoo standard
+        residents = self.filtered(lambda p: p.condominio_id)
+        for partner in residents:
+            partner.display_name = partner.name
+            
+        # Per tutti gli altri, usiamo la logica standard di Odoo
+        others = self - residents
+        if others:
+            super(GcondAccountCondomino, others)._compute_display_name()
 
     @api.onchange('condominio_id')
     def _onchange_condominio_id(self):
