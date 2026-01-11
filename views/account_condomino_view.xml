@@ -6,8 +6,8 @@
         <field name="inherit_id" ref="base.view_partner_tree" />
         <field name="arch" type="xml">
             <field name="email" position="before">
-                <field name="is_condominio" optional="show"/>
-                <field name="condominio_id" optional="show"/>
+                <field name="is_condominio" string="Edificio" optional="show"/>
+                <field name="condominio_id" string="Appartiene a" optional="show"/>
             </field>
             <field name="email" position="after">
                 <field name="phone" position="move"/>
@@ -20,12 +20,11 @@
         <field name="inherit_id" ref="base.view_res_partner_filter" />
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='inactive']" position="before">
-                <filter string="Edifici (Condomini)" name="buildings" domain="[('is_condominio','=', True)]"/>
-                <filter string="Residenti (Condomini)" name="residents" domain="[('condominio_id','!=', False)]"/>
+                <filter string="Edifici (Palazzi)" name="buildings" domain="[('is_condominio','=', True)]"/>
+                <filter string="Residenti (Condomini)" name="residents" domain="[('is_resident','=', True)]"/>
                 <separator/>
             </xpath>
             <xpath expr="//group" position="inside">
-                <filter string="È un Condominio" name="group_by_is_condominio" context="{'group_by': 'is_condominio'}"/>
                 <filter string="Per Edificio" name="group_by_condominio_id" context="{'group_by': 'condominio_id'}"/>
             </xpath>
         </field>
@@ -48,15 +47,19 @@
                 </button>
             </xpath>
 
-            <!-- Aggiungiamo is_condominio solo se è una società (Azienda) -->
+            <!-- Checkbox per definire se è un edificio -->
             <xpath expr="//field[@name='is_company']" position="after">
-                <field name="is_condominio" invisible="not is_company" string="È un Condominio (Edificio)?"/>
+                <div class="d-flex align-items-center">
+                    <field name="is_condominio" class="oe_inline"/>
+                    <label for="is_condominio" string="È un Edificio (Fabbricato/Condominio)"/>
+                </div>
             </xpath>
 
-            <!-- Campi relativi al ruolo di condomino -->
+            <!-- Collegamento al condominio (Residenti) -->
             <field name="street" position="before">
-                <group string="Dati Condominiali" name="gcond_data">
-                    <field name="condominio_id" string="Appartiene al Condominio" />
+                <group string="Associazione Condominiale (Residente)" name="gcond_resident_data">
+                    <field name="condominio_id" string="Abita nel Palazzo" />
+                    <field name="is_resident" invisible="1"/>
                     <field name="type_condomino" invisible="not condominio_id"/>
                 </group>
             </field>

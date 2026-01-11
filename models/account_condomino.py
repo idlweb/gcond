@@ -7,15 +7,22 @@ class GcondAccountCondomino(models.Model):
     _inherit = 'res.partner'
 
     is_condominio = fields.Boolean(
-        string='È un Condominio', 
+        string='È un Edificio (Condominio)', 
         default=False,
-        help="Seleziona se questo contatto rappresenta l'intero edificio (Condominio)")
+        help="Seleziona se questo contatto rappresenta l'intero edificio")
 
     condominio_id = fields.Many2one(
         comodel_name='account.condominio',
-        string='Condominio di appartenenza',
+        string='Appartiene al Condominio',
         ondelete='set null',
         help="Il condominio (edificio) a cui appartiene questo contatto"
+    )
+
+    is_resident = fields.Boolean(
+        string='È un Residente',
+        compute='_compute_is_resident',
+        store=True,
+        help="Campo tecnico per identificare i residenti nei filtri"
     )
     
     type_condomino = fields.Selection(
@@ -28,27 +35,43 @@ class GcondAccountCondomino(models.Model):
         string='Contabilità', 
         ondelete='set null')
 
+    @api.depends('condominio_id')
+    def _compute_is_resident(self):
+        for partner in self:
+            partner.is_resident = bool(partner.condominio_id)
+
     @api.onchange('condominio_id')
     def _onchange_condominio_id(self):
-        if self.condominio_id and self.condominio_id.partner_id:
-            self.parent_id = self.condominio_id.partner_id.id
-            # Se appartiene a un condominio, non è esso stesso l'edificio
+        if self.condominio_id:
+            # Se è un residente, non può essere il palazzo stesso
             self.is_condominio = False
+            if self.condominio_id.partner_id:
+                self.parent_id = self.condominio_id.partner_id.id
+        else:
+            self.parent_id = False
+
+    @api.onchange('is_condominio')
+    def _onchange_is_condominio(self):
+        if self.is_condominio:
+            # Se è il palazzo stesso, non può essere un residente di un altro palazzo
+            self.condominio_id = False
+            self.is_company = True
 
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            # Se stiamo creando un condomino (legato a un edificio), is_condominio deve essere False
             if vals.get('condominio_id'):
                 vals['is_condominio'] = False
                 condominio = self.env['account.condominio'].browse(vals.get('condominio_id'))
                 if condominio.partner_id:
                     vals['parent_id'] = condominio.partner_id.id
+            if vals.get('is_condominio'):
+                vals['condominio_id'] = False
+                vals['is_company'] = True
         
         partners = super(GcondAccountCondomino, self).create(vals_list)
         
         for partner in partners:
-            # Logica per la creazione del conto contabile se condomino
             if partner.condominio_id:
                 sequence_code = 'account.account.condomino'
                 account_code = self.env['ir.sequence'].next_by_code(sequence_code)
@@ -76,6 +99,10 @@ class GcondAccountCondomino(models.Model):
             else:
                 vals['parent_id'] = False
         
+        if vals.get('is_condominio'):
+            vals['condominio_id'] = False
+            vals['is_company'] = True
+            
         return super(GcondAccountCondomino, self).write(vals)
 
     def action_view_account_situation(self):
