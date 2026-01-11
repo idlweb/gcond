@@ -21,7 +21,7 @@
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='inactive']" position="before">
                 <filter string="Edifici (Palazzi)" name="buildings" domain="[('is_condominio','=', True)]"/>
-                <filter string="Residenti (Condomini)" name="residents" domain="[('is_resident','=', True)]"/>
+                <filter string="Residenti (Condomini)" name="residents" domain="[('condominio_id','!=', False)]"/>
                 <separator/>
             </xpath>
             <xpath expr="//group" position="inside">
@@ -59,7 +59,6 @@
             <field name="street" position="before">
                 <group string="Associazione Condominiale (Residente)" name="gcond_resident_data">
                     <field name="condominio_id" string="Abita nel Palazzo" />
-                    <field name="is_resident" invisible="1"/>
                     <field name="type_condomino" invisible="not condominio_id"/>
                 </group>
             </field>
