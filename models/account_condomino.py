@@ -116,3 +116,13 @@ class GcondAccountCondomino(models.Model):
             'domain': [('account_id', '=', self.conto_id.id)],
             'context': dict(self.env.context, search_default_account_id=self.conto_id.id),
         }
+
+    def action_open_full_view(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'res.partner',
+            'res_id': self.id,
+            'view_mode': 'form',
+            'target': 'current',
+        }
