@@ -34,23 +34,27 @@ class GcondAccountCondomino(models.Model):
     
     
 
-    @api.depends('is_company')
+    @api.depends('is_company', 'condominio_id')
     def _compute_company_type(self):
         for partner in self:
-            if self.condominio_id:
-                self.company_type = 'condomino'
-                self.is_condominio = True
+            if partner.condominio_id:
+                partner.company_type = 'condomino'
+                partner.is_condominio = True
             else:
                 partner.company_type = 'company' if partner.is_company else 'person'
-                self.is_company = True
-                self.is_condominio = False
+                partner.is_condominio = False
 
     def _write_company_type(self):
         for partner in self:
             if partner.company_type == 'condomino':
-               partner.is_condominio = True
+                partner.is_condominio = True
+                partner.is_company = False
             elif partner.company_type == 'company':
-               partner.is_company = True
+                partner.is_company = True
+                partner.is_condominio = False
+            else:
+                partner.is_company = False
+                partner.is_condominio = False
                
 
     @api.onchange('company_type')

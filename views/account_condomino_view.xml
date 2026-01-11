@@ -5,6 +5,9 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_tree" />
         <field name="arch" type="xml">
+            <field name="display_name" position="after">
+                <field name="is_condominio" optional="show"/>
+            </field>
             <field name="email" position="after">
                 <field name="phone" position="move"/>
             </field>
@@ -16,9 +19,12 @@
         <field name="inherit_id" ref="base.view_res_partner_filter" />
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='inactive']" position="before">
-                <filter string="Solo condomini" name="customer" domain="[('is_condominio','=', True)]"/>
+                <filter string="Condomini" name="is_condominio" domain="[('is_condominio','=', True)]"/>
                 <separator/>
-            </xpath>        
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <filter string="È un Condominio" name="group_by_is_condominio" context="{'group_by': 'is_condominio'}"/>
+            </xpath>
         </field>
     </record>
 
@@ -38,11 +44,16 @@
                     </div>
                 </button>
             </xpath>
+            <xpath expr="//field[@name='company_type']" position="after">
+                <span class="o_form_label o_td_label" name="label_is_condominio">
+                    <b>È un Condominio</b>
+                </span>
+                <field name="is_condominio" nolabel="1"/>
+            </xpath>
             <field name="street" position="before">
                 <group>
-                    <field name="condominio_id" label="Condominio appartenenza" />
-                    <field name="type_condomino" label="Tipologia condomino"/>
-                    <field name="is_condominio" invisible="1" id="is_condominio"/>
+                    <field name="condominio_id" string="Condominio appartenenza" />
+                    <field name="type_condomino" string="Tipologia condomino"/>
                 </group>
             </field>
         </field>
