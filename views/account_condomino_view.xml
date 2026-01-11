@@ -9,9 +9,6 @@
                 <field name="is_condominio" string="Edificio" optional="show"/>
                 <field name="condominio_id" string="Appartiene a" optional="show"/>
             </field>
-            <field name="email" position="after">
-                <field name="phone" position="move"/>
-            </field>
         </field>
     </record>
 
@@ -21,7 +18,7 @@
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='inactive']" position="before">
                 <filter string="Edifici (Palazzi)" name="buildings" domain="[('is_condominio','=', True)]"/>
-                <filter string="Residenti (Condomini)" name="residents" domain="[('is_resident','=', True)]"/>
+                <filter string="Residenti (Condomini)" name="residents" domain="[('condominio_id','!=', False)]"/>
                 <separator/>
             </xpath>
             <xpath expr="//group" position="inside">
@@ -38,25 +35,18 @@
             <xpath expr="//div[@class='oe_button_box']/button[last()]" position="after">
                 <button type="object" class="oe_stat_button" icon="fa-pencil-square-o" name="action_view_account_situation">
                     <div class="o_form_field o_stat_info">
-                        <field name="currency_id" invisible="1"/>
                         <span class="o_stat_text">Situazione Contabile</span>
                     </div>
                 </button>
             </xpath>
 
-            <!-- Checkbox per definire se è un edificio -->
             <xpath expr="//field[@name='is_company']" position="after">
-                <div class="d-flex align-items-center" invisible="not is_company">
-                    <field name="is_condominio" class="oe_inline"/>
-                    <label for="is_condominio" string="È un Edificio (Fabbricato/Condominio)"/>
-                </div>
+                <field name="is_condominio" string="È un Edificio (Fabbricato/Condominio)"/>
             </xpath>
 
-            <!-- Collegamento al condominio (Residenti) -->
             <field name="street" position="before">
-                <group string="Associazione Condominiale (Residente)" name="gcond_resident_data">
+                <group string="Associazione Condominiale">
                     <field name="condominio_id" string="Abita nel Palazzo" />
-                    <field name="is_resident" invisible="1"/>
                     <field name="type_condomino" invisible="not condominio_id"/>
                 </group>
             </field>

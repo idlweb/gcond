@@ -17,13 +17,6 @@ class GcondAccountCondomino(models.Model):
         ondelete='set null',
         help="Il condominio (edificio) a cui appartiene questo contatto"
     )
-
-    is_resident = fields.Boolean(
-        string='È un Residente',
-        compute='_compute_is_resident',
-        store=True,
-        help="Campo tecnico per identificare i residenti nei filtri"
-    )
     
     type_condomino = fields.Selection(
         [('affuttuario', 'Affittuario'), ('proprietario', 'Proprietario')],
@@ -35,15 +28,9 @@ class GcondAccountCondomino(models.Model):
         string='Contabilità', 
         ondelete='set null')
 
-    @api.depends('condominio_id')
-    def _compute_is_resident(self):
-        for partner in self:
-            partner.is_resident = bool(partner.condominio_id)
-
     @api.onchange('condominio_id')
     def _onchange_condominio_id(self):
         if self.condominio_id:
-            # Se è un residente, non può essere esso stesso il palazzo
             self.is_condominio = False
             if self.condominio_id.partner_id:
                 self.parent_id = self.condominio_id.partner_id.id
@@ -53,7 +40,6 @@ class GcondAccountCondomino(models.Model):
     @api.onchange('is_condominio')
     def _onchange_is_condominio(self):
         if self.is_condominio:
-            # Se è il palazzo stesso, non può essere un residente
             self.condominio_id = False
             self.is_company = True
 
