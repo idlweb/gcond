@@ -2,6 +2,7 @@ from odoo import models, fields, api
 
 class AccountCondominiumTable(models.Model):
     _name = 'account.condominio.table'
+    _description = 'Righe Tabella Condominiale'
 
     unit_of_measure = fields.Char(string='Unit Of Measure')
     value_distribution = fields.Float(string='Value Distribution')

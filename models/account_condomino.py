@@ -78,12 +78,11 @@ class GcondAccountCondomino(models.Model):
                     _logger.error("Sequence with code '%s' not found", sequence_code)
                     continue
                 
-                ass_account = self.env['account.account'].create({
+                ass_account = self.env['account.account'].with_company(partner.company_id or self.env.company).create({
                     'name': f"{partner.name}-{partner.condominio_id.name}",
                     'code': account_code,
-                    'account_type': 'asset_receivable', # Odoo 18 uses account_type
+                    'account_type': 'asset_receivable',
                     'reconcile': True,
-                    'company_id': partner.company_id.id or self.env.company.id,
                 })
                 partner.conto_id = ass_account.id
                 

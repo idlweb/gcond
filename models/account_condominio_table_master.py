@@ -16,6 +16,7 @@ import re
 
 class AccountCondominioTableMaster(models.Model):
     _name = 'account.condominio.table.master'
+    _description = 'Tabella di Ripartizione Master'
 
     name = fields.Char(string='Name', required=True)
     code_table = fields.Char(string='Codice tabella')

@@ -13,7 +13,7 @@ import string
 
 class GcondAccountCondominium(models.Model):
     _name = 'account.condominio'
-
+    _description = 'Condominio'
     name = fields.Char(string='Name', required=True) # se eredito da partner non serve
     code = fields.Char(string='Code', required=True) # ok
     description = fields.Text(string='Description')  # se eredito da partner non serve
@@ -104,28 +104,13 @@ class GcondAccountCondominium(models.Model):
     
    
        
-    @api.model
-    def create(self, vals):
-        #Crea un nuovo condominio.
-        record = super(GcondAccountCondominium, self).create(vals)
-
-        """
-            Qui la logica dovrebbe essere quella di assegnare un conto di default
-            che dovrebbe essere creato - ma potrebb essere inutile. Ho comunque 
-            provato ad utilizzare la funzione create la scrittura con json
-        """
-        id = record.id
-        self.create_journal(vals['name'], id)
-
-        """
-        # Imposta il conto di credito del condominio.
-        record.receivable_account_id = self.env['account.account'].search([
-            ('code', '=', '250100'),
-        ], limit=1)
-
-        """ 
-        
-        return record
+    @api.model_create_multi
+    def create(self, vals_list):
+        # Crea nuovi condomini.
+        records = super(GcondAccountCondominium, self).create(vals_list)
+        for record in records:
+            self.create_journal(record.name, record.id)
+        return records
     
     
     def create_cost_items_for_condominio(self):
