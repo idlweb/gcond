@@ -28,6 +28,14 @@ class GcondAccountCondomino(models.Model):
         string='Contabilità', 
         ondelete='set null')
 
+    @api.depends('name', 'parent_id.name', 'condominio_id')
+    def _compute_display_name(self):
+        super()._compute_display_name()
+        for partner in self:
+            if partner.condominio_id:
+                # Per i residenti, mostriamo solo il nome senza prefisso del palazzo
+                partner.display_name = partner.name
+
     @api.onchange('condominio_id')
     def _onchange_condominio_id(self):
         if self.condominio_id:
