@@ -88,24 +88,18 @@ class GcondAccountCondomino(models.Model):
                 
         return partners
 
-    @api.model
-    def action_view_account_situation(self, *args):
-        id_partner = args[0] #<- passato dal decoratore
-        # Trova il conto associato al partner
-        partner = self.env['res.partner'].search([('id', '=', id_partner)], limit=1)
-        account = self.env['account.account'].search([('name', 'ilike', partner.name)], limit=1)        
-        if not account:
-            raise UserError("Nessun conto trovato per questo partner.")
+    def action_view_account_situation(self):
+        self.ensure_one()
+        if not self.conto_id:
+            raise UserError("Nessun conto contabile associato a questo condomino.")
         
-        # Restituisci l'azione per aprire la vista del conto
-        # Logica interessante: restituisco un ?oggetto? che è una vista 
         return {
-            'type': 'ir.actions.act_window', # <- vista
-            'name': 'Situazione Contabile',
+            'type': 'ir.actions.act_window',
+            'name': f'Situazione Contabile: {self.name}',
             'res_model': 'account.move.line',
             'view_mode': 'list,form',
-            'domain': [('account_id', '=', account.id)],
-            'context': dict(self.env.context),
+            'domain': [('account_id', '=', self.conto_id.id)],
+            'context': dict(self.env.context, search_default_account_id=self.conto_id.id),
         }
        
 

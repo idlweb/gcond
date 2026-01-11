@@ -141,19 +141,23 @@ class GcondAccountCondominium(models.Model):
     """
         Seri dubbi che questo metodo funzioni    
     """
+    def action_view_journal_entries(self):
+        self.ensure_one()
+        # Trova tutti i giornali associati a questo condominio
+        journals = self.env['account.journal'].search([('condominio_id', '=', self.id)])
+        return {
+            'type': 'ir.actions.act_window',
+            'name': f'Movimenti Contabili: {self.name}',
+            'res_model': 'account.move.line',
+            'view_mode': 'list,form',
+            'domain': [('journal_id', 'in', journals.ids)],
+            'context': dict(self.env.context, search_default_journal_id=journals.ids[0] if journals else False),
+        }
+
     def open_journal_view(self):
-        # Otteniamo il record del condominio.
-        condominio = self
-        # Apri la vista account.journal.
-        view = self.env['ir.ui.view'].search([
-            ('model', '=', 'account.journal'),
-            ('name', '=', 'Journals Condominii'),
-        ])[0]
-        # Imposta il filtro per condominio.
-        view.domain = [('condominio_id', '=', condominio.id)]
-        # Apri la vista.
-        self.open_view(view)
-        return None
+        # Manteniamo per compatibilità con i menu esistenti
+        self.ensure_one()
+        return self.action_view_journal_entries()
     
 
     def _register_menus(self):
