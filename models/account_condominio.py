@@ -57,6 +57,14 @@ class GcondAccountCondominium(models.Model):
         'account.account', string='Conto debito', required=False,
         help='Conto di debito del condominio')
     
+    partner_id = fields.Many2one(
+        'res.partner', string='Contatto Condominio', ondelete='restrict',
+        help='Il contatto (res.partner) associato a questo condominio')
+    
+    child_ids = fields.One2many(
+        related='partner_id.child_ids',
+        string='Contatti Residenti')
+    
 
 
     def replace_spaces_name_condominio(self, name):
@@ -109,8 +117,49 @@ class GcondAccountCondominium(models.Model):
         # Crea nuovi condomini.
         records = super(GcondAccountCondominium, self).create(vals_list)
         for record in records:
+            # Crea il partner associato
+            partner_vals = {
+                'name': record.name,
+                'is_company': True,
+                'street': record.address,
+                'city': record.city,
+                'zip': record.zip,
+                'country_id': record.country_id.id,
+                'phone': record.phone,
+                'email': record.email,
+                'vat': record.vat,
+                'company_type': 'company',
+            }
+            partner = self.env['res.partner'].create(partner_vals)
+            record.partner_id = partner.id
+            
             self.create_journal(record.name, record.id)
         return records
+
+    def write(self, vals):
+        res = super(GcondAccountCondominium, self).write(vals)
+        # Sincronizza i dati con il partner associato
+        partner_fields = {
+            'name': 'name',
+            'address': 'street',
+            'city': 'city',
+            'zip': 'zip',
+            'country_id': 'country_id',
+            'phone': 'phone',
+            'email': 'email',
+            'vat': 'vat',
+        }
+        partner_vals = {}
+        for cond_field, partner_field in partner_fields.items():
+            if cond_field in vals:
+                # Se è un Many2one, prendiamo l'id (che è già in vals come intero)
+                partner_vals[partner_field] = vals[cond_field]
+
+        if partner_vals:
+            for record in self:
+                if record.partner_id:
+                    record.partner_id.write(partner_vals)
+        return res
     
     
     def create_cost_items_for_condominio(self):

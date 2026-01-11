@@ -60,13 +60,25 @@ class GcondAccountCondomino(models.Model):
         else:
            self.is_company = (self.company_type == 'company')
     
+    @api.onchange('condominio_id')
+    def _onchange_condominio_id(self):
+        if self.condominio_id and self.condominio_id.partner_id:
+            self.parent_id = self.condominio_id.partner_id.id
+            self.company_type = 'condomino'
+            self.is_condominio = True
+    
 
     @api.model_create_multi
     def create(self, vals_list):
         _logger.debug("Creating new partners with vals_list: %s", vals_list)
         for vals in vals_list:
-            if vals.get('company_type') == 'condomino':
+            if vals.get('company_type') == 'condomino' or vals.get('condominio_id'):
                 vals['is_condominio'] = True
+                # Se è presente condominio_id, impostiamo il parent_id
+                if vals.get('condominio_id'):
+                    condominio = self.env['account.condominio'].browse(vals.get('condominio_id'))
+                    if condominio.partner_id:
+                        vals['parent_id'] = condominio.partner_id.id
         
         partners = super(GcondAccountCondomino, self).create(vals_list)
         
@@ -87,6 +99,18 @@ class GcondAccountCondomino(models.Model):
                 partner.conto_id = ass_account.id
                 
         return partners
+
+    def write(self, vals):
+        # Se viene cambiato il condominio, aggiorniamo il parent_id
+        if 'condominio_id' in vals:
+            if vals.get('condominio_id'):
+                condominio = self.env['account.condominio'].browse(vals.get('condominio_id'))
+                if condominio.partner_id:
+                    vals['parent_id'] = condominio.partner_id.id
+            else:
+                vals['parent_id'] = False
+        
+        return super(GcondAccountCondomino, self).write(vals)
 
     def action_view_account_situation(self):
         self.ensure_one()

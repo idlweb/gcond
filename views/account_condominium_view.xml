@@ -26,20 +26,80 @@
                         </button>
                     </div>
                     <group>
-                        <field name="name" />
-                        <field name="code" />
-                        <field name="description"/>
-                        <field name="vat" />
-                        <field name="address" />
-                        <field name="city" />
-                        <field name="zip" />
-                        <field name="country_id" />
-                        <field name="phone" />
-                        <field name="email" />                
-                        <field name="payable_account_id" />      
-                        <field name="receivable_account_id" />   
-                        <field name="journal_id" />   
+                        <group>
+                            <field name="name" />
+                            <field name="code" />
+                            <field name="vat" />
+                            <field name="description"/>
+                        </group>
+                        <group>
+                            <span class="o_form_label o_td_label" name="address_name">
+                                <b>Indirizzo</b>
+                            </span>
+                            <div class="o_address_format">
+                                <field name="address" placeholder="Via..." class="o_address_street"/>
+                                <field name="city" placeholder="Città" class="o_address_city"/>
+                                <field name="zip" placeholder="CAP" class="o_address_zip"/>
+                                <field name="country_id" placeholder="Nazione" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
+                            </div>
+                            <field name="phone" />
+                            <field name="email" widget="email"/>
+                        </group>
                     </group>
+                    <notebook>
+                        <page string="Contatti e Indirizzi" name="contacts_addresses">
+                            <field name="partner_id" invisible="1"/>
+                            <field name="child_ids" context="{'default_parent_id': partner_id, 'default_condominio_id': id}" mode="kanban">
+                                <kanban>
+                                    <field name="id"/>
+                                    <field name="color"/>
+                                    <field name="name"/>
+                                    <field name="title"/>
+                                    <field name="type"/>
+                                    <field name="email"/>
+                                    <field name="parent_id"/>
+                                    <field name="is_company"/>
+                                    <field name="function"/>
+                                    <field name="phone"/>
+                                    <field name="street"/>
+                                    <field name="street2"/>
+                                    <field name="zip"/>
+                                    <field name="city"/>
+                                    <field name="country_id"/>
+                                    <field name="mobile"/>
+                                    <field name="state_id"/>
+                                    <field name="image_128"/>
+                                    <field name="avatar_128"/>
+                                    <field name="lang"/>
+                                    <!-- fields in gcond -->
+                                    <field name="type_condomino"/>
+                                    <templates>
+                                        <t t-name="card">
+                                            <div class="d-flex align-items-start gap-2">
+                                                <field name="avatar_128" widget="image" class="o_kanban_image_fill_left" options="{'zoom': true, 'zoom_delay': 1000, 'background': true, 'prevent_pause': true}"/>
+                                                <div class="d-flex flex-column gap-1">
+                                                    <field name="name" class="fw-bold fs-5"/>
+                                                    <div t-if="record.function.raw_value"><field name="function"/></div>
+                                                    <div t-if="record.email.raw_value"><field name="email" widget="email"/></div>
+                                                    <div t-if="record.type_condomino.raw_value"><b>Tipo: </b><field name="type_condomino"/></div>
+                                                    <div t-if="record.phone.raw_value or record.mobile.raw_value">
+                                                        <field name="phone"/> <t t-if="record.phone.raw_value and record.mobile.raw_value"> / </t> <field name="mobile"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                        </page>
+                        <page string="Configurazione Contabile" name="accounting_config">
+                            <group>
+                                <field name="payable_account_id" />      
+                                <field name="receivable_account_id" />   
+                                <field name="journal_id" readonly="1"/>   
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
