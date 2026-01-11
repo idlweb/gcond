@@ -17,73 +17,68 @@ class AccountMove(models.Model):
 
     def distribute_charges(self, document_number):
         charges = []
-        context = self.env.context
-        #raise UserError(context)
-        
         journal = self.journal_id
-        if not journal:
-            raise UserError("Journal not found.")
+        if not journal or not journal.condominio_id:
+            raise UserError("Il giornale deve essere associato a un condominio.")
         
         condominio_id = journal.condominio_id.id
 
-        # Da approfondire
-        # debit_entries = debit_entries.filtered(lambda account: account.account_id in account_ids.mapped('account_id'))
-        """"""
-        # Iterate over each cost line. get_debit_entries() contiene tutte le voci presenti nella sezione 'dare' (debit) della registrazione contabile. 
+        # Ciclo su ogni riga di costo (dare) della fattura
         for line in self.get_debit_entries():
-  
-            # Get the amount of the cost entry
-            amount = line.debit
-            # raise UserError(line.account_id)
-            # Get the account_condominio_table_master record associated with the debit/cost entry
-            account_condominio_tables = self.env['account.condominio.table.master'].search([
+            expense_type = line.account_id.expense_type_id
+            if not expense_type:
+                _logger.info("Nessun tipo di spesa associato al conto %s, salto la riga.", line.account_id.code)
+                continue
+            
+            # Recuperiamo la tabella di ripartizione associata a questo tipo di spesa per questo condominio
+            table_master = self.env['account.condominio.table.master'].search([
                 ('condominio_id', '=', condominio_id),
-            ])
-                       
+                ('expense_type_id', '=', expense_type.id),
+            ], limit=1)
 
-            for account_condominio_table in account_condominio_tables:
-                if not account_condominio_table:
-                    raise UserError("No account_condominio_table_master record found for current condominium and cost entry.")
-                for dettaglio_ripartizione in account_condominio_table:
-                    amount = (amount * account_condominio_table.percentuale)/100                    
-                    if line.account_id.id in dettaglio_ripartizione.account_ids.ids:
-                        account_condominio_table_records = self.env['account.condominio.table'].search([
-                            ('table_id', '=', dettaglio_ripartizione.id),
-                        ])
+            if not table_master:
+                _logger.warning("Nessuna tabella di ripartizione trovata per il tipo spesa %s nel condominio %s", expense_type.name, journal.condominio_id.name)
+                continue
 
-                        amount = amount / 1000 
+            # Calcolo dell'importo base per questa tabella (applicando la percentuale del master)
+            base_amount = (line.debit * table_master.percentuale) / 100.0
+            # Divisione per 1000 millesimi
+            millesimal_base = base_amount / 1000.0
 
-                        for account_condominio_table_record in account_condominio_table_records:
-                            # Calculate the share for the partner                            
-                            charge = ((amount * (account_condominio_table_record.value_distribution * account_condominio_table_record.quote / 100))) * 1.22
-                            
-                            # Create a journal entry for the charge
-                            account_move = self.env['account.move'].create({                        
-                                'journal_id': self.journal_id.id, #PURCHASE[18]
-                                'date': fields.Date.today(),
-                                'ref' : f"{account_condominio_table_record.condomino_id.name}-{line.account_id.name}-{document_number}",
-                                'move_type': 'entry',
-                                'line_ids': [
-                                    (0, 0, {
-                                        'account_id': account_condominio_table_record.condomino_id.conto_id.id,
-                                        'partner_id': account_condominio_table_record.condomino_id.id,
-                                        'name': document_number, # etichetta
-                                        #'analytic_account_id': account_condominio_table_record.condomino_id.id,  # Assegna il conto analitico
-                                        'debit': charge,
-                                        'credit': 0.0,
-                                    }),
-                                    (0, 0, {
-                                        'account_id': line.account_id.id,
-                                        'partner_id': account_condominio_table_record.condomino_id.id,
-                                        'name': document_number,
-                                        #'analytic_account_id': account_condominio_table_record.condomino_id.id,  # Assegna il conto analitico
-                                        'credit': charge,
-                                        'debit': 0.0,
-                                    })
-                                ],
-                            })
+            for row in table_master.table_ids:
+                if not row.condomino_id:
+                    continue
+                
+                # Quota = (Importo/1000) * Millesimi * % di competenza * 1.22 (IVA)
+                charge = (millesimal_base * row.value_distribution * (row.quote / 100.0)) * 1.22
+                
+                if charge <= 0:
+                    continue
 
-                            charges.append(account_move)                                
+                # Creazione della registrazione contabile di ripartizione
+                account_move = self.env['account.move'].create({                        
+                    'journal_id': self.journal_id.id,
+                    'date': fields.Date.today(),
+                    'ref' : f"{row.condomino_id.name}-{line.account_id.name}-{document_number}",
+                    'move_type': 'entry',
+                    'line_ids': [
+                        (0, 0, {
+                            'account_id': row.condomino_id.conto_id.id or line.account_id.id, # Fallback su conto riga se condomino non ha conto
+                            'partner_id': row.condomino_id.id,
+                            'name': f"Ripartizione {document_number}",
+                            'debit': charge,
+                            'credit': 0.0,
+                        }),
+                        (0, 0, {
+                            'account_id': line.account_id.id,
+                            'partner_id': row.condomino_id.id,
+                            'name': f"Ripartizione {document_number}",
+                            'credit': charge,
+                            'debit': 0.0,
+                        })
+                    ],
+                })
+                charges.append(account_move)                                
         return charges
 
     

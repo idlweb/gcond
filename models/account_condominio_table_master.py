@@ -41,6 +41,7 @@ class AccountCondominioTableMaster(models.Model):
          'Può esistere una sola tabella di ripartizione per questo tipo di spesa in questo condominio!')
     ]
     
+    percentuale = fields.Float(string='Percentuale da ripartire', default=100.0)
     table_ids = fields.One2many('account.condominio.table', 'table_id', string='Righe tabelle condominiali')
     
     #condominio_id_old = fields.Integer(string='Condominio ID vecchio')
