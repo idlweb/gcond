@@ -103,7 +103,7 @@ class GcondAccountCondomino(models.Model):
             'type': 'ir.actions.act_window', # <- vista
             'name': 'Situazione Contabile',
             'res_model': 'account.move.line',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('account_id', '=', account.id)],
             'context': dict(self.env.context),
         }
