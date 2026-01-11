@@ -10,4 +10,15 @@
             </xpath>
         </field>
     </record>
+
+    <record id="view_account_list_gcond" model="ir.ui.view">
+        <field name="name">account.account.list.gcond</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='account_type']" position="after">
+                <field name="expense_type_id" optional="show" string="Tipo di spesa"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>
