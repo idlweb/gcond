@@ -40,14 +40,11 @@
                 </button>
             </xpath>
 
-            <xpath expr="//field[@name='is_company']" position="after">
-                <field name="is_condominio" string="È un Edificio (Fabbricato/Condominio)"/>
-            </xpath>
-
             <field name="street" position="before">
-                <group string="Associazione Condominiale">
-                    <field name="condominio_id" string="Abita nel Palazzo" />
-                    <field name="type_condomino" invisible="not condominio_id"/>
+                <group string="Dati Condominiali" name="condo_data_group">
+                    <field name="is_condominio" string="È un Edificio (Fabbricato/Condominio)"/>
+                    <field name="condominio_id" string="Abita nel Palazzo" invisible="is_condominio"/>
+                    <field name="type_condomino" invisible="not condominio_id or is_condominio"/>
                 </group>
             </field>
         </field>
