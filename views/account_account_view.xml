@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_form_gcond" model="ir.ui.view">
+        <field name="name">account.account.form.gcond</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='account_type']" position="after">
+                <field name="expense_type_id" options="{'no_create': True}" string="Tipo di spesa"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
