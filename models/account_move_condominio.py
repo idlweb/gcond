@@ -138,14 +138,37 @@ class AccountMove(models.Model):
     def action_print_payment_receipt(self):
         """ Opens the linked payment receipt directly from the notice """
         self.ensure_one()
-        # Get reconciled payments
-        # In Odoo 16+, we use _get_reconciled_payments() or inspect the JSON
-        reconciled_payments = self._get_reconciled_payments()
-        if not reconciled_payments:
-             raise UserError("Nessun pagamento trovato per questo avviso. Registra prima il pagamento.")
+        
+        # 1. Manual Traversal: Find payments linked via reconciliation
+        payments = self.env['account.payment']
+        
+        # We look at all lines in the invoice (not just receivable, to be safe)
+        for line in self.line_ids:
+             # Check both debit and credit matches (Odoo stores partials in matched_debit_ids on the credit line)
+             partials = line.matched_debit_ids + line.matched_credit_ids
+             
+             for partial in partials:
+                  # Identify the counterpart line (the one that is NOT our line)
+                  counterpart = partial.debit_move_id if partial.credit_move_id == line else partial.credit_move_id
+                  
+                  # Check if counterpart belongs to a payment
+                  # Direct payment link
+                  if counterpart.payment_id:
+                       payments |= counterpart.payment_id
+                  # Move-based payment link (Move -> Payment)
+                  elif counterpart.move_id.payment_id:
+                       payments |= counterpart.move_id.payment_id
+        
+        # 2. Fallback: helper method (if available)
+        if not payments and hasattr(self, '_get_reconciled_payments'):
+             payments = self._get_reconciled_payments()
+             
+        if not payments:
+             raise UserError("Nessun pagamento collegato trovato (anche se l'avviso risulta pagato). Verifica la contabilità.")
         
         # Take the most recent payment
-        last_payment = reconciled_payments[-1]
+        # Sort by date desc
+        last_payment = payments.sorted(key=lambda p: p.date, reverse=True)[0]
         
         # Return the standard print action for the payment
         return self.env.ref('account.action_report_payment_receipt').report_action(last_payment)
