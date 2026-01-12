@@ -3,8 +3,9 @@
     and get the parameters to pass them to 'distribute_charges'
 """
 
-from odoo import models, fields, api
-from odoo.exceptions import ValidationError, UserError
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
+from odoo.tools import format_amount
 import logging
 
 _logger = logging.getLogger(__name__)
