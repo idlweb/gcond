@@ -1,5 +1,18 @@
+# -*- coding: utf-8 -*-
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+import logging
+
+_logger = logging.getLogger(__name__)
+
+class GcondFeeWizardLine(models.TransientModel):
+    _name = 'gcond.fee.wizard.line'
+    _description = 'Riga Quota Condominiale'
+
+    wizard_id = fields.Many2one('gcond.fee.wizard', string='Wizard Reference', required=True, ondelete='cascade')
+    partner_id = fields.Many2one('res.partner', string='Condomino', readonly=True, required=True)
+    amount = fields.Monetary(string='Importo Versato', currency_field='currency_id')
+    currency_id = fields.Many2one('res.currency', related='wizard_id.journal_id.currency_id')
 
 class GcondFeeWizard(models.TransientModel):
     _name = 'gcond.fee.wizard'
@@ -35,6 +48,7 @@ class GcondFeeWizard(models.TransientModel):
 
     def action_confirm_payments(self):
         self.ensure_one()
+        _logger.info("Conferma pagamenti massivi per condominio %s", self.condominio_id.name)
         payments_to_create = []
         
         for line in self.line_ids:
@@ -51,14 +65,7 @@ class GcondFeeWizard(models.TransientModel):
                     'journal_id': self.journal_id.id,
                     'currency_id': self.journal_id.currency_id.id or self.journal_id.company_id.currency_id.id,
                     'partner_id': line.partner_id.id,
-                    # We are creating a payment that is NOT linked to an invoice (yet), so it's a deposit/advance.
-                    # By default Odoo puts it on the receivable account.
-                    # We want to ensure it lands on the dedicated account if set.
-                    # For standard payments, Odoo uses the partner's account.
-                    # However, to be robust, we might need to intercept or ensure the account is correct.
-                    # Standard behavior: Odoo uses property_account_receivable_id.
-                    # Since we updated 'property_account_receivable_id' when creating the resident, 
-                    # standard creation should work fine!
+                    'destination_account_id': dest_account_id, # EXPLICIT ASSIGNMENT
                 }
                 payments_to_create.append(payment_vals)
         
@@ -77,12 +84,3 @@ class GcondFeeWizard(models.TransientModel):
             'view_mode': 'list,form',
             'domain': [('id', 'in', payments.ids)],
         }
-
-class GcondFeeWizardLine(models.TransientModel):
-    _name = 'gcond.fee.wizard.line'
-    _description = 'Riga Quota Condominiale'
-
-    wizard_id = fields.Many2one('gcond.fee.wizard', string='Wizard Reference', required=True, ondelete='cascade')
-    partner_id = fields.Many2one('res.partner', string='Condomino', readonly=True, required=True)
-    amount = fields.Monetary(string='Importo Versato', currency_field='currency_id')
-    currency_id = fields.Many2one('res.currency', related='wizard_id.journal_id.currency_id')

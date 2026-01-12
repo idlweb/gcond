@@ -16,6 +16,7 @@
                     </group>
                     <notebook>
                         <page string="Quote Condomini">
+                             <!-- Temporarily commented out to fix update error
                             <field name="line_ids">
                                 <tree string="Quote" editable="bottom" create="false" delete="false">
                                     <field name="partner_id"/>
@@ -23,6 +24,7 @@
                                     <field name="amount" sum="Totale Incassato"/>
                                 </tree>
                             </field>
+                            -->
                         </page>
                     </notebook>
                     <footer>
