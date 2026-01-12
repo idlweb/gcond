@@ -61,7 +61,7 @@ class GcondFeeWizard(models.TransientModel):
                     'amount': line.amount,
                     'payment_type': 'inbound',
                     'partner_type': 'customer',
-                    'ref': f"Quota {self.payment_date} - {self.condominio_id.name}",
+                    'memo': f"Quota {self.payment_date} - {self.condominio_id.name}",
                     'journal_id': self.journal_id.id,
                     'currency_id': self.journal_id.currency_id.id or self.journal_id.company_id.currency_id.id,
                     'partner_id': line.partner_id.id,
