@@ -154,7 +154,7 @@ class AccountMove(models.Model):
         """ Forces recompute of payment state and prints debug info """
         for move in self:
             # 1. Force Invalidate
-            move.invalidate_recordset(['payment_state', 'amount_residual', 'amount_residual_currency'])
+            move.invalidate_recordset(['payment_state', 'amount_residual'])
             move.line_ids.invalidate_recordset(['amount_residual', 'amount_residual_currency', 'reconciled'])
             
             # 2. Trigger Compute (if possible via read/write or explicit method)
@@ -239,7 +239,7 @@ class AccountPaymentRegister(models.TransientModel):
         # on the invoice because of the complex draft/post cycle. We force it here.
         all_source_moves = self.line_ids.move_id
         if all_source_moves:
-             all_source_moves.invalidate_recordset(['payment_state', 'amount_residual', 'amount_residual_currency'])
+            all_source_moves.invalidate_recordset(['payment_state', 'amount_residual'])
 
         return action_vals
 
