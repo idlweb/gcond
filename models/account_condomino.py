@@ -126,7 +126,7 @@ class GcondAccountCondomino(models.Model):
             'res_model': 'account.move.line',
             'view_mode': 'list,form',
             'domain': domain,
-            'context': dict(self.env.context, search_default_partner_id=self.id),
+            'context': dict(self.env.context, search_default_partner_id=self.id, search_default_unreconciled=1),
         }
 
 
