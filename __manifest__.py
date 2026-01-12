@@ -29,6 +29,7 @@
         'reports/report_payment_receipt.xml',
         'reports/report_bilancio.xml',
         'reports/report_riparto.xml',
+        'reports/report_patrimoniale.xml',
         'wizard/fee_wizard_view.xml',
         'data/sequence_data.xml',
     ],

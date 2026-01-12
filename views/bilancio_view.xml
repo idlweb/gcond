@@ -25,6 +25,7 @@
                     <button name="action_compute_lines" string="Calcola Spese" type="object" class="btn-primary" invisible="state != 'draft'"/>
                     <button name="action_print_bilancio" string="Stampa Consuntivo" type="object" class="btn-secondary" icon="fa-print"/>
                     <button name="action_print_riparto" string="Stampa Riparto" type="object" class="btn-secondary" icon="fa-table"/>
+                    <button name="action_print_patrimoniale" string="Stampa Patrimoniale" type="object" class="btn-secondary" icon="fa-balance-scale"/>
                     <button name="action_approve" string="Approva" type="object" class="btn-danger" invisible="state != 'draft'" confirm="Sei sicuro? Il bilancio sarà bloccato."/>
                     <button name="action_reset_draft" string="Riporta in Bozza" type="object" invisible="state == 'draft'"/>
                     <field name="state" widget="statusbar"/>
@@ -32,7 +33,7 @@
                 <sheet>
                     <div class="oe_title">
                         <h1>
-                            <field name="name" placeholder="Descrizione (es. Consuntivo 2025)"/>
+                            <field name="name" placeholder="Es. Bilancio Consuntivo 2024"/>
                         </h1>
                     </div>
                     <group>
@@ -63,10 +64,16 @@
                                     <field name="partner_id"/>
                                     <field name="expense_type_id"/>
                                     <field name="millesimi"/>
-                                    <field name="amount" sum="Totale Ripartito"/>
+                                    <field name="amount" sum="Totale Quote"/>
+                                    <field name="payments" sum="Totale Versato"/>
+                                    <field name="previous_balance" sum="Totale Riporto"/>
+                                    <field name="final_balance" sum="Totale Conguaglio"/> 
                                     <field name="currency_id" column_invisible="True"/>
                                 </list>
                             </field>
+                        </page>
+                        <page string="Nota Sintetica">
+                            <field name="note" placeholder="Inserisci qui la relazione sintetica (Art. 1130-bis)..." widget="html"/>
                         </page>
                     </notebook>
                 </sheet>

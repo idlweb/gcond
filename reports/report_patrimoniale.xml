@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Report Action -->
+        <record id="action_report_patrimoniale" model="ir.actions.report">
+            <field name="name">Situazione Patrimoniale</field>
+            <field name="model">gcond.bilancio</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">gcond.report_patrimoniale_document</field>
+            <field name="report_file">gcond.report_patrimoniale_document</field>
+            <field name="print_report_name">'Patrimoniale - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_gcond_bilancio"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Report Template -->
+        <template id="report_patrimoniale_document">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h2 class="text-center">Stato Patrimoniale</h2>
+                            <h4 class="text-center text-muted"><span t-field="o.name"/></h4>
+
+                            <div class="row mt-4 mb-4">
+                                <div class="col-6">
+                                    <strong>Condominio:</strong> <span t-field="o.condominio_id.name"/><br/>
+                                    <strong>Data Chiusura:</strong> <span t-field="o.date_end"/>
+                                </div>
+                            </div>
+
+                            <t t-set="data" t-value="o.get_patrimoniale_data()"/>
+                            
+                            <div class="row">
+                                <!-- LEFT COLUMN: ASSETS (ATTIVO) -->
+                                <div class="col-6">
+                                    <h4 class="text-center bg-light border p-2">ATTIVO</h4>
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Conto</th>
+                                                <th class="text-right">Importo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr t-foreach="data['assets']" t-as="item">
+                                                <td>
+                                                    <span t-esc="item['code']"/> <span t-esc="item['name']"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-esc="item['amount']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="font-weight-bold">
+                                                <td>TOTALE ATTIVO</td>
+                                                <td class="text-right">
+                                                    <span t-esc="data['total_assets']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                
+                                <!-- RIGHT COLUMN: LIABILITIES (PASSIVO) -->
+                                <div class="col-6">
+                                    <h4 class="text-center bg-light border p-2">PASSIVO</h4>
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Conto</th>
+                                                <th class="text-right">Importo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr t-foreach="data['liabilities']" t-as="item">
+                                                <td>
+                                                    <span t-esc="item['code']"/> <span t-esc="item['name']"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-esc="item['amount']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="font-weight-bold">
+                                                <td>TOTALE PASSIVO</td>
+                                                <td class="text-right">
+                                                    <span t-esc="data['total_liabilities']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <!-- NET RESULT SECTION -->
+                            <div class="row mt-5">
+                                <div class="col-12">
+                                    <div class="alert alert-info border-info text-center">
+                                        <strong>Risultato di Gestione (Debito/Credito Condomini): </strong>
+                                        <span class="h4 ml-2" t-esc="data['result']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        <div class="small">
+                                            (Differenza tra Attività e Passività = Avanzo/Disavanzo Gestionale)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- NOTA INTEGRATIVA SECTION -->
+                            <t t-if="o.note">
+                                <div class="row mt-5" style="page-break-before: always;">
+                                    <div class="col-12">
+                                        <h3 class="border-bottom pb-2">Nota Sintetica Esplicativa</h3>
+                                        <div class="mt-3">
+                                            <span t-field="o.note"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <div class="row mt-5">
+                                <div class="col-12 text-center text-muted small">
+                                    Documento redatto ai sensi dell'art. 1130-bis c.c.
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

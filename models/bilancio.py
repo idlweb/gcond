@@ -257,12 +257,82 @@ class GcondBilancio(models.Model):
             'grand_total_previous': grand_total_previous,
             'grand_total_balance': grand_total_balance
         }
+    note = fields.Html(string='Nota Sintetica Esplicativa')
     
+    def get_patrimoniale_data(self):
+        self.ensure_one()
+        # Fetch all moves for this condo context up to end of period
+        domain = [
+            ('move_id.journal_id.condominio_id', '=', self.condominio_id.id),
+            ('date', '<=', self.date_end),
+            ('parent_state', '=', 'posted')
+        ]
+        
+        # Group by Account
+        groups = self.env['account.move.line'].read_group(
+            domain,
+            ['account_id', 'balance'],
+            ['account_id']
+        )
+        
+        assets = []
+        liabilities = []
+        
+        total_assets = 0.0
+        total_liabilities = 0.0
+        
+        for g in groups:
+            if not g['account_id']:
+                continue
+                
+            account_id = g['account_id'][0] # ID
+            balance = g['balance']
+            
+            if abs(balance) < 0.01:
+                continue
+                
+            account = self.env['account.account'].browse(account_id)
+            type_group = account.account_type # asset_..., liability_..., income_..., expense_...
+            
+            # We want only Balance Sheet items (Assets/Liabilities)
+            # P&L items (Income/Expense) form the "Result" which balances the sheet.
+            # Technically, in Odoo, if we haven't 'closed' the year, P&L accounts have balances.
+            # We will separate them.
+            
+            item = {'code': account.code, 'name': account.name, 'amount': 0.0}
+            
+            if type_group.startswith('asset'):
+                # Asset: Positive Balance is normal.
+                item['amount'] = balance
+                assets.append(item)
+                total_assets += balance
+            elif type_group.startswith('liability') or type_group.startswith('equity'):
+                # Liability: Negative Balance is normal. We visualize as positive in report.
+                item['amount'] = -balance
+                liabilities.append(item)
+                total_liabilities += -balance
+                
+        # The difference is the Result (Avanzo/Disavanzo di gestione)
+        # Assets - Liabilities = Capital + Result
+        # Here Capital is likely 0 or part of Liabilities/Equity.
+        result = total_assets - total_liabilities
+        
+        return {
+            'assets': sorted(assets, key=lambda x: x['code']),
+            'liabilities': sorted(liabilities, key=lambda x: x['code']),
+            'total_assets': total_assets,
+            'total_liabilities': total_liabilities,
+            'result': result
+        }
+
     def action_print_bilancio(self):
         return self.env.ref('gcond.action_report_bilancio').report_action(self)
 
     def action_print_riparto(self):
         return self.env.ref('gcond.action_report_riparto').report_action(self)
+
+    def action_print_patrimoniale(self):
+        return self.env.ref('gcond.action_report_patrimoniale').report_action(self)
 
     def action_approve(self):
         self.write({'state': 'approved'})
