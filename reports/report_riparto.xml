@@ -48,33 +48,58 @@
                                 </div>
                             </div>
 
-                            <table class="table table-sm table-bordered">
+                            <table class="table table-sm table-bordered" style="font-size: 11px;">
                                 <thead style="background-color: #f2f2f2;">
                                     <tr>
-                                        <th>Condomino</th>
+                                        <th style="vertical-align: middle;">Condomino</th>
                                         <!-- Columns Header from Expense Types -->
                                         <t t-foreach="matrix['columns']" t-as="col">
-                                            <th class="text-right"><span t-esc="col.name"/></th>
+                                            <th class="text-center" colspan="2" style="border-bottom: 2px solid #dee2e6;">
+                                                <span t-esc="col.name"/>
+                                            </th>
                                         </t>
-                                        <th class="text-right font-weight-bold">TOTALE</th>
+                                        <th class="text-right table-active" style="vertical-align: middle;">Totale<br/>Quote</th>
+                                        <th class="text-right" style="vertical-align: middle;">Riporto<br/>Eser. Prec.</th>
+                                        <th class="text-right" style="vertical-align: middle;">Versato</th>
+                                        <th class="text-right font-weight-bold table-dark" style="vertical-align: middle;">CONGUAGLIO</th>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <t t-foreach="matrix['columns']" t-as="col">
+                                            <th class="text-right text-muted" style="font-size: 10px;">Mill.</th>
+                                            <th class="text-right text-muted" style="font-size: 10px;">Quota</th>
+                                        </t>
+                                        <th colspan="4"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr t-foreach="matrix['rows']" t-as="row">
-                                        <td>
+                                        <td class="font-weight-bold">
                                             <span t-esc="row['partner'].name"/>
                                         </td>
                                         <!-- Columns Values -->
                                         <t t-foreach="matrix['columns']" t-as="col">
+                                            <t t-set="val_tuple" t-value="row['values'].get(col.id, (0.0, 0.0))"/>
+                                            <td class="text-right text-muted">
+                                                <span t-if="val_tuple[0] != 0" t-esc="'%.2f' % val_tuple[0]"/>
+                                            </td>
                                             <td class="text-right">
-                                                <t t-set="val" t-value="row['values'].get(col.id, 0.0)"/>
-                                                <span t-if="val != 0" t-esc="val" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                <span t-if="val_tuple[1] != 0" t-esc="val_tuple[1]" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                                                 <span t-else="" class="text-muted">-</span>
                                             </td>
                                         </t>
-                                        <!-- Row Total -->
-                                        <td class="text-right font-weight-bold">
-                                            <span t-esc="row['total']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        <!-- Row Totals -->
+                                        <td class="text-right table-active font-weight-bold">
+                                            <span t-esc="row['total_quota']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="row['previous']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                        <td class="text-right text-primary">
+                                            <span t-esc="row['payments']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                        <td class="text-right font-weight-bold table-dark">
+                                            <span t-esc="row['balance']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -82,12 +107,22 @@
                                     <tr class="font-weight-bold" style="background-color: #e9ecef;">
                                         <td>TOTALE GENERALE</td>
                                         <t t-foreach="matrix['columns']" t-as="col">
+                                            <td></td>
                                             <td class="text-right">
                                                 <span t-esc="matrix['totals_col'].get(col.id, 0.0)" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                                             </td>
                                         </t>
                                         <td class="text-right">
-                                            <span t-esc="matrix['grand_total']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            <span t-esc="matrix['grand_total_quota']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="matrix['grand_total_previous']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="matrix['grand_total_payments']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="matrix['grand_total_balance']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                                         </td>
                                     </tr>
                                 </tfoot>

@@ -57,6 +57,62 @@ class GcondBilancio(models.Model):
         lines_vals = []
         riparto_vals = []
         
+        # Pre-fetch financial data per partner
+        # We need to find all partners involved in this condominio.
+        # But partners are defined in the distribution tables...
+        # So we can calculate financials "on demand" inside the loop? 
+        # No, better to calculate once per partner to avoid repetitive DB calls.
+        
+        # Strategy:
+        # 1. Collect all partners from table masters used for these expense types.
+        # 2. For each partner, calc Payments and Previous Balance.
+        # 3. Store in a dict {partner_id: {'payments': X, 'previous': Y}}
+        
+        partner_financials = {}
+        
+        def get_partner_financials(partner_id):
+            if partner_id in partner_financials:
+                return partner_financials[partner_id]
+            
+            # Calc Payments: Sum of Credit lines in Journal(s) linked to Condominio?
+            # Or dedicated accounts? 
+            # Logic: Payments are credits on Receivable account (121001 etc).
+            # The resident pays -> Bank Debit, Partner Credit.
+            # So search for credits on partner account.
+            
+            domain_pay = [
+                ('partner_id', '=', partner_id),
+                ('account_id.account_type', 'in', ['asset_receivable', 'liability_payable']),
+                ('parent_state', '=', 'posted'),
+                ('date', '>=', self.date_start),
+                ('date', '<=', self.date_end),
+                ('credit', '>', 0) # Only payments
+            ]
+            # Restrict to journals of this condominio? 
+            # Usually yes, but if partner pays via Bank general journal?
+            # Let's restrict to move lines where move.journal_id has condominio_id = self.condominio_id
+            # Wait, `account.move.line` doesn't have `condominio_id` directly but via `journal_id`.
+            domain_pay.append(('move_id.journal_id.condominio_id', '=', self.condominio_id.id))
+            
+            pay_lines = self.env['account.move.line'].search(domain_pay)
+            payments = sum(pay_lines.mapped('credit'))
+            
+            # Calc Previous: Balance at date_start - 1 day
+            # Balance = Debit - Credit
+            domain_prev = [
+                ('partner_id', '=', partner_id),
+                ('account_id.account_type', 'in', ['asset_receivable', 'liability_payable']),
+                ('parent_state', '=', 'posted'),
+                ('date', '<', self.date_start),
+                ('move_id.journal_id.condominio_id', '=', self.condominio_id.id)
+            ]
+            prev_lines = self.env['account.move.line'].search(domain_prev)
+            previous = sum(prev_lines.mapped('balance'))
+            
+            res = {'payments': payments, 'previous': previous}
+            partner_financials[partner_id] = res
+            return res
+
         for etype_id, amount in data.items():
             # A. Create Aggregated Line
             lines_vals.append((0, 0, {
@@ -65,42 +121,35 @@ class GcondBilancio(models.Model):
                 'amount_budget': 0.0, 
             }))
             
-            # B. Distribute Amount to Residents (Prospetto di Riparto)
-            # Find the Table Master for this Expense Type and Condominio
+            # B. Distribute Amount to Residents
             table_master = self.env['account.condominio.table.master'].search([
                 ('condominio_id', '=', self.condominio_id.id),
                 ('expense_type_id', '=', etype_id)
             ], limit=1)
             
             if table_master:
-                # Distribution logic:
-                # 1. Calculate Base Amount adjusted by master percentage
                 base_amount = (amount * table_master.percentuale) / 100.0
-                # 2. Divide by 1000 to get value per millesimal
                 millesimal_base = base_amount / 1000.0
                 
                 for row in table_master.table_ids:
                     if not row.condomino_id:
                         continue
                     
-                    # 3. Calculate Share: Base * Millesimi * Competence%
-                    # Note: We do NOT apply 1.22 IVA here because 'amount' from accounting is already including tax (if gross) 
-                    # or excluding tax depending on account type. Usually expenses on P&L accounts are net, 
-                    # BUT condominium accounting is often 'cassa' like.
-                    # HOWEVER: 'balance' in move lines is the signed amount.
-                    # Assuming standard distribution logic:
-                    
                     share = millesimal_base * row.value_distribution * (row.quote / 100.0)
                     
                     if share != 0:
+                        fin = get_partner_financials(row.condomino_id.id)
+                        
                         riparto_vals.append((0, 0, {
                             'partner_id': row.condomino_id.id,
                             'expense_type_id': etype_id,
                             'millesimi': row.value_distribution,
                             'amount': share,
+                            'payments': fin['payments'],
+                            'previous_balance': fin['previous']
                         }))
             else:
-                _logger.warning("No distribution table found for Expense Type ID %s in Condominio %s", etype_id, self.condominio_id.name)
+                _logger.warning("No distribution table found for Expense Type ID %s", etype_id)
 
         self.line_ids = lines_vals
         self.riparto_ids = riparto_vals
@@ -114,12 +163,18 @@ class GcondBilancio(models.Model):
             'rows': [
                 {
                     'partner': obj(res.partner),
-                    'values': {type_id: amount, ...},
-                    'total': sum(amounts)
+                    'values': {type_id: (millesimi, amount), ...},
+                    'total_quota': float,
+                    'payments': float,
+                    'previous': float,
+                    'balance': float
                 }, ...
             ],
             'totals_col': {type_id: sum(all_rows), ...},
-            'grand_total': sum(all)
+            'grand_total_quota': float,
+            'grand_total_payments': float,
+            'grand_total_previous': float,
+            'grand_total_balance': float
         }
         """
         self.ensure_one()
@@ -131,40 +186,77 @@ class GcondBilancio(models.Model):
         partners = self.riparto_ids.mapped('partner_id').sorted('name')
         
         rows = []
-        grand_total = 0.0
+        grand_total_quota = 0.0
+        grand_total_payments = 0.0
+        grand_total_previous = 0.0
+        grand_total_balance = 0.0
+        
         totals_col = {et.id: 0.0 for et in expense_types}
         
         for partner in partners:
             row_vals = {}
-            row_total = 0.0
+            row_quota = 0.0
             
             # Get all lines for this partner
             partner_lines = self.riparto_ids.filtered(lambda r: r.partner_id == partner)
             
+            # Data from the first line found (since payments/previous are repeated per partner in DB logic or should be calculated once)
+            # Actually, my DB design duplicates this info per expense type row? 
+            # ideally gcond.bilancio.riparto has one row per (partner, expense_type).
+            # So I need to aggregate.
+            
+            # Use the first line to get partner-level financials (calculated during compute)
+            # Wait, I haven't implemented compute logic for payments yet.
+            # I should do that first.
+            
+            # Let's pivot data
             for et in expense_types:
-                # Find line for this type
                 line = partner_lines.filtered(lambda l: l.expense_type_id == et)
-                amount = sum(line.mapped('amount')) # Should be one, but sum is safe
-                row_vals[et.id] = amount
+                amount = sum(line.mapped('amount'))
+                millesimi = sum(line.mapped('millesimi'))
+                row_vals[et.id] = (millesimi, amount)
                 
-                # Update totals
-                row_total += amount
+                row_quota += amount
                 totals_col[et.id] += amount
+            
+            # Get financial info (Unified per partner)
+            # Since I will store payments/previous on every riparto line, I can just take the first one or average?
+            # Better: The new model structure should probably be:
+            # - gcond.bilancio.riparto: (partner, expense_type, millesimi, amount) -> Detail
+            # - gcond.bilancio.partner_summary: (partner, payments, previous, final) -> Summary
+            # But the user asked for one big table.
+            # I'll stick to 'gcond.bilancio.riparto' having these fields computed. 
+            # I will ensure they are identical for all rows of the same partner.
+            
+            first_line = partner_lines[0] if partner_lines else None
+            payments = first_line.payments if first_line else 0.0
+            previous = first_line.previous_balance if first_line else 0.0
+            # Recompute balance in case items are filtered? No, reliance on DB.
+            balance = row_quota - payments + previous
             
             rows.append({
                 'partner': partner,
                 'values': row_vals,
-                'total': row_total
+                'total_quota': row_quota,
+                'payments': payments,
+                'previous': previous,
+                'balance': balance
             })
-            grand_total += row_total
+            
+            grand_total_quota += row_quota
+            grand_total_payments += payments
+            grand_total_previous += previous
+            grand_total_balance += balance
             
         return {
             'columns': expense_types,
             'rows': rows,
             'totals_col': totals_col,
-            'grand_total': grand_total
+            'grand_total_quota': grand_total_quota,
+            'grand_total_payments': grand_total_payments,
+            'grand_total_previous': grand_total_previous,
+            'grand_total_balance': grand_total_balance
         }
-
     
     def action_print_bilancio(self):
         return self.env.ref('gcond.action_report_bilancio').report_action(self)
@@ -211,4 +303,27 @@ class GcondBilancioRiparto(models.Model):
     millesimi = fields.Float(string='Millesimi')
     amount = fields.Monetary(string='Quota Ripartita', currency_field='currency_id')
     
+    # Financials (Repeated for every row of the same partner to make view easier)
+    payments = fields.Monetary(string='Versato', currency_field='currency_id')
+    previous_balance = fields.Monetary(string='Pregresso', currency_field='currency_id')
+    final_balance = fields.Monetary(string='Conguaglio', compute='_compute_final_balance', currency_field='currency_id')
+    
     currency_id = fields.Many2one(related='bilancio_id.currency_id')
+    
+    @api.depends('amount', 'payments', 'previous_balance')
+    def _compute_final_balance(self):
+        # NOTE: This compute is per row, which represents a single expense type share.
+        # But 'payments' and 'previous_balance' are totals for the partner.
+        # So 'final_balance' here is meaningless if summed? 
+        # Correct approach: logic should be handled at report level or summary level.
+        # But to show it in the tree view, we might need a workaround.
+        # actually, the user wants the final matrix.
+        # Let's keep these fields as data holders. 
+        # The 'final_balance' on the row is confusing.
+        # It's better to NOT compute it per row, but maybe make it 0 for all rows 
+        # except a 'dummy' row? No.
+        # Let's just remove the compute and fill it during generation?
+        # Or keeping it simple: The report logic handles the math. 
+        # The Tree view is just a list.
+        for line in self:
+             line.final_balance = 0.0 # Placeholder
