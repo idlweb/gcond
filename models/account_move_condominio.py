@@ -63,6 +63,19 @@ class AccountMove(models.Model):
                 # Harmonization: Usiamo la stessa data di scadenza della fattura originale
                 due_date = self.invoice_date_due or fields.Date.today()
                 
+                # ACCOUNTING LOGIC REFINEMENT
+                # DEBIT: Resident's specific account (already prioritized below)
+                # CREDIT: 'Ricevute in sospeso' (182003) instead of neutralizing the expense immediately.
+                
+                credit_account_id = line.account_id.id # Default fallback
+                suspense_account = self.env['account.account'].search([
+                    ('code', '=', '182003'),
+                    ('company_id', '=', self.company_id.id or self.env.company.id)
+                ], limit=1)
+                
+                if suspense_account:
+                    credit_account_id = suspense_account.id
+                
                 account_move = self.env['account.move'].create({                        
                     'journal_id': self.journal_id.id,
                     'date': fields.Date.today(),
@@ -78,7 +91,7 @@ class AccountMove(models.Model):
                             'date_maturity': due_date, # Harmonizzazione scadenza
                         }),
                         (0, 0, {
-                            'account_id': line.account_id.id,
+                            'account_id': credit_account_id,
                             'partner_id': row.condomino_id.id,
                             'name': f"Ripartizione {document_number}",
                             'credit': charge,

@@ -75,20 +75,45 @@ class GcondAccountCondomino(models.Model):
         partners = super(GcondAccountCondomino, self).create(vals_list)
         
         for partner in partners:
-            if partner.condominio_id:
-                sequence_code = 'account.account.condomino'
-                account_code = self.env['ir.sequence'].next_by_code(sequence_code)
-                if not account_code:
-                    _logger.error("Sequence with code '%s' not found", sequence_code)
-                    continue
+            if partner.condominio_id and not partner.conto_id:
+                # DYNAMIC ACCOUNT GENERATION
+                # Search for the highest code starting with '121' (Clienti)
+                # We assume 121000 is the root/start.
                 
-                ass_account = self.env['account.account'].with_company(partner.company_id or self.env.company).create({
-                    'name': f"{partner.name}-{partner.condominio_id.name}",
-                    'code': account_code,
+                # 1. Find the highest existing code
+                last_acc = self.env['account.account'].search([
+                    ('code', 'like', '121%'),
+                    ('company_id', '=', partner.company_id.id or self.env.company.id)
+                ], order='code desc', limit=1)
+                
+                new_code = '121001' # Fallback default
+                if last_acc:
+                    try:
+                        # Extract number and increment
+                        current_num = int(last_acc.code)
+                        new_code = str(current_num + 1)
+                    except ValueError:
+                        # Fallback if code is not numeric
+                        pass
+
+                # 2. Create the new account
+                account_name = f"Credito vs {partner.name}"
+                if partner.condominio_id:
+                     account_name += f" ({partner.condominio_id.name})"
+
+                new_account = self.env['account.account'].create({
+                    'name': account_name,
+                    'code': new_code,
                     'account_type': 'asset_receivable',
                     'reconcile': True,
+                    'company_id': partner.company_id.id or self.env.company.id,
                 })
-                partner.conto_id = ass_account.id
+
+                # 3. Assign to partner
+                partner.conto_id = new_account.id
+                partner.property_account_receivable_id = new_account.id
+                
+                _logger.info(f"Created dedicated account {new_code} for partner {partner.name}")
                 
         return partners
 
