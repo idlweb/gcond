@@ -1,0 +1,45 @@
+<odoo>
+
+    <!-- Action for Payment Notices -->
+    <record id="action_gcond_payment_notices" model="ir.actions.act_window">
+        <field name="name">Avvisi di Pagamento</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('ref', 'like', 'AVVISO:')]</field>
+        <field name="context">{'search_default_posted': 1, 'default_move_type': 'entry'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Nessun avviso di pagamento trovato.
+            </p>
+            <p>
+                Gli avvisi vengono generati automaticamente quando distribuite le spese di una fattura condominiale.
+            </p>
+        </field>
+    </record>
+
+    <!-- View Customization for Payment Notices List -->
+    <record id="view_gcond_payment_notice_tree" model="ir.ui.view">
+        <field name="name">account.move.payment.notice.list</field>
+        <field name="model">account.move</field>
+        <field name="arch" type="xml">
+            <list string="Avvisi di Pagamento" decoration-info="state == 'draft'" decoration-muted="state == 'cancel'" expand="1">
+                <field name="name" string="Numero"/>
+                <field name="date" string="Data Generazione"/>
+                <field name="ref" string="Riferimento (Condomino)"/>
+                <field name="partner_id" string="Soggetto"/>
+                <field name="amount_total" string="Importo" sum="Totale"/>
+                <field name="payment_state" widget="badge" decoration-success="payment_state == 'paid'" decoration-info="payment_state == 'partial'" decoration-warning="payment_state == 'not_paid'"/>
+                <field name="state" invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Link specific view to the action -->
+    <record id="action_gcond_payment_notices_list_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_gcond_payment_notice_tree"/>
+        <field name="act_window_id" ref="action_gcond_payment_notices"/>
+    </record>
+
+</odoo>

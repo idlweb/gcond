@@ -58,19 +58,23 @@ class AccountMove(models.Model):
                 if charge <= 0:
                     continue
 
-                # Creazione della registrazione contabile di ripartizione
+                # Creazione della registrazione contabile di ripartizione (Avviso di Pagamento)
+                # Harmonization: Usiamo la stessa data di scadenza della fattura originale
+                due_date = self.invoice_date_due or fields.Date.today()
+                
                 account_move = self.env['account.move'].create({                        
                     'journal_id': self.journal_id.id,
                     'date': fields.Date.today(),
-                    'ref' : f"{row.condomino_id.name}-{line.account_id.name}-{document_number}",
+                    'ref' : f"AVVISO: {row.condomino_id.name}-{line.account_id.name}-{document_number}",
                     'move_type': 'entry',
                     'line_ids': [
                         (0, 0, {
-                            'account_id': row.condomino_id.conto_id.id or line.account_id.id, # Fallback su conto riga se condomino non ha conto
+                            'account_id': row.condomino_id.conto_id.id or line.account_id.id,
                             'partner_id': row.condomino_id.id,
                             'name': f"Ripartizione {document_number}",
                             'debit': charge,
                             'credit': 0.0,
+                            'date_maturity': due_date, # Harmonizzazione scadenza
                         }),
                         (0, 0, {
                             'account_id': line.account_id.id,

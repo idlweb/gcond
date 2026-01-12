@@ -21,6 +21,7 @@
         'views/account_condomino_view.xml',
         'views/account_move_form_btn.xml',
         'views/account_sensore.xml',
+        'views/account_payment_notice_view.xml',
         'views/menu.xml',
         'views/templates.xml',
         'views/condominio_banca.xml',

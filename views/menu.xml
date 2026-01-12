@@ -74,6 +74,9 @@
     <menuitem name="Gestione CONDOMINI" id="gcond.menu_2_list" parent="gcond.menu_2" 
             action="gcond.action_all_condomini" sequence="10" groups=""/>
     
+    <menuitem name="Avvisi di Pagamento" id="gcond.menu_payment_notices" parent="gcond.menu_2" 
+            action="action_gcond_payment_notices" sequence="20" groups=""/>
+   
     <menuitem name="Gestione Contabilita" id="gcond.menu_3_list" parent="gcond.menu_3" 
             action="gcond.open_account_journal_dashboard_kanban" sequence="11" groups=""/>
 
