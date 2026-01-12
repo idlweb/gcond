@@ -145,15 +145,25 @@ class AccountPaymentRegister(models.TransientModel):
         return res
     """
     def _create_payments(self):
-          # Recupera il contesto
+        # Recupera il contesto
         context = self.env.context
         # Recupera gli ID dei record selezionati
         active_ids = context.get('active_ids', [])
+        active_model = context.get('active_model')
+
         # Recupera i record di fattura selezionati
-        invoices = self.env['account.move'].browse(active_ids)
+        if active_model == 'account.move.line':
+            lines = self.env['account.move.line'].browse(active_ids)
+            invoices = lines.mapped('move_id')
+        elif active_model == 'account.move':
+            invoices = self.env['account.move'].browse(active_ids)
+        else:
+            invoices = self.env['account.move']
+
         # Esegui operazioni sui record di fattura selezionati
+        res = super(AccountPaymentRegister, self)._create_payments()
+        
         for invoice in invoices:
-            res = super(AccountPaymentRegister, self)._create_payments()
             self._update_payment_state_and_reconcile(invoice.name)
 
         """
