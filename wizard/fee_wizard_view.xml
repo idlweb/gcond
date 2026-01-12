@@ -16,13 +16,7 @@
                     </group>
                     <notebook>
                         <page string="Quote Condomini">
-                            <field name="line_ids">
-                                <tree string="Quote" editable="bottom" create="false" delete="false">
-                                    <field name="partner_id"/>
-                                    <field name="currency_id" column_invisible="True"/>
-                                    <field name="amount" sum="Totale Incassato"/>
-                                </tree>
-                            </field>
+                            <field name="line_ids"/> 
                         </page>
                     </notebook>
                     <footer>
