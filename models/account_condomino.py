@@ -28,22 +28,22 @@ class GcondAccountCondomino(models.Model):
         string='Contabilità', 
         ondelete='set null')
 
-    @api.depends('name', 'parent_id.name', 'condominio_id')
+    @api.depends('name', 'condominio_id')
     def _compute_display_name(self):
-        # We handle our special case first
+        super()._compute_display_name()
         for partner in self:
             if partner.condominio_id:
                 partner.display_name = partner.name
-            else:
-                # Fallback to standard Odoo logic for non-residents
-                # We can't easily call super() inside the loop for specific records,
-                # so we let Odoo handle them.
-                pass
-        
-        # Now handle the rest via super for any record not already set
-        others = self.filtered(lambda p: not p.condominio_id)
-        if others:
-            super(GcondAccountCondomino, others)._compute_display_name()
+
+    def _get_contact_name(self, partner, name):
+        if partner.condominio_id:
+            return partner.name
+        return super()._get_contact_name(partner, name)
+
+    def _get_name(self):
+        if self.condominio_id:
+            return self.name
+        return super()._get_name()
 
     @api.onchange('condominio_id')
     def _onchange_condominio_id(self):
