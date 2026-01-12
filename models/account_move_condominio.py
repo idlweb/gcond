@@ -102,6 +102,14 @@ class AccountMove(models.Model):
             raise UserError('The invoice must be posted before distributing charges.')     
         document_number = self.name
         self.distribute_charges(document_number)
+
+    def action_register_payment(self):
+        # Per gli "Avvisi di Pagamento" (entry), permettiamo la registrazione del pagamento
+        # puntando alle righe di credito (receivable)
+        receivable_lines = self.line_ids.filtered(lambda l: l.account_id.account_type == 'asset_receivable')
+        if not receivable_lines:
+            raise UserError("Nessuna riga di credito trovata per questo avviso.")
+        return receivable_lines.action_register_payment()
         
     def get_debit_entries(self):
         """
