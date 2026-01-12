@@ -157,17 +157,23 @@ class AccountMove(models.Model):
             move.invalidate_recordset(['payment_state', 'amount_residual'])
             move.line_ids.invalidate_recordset(['amount_residual', 'amount_residual_currency', 'reconciled'])
             
-            # 2. Trigger Compute (if possible via read/write or explicit method)
-            # Just reading them after invalidate should trigger compute
-            state = move.payment_state
-            residual = move.amount_residual
-            
-            # 3. Check lines
-            receivables = move.line_ids.filtered(lambda l: l.account_id.account_type == 'asset_receivable')
-            rec_status = [(l.id, l.debit, l.credit, l.amount_residual, l.reconciled) for l in receivables]
-            
-            # Raise info
-            raise UserError(f"DEBUG FIX:\nMove: {move.name}\nState: {state}\nResidual: {residual}\nLines (ID, Dr, Cr, Res, Rec): {rec_status}")
+            # 2. Check conditions
+            if move.amount_residual == 0 and move.payment_state != 'paid':
+                # FORCE UPDATE via SQL
+                # Sometimes Odoo computed fields get stuck. Using SQL bypasses the deadlock.
+                self.env.cr.execute("UPDATE account_move SET payment_state='paid' WHERE id=%s", (move.id,))
+                move.invalidate_recordset(['payment_state'])
+                
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Stato Aggiornato',
+                'message': 'Lo stato è stato forzato a Pagato.',
+                'sticky': False,
+                'type': 'success',
+            }
+        }
 
 class AccountPaymentRegister(models.TransientModel):
     _inherit = 'account.payment.register'
