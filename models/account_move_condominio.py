@@ -174,6 +174,9 @@ class AccountPaymentRegister(models.TransientModel):
             # We compare with the source lines being paid
             source_lines = self.line_ids
             
+            # DEBUG: Raise error to check values
+            raise UserError(f"DEBUG: Source Lines: {len(source_lines)} ({source_lines.ids}) - Payment Move: {payment_move.name} - Payment Lines: {len(payment_lines)}")
+
             for source_line in source_lines:
                 # Find matching payment line (counterpart)
                 # Ideally, accounts should match. If not, we fix the payment line.
