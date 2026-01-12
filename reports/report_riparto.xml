@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Report Action -->
+        <record id="action_report_riparto" model="ir.actions.report">
+            <field name="name">Prospetto di Riparto</field>
+            <field name="model">gcond.bilancio</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">gcond.report_riparto_document</field>
+            <field name="report_file">gcond.report_riparto_document</field>
+            <field name="print_report_name">'Riparto - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_gcond_bilancio"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="base.paperformat_euro_landscape"/>
+        </record>
+
+        <!-- Report Template -->
+        <template id="report_riparto_document">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <!-- Prepare Matrix Data -->
+                            <t t-set="matrix" t-value="o.get_riparto_matrix()"/>
+                            
+                            <h2 class="text-center">Prospetto di Riparto Spese</h2>
+                            <h4 class="text-center text-muted"><span t-field="o.name"/></h4>
+
+                            <div class="row mt-4 mb-4">
+                                <div class="col-6">
+                                    <strong>Condominio:</strong> <span t-field="o.condominio_id.name"/><br/>
+                                    <strong>Periodo:</strong> <span t-field="o.date_start"/> - <span t-field="o.date_end"/>
+                                </div>
+                            </div>
+
+                            <table class="table table-sm table-bordered">
+                                <thead style="background-color: #f2f2f2;">
+                                    <tr>
+                                        <th>Condomino</th>
+                                        <!-- Columns Header from Expense Types -->
+                                        <t t-foreach="matrix['columns']" t-as="col">
+                                            <th class="text-right"><span t-esc="col.name"/></th>
+                                        </t>
+                                        <th class="text-right font-weight-bold">TOTALE</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="matrix['rows']" t-as="row">
+                                        <td>
+                                            <span t-esc="row['partner'].name"/>
+                                        </td>
+                                        <!-- Columns Values -->
+                                        <t t-foreach="matrix['columns']" t-as="col">
+                                            <td class="text-right">
+                                                <t t-set="val" t-value="row['values'].get(col.id, 0.0)"/>
+                                                <span t-if="val != 0" t-esc="val" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                <span t-else="" class="text-muted">-</span>
+                                            </td>
+                                        </t>
+                                        <!-- Row Total -->
+                                        <td class="text-right font-weight-bold">
+                                            <span t-esc="row['total']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="font-weight-bold" style="background-color: #e9ecef;">
+                                        <td>TOTALE GENERALE</td>
+                                        <t t-foreach="matrix['columns']" t-as="col">
+                                            <td class="text-right">
+                                                <span t-esc="matrix['totals_col'].get(col.id, 0.0)" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </t>
+                                        <td class="text-right">
+                                            <span t-esc="matrix['grand_total']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            
+                            <div class="mt-4">
+                                <p class="small text-muted">
+                                    * Importi calcolati in base alle tabelle millesimali vigenti.
+                                </p>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

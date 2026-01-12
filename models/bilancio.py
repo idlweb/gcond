@@ -106,6 +106,65 @@ class GcondBilancio(models.Model):
         self.riparto_ids = riparto_vals
         return True
 
+    def get_riparto_matrix(self):
+        """
+        Returns a dictionary suitable for QWeb report:
+        {
+            'columns': [obj(gcond.expense.type), ...],
+            'rows': [
+                {
+                    'partner': obj(res.partner),
+                    'values': {type_id: amount, ...},
+                    'total': sum(amounts)
+                }, ...
+            ],
+            'totals_col': {type_id: sum(all_rows), ...},
+            'grand_total': sum(all)
+        }
+        """
+        self.ensure_one()
+        
+        # 1. Identify all used Expense Types (Columns)
+        expense_types = self.riparto_ids.mapped('expense_type_id').sorted('name')
+        
+        # 2. Identify all Partners (Rows)
+        partners = self.riparto_ids.mapped('partner_id').sorted('name')
+        
+        rows = []
+        grand_total = 0.0
+        totals_col = {et.id: 0.0 for et in expense_types}
+        
+        for partner in partners:
+            row_vals = {}
+            row_total = 0.0
+            
+            # Get all lines for this partner
+            partner_lines = self.riparto_ids.filtered(lambda r: r.partner_id == partner)
+            
+            for et in expense_types:
+                # Find line for this type
+                line = partner_lines.filtered(lambda l: l.expense_type_id == et)
+                amount = sum(line.mapped('amount')) # Should be one, but sum is safe
+                row_vals[et.id] = amount
+                
+                # Update totals
+                row_total += amount
+                totals_col[et.id] += amount
+            
+            rows.append({
+                'partner': partner,
+                'values': row_vals,
+                'total': row_total
+            })
+            grand_total += row_total
+            
+        return {
+            'columns': expense_types,
+            'rows': rows,
+            'totals_col': totals_col,
+            'grand_total': grand_total
+        }
+
     def action_approve(self):
         self.write({'state': 'approved'})
 
