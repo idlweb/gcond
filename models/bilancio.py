@@ -165,6 +165,13 @@ class GcondBilancio(models.Model):
             'grand_total': grand_total
         }
 
+    
+    def action_print_bilancio(self):
+        return self.env.ref('gcond.action_report_bilancio').report_action(self)
+
+    def action_print_riparto(self):
+        return self.env.ref('gcond.action_report_riparto').report_action(self)
+
     def action_approve(self):
         self.write({'state': 'approved'})
 

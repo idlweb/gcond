@@ -23,6 +23,8 @@
             <form string="Bilancio">
                 <header>
                     <button name="action_compute_lines" string="Calcola Spese" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_print_bilancio" string="Stampa Consuntivo" type="object" class="btn-secondary" icon="fa-print"/>
+                    <button name="action_print_riparto" string="Stampa Riparto" type="object" class="btn-secondary" icon="fa-table"/>
                     <button name="action_approve" string="Approva" type="object" class="btn-danger" invisible="state != 'draft'" confirm="Sei sicuro? Il bilancio sarà bloccato."/>
                     <button name="action_reset_draft" string="Riporta in Bozza" type="object" invisible="state == 'draft'"/>
                     <field name="state" widget="statusbar"/>
