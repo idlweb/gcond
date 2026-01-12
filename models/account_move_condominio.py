@@ -160,10 +160,26 @@ class AccountPaymentRegister(models.TransientModel):
         return res
     """
     def action_create_payments(self):
-        # 1. Create payments using standard Odoo logic
-        payments = super(AccountPaymentRegister, self).action_create_payments()
+        # 1. Call super to create payments and get the action
+        action_vals = super(AccountPaymentRegister, self).action_create_payments()
+        
+        # 2. Extract created payment IDs from the action result
+        payment_ids = []
+        if isinstance(action_vals, dict):
+            if action_vals.get('res_id'):
+                payment_ids = [action_vals['res_id']]
+            elif action_vals.get('domain'):
+                for leaf in action_vals['domain']:
+                    if isinstance(leaf, (list, tuple)) and len(leaf) == 3 and leaf[0] == 'id' and leaf[1] == 'in':
+                        payment_ids = leaf[2]
+                        break
+        
+        if not payment_ids:
+            return action_vals
 
-        # 2. Force reconciliation if it didn't happen (e.g. account mismatch)
+        payments = self.env['account.payment'].browse(payment_ids)
+
+        # 3. Force reconciliation logic on the identified payments
         # self.line_ids contains the lines we selected to pay
         for payment in payments:
             # The payment creates a move (payment.move_id)
@@ -198,7 +214,7 @@ class AccountPaymentRegister(models.TransientModel):
                     if not payment_line.reconciled and not source_line.reconciled:
                         (payment_line + source_line).reconcile()
 
-        return payments
+        return action_vals
 
 
 class AccountMoveLine(models.Model):
