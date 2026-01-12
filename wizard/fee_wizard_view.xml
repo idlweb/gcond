@@ -38,7 +38,7 @@
                         </page>
                     </notebook>
                     <footer>
-                        <button name="action_confirm_payments" string="Conferma e Crea Pagamenti" type="object" class="btn-primary"/>
+                        <button name="action_confirm_payments" string="Conferma Riscossioni" type="object" class="btn-primary"/>
                         <button string="Annulla" class="btn-secondary" special="cancel"/>
                     </footer>
                 </sheet>
