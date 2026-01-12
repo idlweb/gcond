@@ -85,10 +85,11 @@ class AccountMove(models.Model):
                         })
                     ],
                 })
-                charges.append(account_move)                                
-        return charges
+                charges.append(account_move)
+                # Auto-post entry for immediate payment availability
+                account_move.action_post()
 
-    
+        return charges
 
     # Non c'è bisogno di ricavere l'id del condominio dal nome del giornale perchè è già presente nel modello account.journal
     def get_condominio_id(self, journal_name):
@@ -104,11 +105,19 @@ class AccountMove(models.Model):
         self.distribute_charges(document_number)
 
     def action_register_payment(self):
-        # Per gli "Avvisi di Pagamento" (entry), permettiamo la registrazione del pagamento
-        # puntando alle righe di credito (receivable)
+        # Ensure the move is posted before attempting payment
+        if self.state == 'draft':
+            self.action_post()
+            
+        # Target the receivable line (Credit side from resident perspective, Debit side in accounting logic for asset)
         receivable_lines = self.line_ids.filtered(lambda l: l.account_id.account_type == 'asset_receivable')
         if not receivable_lines:
-            raise UserError("Nessuna riga di credito trovata per questo avviso.")
+            # Fallback: try to find the line associated with the partner if account type is ambiguous
+            receivable_lines = self.line_ids.filtered(lambda l: l.partner_id and l.debit > 0)
+            
+        if not receivable_lines:
+             raise UserError("Nessuna riga di credito (ricevibile) trovata per questo avviso. Verifica che il conto del condomino sia di tipo 'receivable'.")
+             
         return receivable_lines.action_register_payment()
         
     def get_debit_entries(self):
