@@ -83,7 +83,7 @@ class GcondAccountCondomino(models.Model):
                 # 1. Find the highest existing code
                 last_acc = self.env['account.account'].search([
                     ('code', 'like', '121%'),
-                    ('company_id', '=', partner.company_id.id or self.env.company.id)
+                    # Removed implicit company_id check that was crashing
                 ], order='code desc', limit=1)
                 
                 new_code = '121001' # Fallback default
@@ -106,7 +106,7 @@ class GcondAccountCondomino(models.Model):
                     'code': new_code,
                     'account_type': 'asset_receivable',
                     'reconcile': True,
-                    'company_id': partner.company_id.id or self.env.company.id,
+                    # Removed company_id explicit assignment
                 })
 
                 # 3. Assign to partner
