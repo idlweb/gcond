@@ -29,8 +29,8 @@
                 <field name="partner_id" string="Soggetto"/>
                 <field name="amount_total" string="Importo" sum="Totale"/>
                 <field name="payment_state" widget="badge" decoration-success="payment_state == 'paid'" decoration-info="payment_state == 'partial'" decoration-warning="payment_state == 'not_paid'"/>
-                <button name="action_register_payment" type="object" string="Paga" class="btn btn-primary btn-sm" invisible="payment_state == 'paid'"/>
-                <button name="action_print_payment_receipt" type="object" string="Stampa Ricevuta" icon="fa-print" class="btn btn-secondary btn-sm" invisible="payment_state != 'paid'"/>
+                <button name="action_register_payment" type="object" string="Paga" class="btn btn-primary btn-sm" invisible="payment_state in ('paid', 'in_payment')"/>
+                <button name="action_print_payment_receipt" type="object" string="Stampa Ricevuta" icon="fa-print" class="btn btn-secondary btn-sm" invisible="payment_state not in ('paid', 'in_payment')"/>
                 <field name="state" invisible="1"/>
             </list>
         </field>

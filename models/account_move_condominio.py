@@ -168,7 +168,8 @@ class AccountPaymentRegister(models.TransientModel):
         for payment in payments:
             # The payment creates a move (payment.move_id)
             # We need to find the credit line in the payment move that corresponds to the partner
-            payment_lines = payment.move_id.line_ids.filtered(lambda l: l.account_id.account_type in ('asset_receivable', 'liability_payable'))
+            payment_move = payment.move_id
+            payment_lines = payment_move.line_ids.filtered(lambda l: l.account_id.account_type in ('asset_receivable', 'liability_payable'))
             
             # We compare with the source lines being paid
             source_lines = self.line_ids
@@ -179,9 +180,19 @@ class AccountPaymentRegister(models.TransientModel):
                 payment_line = payment_lines.filtered(lambda l: l.partner_id == source_line.partner_id)
                 
                 if payment_line:
-                    # Fix Account Mismatch: If payment used generic account but source was specific
+                    # Fix Account Mismatch Refined:
+                    # If payment used generic account but source was specific, we CANNOT change a posted move.
+                    # We must unpost, change, repost.
                     if payment_line.account_id != source_line.account_id:
+                         # Set to Draft to allow edit
+                         payment_move.button_draft()
+                         # Edit
                          payment_line.account_id = source_line.account_id
+                         # Re-Post
+                         payment_move.action_post()
+                         
+                         # Refresh payment_line after post
+                         payment_line = payment_move.line_ids.filtered(lambda l: l.id == payment_line.id)
                     
                     # Force Reconciliation
                     (payment_line + source_line).reconcile()
