@@ -135,6 +135,21 @@ class AccountMove(models.Model):
         debit_entries = self.line_ids.filtered(lambda line: line.debit > 0)
         return debit_entries
 
+    def action_print_payment_receipt(self):
+        """ Opens the linked payment receipt directly from the notice """
+        self.ensure_one()
+        # Get reconciled payments
+        # In Odoo 16+, we use _get_reconciled_payments() or inspect the JSON
+        reconciled_payments = self._get_reconciled_payments()
+        if not reconciled_payments:
+             raise UserError("Nessun pagamento trovato per questo avviso. Registra prima il pagamento.")
+        
+        # Take the most recent payment
+        last_payment = reconciled_payments[-1]
+        
+        # Return the standard print action for the payment
+        return self.env.ref('account.action_report_payment_receipt').report_action(last_payment)
+
 class AccountPaymentRegister(models.TransientModel):
     _inherit = 'account.payment.register'
 
