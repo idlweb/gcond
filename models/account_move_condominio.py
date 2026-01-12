@@ -164,16 +164,7 @@ class AccountMove(models.Model):
                 self.env.cr.execute("UPDATE account_move SET payment_state='paid' WHERE id=%s", (move.id,))
                 move.invalidate_recordset(['payment_state'])
                 
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'display_notification',
-            'params': {
-                'title': 'Stato Aggiornato',
-                'message': 'Lo stato è stato forzato a Pagato.',
-                'sticky': False,
-                'type': 'success',
-            }
-        }
+        return {'type': 'ir.actions.client', 'tag': 'reload'}
 
 class AccountPaymentRegister(models.TransientModel):
     _inherit = 'account.payment.register'
@@ -245,7 +236,12 @@ class AccountPaymentRegister(models.TransientModel):
         # on the invoice because of the complex draft/post cycle. We force it here.
         all_source_moves = self.line_ids.move_id
         if all_source_moves:
-            all_source_moves.invalidate_recordset(['payment_state', 'amount_residual'])
+             all_source_moves.invalidate_recordset(['payment_state', 'amount_residual'])
+             # Apply SQL Fix Logic Automatically
+             for move in all_source_moves:
+                  if move.amount_residual == 0 and move.payment_state != 'paid':
+                      self.env.cr.execute("UPDATE account_move SET payment_state='paid' WHERE id=%s", (move.id,))
+                      move.invalidate_recordset(['payment_state'])
 
         return action_vals
 
