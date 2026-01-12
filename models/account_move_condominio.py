@@ -159,9 +159,9 @@ class AccountPaymentRegister(models.TransientModel):
         self._update_payment_state_and_reconcile()
         return res
     """
-    def _create_payments(self):
+    def action_create_payments(self):
         # 1. Create payments using standard Odoo logic
-        payments = super(AccountPaymentRegister, self)._create_payments()
+        payments = super(AccountPaymentRegister, self).action_create_payments()
 
         # 2. Force reconciliation if it didn't happen (e.g. account mismatch)
         # self.line_ids contains the lines we selected to pay
@@ -174,9 +174,6 @@ class AccountPaymentRegister(models.TransientModel):
             # We compare with the source lines being paid
             source_lines = self.line_ids
             
-            # DEBUG: Raise error to check values
-            raise UserError(f"DEBUG: Source Lines: {len(source_lines)} ({source_lines.ids}) - Payment Move: {payment_move.name} - Payment Lines: {len(payment_lines)}")
-
             for source_line in source_lines:
                 # Find matching payment line (counterpart)
                 # Ideally, accounts should match. If not, we fix the payment line.
