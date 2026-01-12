@@ -13,6 +13,7 @@ from . import ir_action_act_window
 from . import ir_ui_view
 from . import modello
 from . import condominio_banca
+from . import bilancio
 
 
 
