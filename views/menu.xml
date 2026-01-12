@@ -9,6 +9,9 @@
         <field name="name">Residenti (Condomini)</field>
         <field name="res_model">res.partner</field>
         <field name="view_mode">list,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_gcond_resident_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('base.view_partner_form')})]"/>
         <field name="context">{'search_default_residents': 1}</field>
     </record>
     

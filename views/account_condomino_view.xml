@@ -12,6 +12,21 @@
         </field>
     </record>
 
+    <!-- Dedicated tree view for residents to ensure clean name display -->
+    <record id="view_gcond_resident_tree" model="ir.ui.view">
+        <field name="name">res.partner.resident.tree</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <list string="Residenti">
+                <field name="name" string="Nome"/>
+                <field name="condominio_id" string="Condominio" widget="badge" decoration-info="1"/>
+                <field name="phone" class="o_force_ltr" optional="show"/>
+                <field name="email" optional="show"/>
+                <field name="is_condominio" invisible="1"/>
+            </list>
+        </field>
+    </record>
+
     <record id="view_condomino_filter" model="ir.ui.view">
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_res_partner_filter" />
