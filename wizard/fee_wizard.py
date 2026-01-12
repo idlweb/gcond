@@ -10,7 +10,7 @@ class GcondFeeWizardLine(models.TransientModel):
     _description = 'Riga Quota Condominiale'
 
     wizard_id = fields.Many2one('gcond.fee.wizard', string='Wizard Reference', required=True, ondelete='cascade')
-    partner_id = fields.Many2one('res.partner', string='Condomino', readonly=True, required=True)
+    partner_id = fields.Many2one('res.partner', string='Condomino', required=True)
     amount = fields.Monetary(string='Importo Versato', currency_field='currency_id')
     currency_id = fields.Many2one('res.currency', related='wizard_id.journal_id.currency_id')
 
