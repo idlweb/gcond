@@ -1,0 +1,49 @@
+<odoo>
+    <record id="view_gcond_fee_wizard_form" model="ir.ui.view">
+        <field name="name">gcond.fee.wizard.form</field>
+        <field name="model">gcond.fee.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Registrazione Massiva Quote">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="condominio_id"/>
+                            <field name="payment_date"/>
+                        </group>
+                        <group>
+                            <field name="journal_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Quote Condomini">
+                            <field name="line_ids">
+                                <tree string="Quote" editable="bottom" create="false" delete="false">
+                                    <field name="partner_id"/>
+                                    <field name="currency_id" column_invisible="True"/>
+                                    <field name="amount" sum="Totale Incassato"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    <footer>
+                        <button name="action_confirm_payments" string="Conferma e Crea Pagamenti" type="object" class="btn-primary"/>
+                        <button string="Annulla" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_gcond_fee_wizard" model="ir.actions.act_window">
+        <field name="name">Registra Quote Condominiali</field>
+        <field name="res_model">gcond.fee.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_gcond_fee_wizard"
+              name="Registra Quote"
+              parent="menu_gcond_management"
+              action="action_gcond_fee_wizard"
+              sequence="30"/>
+</odoo>

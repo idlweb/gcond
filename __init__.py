@@ -4,6 +4,7 @@
 
 from . import models
 from . import controllers_
+from . import wizard
 
 #from . import views
 #from . import security

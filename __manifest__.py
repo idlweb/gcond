@@ -26,6 +26,7 @@
         'views/templates.xml',
         'views/condominio_banca.xml',
         'reports/report_payment_receipt.xml',
+        'wizard/fee_wizard_view.xml',
         'data/sequence_data.xml',
     ],
     'assets': {
