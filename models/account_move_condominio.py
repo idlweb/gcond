@@ -233,6 +233,10 @@ class AccountMove(models.Model):
                     'groups_by_subtotal': {},
                     'subtotals': [],
                     'allow_tax_edition': False,
+                    # Keys required by account.document_tax_totals
+                    'same_tax_base': False,
+                    'total_amount_currency': fmt_total,
+                    'cash_rounding_base_amount_currency': False, 
                 }
 
 class AccountPaymentRegister(models.TransientModel):
