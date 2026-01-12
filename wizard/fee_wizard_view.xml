@@ -3,11 +3,11 @@
         <field name="name">gcond.fee.wizard.line.tree</field>
         <field name="model">gcond.fee.wizard.line</field>
         <field name="arch" type="xml">
-            <tree string="Quote" editable="bottom" create="false" delete="false">
+            <list string="Quote" editable="bottom" create="false" delete="false">
                 <field name="partner_id"/>
                 <field name="currency_id" column_invisible="True"/>
                 <field name="amount" sum="Totale Incassato"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -29,11 +29,11 @@
                     <notebook>
                         <page string="Quote Condomini">
                             <field name="line_ids">
-                                <tree string="Quote" editable="bottom" create="false" delete="false">
+                                <list string="Quote" editable="bottom" create="false" delete="false">
                                     <field name="partner_id"/>
                                     <field name="currency_id" column_invisible="True"/>
                                     <field name="amount" sum="Totale Incassato"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                     </notebook>
