@@ -69,7 +69,7 @@ class AccountMove(models.Model):
                     'move_type': 'entry',
                     'line_ids': [
                         (0, 0, {
-                            'account_id': row.condomino_id.conto_id.id or line.account_id.id,
+                            'account_id': row.condomino_id.conto_id.id or row.condomino_id.property_account_receivable_id.id or line.account_id.id,
                             'partner_id': row.condomino_id.id,
                             'name': f"Ripartizione {document_number}",
                             'debit': charge,

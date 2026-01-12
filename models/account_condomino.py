@@ -110,17 +110,25 @@ class GcondAccountCondomino(models.Model):
 
     def action_view_account_situation(self):
         self.ensure_one()
-        if not self.conto_id:
-            raise UserError("Nessun conto contabile associato a questo condomino.")
+        # Non controlliamo più self.conto_id per non bloccare la visualizzazione
+        # se il condomino ha movimenti su altri conti (es. generico clienti/fornitori)
         
+        domain = [('partner_id', '=', self.id)]
+        if self.conto_id:
+            # Se c'è un conto specifico, lo aggiungiamo come "preferenza" di ricerca ma non esclusiva assoluta
+            # Opzionale: potremmo voler vedere SOLO quel conto, o TUTTO del partner.
+            # Per sicurezza mostriamo TUTTO ciò che riguarda il partner.
+            pass
+
         return {
             'type': 'ir.actions.act_window',
             'name': f'Situazione Contabile: {self.name}',
             'res_model': 'account.move.line',
             'view_mode': 'list,form',
-            'domain': [('account_id', '=', self.conto_id.id)],
-            'context': dict(self.env.context, search_default_account_id=self.conto_id.id),
+            'domain': domain,
+            'context': dict(self.env.context, search_default_partner_id=self.id),
         }
+
 
     def action_open_full_view(self):
         self.ensure_one()
