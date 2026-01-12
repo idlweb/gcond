@@ -70,7 +70,7 @@ class AccountMove(models.Model):
                 credit_account_id = line.account_id.id # Default fallback
                 suspense_account = self.env['account.account'].search([
                     ('code', '=', '182003'),
-                    ('company_id', '=', self.company_id.id or self.env.company.id)
+                    # Removed implicit company_id check that was crashing
                 ], limit=1)
                 
                 if suspense_account:
