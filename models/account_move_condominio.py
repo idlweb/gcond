@@ -127,6 +127,75 @@ class AccountMove(models.Model):
         # Mark as distributed
         self.is_distributed = True
 
+    def action_smart_pay(self):
+        """
+        Attempts to pay this Notice using existing credits (advances) from the resident.
+        """
+        self.ensure_one()
+        if self.move_type != 'entry':
+            raise UserError("Questa azione è disponibile solo per gli Avvisi di Pagamento (Registrazioni Varie).")
+
+        # 1. Identify Resident and Account
+        # We look for the debit line which represents the debt of the resident
+        debit_line = self.line_ids.filtered(lambda l: l.debit > 0 and l.account_id.account_type == 'asset_receivable')
+        if not debit_line:
+            raise UserError("Non riesco a trovare la riga di debito del residente in questo avviso.")
+        
+        debit_line = debit_line[0] # Take the first one if multiple (unlikely for notice)
+        partner = debit_line.partner_id
+        account_id = debit_line.account_id.id
+        
+        # 2. Search for Available Credits (Open Credit Lines on the same account)
+        # We look for lines on the same account, same partner, having credit > 0, and not fully reconciled.
+        credit_lines = self.env['account.move.line'].search([
+            ('partner_id', '=', partner.id),
+            ('account_id', '=', account_id),
+            ('credit', '>', 0),
+            ('reconciled', '=', False),
+            ('move_id.state', '=', 'posted'),
+            ('company_id', '=', self.company_id.id),
+        ])
+        
+        if not credit_lines:
+             # No credits? Fallback to manual payment
+            return self.action_print_payment_receipt()
+
+        # 3. Auto-Reconcile
+        # We try to reconcile the notice's debit line with the found credit lines.
+        # This will use as much credit as possible.
+        
+        lines_to_reconcile = credit_lines | debit_line
+        lines_to_reconcile.reconcile()
+        
+        # 4. Check Result
+        if debit_line.reconciled:
+             # Fully Paid!
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Pagamento Completato',
+                    'message': f"L'avviso è stato saldato utilizzando i crediti esistenti di {partner.name}.",
+                    'type': 'success',
+                    'sticky': False,
+                    'next': {'type': 'ir.actions.client', 'tag': 'reload'},
+                }
+            }
+        else:
+             # Partially Paid or logic failed
+             remaining = debit_line.amount_residual
+             return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Pagamento Parziale',
+                    'message': f"Utilizzati crediti disponibili. Rimangono da saldare {format_amount(self.env, remaining, self.currency_id)}.",
+                    'type': 'warning',
+                    'sticky': True,
+                    'next': {'type': 'ir.actions.client', 'tag': 'reload'},
+                }
+            }
+
     def action_register_payment(self):
         # Ensure the move is posted before attempting payment
         if self.state == 'draft':
