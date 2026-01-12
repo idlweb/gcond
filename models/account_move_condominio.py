@@ -235,7 +235,7 @@ class AccountMove(models.Model):
                     'allow_tax_edition': False,
                     # Keys required by account.document_tax_totals
                     'same_tax_base': False,
-                    'total_amount_currency': fmt_total,
+                    'total_amount_currency': move.amount_total, # Must be a number, not a string
                     'cash_rounding_base_amount_currency': False, 
                 }
 
