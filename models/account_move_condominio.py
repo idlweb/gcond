@@ -99,11 +99,20 @@ class AccountMove(models.Model):
             raise ValueError('Journal not found.')
         return journal.condominio_id.id
 
+    is_distributed = fields.Boolean(string="Già Ripartita", default=False, copy=False)
+
     def button_distribute_charges(self):
         if self.state != 'posted':
-            raise UserError('The invoice must be posted before distributing charges.')     
+            raise UserError('The invoice must be posted before distributing charges.')
+        
+        if self.is_distributed:
+            raise UserError("Questa fattura è già stata ripartita! Controlla gli Avvisi di Pagamento esistenti.")
+
         document_number = self.name
         self.distribute_charges(document_number)
+        
+        # Mark as distributed
+        self.is_distributed = True
 
     def action_register_payment(self):
         # Ensure the move is posted before attempting payment
