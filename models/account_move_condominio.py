@@ -150,6 +150,25 @@ class AccountMove(models.Model):
         # Return the standard print action for the payment
         return self.env.ref('account.action_report_payment_receipt').report_action(last_payment)
 
+    def action_fix_payment_state(self):
+        """ Forces recompute of payment state and prints debug info """
+        for move in self:
+            # 1. Force Invalidate
+            move.invalidate_recordset(['payment_state', 'amount_residual', 'amount_residual_currency'])
+            move.line_ids.invalidate_recordset(['amount_residual', 'amount_residual_currency', 'reconciled'])
+            
+            # 2. Trigger Compute (if possible via read/write or explicit method)
+            # Just reading them after invalidate should trigger compute
+            state = move.payment_state
+            residual = move.amount_residual
+            
+            # 3. Check lines
+            receivables = move.line_ids.filtered(lambda l: l.account_id.account_type == 'asset_receivable')
+            rec_status = [(l.id, l.debit, l.credit, l.amount_residual, l.reconciled) for l in receivables]
+            
+            # Raise info
+            raise UserError(f"DEBUG FIX:\nMove: {move.name}\nState: {state}\nResidual: {residual}\nLines (ID, Dr, Cr, Res, Rec): {rec_status}")
+
 class AccountPaymentRegister(models.TransientModel):
     _inherit = 'account.payment.register'
 
