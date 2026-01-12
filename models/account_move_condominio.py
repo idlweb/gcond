@@ -215,6 +215,13 @@ class AccountPaymentRegister(models.TransientModel):
                     if not payment_line.reconciled and not source_line.reconciled:
                         (payment_line + source_line).reconcile()
 
+        # 4. Force Update of Payment State on Source Moves
+        # The forced reconciliation might not trigger the immediate recompute of payment_state 
+        # on the invoice because of the complex draft/post cycle. We force it here.
+        all_source_moves = self.line_ids.move_id
+        if all_source_moves:
+             all_source_moves.invalidate_recordset(['payment_state', 'amount_residual', 'amount_residual_currency'])
+
         return action_vals
 
 
