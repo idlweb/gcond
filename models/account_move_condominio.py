@@ -161,6 +161,7 @@ class AccountPaymentRegister(models.TransientModel):
     """
     def action_create_payments(self):
         # 1. Call super to create payments and get the action
+        # Ensure latest code version is running
         action_vals = super(AccountPaymentRegister, self).action_create_payments()
         
         # 2. Extract created payment IDs from the action result
