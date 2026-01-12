@@ -170,8 +170,16 @@ class AccountMove(models.Model):
         # Sort by date desc
         last_payment = payments.sorted(key=lambda p: p.date, reverse=True)[0]
         
-        # Return the standard print action for the payment
-        return self.env.ref('account.action_report_payment_receipt').report_action(last_payment)
+        # WORKAROUND: The PDF report crashes because it treats our Entry-based Notice as a full Invoice.
+        # Instead of printing, we open the Payment Form so the user can see it and try printing from there.
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Pagamento Registrato',
+            'res_model': 'account.payment',
+            'res_id': last_payment.id,
+            'view_mode': 'form',
+            'target': 'current',
+        }
 
     def action_fix_payment_state(self):
         """ Forces recompute of payment state and prints debug info """
