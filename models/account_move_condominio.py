@@ -323,4 +323,26 @@ class AccountMoveLine(models.Model):
                 
                 if table:
                     line.distribution_table_id = table.id
-```
+
+    def _compute_tax_totals(self):
+        """ 
+        OVERRIDE DEFENSIVE: Prevent crash 'bool object has no attribute get'
+        Standard Odoo reports often expect tax_totals to be a dict, but for 'entry' moves it can be False.
+        """
+        super()._compute_tax_totals()
+        for move in self:
+            if move.tax_totals is False and move.move_type == 'entry':
+                # Provide a dummy structure to satisfy the report template
+                lang_env = move.with_context(lang=move.partner_id.lang).env
+                curr = move.currency_id
+                fmt_total = format_amount(lang_env, move.amount_total, curr)
+                
+                move.tax_totals = {
+                    'amount_total': move.amount_total,
+                    'amount_untaxed': move.amount_total,
+                    'formatted_amount_total': fmt_total,
+                    'formatted_amount_untaxed': fmt_total,
+                    'groups_by_subtotal': {},
+                    'subtotals': [],
+                    'allow_tax_edition': False,
+                }
