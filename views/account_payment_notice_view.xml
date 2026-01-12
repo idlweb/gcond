@@ -30,7 +30,7 @@
                 <field name="amount_total" string="Importo" sum="Totale"/>
                 <field name="payment_state" widget="badge" decoration-success="payment_state == 'paid'" decoration-info="payment_state == 'partial'" decoration-warning="payment_state == 'not_paid'"/>
                 <button name="action_register_payment" type="object" string="Paga" class="btn btn-primary btn-sm" invisible="payment_state in ('paid', 'in_payment')"/>
-                <button name="action_print_payment_receipt" type="object" string="Vedi Pagamento" icon="fa-arrow-right" class="btn btn-secondary btn-sm" invisible="payment_state not in ('paid', 'in_payment')"/>
+                <button name="action_print_payment_receipt" type="object" string="Stampa Quietanza" icon="fa-print" class="btn btn-secondary btn-sm" invisible="payment_state not in ('paid', 'in_payment')"/>
                 <button name="action_fix_payment_state" type="object" string="FIX STATO" class="btn btn-warning btn-sm ps-1"/>
                 <field name="state" invisible="1"/>
             </list>

@@ -170,16 +170,30 @@ class AccountMove(models.Model):
         # Sort by date desc
         last_payment = payments.sorted(key=lambda p: p.date, reverse=True)[0]
         
-        # WORKAROUND: The PDF report crashes because it treats our Entry-based Notice as a full Invoice.
-        # Instead of printing, we open the Payment Form so the user can see it and try printing from there.
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Pagamento Registrato',
-            'res_model': 'account.payment',
-            'res_id': last_payment.id,
-            'view_mode': 'form',
-            'target': 'current',
-        }
+        # Custom Report for Notice Receipt
+        return self.env.ref('gcond.action_report_payment_notice_receipt').report_action(self)
+
+    def get_related_payments(self):
+        """ Returns the payments related to this move (Notice) """
+        self.ensure_one()
+        payments = self.env['account.payment']
+        
+        # 1. Standard Odoo way (if reconciled)
+        # Note: _get_reconciled_payments is a private method in some versions or might return partials.
+        if hasattr(self, '_get_reconciled_payments'):
+             payments |= self._get_reconciled_payments()
+        
+        # 2. Manual traversal (Robust way for our case)
+        for line in self.line_ids.filtered(lambda l: l.account_id.account_type in ('asset_receivable', 'liability_payable')):
+             partials = line.matched_debit_ids | line.matched_credit_ids
+             for partial in partials:
+                  counterpart = partial.debit_move_id if partial.credit_move_id == line else partial.credit_move_id
+                  if counterpart.payment_id:
+                       payments |= counterpart.payment_id
+                  elif counterpart.move_id.payment_id:
+                       payments |= counterpart.move_id.payment_id
+        
+        return payments
 
     def action_fix_payment_state(self):
         """ Forces recompute of payment state and prints debug info """

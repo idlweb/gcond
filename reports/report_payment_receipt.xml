@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_payment_notice_receipt" model="ir.actions.report">
+        <field name="name">Quietanza di Pagamento</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">gcond.report_payment_notice_receipt_document</field>
+        <field name="report_file">gcond.report_payment_notice_receipt_document</field>
+        <field name="print_report_name">'Quietanza - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_payment_notice_receipt_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-6">
+                                <strong>Emittente:</strong><br/>
+                                <span t-field="doc.company_id.name"/><br/>
+                                <span t-field="doc.company_id.street"/><br/>
+                                <span t-field="doc.company_id.city"/> <span t-field="doc.company_id.zip"/>
+                            </div>
+                            <div class="col-6 text-end">
+                                <strong>Spett.le:</strong><br/>
+                                <span t-field="doc.partner_id.name"/><br/>
+                                <span t-field="doc.partner_id.street"/><br/>
+                                <span t-field="doc.partner_id.city"/> <span t-field="doc.partner_id.zip"/>
+                            </div>
+                        </div>
+
+                        <h2 class="mt-4 mb-4 text-center">QUIETANZA DI PAGAMENTO</h2>
+
+                        <p>
+                            Si certifica che in riferimento all'Avviso di Pagamento n. <strong><span t-field="doc.name"/></strong> 
+                            del <span t-field="doc.date"/>, sono stati registrati i seguenti pagamenti:
+                        </p>
+
+                        <t t-set="payments" t-value="doc.get_related_payments()"/>
+                        
+                        <table class="table table-sm mt-3 mb-3" t-if="payments">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Metodo</th>
+                                    <th class="text-end">Importo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="payments" t-as="p">
+                                    <td><span t-field="p.date"/></td>
+                                    <td><span t-field="p.journal_id.name"/></td>
+                                    <td class="text-end"><span t-field="p.amount" t-options='{"widget": "monetary", "display_currency": p.currency_id}'/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <div t-if="not payments" class="alert alert-warning">
+                            Nessun pagamento registrato collegato trovato in questo momento.
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-6 offset-6">
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td><strong>Totale Avviso:</strong></td>
+                                        <td class="text-end"><span t-field="doc.amount_total" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Residuo da Pagare:</strong></td>
+                                        <td class="text-end"><span t-field="doc.amount_residual" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="mt-5">
+                            <p class="text-center">
+                                <em>Documento generato elettronicamente in data <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/></em>
+                            </p>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
