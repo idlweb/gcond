@@ -160,67 +160,33 @@ class AccountPaymentRegister(models.TransientModel):
         return res
     """
     def _create_payments(self):
-        # Recupera il contesto
-        context = self.env.context
-        # Recupera gli ID dei record selezionati
-        active_ids = context.get('active_ids', [])
-        active_model = context.get('active_model')
+        # 1. Create payments using standard Odoo logic
+        payments = super(AccountPaymentRegister, self)._create_payments()
 
-        # Recupera i record di fattura selezionati
-        if active_model == 'account.move.line':
-            lines = self.env['account.move.line'].browse(active_ids)
-            invoices = lines.mapped('move_id')
-        elif active_model == 'account.move':
-            invoices = self.env['account.move'].browse(active_ids)
-        else:
-            invoices = self.env['account.move']
+        # 2. Force reconciliation if it didn't happen (e.g. account mismatch)
+        # self.line_ids contains the lines we selected to pay
+        for payment in payments:
+            # The payment creates a move (payment.move_id)
+            # We need to find the credit line in the payment move that corresponds to the partner
+            payment_lines = payment.move_id.line_ids.filtered(lambda l: l.account_id.account_type in ('asset_receivable', 'liability_payable'))
+            
+            # We compare with the source lines being paid
+            source_lines = self.line_ids
+            
+            for source_line in source_lines:
+                # Find matching payment line (counterpart)
+                # Ideally, accounts should match. If not, we fix the payment line.
+                payment_line = payment_lines.filtered(lambda l: l.partner_id == source_line.partner_id)
+                
+                if payment_line:
+                    # Fix Account Mismatch: If payment used generic account but source was specific
+                    if payment_line.account_id != source_line.account_id:
+                         payment_line.account_id = source_line.account_id
+                    
+                    # Force Reconciliation
+                    (payment_line + source_line).reconcile()
 
-        # Esegui operazioni sui record di fattura selezionati
-        res = super(AccountPaymentRegister, self)._create_payments()
-        
-        for invoice in invoices:
-            self._update_payment_state_and_reconcile(invoice.name)
-
-        """
-        Creates payments based on the provided values and updates the payment state.
-
-        This method overrides the `_create_payments` method from the `AccountPaymentRegister` class.
-        It first calls the superclass method to create the payments and then updates the payment state
-        and reconciles using the provided communication reference.
-
-        Accessible fields from the instance (`self`):
-        - self.payment_date: The date of the payment.
-        - self.amount: The amount of the payment.
-        - self.payment_type: The type of the payment.
-        - self.partner_type: The type of the partner.
-        - self.communication: The communication reference for the payment.
-        - self.journal_id: The journal associated with the payment.
-        - self.currency_id: The currency used for the payment.
-        - self.partner_id: The partner associated with the payment.
-        - self.partner_bank_id: The bank account of the partner.
-        - self.payment_method_line_id: The payment method line used for the payment.
-        - self.line_ids: The lines associated with the payment, where the first line's account ID is used as the destination account ID.
-
-        Returns:
-            The result of the superclass `_create_payments` method.
-      
-        """
-       
-        return res
-
-    def _update_payment_state_and_reconcile(self, key_update_move):
-        # Find the account.move line using the name field
-        move_lines = self.env['account.move'].search([('name', '=', key_update_move)])
-        for move_line in move_lines:
-            # Update the payment state to 'paid'
-            move_line.payment_state = 'paid'
-            # Reconcile the entries
-            # self._reconcile_entries(move_line)
-
-    def _reconcile_entries(self, move):
-        lines_to_reconcile = move.line_ids.filtered(lambda l: l.account_id.reconcile)
-        if lines_to_reconcile:
-            lines_to_reconcile.reconcile()
+        return payments
 
 
 class AccountMoveLine(models.Model):
