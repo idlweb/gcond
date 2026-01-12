@@ -27,6 +27,7 @@
         'views/condominio_banca.xml',
         'views/bilancio_view.xml',
         'reports/report_payment_receipt.xml',
+        'reports/report_bilancio.xml',
         'wizard/fee_wizard_view.xml',
         'data/sequence_data.xml',
     ],

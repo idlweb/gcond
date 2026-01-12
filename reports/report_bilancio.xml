@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Report Action -->
+        <record id="action_report_bilancio" model="ir.actions.report">
+            <field name="name">Stampa Bilancio Consuntivo</field>
+            <field name="model">gcond.bilancio</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">gcond.report_bilancio_document</field>
+            <field name="report_file">gcond.report_bilancio_document</field>
+            <field name="print_report_name">'Bilancio - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_gcond_bilancio"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Report Template -->
+        <template id="report_bilancio_document">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h2 class="text-center">
+                                <span t-field="o.name"/>
+                            </h2>
+                            <div class="row mt-4 mb-4">
+                                <div class="col-6">
+                                    <strong>Condominio:</strong> <span t-field="o.condominio_id.name"/><br/>
+                                    <strong>Periodo:</strong> <span t-field="o.date_start"/> - <span t-field="o.date_end"/>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <strong>Stato:</strong> <span t-field="o.state"/>
+                                </div>
+                            </div>
+
+                            <table class="table table-sm o_main_table">
+                                <thead>
+                                    <tr>
+                                        <th>Tipo Spesa</th>
+                                        <th class="text-right">Preventivo</th>
+                                        <th class="text-right">Consuntivo</th>
+                                        <th class="text-right">Differenza</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.line_ids" t-as="line">
+                                        <td>
+                                            <span t-field="line.expense_type_id.name"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.amount_budget" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.amount_actual" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.difference" t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                                  t-att-class="'text-danger' if line.difference &lt; 0 else 'text-success'"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="font-weight-bold">
+                                        <td>TOTALE</td>
+                                        <td class="text-right">
+                                            <span t-esc="sum(l.amount_budget for l in o.line_ids)" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="sum(l.amount_actual for l in o.line_ids)" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="sum(l.difference for l in o.line_ids)" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                            <div class="mt-4" t-if="o.state == 'draft'">
+                                <p class="text-muted text-center font-italic">
+                                    * Questo documento è una bozza provvisoria non approvata.
+                                </p>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
