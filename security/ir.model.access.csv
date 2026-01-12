@@ -8,3 +8,4 @@ access_gcond_fee_wizard,gcond.fee.wizard,model_gcond_fee_wizard,,1,1,1,1
 access_gcond_fee_wizard_line,gcond.fee.wizard.line,model_gcond_fee_wizard_line,,1,1,1,1
 access_gcond_bilancio,gcond.bilancio,model_gcond_bilancio,,1,1,1,1
 access_gcond_bilancio_line,gcond.bilancio.line,model_gcond_bilancio_line,,1,1,1,1
+access_gcond_bilancio_riparto,gcond.bilancio.riparto,model_gcond_bilancio_riparto,,1,1,1,1

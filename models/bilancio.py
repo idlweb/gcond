@@ -23,19 +23,15 @@ class GcondBilancio(models.Model):
     currency_id = fields.Many2one('res.currency', default=lambda self: self.env.company.currency_id, readonly=True)
 
     line_ids = fields.One2many('gcond.bilancio.line', 'bilancio_id', string='Righe Bilancio')
+    riparto_ids = fields.One2many('gcond.bilancio.riparto', 'bilancio_id', string='Ripartizione per Condomino')
 
     def action_compute_lines(self):
         self.ensure_one()
         # Delete existing lines to recompute
         self.line_ids.unlink()
+        self.riparto_ids.unlink()
         
         # 1. Trova le righe contabili (Consuntivo)
-        # Search for move lines that:
-        # - Belong to the condominium (via journal -> condominio_id)
-        # - Are within the date range
-        # - Are POSTED (parent_state)
-        # - Have an Expense Type (account_id.expense_type_id) set
-        
         domain = [
             ('move_id.journal_id.condominio_id', '=', self.condominio_id.id),
             ('date', '>=', self.date_start),
@@ -57,16 +53,57 @@ class GcondBilancio(models.Model):
             # Balance = Debit - Credit. For Expenses (Debit), this is positive.
             data[etype.id] += line.balance
 
-        # Create lines
+        # Create lines (Aggregated)
         lines_vals = []
+        riparto_vals = []
+        
         for etype_id, amount in data.items():
+            # A. Create Aggregated Line
             lines_vals.append((0, 0, {
                 'expense_type_id': etype_id,
                 'amount_actual': amount,
-                'amount_budget': 0.0, # Budget to be implemented/loaded
+                'amount_budget': 0.0, 
             }))
-        
+            
+            # B. Distribute Amount to Residents (Prospetto di Riparto)
+            # Find the Table Master for this Expense Type and Condominio
+            table_master = self.env['account.condominio.table.master'].search([
+                ('condominio_id', '=', self.condominio_id.id),
+                ('expense_type_id', '=', etype_id)
+            ], limit=1)
+            
+            if table_master:
+                # Distribution logic:
+                # 1. Calculate Base Amount adjusted by master percentage
+                base_amount = (amount * table_master.percentuale) / 100.0
+                # 2. Divide by 1000 to get value per millesimal
+                millesimal_base = base_amount / 1000.0
+                
+                for row in table_master.table_ids:
+                    if not row.condomino_id:
+                        continue
+                    
+                    # 3. Calculate Share: Base * Millesimi * Competence%
+                    # Note: We do NOT apply 1.22 IVA here because 'amount' from accounting is already including tax (if gross) 
+                    # or excluding tax depending on account type. Usually expenses on P&L accounts are net, 
+                    # BUT condominium accounting is often 'cassa' like.
+                    # HOWEVER: 'balance' in move lines is the signed amount.
+                    # Assuming standard distribution logic:
+                    
+                    share = millesimal_base * row.value_distribution * (row.quote / 100.0)
+                    
+                    if share != 0:
+                        riparto_vals.append((0, 0, {
+                            'partner_id': row.condomino_id.id,
+                            'expense_type_id': etype_id,
+                            'millesimi': row.value_distribution,
+                            'amount': share,
+                        }))
+            else:
+                _logger.warning("No distribution table found for Expense Type ID %s in Condominio %s", etype_id, self.condominio_id.name)
+
         self.line_ids = lines_vals
+        self.riparto_ids = riparto_vals
         return True
 
     def action_approve(self):
@@ -78,7 +115,7 @@ class GcondBilancio(models.Model):
 
 class GcondBilancioLine(models.Model):
     _name = 'gcond.bilancio.line'
-    _description = 'Riga Bilancio'
+    _description = 'Riga Bilancio Aggregata'
     _order = 'expense_type_id'
 
     bilancio_id = fields.Many2one('gcond.bilancio', string='Bilancio', required=True, ondelete='cascade')
@@ -94,3 +131,18 @@ class GcondBilancioLine(models.Model):
     def _compute_difference(self):
         for line in self:
             line.difference = line.amount_budget - line.amount_actual
+
+
+class GcondBilancioRiparto(models.Model):
+    _name = 'gcond.bilancio.riparto'
+    _description = 'Dettaglio Riparto Spese'
+    _order = 'partner_id, expense_type_id'
+
+    bilancio_id = fields.Many2one('gcond.bilancio', string='Bilancio', required=True, ondelete='cascade')
+    partner_id = fields.Many2one('res.partner', string='Condomino', required=True)
+    expense_type_id = fields.Many2one('gcond.expense.type', string='Tipo Spesa', required=True)
+    
+    millesimi = fields.Float(string='Millesimi')
+    amount = fields.Monetary(string='Quota Ripartita', currency_field='currency_id')
+    
+    currency_id = fields.Many2one(related='bilancio_id.currency_id')

@@ -55,6 +55,17 @@
                                 </list>
                             </field>
                         </page>
+                        <page string="Prospetto di Riparto">
+                            <field name="riparto_ids" readonly="state != 'draft'">
+                                <list string="Ripartizione" create="false" delete="false">
+                                    <field name="partner_id"/>
+                                    <field name="expense_type_id"/>
+                                    <field name="millesimi"/>
+                                    <field name="amount" sum="Totale Ripartito"/>
+                                    <field name="currency_id" column_invisible="True"/>
+                                </list>
+                            </field>
+                        </page>
                     </notebook>
                 </sheet>
                 <chatter/>
