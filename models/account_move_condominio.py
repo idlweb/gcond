@@ -322,3 +322,4 @@ class AccountMoveLine(models.Model):
                 
                 if table:
                     line.distribution_table_id = table.id
+```
