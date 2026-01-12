@@ -77,6 +77,7 @@ class GcondFeeWizard(models.TransientModel):
         payments = Payment.create(payments_to_create)
         payments.action_post()
         
+        return {
             'type': 'ir.actions.act_window',
             'name': 'Riscossioni Create',
             'res_model': 'account.payment',
