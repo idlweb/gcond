@@ -194,8 +194,9 @@ class AccountPaymentRegister(models.TransientModel):
                          # Refresh payment_line after post
                          payment_line = payment_move.line_ids.filtered(lambda l: l.id == payment_line.id)
                     
-                    # Force Reconciliation
-                    (payment_line + source_line).reconcile()
+                    # Force Reconciliation ONLY if not already reconciled
+                    if not payment_line.reconciled and not source_line.reconciled:
+                        (payment_line + source_line).reconcile()
 
         return payments
 
