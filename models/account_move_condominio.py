@@ -110,13 +110,21 @@ class AccountMove(models.Model):
             self.action_post()
             
         # Target the receivable line (Credit side from resident perspective, Debit side in accounting logic for asset)
-        receivable_lines = self.line_ids.filtered(lambda l: l.account_id.account_type == 'asset_receivable')
+        # We must filter out lines that are already reconciled or have 0 residual to avoid "Nothing to pay" error
+        receivable_lines = self.line_ids.filtered(lambda l: l.account_id.account_type == 'asset_receivable' and not l.reconciled and l.amount_residual != 0)
+        
         if not receivable_lines:
             # Fallback: try to find the line associated with the partner if account type is ambiguous
-            receivable_lines = self.line_ids.filtered(lambda l: l.partner_id and l.debit > 0)
+            # prioritizing lines with debit > 0 (debt) and not reconciled
+            receivable_lines = self.line_ids.filtered(lambda l: l.partner_id and l.debit > 0 and not l.reconciled and l.amount_residual != 0)
             
         if not receivable_lines:
-             raise UserError("Nessuna riga di credito (ricevibile) trovata per questo avviso. Verifica che il conto del condomino sia di tipo 'receivable'.")
+             # If we are here, it means everything is likely paid or the lines are weird.
+             # Let's check if there are ANY lines for the partner to give a better error.
+             paid_lines = self.line_ids.filtered(lambda l: l.partner_id and l.debit > 0 and l.reconciled)
+             if paid_lines:
+                 raise UserError("Questo avviso risulta già pagato!")
+             raise UserError("Nessuna riga di credito da saldare trovata per questo avviso.")
              
         return receivable_lines.action_register_payment()
         
