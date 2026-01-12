@@ -4,7 +4,7 @@
         <field name="model">gcond.fee.wizard.line</field>
         <field name="arch" type="xml">
             <list string="Quote" editable="bottom" create="false" delete="false">
-                <field name="partner_id" readonly="1"/>
+                <field name="partner_id" readonly="1" force_save="1"/>
                 <field name="currency_id" column_invisible="True"/>
                 <field name="amount" sum="Totale Incassato"/>
             </list>
@@ -30,7 +30,7 @@
                         <page string="Quote Condomini">
                             <field name="line_ids">
                                 <list string="Quote" editable="bottom" create="false" delete="false">
-                                    <field name="partner_id" readonly="1"/>
+                                    <field name="partner_id" readonly="1" force_save="1"/>
                                     <field name="currency_id" column_invisible="True"/>
                                     <field name="amount" sum="Totale Incassato"/>
                                 </list>
