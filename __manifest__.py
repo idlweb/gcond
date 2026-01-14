@@ -19,6 +19,9 @@
         'account', 
         'crm', 
         'l10n_it',
+        'sale',
+        'purchase',
+        'stock',
         # OCA Financial (Verified)
         'account_financial_report',
         'account_asset_management',
