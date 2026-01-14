@@ -48,9 +48,14 @@
         <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
             <xpath expr="//div[@class='oe_button_box']/button[last()]" position="after">
-                <button type="object" class="oe_stat_button" icon="fa-pencil-square-o" name="action_view_account_situation">
+                <button type="object" class="oe_stat_button" icon="fa-list-alt" name="action_view_account_situation">
                     <div class="o_form_field o_stat_info">
-                        <span class="o_stat_text">Situazione Contabile</span>
+                        <span class="o_stat_text">Estratto Conto</span>
+                    </div>
+                </button>
+                <button type="object" class="oe_stat_button" icon="fa-clock-o" name="action_view_aging_situation">
+                    <div class="o_form_field o_stat_info">
+                        <span class="o_stat_text">Scadenziario</span>
                     </div>
                 </button>
             </xpath>

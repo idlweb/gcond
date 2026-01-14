@@ -134,23 +134,36 @@ class GcondAccountCondomino(models.Model):
         return super(GcondAccountCondomino, self).write(vals)
 
     def action_view_account_situation(self):
+        """
+        Shows the Full Ledger (Movimenti/Estratto Conto) including paid items.
+        """
         self.ensure_one()
-        # 1. Trigger refresh of the SQL View for today
+        return {
+            'type': 'ir.actions.act_window',
+            'name': f'Estratto Conto: {self.name}',
+            'res_model': 'account.move.line',
+            'view_mode': 'list,form',
+            'domain': [('partner_id', '=', self.id)],
+            'context': dict(self.env.context, search_default_partner_id=self.id),
+        }
+
+    def action_view_aging_situation(self):
+        """
+        Shows only the Open Items / Residuals (Scadenziario).
+        """
+        self.ensure_one()
         self.env['res.partner.aging.customer'].execute_aging_query(
             age_date=fields.Date.context_today(self)
         )
-
-        domain = [
-            ('partner_id', '=', self.id),
-            ('total', '!=', 0) # Only show active debts/credits
-        ]
-
         return {
             'type': 'ir.actions.act_window',
-            'name': f'Situazione Contabile: {self.name}',
+            'name': f'Scadenziario: {self.name}',
             'res_model': 'res.partner.aging.customer',
             'view_mode': 'list',
-            'domain': domain,
+            'domain': [
+                ('partner_id', '=', self.id),
+                ('total', '!=', 0)
+            ],
             'context': dict(self.env.context, search_default_partner_id=self.id),
         }
 
