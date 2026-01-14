@@ -14,8 +14,8 @@
                     <page string="Elenco Contatori">
                         <field name="line_ids">
                             <list editable="bottom" create="0" delete="0">
-                                <field name="partner_id" readonly="1"/>
-                                <field name="meter_id" readonly="1"/>
+                                <field name="partner_id" readonly="1" force_save="1"/>
+                                <field name="meter_id" readonly="1" force_save="1"/>
                                 <field name="previous_date"/>
                                 <field name="previous_reading"/>
                                 <field name="current_reading"/>
