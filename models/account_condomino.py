@@ -136,6 +136,7 @@ class GcondAccountCondomino(models.Model):
     def action_view_account_situation(self):
         """
         Shows the Full Ledger (Movimenti/Estratto Conto) including paid items.
+        Filtered to show ONLY Receivable/Payable lines (Debt/Payment), hiding balancing entries.
         """
         self.ensure_one()
         return {
@@ -143,7 +144,10 @@ class GcondAccountCondomino(models.Model):
             'name': f'Estratto Conto: {self.name}',
             'res_model': 'account.move.line',
             'view_mode': 'list,form',
-            'domain': [('partner_id', '=', self.id)],
+            'domain': [
+                ('partner_id', '=', self.id),
+                ('account_id.account_type', 'in', ('asset_receivable', 'liability_payable'))
+            ],
             'context': dict(self.env.context, search_default_partner_id=self.id),
         }
 
