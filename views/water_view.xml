@@ -39,11 +39,11 @@
                     </group>
                     <notebook>
                         <page string="Storico Letture">
-                            <field name="reading_ids" readonly="1">
-                                <list>
-                                    <field name="date"/>
+                            <field name="reading_ids">
+                                <list editable="bottom">
+                                    <field name="date" widget="date"/>
                                     <field name="value"/>
-                                    <field name="distribution_id"/>
+                                    <field name="distribution_id" string="Rif. Ripartizione" optional="hide"/>
                                 </list>
                             </field>
                         </page>

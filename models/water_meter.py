@@ -22,6 +22,16 @@ class GcondWaterMeter(models.Model):
     # For divisional meters
     partner_id = fields.Many2one('res.partner', string='Residente Assegnato', 
                                  domain="[('condominio_id', '=', condominio_id)]")
+
+    @api.onchange('condominio_id')
+    def _onchange_condominio_id(self):
+        """Reset partner when condo changes to avoid inconsistencies"""
+        if self.condominio_id:
+            self.partner_id = False
+            # Optional: Return domain explicitly if needed, but field domain handles it.
+            return {'domain': {'partner_id': [('condominio_id', '=', self.condominio_id.id)]}}
+        else:
+            return {'domain': {'partner_id': []}}
     
 
 

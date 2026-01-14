@@ -1,0 +1,45 @@
+<odoo>
+    <record id="view_gcond_water_readings_wizard_form" model="ir.ui.view">
+        <field name="name">gcond.water.readings.wizard.form</field>
+        <field name="model">gcond.water.readings.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Inserimento Letture Massive">
+                <group>
+                    <group>
+                        <field name="condominio_id"/>
+                        <field name="date"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Elenco Contatori">
+                        <field name="line_ids">
+                            <list editable="bottom" create="0" delete="0">
+                                <field name="partner_id" readonly="1"/>
+                                <field name="meter_id" readonly="1"/>
+                                <field name="previous_date"/>
+                                <field name="previous_reading"/>
+                                <field name="current_reading"/>
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+                <footer>
+                    <button name="action_confirm" string="Conferma Inserimento" type="object" class="btn-primary"/>
+                    <button string="Annulla" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_gcond_water_readings_wizard" model="ir.actions.act_window">
+        <field name="name">Inserimento Letture</field>
+        <field name="res_model">gcond.water.readings.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem name="Inserimento Letture" id="menu_gcond_water_readings_wizard" 
+              parent="gcond_menu_water_root" 
+              action="action_gcond_water_readings_wizard" 
+              sequence="15"/>
+</odoo>
