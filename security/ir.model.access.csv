@@ -9,3 +9,8 @@ access_gcond_fee_wizard_line,gcond.fee.wizard.line,model_gcond_fee_wizard_line,,
 access_gcond_bilancio,gcond.bilancio,model_gcond_bilancio,,1,1,1,1
 access_gcond_bilancio_line,gcond.bilancio.line,model_gcond_bilancio_line,,1,1,1,1
 access_gcond_bilancio_riparto,gcond.bilancio.riparto,model_gcond_bilancio_riparto,,1,1,1,1
+access_gcond_water_meter,gcond.water.meter,model_gcond_water_meter,,1,1,1,1
+access_gcond_water_reading,gcond.water.reading,model_gcond_water_reading,,1,1,1,1
+access_gcond_water_tariff,gcond.water.tariff,model_gcond_water_tariff,,1,1,1,1
+access_gcond_water_distribution,gcond.water.distribution,model_gcond_water_distribution,,1,1,1,1
+access_gcond_water_distribution_line,gcond.water.distribution.line,model_gcond_water_distribution_line,,1,1,1,1

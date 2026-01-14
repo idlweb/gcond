@@ -1,0 +1,172 @@
+<odoo>
+    <!-- Water Meter Views -->
+    <record id="view_water_meter_tree" model="ir.ui.view">
+        <field name="name">gcond.water.meter.tree</field>
+        <field name="model">gcond.water.meter</field>
+        <field name="arch" type="xml">
+            <list string="Contatori Acqua">
+                <field name="name"/>
+                <field name="meter_type"/>
+                <field name="condominio_id"/>
+                <field name="partner_id" optional="show"/>
+                <field name="last_reading_date"/>
+                <field name="last_reading_value"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_water_meter_form" model="ir.ui.view">
+        <field name="name">gcond.water.meter.form</field>
+        <field name="model">gcond.water.meter</field>
+        <field name="arch" type="xml">
+            <form string="Contatore Acqua">
+                <header></header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="meter_type"/>
+                            <field name="condominio_id"/>
+                        </group>
+                        <group>
+                            <field name="partner_id" invisible="meter_type != 'divisional'" 
+                                   required="meter_type == 'divisional'"/>
+                            <field name="description"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Storico Letture">
+                            <field name="reading_ids" readonly="1">
+                                <list>
+                                    <field name="date"/>
+                                    <field name="value"/>
+                                    <field name="distribution_id"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Water Reading Views -->
+    <record id="view_water_reading_tree" model="ir.ui.view">
+        <field name="name">gcond.water.reading.tree</field>
+        <field name="model">gcond.water.reading</field>
+        <field name="arch" type="xml">
+            <list string="Letture Acqua" editable="bottom">
+                <field name="date"/>
+                <field name="meter_id"/>
+                <field name="value"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Water Distribution Views -->
+    <record id="view_water_distribution_tree" model="ir.ui.view">
+        <field name="name">gcond.water.distribution.tree</field>
+        <field name="model">gcond.water.distribution</field>
+        <field name="arch" type="xml">
+            <list string="Ripartizioni Acqua">
+                <field name="name"/>
+                <field name="condominio_id"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_water_distribution_form" model="ir.ui.view">
+        <field name="name">gcond.water.distribution.form</field>
+        <field name="model">gcond.water.distribution</field>
+        <field name="arch" type="xml">
+            <form string="Ripartizione Acqua">
+                <header>
+                    <button name="action_fetch_meters" string="1. Recupera Contatori" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_calculate" string="2. Calcola Riparto" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_post" string="3. Contabilizza" type="object" class="btn-primary" invisible="state != 'calculated'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group string="Periodo e Condominio">
+                            <field name="condominio_id"/>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                        </group>
+                        <group string="Contatore Generale">
+                            <field name="meter_general_id"/>
+                            <field name="reading_general_start"/>
+                            <field name="reading_general_end"/>
+                            <field name="consumption_general"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Letture e Normalizzazione">
+                            <field name="line_ids">
+                                <list string="Dettaglio Residenti" editable="bottom">
+                                    <field name="partner_id" readonly="1"/>
+                                    <field name="meter_id" readonly="1"/>
+                                    <field name="reading_start"/>
+                                    <field name="reading_end"/>
+                                    <field name="consumption_measured" sum="Totale Rilevato"/>
+                                    <field name="consumption_normalized" sum="Totale Riparametrato"/>
+                                    <field name="amount" sum="Totale Addebitato"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Scaglioni Tariffari">
+                            <field name="tariff_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="limit_from"/>
+                                    <field name="limit_to"/>
+                                    <field name="price"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Contabilità">
+                            <group>
+                                <field name="expense_account_id" required="state == 'calculated'"/>
+                                <field name="journal_id" required="state == 'calculated'"/>
+                                <field name="move_id" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_water_meter" model="ir.actions.act_window">
+        <field name="name">Contatori Acqua</field>
+        <field name="res_model">gcond.water.meter</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_water_distribution" model="ir.actions.act_window">
+        <field name="name">Ripartizioni Acqua</field>
+        <field name="res_model">gcond.water.distribution</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Menus -->
+    <menuitem name="Acqua" id="gcond_menu_water_root" parent="gcond.menu_root" sequence="30"/>
+    <menuitem name="Ripartizione Acqua" id="gcond_menu_water_distribution" parent="gcond_menu_water_root" action="action_water_distribution" sequence="10"/>
+    <menuitem name="Gestione Contatori" id="gcond_menu_water_meter" parent="gcond_menu_water_root" action="action_water_meter" sequence="20"/>
+
+</odoo>

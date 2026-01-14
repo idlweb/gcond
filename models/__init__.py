@@ -14,9 +14,4 @@ from . import ir_ui_view
 from . import modello
 from . import condominio_banca
 from . import bilancio
-
-
-
-
-
-
+from . import water_meter
