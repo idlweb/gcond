@@ -49,15 +49,49 @@ class AccountMove(models.Model):
             # Divisione per 1000 millesimi
             millesimal_base = base_amount / 1000.0
 
-            for row in table_master.table_ids:
-                if not row.condomino_id:
-                    continue
+            # --- START ROUNDING FIX ---
+            # 1. Calculate total expected (Target)
+            # base_amount is the Net portion assigned to this table.
+            # The logic adds 22% VAT.
+            target_total = (base_amount * 1.22)
+            
+            # 2. Pre-calculate shares
+            shares = []
+            total_calculated = 0.0
+            
+            valid_rows = [r for r in table_master.table_ids if r.condomino_id]
+            
+            for row in valid_rows:
+                # Raw calculation
+                raw_charge = (millesimal_base * row.value_distribution * (row.quote / 100.0)) * 1.22
                 
-                # Quota = (Importo/1000) * Millesimi * % di competenza * 1.22 (IVA)
-                charge = (millesimal_base * row.value_distribution * (row.quote / 100.0)) * 1.22
-                
-                if charge <= 0:
+                if raw_charge <= 0.01: # Filter negligibles
                     continue
+                    
+                # Round to currency (2 decimals typically)
+                rounded_charge = round(raw_charge, 2)
+                
+                shares.append({
+                    'row': row,
+                    'amount': rounded_charge
+                })
+                total_calculated += rounded_charge
+                
+            # 3. Adjust for Rounding Error
+            # If total_calculated != target_total (rounded), adjust the largest share
+            target_total = round(target_total, 2)
+            diff = round(target_total - total_calculated, 2)
+            
+            if diff != 0 and shares:
+                # Find share with max amount to minimize relative impact
+                shares.sort(key=lambda x: x['amount'], reverse=True)
+                shares[0]['amount'] += diff
+                _logger.info(f"Rounding Adjustment: Applied {diff} to partner {shares[0]['row'].condomino_id.name}")
+
+            # 4. Create Moves
+            for item in shares:
+                row = item['row']
+                charge = item['amount']
 
                 # Creazione della registrazione contabile di ripartizione (Avviso di Pagamento)
                 # Harmonization: Usiamo la stessa data di scadenza della fattura originale
