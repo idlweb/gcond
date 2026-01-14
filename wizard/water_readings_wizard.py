@@ -15,7 +15,35 @@ class WaterReadingsWizard(models.TransientModel):
             self.line_ids = False
             return
         
-        meters = self.env['gcond.water.meter'].search([
+        # 1. Ensure every resident has a meter
+        residents = self.env['res.partner'].search([
+            ('condominio_id', '=', self.condominio_id.id)
+        ])
+        
+        Meter = self.env['gcond.water.meter']
+        
+        for resident in residents:
+            # Check if meter exists
+            existing_meter = Meter.search([
+                ('condominio_id', '=', self.condominio_id.id),
+                ('partner_id', '=', resident.id),
+                ('meter_type', '=', 'divisional')
+            ], limit=1)
+            
+            if not existing_meter:
+                # Auto-create Meter
+                # Note: creating inside onchange can be risky but is necessary for the UX requested.
+                # We name it "Contatore [Resident Name]"
+                Meter.create({
+                    'name': f"Contatore {resident.name}",
+                    'condominio_id': self.condominio_id.id,
+                    'partner_id': resident.id,
+                    'meter_type': 'divisional',
+                    'initial_reading': 0.0,
+                })
+
+        # 2. Fetch all meters (now including newly created ones)
+        meters = Meter.search([
             ('condominio_id', '=', self.condominio_id.id),
             ('meter_type', '=', 'divisional')
         ])
@@ -26,13 +54,16 @@ class WaterReadingsWizard(models.TransientModel):
                 ('meter_id', '=', meter.id)
             ], order='date desc', limit=1)
             
+            # Use initial reading if no history exists
+            prev_val = last_reading.value if last_reading else meter.initial_reading
+            prev_date = last_reading.date if last_reading else meter.installation_date
+
             lines.append((0, 0, {
                 'meter_id': meter.id,
                 'partner_id': meter.partner_id.id,
-                'previous_reading': last_reading.value if last_reading else 0.0,
-                'previous_date': last_reading.date if last_reading else False,
-                # Default current reading to previous to speed up minor checks? No, better allow 0 or empty.
-                'current_reading': last_reading.value if last_reading else 0.0, 
+                'previous_reading': prev_val,
+                'previous_date': prev_date,
+                'current_reading': prev_val, # Default to previous 
             }))
         
         self.line_ids = lines
