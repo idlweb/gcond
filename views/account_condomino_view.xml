@@ -68,6 +68,18 @@
                     <field name="property_payment_term_id" string="Termini Pagamento (Riscossione)" invisible="is_condominio" options="{'no_open': True, 'no_create': True}"/>
                 </group>
             </field>
+
+            <!-- Hide unrelated smart buttons -->
+            <div name="button_box" position="inside">
+                <button name="schedule_meeting" position="attributes"><attribute name="invisible">1</attribute></button>
+                <button name="action_view_opportunity" position="attributes"><attribute name="invisible">1</attribute></button>
+                <button name="action_view_sale_order" position="attributes"><attribute name="invisible">1</attribute></button>
+                <button name="action_view_partner_invoices" position="attributes"><attribute name="invisible">1</attribute></button>
+                <button name="action_view_purchase_orders" position="attributes"><attribute name="invisible">1</attribute></button>
+                <button name="%(stock.action_product_stock_view)d" position="attributes"><attribute name="invisible">1</attribute></button>
+                <!-- On-time Delivery (Purchase) -->
+                <button name="action_view_purchase_rm" position="attributes"><attribute name="invisible">1</attribute></button>
+            </div>
         </field>
     </record>
 
