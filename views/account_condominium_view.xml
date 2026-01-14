@@ -21,7 +21,17 @@
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_journal_entries" type="object" class="oe_stat_button" icon="fa-bars">
                             <div class="o_stat_info">
-                                <span class="o_stat_text">Movimenti Contabili</span>
+                                <span class="o_stat_text">Movimenti</span>
+                            </div>
+                        </button>
+                        <button name="action_view_customer_aging_condominio" type="object" class="oe_stat_button" icon="fa-users">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Morosità</span>
+                            </div>
+                        </button>
+                        <button name="action_view_supplier_aging_condominio" type="object" class="oe_stat_button" icon="fa-file-text-o">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Fornitori</span>
                             </div>
                         </button>
                     </div>

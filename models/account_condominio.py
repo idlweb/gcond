@@ -209,6 +209,58 @@ class GcondAccountCondominium(models.Model):
         self.ensure_one()
         return self.action_view_journal_entries()
     
+    def action_view_customer_aging_condominio(self):
+        """
+        Shows the 'Morosità' (Debts of Residents) for this specific Condo.
+        Uses res.partner.aging.customer view.
+        """
+        self.ensure_one()
+        # 1. Refresh View
+        self.env['res.partner.aging.customer'].execute_aging_query(
+            age_date=fields.Date.context_today(self)
+        )
+        
+        # 2. Open filtered by partners belonging to this condo
+        # Logic: We filter the Agings where partner_id.condominio_id = self.id
+        return {
+            'type': 'ir.actions.act_window',
+            'name': f'Morosità: {self.name}',
+            'res_model': 'res.partner.aging.customer',
+            'view_mode': 'list',
+            'domain': [
+                ('partner_id.condominio_id', '=', self.id),
+                ('total', '!=', 0)
+            ],
+            'context': self.env.context,
+        }
+
+    def action_view_supplier_aging_condominio(self):
+        """
+        Shows the 'Scadenziario Fornitori' (Debts TO Suppliers) for this Condo.
+        Uses res.partner.aging.supplier view.
+        """
+        self.ensure_one()
+        # 1. Refresh View
+        self.env['res.partner.aging.supplier'].execute_aging_query(
+            age_date=fields.Date.context_today(self)
+        )
+        
+        # 2. Open filtered. 
+        # Suppliers don't belong to the condo, but the INVOICES do.
+        # The View 'res.partner.aging.supplier' has 'invoice_id'.
+        # We can filter by invoice_id.journal_id.condominio_id
+        return {
+            'type': 'ir.actions.act_window',
+            'name': f'Scadenziario Fornitori: {self.name}',
+            'res_model': 'res.partner.aging.supplier',
+            'view_mode': 'list',
+            'domain': [
+                ('invoice_id.journal_id.condominio_id', '=', self.id),
+                ('total', '!=', 0)
+            ],
+            'context': self.env.context,
+        }
+    
 
     def _register_menus(self):
         # Aggiungiamo una voce di menu al modulo.

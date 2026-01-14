@@ -135,23 +135,23 @@ class GcondAccountCondomino(models.Model):
 
     def action_view_account_situation(self):
         self.ensure_one()
-        # Non controlliamo più self.conto_id per non bloccare la visualizzazione
-        # se il condomino ha movimenti su altri conti (es. generico clienti/fornitori)
-        
-        domain = [('partner_id', '=', self.id)]
-        if self.conto_id:
-            # Se c'è un conto specifico, lo aggiungiamo come "preferenza" di ricerca ma non esclusiva assoluta
-            # Opzionale: potremmo voler vedere SOLO quel conto, o TUTTO del partner.
-            # Per sicurezza mostriamo TUTTO ciò che riguarda il partner.
-            pass
+        # 1. Trigger refresh of the SQL View for today
+        self.env['res.partner.aging.customer'].execute_aging_query(
+            age_date=fields.Date.context_today(self)
+        )
+
+        domain = [
+            ('partner_id', '=', self.id),
+            ('total', '!=', 0) # Only show active debts/credits
+        ]
 
         return {
             'type': 'ir.actions.act_window',
             'name': f'Situazione Contabile: {self.name}',
-            'res_model': 'account.move.line',
-            'view_mode': 'list,form',
+            'res_model': 'res.partner.aging.customer',
+            'view_mode': 'list',
             'domain': domain,
-            'context': dict(self.env.context, search_default_partner_id=self.id, search_default_unreconciled=1),
+            'context': dict(self.env.context, search_default_partner_id=self.id),
         }
 
 
