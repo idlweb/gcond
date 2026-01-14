@@ -23,18 +23,21 @@
                 <header></header>
                 <sheet>
                     <div class="oe_title">
-                        <label for="name" class="oe_edit_only"/>
-                        <h1><field name="name"/></h1>
+                        <label for="name" class="oe_edit_only" string="Matricola / Serie"/>
+                        <h1><field name="name" placeholder="es. SN12345678"/></h1>
+                        <label for="description" class="oe_edit_only"/>
+                        <field name="description" placeholder="es. Sottolavello cucina"/>
                     </div>
                     <group>
-                        <group>
-                            <field name="meter_type"/>
-                            <field name="condominio_id"/>
+                        <group string="Dati Tecnici">
+                            <field name="meter_type" widget="radio" options="{'horizontal': true}"/>
+                            <field name="installation_date"/>
+                            <field name="initial_reading"/>
                         </group>
-                        <group>
+                        <group string="Assegnazione">
+                            <field name="condominio_id"/>
                             <field name="partner_id" invisible="meter_type != 'divisional'" 
                                    required="meter_type == 'divisional'"/>
-                            <field name="description"/>
                         </group>
                     </group>
                     <notebook>

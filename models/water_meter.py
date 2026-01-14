@@ -9,9 +9,12 @@ class GcondWaterMeter(models.Model):
     _description = 'Contatore Acqua'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    name = fields.Char(string='Matricola/Identificativo', required=True)
-    description = fields.Char(string='Descrizione')
+    name = fields.Char(string='Matricola (Numero Serie)', required=True)
+    description = fields.Char(string='Descrizione / Ubicazione')
     condominio_id = fields.Many2one('account.condominio', string='Condominio', required=True)
+    
+    installation_date = fields.Date(string='Data Installazione/Sostituzione')
+    initial_reading = fields.Float(string='Lettura Iniziale (alla posa)', default=0.0)
     
     # Type: General (Main) or Divisional (Sub-meter)
     meter_type = fields.Selection([
