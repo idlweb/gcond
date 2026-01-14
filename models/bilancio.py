@@ -184,57 +184,7 @@ class GcondBilancio(models.Model):
 
     # ... get_riparto_matrix ...
 
-class GcondBilancioRiparto(models.Model):
-    _name = 'gcond.bilancio.riparto'
-    _description = 'Dettaglio Riparto Spese'
-    _order = 'partner_id, expense_type_id'
 
-    bilancio_id = fields.Many2one('gcond.bilancio', string='Bilancio', required=True, ondelete='cascade')
-    partner_id = fields.Many2one('res.partner', string='Condomino', required=True)
-    expense_type_id = fields.Many2one('gcond.expense.type', string='Tipo Spesa', required=True)
-    
-    millesimi = fields.Float(string='Millesimi')
-    amount = fields.Monetary(string='Quota Ripartita', currency_field='currency_id')
-    
-    # Financials (Repeated for every row of the same partner)
-    payments = fields.Monetary(string='Versato (Totale)', currency_field='currency_id', help="Totale versato dal condomino nel periodo")
-    previous_balance = fields.Monetary(string='Pregresso', currency_field='currency_id')
-    
-    # Computed but stored to avoid 0.0 default issue
-    final_balance = fields.Monetary(string='Conguaglio', compute='_compute_final_balance', store=True, currency_field='currency_id')
-    
-    currency_id = fields.Many2one(related='bilancio_id.currency_id')
-    
-    @api.depends('amount', 'payments', 'previous_balance')
-    def _compute_final_balance(self):
-        for line in self:
-             # Logic: Conguaglio = (Quota) - (Quota Proporzionale di Versato)? 
-             # No, standard practice: Conguaglio is shown on the total. 
-             # On the line, we might just show 'amount'.
-             # BUT user asked to value it.
-             # If I want to match the Report Matrix logic:
-             # matrix.balance = total_quota - payments + previous.
-             # Per LINE: final_balance = amount - (payments * amount / total_quota_partner) + (prev * amount / total_quota_partner) ?
-             # This effectively distributes the credits.
-             # Let's try to do exactly that: Distribute Payments and Previous proportionally to Amount.
-             
-             # Problem: We need total_quota for the partner to do this ratio.
-             # This is expensive in a compute.
-             
-             # Simpler fallback: final_balance = amount (Line Share). 
-             # And we let the "Totals" column in the View/Report handle the math?
-             # But the View Sums columns.
-             # If I set line.final_balance = line.amount - (something), the Sum will be correct.
-             # Sum(final_balance) = Sum(amount) - Sum(something).
-             # We want Sum(final_balance) = Sum(amount) - Payments + Previous.
-             # So Sum(something) must equal Payments - Previous.
-             
-             # So for each partner, we need to distribute (Payments - Previous) across their lines.
-             # This is hard to do in a simple depends.
-             # It's better done in 'action_compute_lines'.
-             pass
-
-    # Removing the depends logic, we will calculate in action_compute_lines
 
     def get_riparto_matrix(self):
         """
