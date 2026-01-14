@@ -12,7 +12,25 @@
     'author': 'Vangi & Bard ',
     'website': 'https://www.odoo.com/app/invoicing',
     'images' : ['images/accounts.jpeg','images/bank_statement.jpeg','images/cash_register.jpeg','images/chart_of_accounts.jpeg','images/customer_invoice.jpeg','images/journal_entries.jpeg'],
-    'depends' : ['web', 'website', 'base', 'account', 'crm', 'base_vat', 'l10n_it'],
+    'depends' : [
+        'web', 
+        'website', 
+        'base', 
+        'account', 
+        'crm', 
+        'l10n_it',
+        # OCA Financial (Verified)
+        'account_financial_report',
+        'account_asset_management',
+        
+        # OCA Financial (Pending/Unverified in 18.0)
+        # 'l10n_it_withholding_tax',
+        # 'account_financial_amount_check',
+        # 'l10n_it_full_audit',
+        # 'l10n_it_rea',
+        # 'l10n_it_pec_itp',
+        # 'account_reconciliation_widget',
+    ],
     'data': [
         'security/ir.model.access.csv',
         'views/account_account_view.xml',
