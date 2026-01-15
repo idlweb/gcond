@@ -95,60 +95,72 @@
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
-                    <div class="oe_title">
-                        <h1><field name="name"/></h1>
-                    </div>
-                    <group>
-                        <group string="Periodo e Condominio">
-                            <field name="condominio_id"/>
-                            <field name="date_start"/>
-                            <field name="date_end"/>
-                        </group>
-                        <group string="Contatore Generale">
-                            <field name="meter_general_id"/>
-                            <field name="reading_general_start"/>
-                            <field name="reading_general_end"/>
-                            <field name="consumption_general"/>
-                        </group>
-                    </group>
-                    <notebook>
-                        <page string="Letture e Normalizzazione">
-                            <field name="line_ids">
-                                <list string="Dettaglio Residenti" editable="bottom">
-                                    <field name="partner_id" readonly="1"/>
-                                    <field name="meter_id" readonly="1"/>
-                                    <field name="reading_start"/>
-                                    <field name="reading_end"/>
-                                    <field name="consumption_measured" sum="Totale Rilevato"/>
-                                    <field name="consumption_normalized" sum="Totale Riparametrato"/>
-                                    <field name="amount" sum="Totale Addebitato"/>
-                                </list>
-                            </field>
-                        </page>
-                        <page string="Scaglioni Tariffari">
-                            <field name="tariff_ids">
-                                <list editable="bottom">
-                                    <field name="name"/>
-                                    <field name="limit_from"/>
-                                    <field name="limit_to"/>
-                                    <field name="price"/>
-                                </list>
-                            </field>
-                        </page>
-                        <page string="Contabilità">
-                            <group>
-                                <field name="expense_account_id" required="state == 'calculated'"/>
-                                <field name="journal_id" required="state == 'calculated'"/>
-                                <field name="move_id" readonly="1"/>
-                            </group>
-                        </page>
-                    </notebook>
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids"/>
-                    <field name="activity_ids"/>
-                    <field name="message_ids"/>
+                <div class="oe_button_box" name="button_box">
+                    <button name="%(account.action_move_out_invoice_type)d" type="action" 
+                        class="oe_stat_button" icon="fa-pencil-square-o" 
+                        context="{'default_water_distribution_id': id, 'default_move_type': 'out_invoice'}"
+                        domain="[('water_distribution_id', '=', id)]">
+                        <field name="invoice_ids" widget="statinfo" string="Invoices"/>
+                    </button>
                 </div>
+                <div class="oe_title">
+                    <h1><field name="name"/></h1>
+                </div>
+                <!-- ... groups ... -->
+                <group>
+                    <group string="Periodo e Condominio">
+                        <field name="condominio_id"/>
+                        <field name="date_start"/>
+                        <field name="date_end"/>
+                    </group>
+                    <group string="Contatore Generale">
+                        <field name="meter_general_id"/>
+                        <field name="reading_general_start"/>
+                        <field name="reading_general_end"/>
+                        <field name="consumption_general"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Letture e Normalizzazione">
+                        <field name="line_ids">
+                            <list string="Dettaglio Residenti" editable="bottom">
+                                <field name="partner_id" readonly="1"/>
+                                <field name="meter_id" readonly="1"/>
+                                <field name="reading_start"/>
+                                <field name="reading_end"/>
+                                <field name="consumption_measured" sum="Totale Rilevato"/>
+                                <field name="consumption_normalized" sum="Totale Riparametrato"/>
+                                <field name="amount" sum="Totale Addebitato"/>
+                            </list>
+                        </field>
+                    </page>
+                    <page string="Scaglioni Tariffari">
+                        <field name="tariff_ids">
+                            <list editable="bottom">
+                                <field name="name"/>
+                                <field name="limit_from"/>
+                                <field name="limit_to"/>
+                                <field name="price"/>
+                            </list>
+                        </field>
+                    </page>
+                    <page string="Contabilità">
+                        <group>
+                            <field name="expense_account_id" required="state == 'calculated'"/>
+                            <field name="journal_id" required="state == 'calculated'"/>
+                            <!-- <field name="move_id" readonly="1"/> Deprecated -->
+                            <field name="invoice_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="partner_id"/>
+                                    <field name="amount_total"/>
+                                    <field name="state" widget="badge" decoration-success="state == 'posted'" decoration-info="state == 'draft'"/>
+                                </list>
+                            </field>
+                        </group>
+                    </page>
+                </notebook>
+                </sheet>
             </form>
         </field>
     </record>

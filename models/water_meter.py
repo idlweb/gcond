@@ -111,146 +111,61 @@ class GcondWaterDistribution(models.Model):
 
     # Accounting
     journal_id = fields.Many2one('account.journal', string='Diario', domain="[('type', '=', 'general')]")
-    move_id = fields.Many2one('account.move', string='Registrazione Contabile')
-
-    @api.depends('reading_general_end', 'reading_general_start')
-    def _compute_general_consumption(self):
-        for rec in self:
-            rec.consumption_general = max(0, rec.reading_general_end - rec.reading_general_start)
-
-    def action_fetch_meters(self):
-        """Populate lines with all divisional meters and their latest readings as Start Reading."""
-        self.ensure_one()
-        self.line_ids.unlink()
-        
-        meters = self.env['gcond.water.meter'].search([
-            ('condominio_id', '=', self.condominio_id.id),
-            ('meter_type', '=', 'divisional')
-        ])
-        
-        lines = []
-        for meter in meters:
-            # Find reading for Start Date (closest <= date_start)
-            start_reading = self.env['gcond.water.reading'].search([
-                ('meter_id', '=', meter.id),
-                ('date', '<=', self.date_start)
-            ], order='date desc', limit=1)
-            
-            # Find reading for End Date (closest <= date_end)
-            end_reading = self.env['gcond.water.reading'].search([
-                ('meter_id', '=', meter.id),
-                ('date', '<=', self.date_end)
-            ], order='date desc', limit=1)
-
-            # Fallback to initial_reading if no history found for Start
-            val_start = start_reading.value if start_reading else meter.initial_reading
-            
-            # For End, use found reading, or default to Start (0 consumption) if nothing new found
-            val_end = end_reading.value if end_reading else val_start
-
-            lines.append((0, 0, {
-                'meter_id': meter.id,
-                'partner_id': meter.partner_id.id,
-                'reading_start': val_start,
-                'reading_end': val_end,
-            }))
-        
-        self.line_ids = lines
-
-    def action_calculate(self):
-        """Perform Normalization and Pricing"""
-        self.ensure_one()
-        if self.consumption_general <= 0:
-            raise UserError(_("Il consumo generale deve essere maggiore di zero."))
-
-        total_measured = sum(line.consumption_measured for line in self.line_ids)
-        
-        if total_measured <= 0:
-             raise UserError(_("Nessun consumo rilevato dai sottocontatori."))
-
-        # Coefficient (K) = General / Sum(Divisional)
-        k_normalization = self.consumption_general / total_measured
-        
-        for line in self.line_ids:
-            # 1. Normalize
-            line.consumption_normalized = line.consumption_measured * k_normalization
-            
-            # 2. Apply Pricing (Scaglioni)
-            cost = 0.0
-            remaining_consumption = line.consumption_normalized
-            
-            # Sort tariffs just in case
-            sorted_tariffs = self.tariff_ids.sorted('limit_from')
-            
-            for tier in sorted_tariffs:
-                if remaining_consumption <= 0:
-                    break
-                
-                # Calculate m3 in this tier
-                # Tier size = limit_to - limit_from
-                tier_size = tier.limit_to - tier.limit_from
-                
-                consumable = min(remaining_consumption, tier_size)
-                cost += consumable * tier.price
-                remaining_consumption -= consumable
-                
-            line.amount = cost
-
-        self.state = 'calculated'
-
-    expense_account_id = fields.Many2one('account.account', string='Conto di Contropartita (Costo)', required=False, 
-                                         help="Conto da accreditare (es. Spese Acqua o Fornitore)")
+    move_id = fields.Many2one('account.move', string='Registrazione Contabile') # Deprecated? Keeping for compatibility or single entry fallback
+    invoice_ids = fields.One2many('account.move', 'water_distribution_id', string='Avvisi di Pagamento Generati')
 
     def action_post(self):
-        """Generate Accounting Entries"""
+        """Generate Customer Invoices (Avvisi di Pagamento) for Residents"""
         self.ensure_one()
         if not self.journal_id:
              raise UserError(_("Seleziona un diario per la registrazione."))
-        if not self.expense_account_id:
-             # Try to find a default 'Water' account or raise error
-             pass 
-             # For now, let's require it or let the user set it.
-
-        move_lines = []
-        # 1. Total Credit to Expense Account (Reversal of Cost)
-        total_amount = sum(line.amount for line in self.line_ids)
         
-        move_lines.append((0, 0, {
-            'account_id': self.expense_account_id.id,
-            'name': f"Ripartizione Acqua: {self.name}",
-            'credit': total_amount,
-            'debit': 0.0,
-        }))
+        # We need a Product to put on the invoice line? Not strictly, can use label + account.
+        # Account to Credit (Income side) -> The Expense Account (to reverse cost)
+        if not self.expense_account_id:
+             raise UserError(_("Seleziona il conto di costo/spesa per il recupero."))
 
-        # 2. Debit to Residents
+        invoices = []
+        
         for line in self.line_ids:
             if line.amount <= 0.01:
                 continue
-                
-            move_lines.append((0, 0, {
-                'account_id': line.partner_id.property_account_receivable_id.id,
+            
+            # Create Invoice for this Partner
+            inv_vals = {
                 'partner_id': line.partner_id.id,
-                'name': f"Acqua: {line.meter_id.name} ({line.reading_start} -> {line.reading_end})",
-                'debit': line.amount,
-                'credit': 0.0,
-            }))
+                'move_type': 'out_invoice',
+                'journal_id': self.journal_id.id,
+                'date': fields.Date.today(),
+                'invoice_date': fields.Date.today(),
+                'ref': f"{self.name} - {line.meter_id.name}",
+                'water_distribution_id': self.id,
+                'invoice_line_ids': [(0, 0, {
+                    'name': f"Ripartizione Acqua: {line.meter_id.name} ({line.reading_start} -> {line.reading_end})",
+                    'quantity': 1,
+                    'price_unit': line.amount,
+                    'account_id': self.expense_account_id.id, # Credit this account
+                })]
+            }
+            # Add Taxes? Usually internal distribution is tax-exempt or handled upstream. 
+            # If Expense Account has taxes... beware. For now, assume no tax on distribution line.
+            
+            # Create
+            invoice = self.env['account.move'].create(inv_vals)
+            invoices.append(invoice)
 
-        # Create the Move
-        move = self.env['account.move'].create({
-            'journal_id': self.journal_id.id,
-            'date': fields.Date.today(),
-            'ref': self.name,
-            'move_type': 'entry',
-            'line_ids': move_lines,
-        })
+        # Notify user or just set state
+        self.state = 'posted'
         
-        move.action_post()
-        self.move_id = move.id
-        self.state = 'posted'
-        move.action_post()
-        self.move_id = move.id
-        self.state = 'posted'
-        return True
+        # Optional: Return action to view created invoices
+        action = self.env['ir.actions.act_window']._for_xml_id('account.action_move_out_invoice_type')
+        if len(invoices) > 1:
+            action['domain'] = [('id', 'in', [inv.id for inv in invoices])]
+        elif len(invoices) == 1:
+            action['views'] = [(self.env.ref('account.view_move_form').id, 'form')]
+            action['res_id'] = invoices[0].id
+            
+        return action
 
     def action_print(self):
         return self.env.ref('gcond.action_report_water_distribution').report_action(self)
@@ -275,3 +190,8 @@ class GcondWaterDistributionLine(models.Model):
     def _compute_consumption(self):
         for line in self:
             line.consumption_measured = max(0, line.reading_end - line.reading_start)
+
+class AccountMove(models.Model):
+    _inherit = 'account.move'
+
+    water_distribution_id = fields.Many2one('gcond.water.distribution', string='Ripartizione Acqua', ondelete='set null')
