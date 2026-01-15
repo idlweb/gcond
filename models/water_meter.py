@@ -130,18 +130,29 @@ class GcondWaterDistribution(models.Model):
         
         lines = []
         for meter in meters:
-            # Find reading closest to start date? 
-            # Or just take the last reading available before date_start?
+            # Find reading for Start Date (closest <= date_start)
             start_reading = self.env['gcond.water.reading'].search([
                 ('meter_id', '=', meter.id),
                 ('date', '<=', self.date_start)
             ], order='date desc', limit=1)
             
+            # Find reading for End Date (closest <= date_end)
+            end_reading = self.env['gcond.water.reading'].search([
+                ('meter_id', '=', meter.id),
+                ('date', '<=', self.date_end)
+            ], order='date desc', limit=1)
+
+            # Fallback to initial_reading if no history found for Start
+            val_start = start_reading.value if start_reading else meter.initial_reading
+            
+            # For End, use found reading, or default to Start (0 consumption) if nothing new found
+            val_end = end_reading.value if end_reading else val_start
+
             lines.append((0, 0, {
                 'meter_id': meter.id,
                 'partner_id': meter.partner_id.id,
-                'reading_start': start_reading.value if start_reading else 0.0,
-                'reading_end': 0.0, # To be filled by user
+                'reading_start': val_start,
+                'reading_end': val_end,
             }))
         
         self.line_ids = lines
