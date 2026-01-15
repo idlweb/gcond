@@ -34,50 +34,110 @@ class AccountMove(models.Model):
                 _logger.info("Nessun tipo di spesa associato al conto %s, salto la riga.", line.account_id.code)
                 continue
             
-            # Recuperiamo la tabella di ripartizione associata a questo tipo di spesa per questo condominio
-            table_master = self.env['account.condominio.table.master'].search([
-                ('condominio_id', '=', condominio_id),
-                ('expense_type_id', '=', expense_type.id),
-            ], limit=1)
-
-            if not table_master:
-                _logger.warning("Nessuna tabella di ripartizione trovata per il tipo spesa %s nel condominio %s", expense_type.name, journal.condominio_id.name)
-                continue
-
-            # Calcolo dell'importo base per questa tabella (applicando la percentuale del master)
-            base_amount = (line.debit * table_master.percentuale) / 100.0
-            # Divisione per 1000 millesimi
-            millesimal_base = base_amount / 1000.0
-
-            # --- START ROUNDING FIX ---
-            # 1. Calculate total expected (Target)
-            # base_amount is the Net portion assigned to this table.
-            # The logic adds 22% VAT.
-            target_total = (base_amount * 1.22)
+            # Check if Water Distribution is selected for this line
+            water_dist = line.water_distribution_id
             
-            # 2. Pre-calculate shares
             shares = []
             total_calculated = 0.0
+            target_total = (line.debit * 1.0) # Assume Line Debit matches what we want to distribute (Check VAT logic below if needed)
+            # The existing code applied 22% VAT on top of base amount? 
+            # "base_amount = (line.debit * table_master.percentuale) / 100.0" 
+            # "target_total = (base_amount * 1.22)"
+            # This implies line.debit is NET and we add VAT? 
+            # Or line.debit is Gross? 
+            # Usually Account Move Line 'debit' IS the amount (Gross if tax included, Net if not).
+            # If the user registers a Bill: 100 + 22 VAT = 122 Total.
+            # The Expense Line is 100 Cost. The VAT line is 22 Tax.
+            # If we distribute the Cost Line (100), we usually want to distribute 100 + VAT roughly?
+            # Existing code seems to artificially ADD 22% VAT. " * 1.22".
+            # This suggests the distribution creates a debt including VAT.
             
-            valid_rows = [r for r in table_master.table_ids if r.condomino_id]
-            
-            for row in valid_rows:
-                # Raw calculation
-                raw_charge = (millesimal_base * row.value_distribution * (row.quote / 100.0)) * 1.22
+            if water_dist:
+                # --- WATER DISTRIBUTION LOGIC ---
+                # Use the amounts in water_dist lines as "Millesini" (Proportions)
                 
-                if raw_charge <= 0.01: # Filter negligibles
-                    continue
+                # 1. Total Water Value calculated in the Report
+                total_water_value = sum(w_line.amount for w_line in water_dist.line_ids)
+                
+                if total_water_value <= 0:
+                     _logger.warning("Ripartizione Acqua %s ha totale zero. Salto.", water_dist.name)
+                     continue
+
+                # 2. Logic: Scaling
+                # We distribute the Invoice Line Cost PROPORTIONAL to the Water Report amounts.
+                # Factor = Invoice Line Cost / Water Report Total
+                # Note: If Invoice Line is NET (100) and we want to recover GROSS (122), we should use 122 here?
+                # But 'line.debit' is usually just the Net Cost line. 
+                # Let's align with existing logic: Take line.debit, apply "Percentuale" (if any, absent here), then ADD VAT (1.22).
+                
+                # Assume 100% of line
+                base_amount = line.debit 
+                target_total = base_amount * 1.22 # Keeping consistency with existing tax logic
+                
+                factor = target_total / total_water_value
+                
+                for w_line in water_dist.line_ids:
+                    if w_line.amount <= 0.00:
+                        continue
+                        
+                    share_amount = w_line.amount * factor
+                    rounded_charge = round(share_amount, 2)
                     
-                # Round to currency (2 decimals typically)
-                rounded_charge = round(raw_charge, 2)
+                    if rounded_charge <= 0:
+                        continue
+
+                    # Mock a 'row' object to fit existing structure or create dictionary
+                    # Existing structure uses 'row' from table. We need 'condomino_id'.
+                    # Let's adapt the 'shares' list to store Partner directly or mock object.
+                    
+                    shares.append({
+                        'partner': w_line.partner_id, # Storing partner directly
+                        'amount': rounded_charge
+                    })
+                    total_calculated += rounded_charge
+            
+            else:
+                # --- STANDARD TABLE LOGIC ---
+                # Recuperiamo la tabella di ripartizione associata a questo tipo di spesa per questo condominio
+                # Priority: Line specific table > Expense Type Default
                 
-                shares.append({
-                    'row': row,
-                    'amount': rounded_charge
-                })
-                total_calculated += rounded_charge
+                table_master = line.distribution_table_id
+                if not table_master:
+                     table_master = self.env['account.condominio.table.master'].search([
+                        ('condominio_id', '=', condominio_id),
+                        ('expense_type_id', '=', expense_type.id),
+                    ], limit=1)
+    
+                if not table_master:
+                    _logger.warning("Nessuna tabella di ripartizione trovata per il tipo spesa %s nel condominio %s", expense_type.name, journal.condominio_id.name)
+                    continue
+    
+                # Calcolo dell'importo base per questa tabella (applicando la percentuale del master)
+                base_amount = (line.debit * table_master.percentuale) / 100.0
+                # Divisione per 1000 millesimi
+                millesimal_base = base_amount / 1000.0
+    
+                target_total = (base_amount * 1.22)
                 
-            # 3. Adjust for Rounding Error
+                valid_rows = [r for r in table_master.table_ids if r.condomino_id]
+                
+                for row in valid_rows:
+                    # Raw calculation
+                    raw_charge = (millesimal_base * row.value_distribution * (row.quote / 100.0)) * 1.22
+                    
+                    if raw_charge <= 0.01: # Filter negligibles
+                        continue
+                        
+                    # Round to currency (2 decimals typically)
+                    rounded_charge = round(raw_charge, 2)
+                    
+                    shares.append({
+                        'partner': row.condomino_id, # Normalized key
+                        'amount': rounded_charge
+                    })
+                    total_calculated += rounded_charge
+                
+            # --- COMMON ROUNDING ADJUSTMENT ---
             # If total_calculated != target_total (rounded), adjust the largest share
             target_total = round(target_total, 2)
             diff = round(target_total - total_calculated, 2)
@@ -86,11 +146,11 @@ class AccountMove(models.Model):
                 # Find share with max amount to minimize relative impact
                 shares.sort(key=lambda x: x['amount'], reverse=True)
                 shares[0]['amount'] += diff
-                _logger.info(f"Rounding Adjustment: Applied {diff} to partner {shares[0]['row'].condomino_id.name}")
+                _logger.info(f"Rounding Adjustment: Applied {diff} to partner {shares[0]['partner'].name}")
 
             # 4. Create Moves
             for item in shares:
-                row = item['row']
+                partner = item['partner']
                 charge = item['amount']
 
                 # Creazione della registrazione contabile di ripartizione (Avviso di Pagamento)
@@ -104,7 +164,6 @@ class AccountMove(models.Model):
                 credit_account_id = line.account_id.id # Default fallback
                 suspense_account = self.env['account.account'].search([
                     ('code', '=', '182003'),
-                    # Removed implicit company_id check that was crashing
                 ], limit=1)
                 
                 if suspense_account:
@@ -113,20 +172,20 @@ class AccountMove(models.Model):
                 account_move = self.env['account.move'].create({                        
                     'journal_id': self.journal_id.id,
                     'date': fields.Date.today(),
-                    'ref' : f"AVVISO: {row.condomino_id.name}-{line.account_id.name}-{document_number}",
+                    'ref' : f"AVVISO: {partner.name}-{line.account_id.name}-{document_number}",
                     'move_type': 'entry',
                     'line_ids': [
                         (0, 0, {
-                            'account_id': row.condomino_id.conto_id.id or row.condomino_id.property_account_receivable_id.id or line.account_id.id,
-                            'partner_id': row.condomino_id.id,
+                            'account_id': partner.conto_id.id or partner.property_account_receivable_id.id or line.account_id.id,
+                            'partner_id': partner.id,
                             'name': f"Ripartizione {document_number}",
                             'debit': charge,
                             'credit': 0.0,
-                            'date_maturity': due_date, # Harmonizzazione scadenza
+                            'date_maturity': due_date, 
                         }),
                         (0, 0, {
                             'account_id': credit_account_id,
-                            'partner_id': row.condomino_id.id,
+                            'partner_id': partner.id,
                             'name': f"Ripartizione {document_number}",
                             'credit': charge,
                             'debit': 0.0,
@@ -452,6 +511,13 @@ class AccountMoveLine(models.Model):
         string='Tabella Ripartizione',
         help='Tabella usata per ripartire questo costo.'
     )
+    
+    water_distribution_id = fields.Many2one(
+        'gcond.water.distribution',
+        string='Ripartizione Acqua',
+        help='Usa i valori di questa ripartizione acqua per calcolare le quote.',
+        domain="[('state', '=', 'posted')]"
+    )
 
     @api.onchange('account_id')
     def _onchange_account_id_gcond(self):
@@ -464,9 +530,6 @@ class AccountMoveLine(models.Model):
             if line.move_id and line.move_id.journal_id and line.move_id.journal_id.condominio_id:
                 condominio_id = line.move_id.journal_id.condominio_id.id
             
-            # Se siamo in un contesto dove il move non è ancora salvato, potremmo non avere il journal
-            # Ma di solito in una fattura il journal è settato.
-            
             if condominio_id:
                 table = self.env['account.condominio.table.master'].search([
                     ('condominio_id', '=', condominio_id),
@@ -474,4 +537,5 @@ class AccountMoveLine(models.Model):
                 ], limit=1)
                 
                 if table:
-                    line.distribution_table_id = table.id
+                    line.distribution_table_id = table.id 
+                    # If we had a default water distribution linking logic, we could set it here too.

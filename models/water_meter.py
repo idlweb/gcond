@@ -115,57 +115,13 @@ class GcondWaterDistribution(models.Model):
     invoice_ids = fields.One2many('account.move', 'water_distribution_id', string='Avvisi di Pagamento Generati')
 
     def action_post(self):
-        """Generate Customer Invoices (Avvisi di Pagamento) for Residents"""
+        """
+        Mark the distribution as Final/Posted.
+        This allows it to be used as a basis for distributing Supplier Bills (Acquedotto).
+        """
         self.ensure_one()
-        if not self.journal_id:
-             raise UserError(_("Seleziona un diario per la registrazione."))
-        
-        # We need a Product to put on the invoice line? Not strictly, can use label + account.
-        # Account to Credit (Income side) -> The Expense Account (to reverse cost)
-        if not self.expense_account_id:
-             raise UserError(_("Seleziona il conto di costo/spesa per il recupero."))
-
-        invoices = []
-        
-        for line in self.line_ids:
-            if line.amount <= 0.01:
-                continue
-            
-            # Create Invoice for this Partner
-            inv_vals = {
-                'partner_id': line.partner_id.id,
-                'move_type': 'out_invoice',
-                'journal_id': self.journal_id.id,
-                'date': fields.Date.today(),
-                'invoice_date': fields.Date.today(),
-                'ref': f"{self.name} - {line.meter_id.name}",
-                'water_distribution_id': self.id,
-                'invoice_line_ids': [(0, 0, {
-                    'name': f"Ripartizione Acqua: {line.meter_id.name} ({line.reading_start} -> {line.reading_end})",
-                    'quantity': 1,
-                    'price_unit': line.amount,
-                    'account_id': self.expense_account_id.id, # Credit this account
-                })]
-            }
-            # Add Taxes? Usually internal distribution is tax-exempt or handled upstream. 
-            # If Expense Account has taxes... beware. For now, assume no tax on distribution line.
-            
-            # Create
-            invoice = self.env['account.move'].create(inv_vals)
-            invoices.append(invoice)
-
-        # Notify user or just set state
         self.state = 'posted'
-        
-        # Optional: Return action to view created invoices
-        action = self.env['ir.actions.act_window']._for_xml_id('account.action_move_out_invoice_type')
-        if len(invoices) > 1:
-            action['domain'] = [('id', 'in', [inv.id for inv in invoices])]
-        elif len(invoices) == 1:
-            action['views'] = [(self.env.ref('account.view_move_form').id, 'form')]
-            action['res_id'] = invoices[0].id
-            
-        return action
+        return True
 
     def action_print(self):
         return self.env.ref('gcond.action_report_water_distribution').report_action(self)
