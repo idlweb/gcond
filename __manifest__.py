@@ -34,7 +34,8 @@
         # 'l10n_it_full_audit',
         # 'l10n_it_rea',
         # 'l10n_it_pec_itp',
-        # 'account_reconciliation_widget',
+        # 'l10n_it_pec_itp',
+        'account_reconcile_oca',
     ],
     'data': [
         'security/ir.model.access.csv',

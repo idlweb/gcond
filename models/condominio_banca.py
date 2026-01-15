@@ -14,6 +14,7 @@ class AccountBankStatementLine(models.Model):
     _inherit = 'account.bank.statement.line'
 
     amount_consumed = fields.Boolean(string='Importo Consumato', default=False)
+    condominio_id = fields.Many2one('account.condominio', related='journal_id.condominio_id', store=True, readonly=True, string='Condominio')
     # amount_residual = fields.Float(string='Amount Residual') # Re-adding if needed
 
     def action_consume_payment(self):

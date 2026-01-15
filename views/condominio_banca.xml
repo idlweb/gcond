@@ -11,6 +11,17 @@
                 <field amount_residual is not on line model in standard Odoo 18, removing to avoid crash unless custom added >
             </xpath>
         </field>
-    </record> 
-    -->
+    <record id="view_bank_statement_line_form_reconcile_inherit_condo" model="ir.ui.view">
+        <field name="name">account.bank.statement.line.form.reconcile.inherit.condo</field>
+        <field name="model">account.bank.statement.line</field>
+        <field name="inherit_id" ref="account_reconcile_oca.bank_statement_line_form_reconcile_view"/>
+        <field name="arch" type="xml">
+            <field name="add_account_move_line_id" position="attributes">
+                <attribute name="domain">[('parent_state', '=', 'posted'),('amount_residual', '!=', 0),('account_id.reconcile', '=', True), ('company_id', '=', company_id), ('statement_line_id', '!=', id), ('move_id.journal_id.condominio_id', '=', condominio_id)]</attribute>
+            </field>
+            <field name="journal_id" position="after">
+                 <field name="condominio_id" invisible="1"/>
+            </field>
+        </field>
+    </record>
 </odoo>
