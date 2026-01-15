@@ -194,10 +194,12 @@ class GcondBilancio(models.Model):
         # Better: The user should map it. For now, let's find or create 'Acqua'.
         water_type = self.env['gcond.expense.type'].search([('name', 'ilike', 'Acqua')], limit=1)
         if not water_type and waters:
-             # Fallback: Create one if needed or require it. 
-             # For now, let's assume one exists or pick the first one.
-             # If missing, we can't show it nicely in columns.
-             pass
+             # Auto-create if we have water data but no category
+             water_type = self.env['gcond.expense.type'].create({
+                 'name': 'Spese Acqua',
+                 'sequence': 100
+             })
+             _logger.info("Created new Expense Type: Spese Acqua")
 
         if waters and water_type:
             total_water = 0.0
