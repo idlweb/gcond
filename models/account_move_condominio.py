@@ -303,18 +303,21 @@ class AccountMove(models.Model):
         # We must filter out lines that are already reconciled or have 0 residual to avoid "Nothing to pay" error
         receivable_lines = self.line_ids.filtered(lambda l: l.account_id.account_type == 'asset_receivable' and not l.reconciled and l.amount_residual != 0)
         
+        # ADDED Fix for Supplier Bills (Liability Payable)
         if not receivable_lines:
-            # Fallback: try to find the line associated with the partner if account type is ambiguous
-            # prioritizing lines with debit > 0 (debt) and not reconciled
-            receivable_lines = self.line_ids.filtered(lambda l: l.partner_id and l.debit > 0 and not l.reconciled and l.amount_residual != 0)
+             receivable_lines = self.line_ids.filtered(lambda l: l.account_id.account_type == 'liability_payable' and not l.reconciled and l.amount_residual != 0)
+
+        if not receivable_lines:
+            # Fallback partner + residual check
+            receivable_lines = self.line_ids.filtered(lambda l: l.partner_id and not l.reconciled and l.amount_residual != 0)
             
         if not receivable_lines:
              # If we are here, it means everything is likely paid or the lines are weird.
              # Let's check if there are ANY lines for the partner to give a better error.
-             paid_lines = self.line_ids.filtered(lambda l: l.partner_id and l.debit > 0 and l.reconciled)
+             paid_lines = self.line_ids.filtered(lambda l: l.partner_id and l.reconciled)
              if paid_lines:
-                 raise UserError("Questo avviso risulta già pagato!")
-             raise UserError("Nessuna riga di credito da saldare trovata per questo avviso.")
+                 raise UserError("Questa fattura/avviso risulta già pagata!")
+             raise UserError("Nessuna riga da saldare trovata (credito o debito). Verfica che la fattura sia Confermata e non già pagata.")
              
         return receivable_lines.action_register_payment()
         
