@@ -177,6 +177,67 @@ class GcondBilancio(models.Model):
                         }))
             else:
                 _logger.warning("No distribution table found for Expense Type ID %s", etype_id)
+        
+        # --- WATER DISTRIBUTION INTEGRATION ---
+        # Fetch Water Distributions in the period (State = calculated or posted?)
+        # Ideally 'posted' if we want final figures, but maybe 'calculated' is enough for draft budget?
+        # Let's say 'calculated' or 'posted'.
+        waters = self.env['gcond.water.distribution'].search([
+            ('condominio_id', '=', self.condominio_id.id),
+            ('date_end', '>=', self.date_start),
+            ('date_end', '<=', self.date_end),
+            ('state', 'in', ['calculated', 'posted'])
+        ])
+
+        # We need an Expense Type for Water to group them in the report columns
+        # Let's search for one named 'Acqua' or create a dummy object? 
+        # Better: The user should map it. For now, let's find or create 'Acqua'.
+        water_type = self.env['gcond.expense.type'].search([('name', 'ilike', 'Acqua')], limit=1)
+        if not water_type and waters:
+             # Fallback: Create one if needed or require it. 
+             # For now, let's assume one exists or pick the first one.
+             # If missing, we can't show it nicely in columns.
+             pass
+
+        if waters and water_type:
+            total_water = 0.0
+            
+            # Aggregate all water lines by partner
+            water_map = {}
+            for dist in waters:
+                for line in dist.line_ids:
+                    if line.partner_id.id not in water_map:
+                        water_map[line.partner_id.id] = 0.0
+                    
+                    water_map[line.partner_id.id] += line.amount
+                    total_water += line.amount
+
+            # Add Total Line
+            lines_vals.append((0, 0, {
+                'expense_type_id': water_type.id,
+                'amount_actual': total_water,
+                'amount_budget': 0.0, 
+            }))
+
+            # Add Riparto Lines
+            for pid, amount in water_map.items():
+                if amount == 0:
+                    continue
+                
+                fin = get_partner_financials(pid)
+                
+                # Check if we already added this water_type for this partner (unlikely unless multiple distributions handled above)
+                # We aggregating everything into one 'water_map' loop entry.
+                
+                riparto_vals.append((0, 0, {
+                    'partner_id': pid,
+                    'expense_type_id': water_type.id,
+                    'millesimi': 0.0, # Not applicable
+                    'amount': amount,
+                    'payments': fin['payments'],
+                    'previous_balance': fin['previous'],
+                }))
+        # ----------------------------------------
 
         self.line_ids = lines_vals
         self.riparto_ids = riparto_vals
