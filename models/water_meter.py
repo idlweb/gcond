@@ -194,6 +194,9 @@ class GcondWaterDistribution(models.Model):
                 consumable = min(remaining_consumption, tier_size)
                 cost += consumable * tier.price
                 remaining_consumption -= consumable
+            
+            line.amount = cost
+
         self.state = 'calculated'
 
     expense_account_id = fields.Many2one('account.account', string='Conto di Contropartita (Costo)', required=False)
@@ -203,9 +206,16 @@ class GcondWaterDistribution(models.Model):
         Mark the distribution as Final/Posted.
         This allows it to be used as a basis for distributing Supplier Bills (Acquedotto).
         """
-        self.ensure_one()
         self.state = 'posted'
         return True
+
+    def action_draft(self):
+        """Reset to Draft"""
+        self.ensure_one()
+        # Optional: Check if used in any account.move.line?
+        # link = self.env['account.move.line'].search_count([('water_distribution_id', '=', self.id)])
+        # if link > 0: warning...
+        self.state = 'draft'
 
     def action_print(self):
         return self.env.ref('gcond.action_report_water_distribution').report_action(self)

@@ -29,13 +29,13 @@ class AccountMove(models.Model):
 
         # Ciclo su ogni riga di costo (dare) della fattura
         for line in self.get_debit_entries():
-            expense_type = line.account_id.expense_type_id
-            if not expense_type:
-                _logger.info("Nessun tipo di spesa associato al conto %s, salto la riga.", line.account_id.code)
-                continue
-            
             # Check if Water Distribution is selected for this line
             water_dist = line.water_distribution_id
+            
+            expense_type = line.account_id.expense_type_id
+            if not expense_type and not water_dist:
+                _logger.info("Nessun tipo di spesa associato al conto %s e nessuna ripartizione acqua. Salto la riga.", line.account_id.code)
+                continue
             
             shares = []
             total_calculated = 0.0
@@ -64,13 +64,6 @@ class AccountMove(models.Model):
                      continue
 
                 # 2. Logic: Scaling
-                # We distribute the Invoice Line Cost PROPORTIONAL to the Water Report amounts.
-                # Factor = Invoice Line Cost / Water Report Total
-                # Note: If Invoice Line is NET (100) and we want to recover GROSS (122), we should use 122 here?
-                # But 'line.debit' is usually just the Net Cost line. 
-                # Let's align with existing logic: Take line.debit, apply "Percentuale" (if any, absent here), then ADD VAT (1.22).
-                
-                # Assume 100% of line
                 base_amount = line.debit 
                 target_total = base_amount * 1.22 # Keeping consistency with existing tax logic
                 
@@ -86,12 +79,8 @@ class AccountMove(models.Model):
                     if rounded_charge <= 0:
                         continue
 
-                    # Mock a 'row' object to fit existing structure or create dictionary
-                    # Existing structure uses 'row' from table. We need 'condomino_id'.
-                    # Let's adapt the 'shares' list to store Partner directly or mock object.
-                    
                     shares.append({
-                        'partner': w_line.partner_id, # Storing partner directly
+                        'partner': w_line.partner_id, 
                         'amount': rounded_charge
                     })
                     total_calculated += rounded_charge
@@ -215,10 +204,26 @@ class AccountMove(models.Model):
             raise UserError("Questa fattura è già stata ripartita! Controlla gli Avvisi di Pagamento esistenti.")
 
         document_number = self.name
-        self.distribute_charges(document_number)
+        charges = self.distribute_charges(document_number)
+        
+        if not charges:
+             raise UserError(_("Nessun avviso di pagamento generato. Verifica che la tabella di ripartizione o la ripartizione acqua abbia residenti associati e importi > 0."))
         
         # Mark as distributed
         self.is_distributed = True
+        
+        # Open the generated moves
+        action = self.env['ir.actions.act_window']._for_xml_id('account.action_move_journal_line')
+        # Filter for the new moves
+        charge_ids = [c.id for c in charges]
+        
+        if len(charge_ids) > 1:
+            action['domain'] = [('id', 'in', charge_ids)]
+        elif len(charge_ids) == 1:
+            action['views'] = [(self.env.ref('account.view_move_form').id, 'form')]
+            action['res_id'] = charge_ids[0]
+            
+        return action
 
     def action_smart_pay(self):
         """

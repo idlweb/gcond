@@ -91,6 +91,7 @@
                     <button name="action_fetch_meters" string="1. Recupera Contatori" type="object" class="oe_highlight" invisible="state != 'draft'"/>
                     <button name="action_calculate" string="2. Calcola Riparto" type="object" class="oe_highlight" invisible="state != 'draft'"/>
                     <button name="action_post" string="3. Contabilizza" type="object" class="btn-primary" invisible="state != 'calculated'"/>
+                    <button name="action_draft" string="Rimetti in Bozza" type="object" invisible="state == 'draft'"/>
                     <button name="action_print" string="Stampa PDF" type="object" class="btn-secondary" icon="fa-print"/>
                     <field name="state" widget="statusbar"/>
                 </header>
