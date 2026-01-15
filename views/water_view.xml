@@ -114,7 +114,7 @@
                     <notebook>
                         <page string="Letture e Normalizzazione">
                             <field name="line_ids">
-                                <list string="Dettaglio Residenti" editable="bottom">
+                                <tree string="Dettaglio Residenti" editable="bottom">
                                     <field name="partner_id" readonly="1"/>
                                     <field name="meter_id" readonly="1"/>
                                     <field name="reading_start"/>
@@ -122,17 +122,17 @@
                                     <field name="consumption_measured" sum="Totale Rilevato"/>
                                     <field name="consumption_normalized" sum="Totale Riparametrato"/>
                                     <field name="amount" sum="Totale Addebitato"/>
-                                </list>
+                                </tree>
                             </field>
                         </page>
                         <page string="Scaglioni Tariffari">
                             <field name="tariff_ids">
-                                <list editable="bottom">
+                                <tree editable="bottom">
                                     <field name="name"/>
                                     <field name="limit_from"/>
                                     <field name="limit_to"/>
                                     <field name="price"/>
-                                </list>
+                                </tree>
                             </field>
                         </page>
                         <page string="Contabilità">
