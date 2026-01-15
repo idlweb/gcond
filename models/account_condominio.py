@@ -276,14 +276,23 @@ class GcondAccountCondominium(models.Model):
              raise models.ValidationError("Nessun giornale bancario trovato per questo condominio.")
              
         # Find the OCA Reconcile Client Action
-        # Action XMLID: account_reconcile_oca.action_bank_statement_line_reconcile
-        action = self.env.ref('account_reconcile_oca.action_bank_statement_line_reconcile').read()[0]
+        action_ref = self.env.ref('account_reconcile_oca.action_bank_statement_line_reconcile')
+        action = action_ref.read()[0]
+        
+        # Explicitly enforce the correct views (Kanban first)
+        kanban_view_id = self.env.ref('account_reconcile_oca.bank_statement_line_reconcile_view').id
+        tree_view_id = self.env.ref('account_statement_base.account_bank_statement_line_tree').id
+        
+        action['view_mode'] = 'kanban,list'
+        action['views'] = [(kanban_view_id, 'kanban'), (tree_view_id, 'list')]
         
         # The widget expects 'active_id' or 'active_ids' in context to know which Journal to load
         action['context'] = dict(self.env.context)
         action['context'].update({
             'active_id': bank_journal.id,
             'active_ids': [bank_journal.id],
+            'default_journal_id': bank_journal.id,
+            'search_default_not_reconciled': True, # Ensure we see un-reconciled items
         })
         return action
     
