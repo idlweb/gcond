@@ -11,6 +11,8 @@
                 <field amount_residual is not on line model in standard Odoo 18, removing to avoid crash unless custom added >
             </xpath>
         </field>
+    </record> 
+    -->
     <record id="view_bank_statement_line_form_reconcile_inherit_condo" model="ir.ui.view">
         <field name="name">account.bank.statement.line.form.reconcile.inherit.condo</field>
         <field name="model">account.bank.statement.line</field>
