@@ -7,3 +7,4 @@ class GcondExpenseType(models.Model):
     name = fields.Char(string='Nome Tipo Spesa', required=True, translate=True)
     code = fields.Char(string='Codice', required=True)
     description = fields.Text(string='Descrizione')
+    sequence = fields.Integer(string='Sequenza', default=10)

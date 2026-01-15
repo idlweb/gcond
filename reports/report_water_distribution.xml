@@ -1,0 +1,103 @@
+<odoo>
+    <!-- Report Action -->
+    <record id="action_report_water_distribution" model="ir.actions.report">
+        <field name="name">Ripartizione Acqua</field>
+        <field name="model">gcond.water.distribution</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">gcond.report_water_distribution_template</field>
+        <field name="report_file">gcond.report_water_distribution_template</field>
+        <field name="print_report_name">'Ripartizione Acqua - %s' % object.name</field>
+        <field name="binding_model_id" ref="model_gcond_water_distribution"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Report Template -->
+    <template id="report_water_distribution_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="text-center mt32 mb32">
+                            <h2>Transparenza Ripartizione Acqua</h2>
+                            <h4><span t-field="doc.name"/></h4>
+                            <h5>Periodo: <span t-field="doc.date_start"/> - <span t-field="doc.date_end"/></h5>
+                        </div>
+
+                        <div class="row mt16 mb16">
+                            <div class="col-6">
+                                <strong>Condominio:</strong> <span t-field="doc.condominio_id.name"/>
+                            </div>
+                            <div class="col-6 text-end">
+                                <strong>Consumo Fatturato (m3):</strong> <span t-field="doc.consumption_general"/>
+                            </div>
+                        </div>
+
+                        <div class="row mb32">
+                             <div class="col-12">
+                                 <strong>Dati Contatore Generale:</strong><br/>
+                                 Lettura Iniziale: <span t-field="doc.reading_general_start"/><br/>
+                                 Lettura Finale: <span t-field="doc.reading_general_end"/>
+                             </div>
+                        </div>
+
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Residente</th>
+                                    <th>Matricola Contatore</th>
+                                    <th class="text-end">Lettura Prec.</th>
+                                    <th class="text-end">Lettura Attuale</th>
+                                    <th class="text-end">Consumo Rilevato</th>
+                                    <th class="text-end">Consumo Addebitato (k)</th>
+                                    <th class="text-end">Importo (€)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.line_ids" t-as="line">
+                                    <td><span t-field="line.partner_id.name"/></td>
+                                    <td><span t-field="line.meter_id.name"/></td>
+                                    <td class="text-end"><span t-field="line.reading_start"/></td>
+                                    <td class="text-end"><span t-field="line.reading_end"/></td>
+                                    <td class="text-end"><span t-field="line.consumption_measured"/></td>
+                                    <td class="text-end"><span t-field="line.consumption_normalized"/></td>
+                                    <td class="text-end"><span t-field="line.amount" t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4" class="text-end"><strong>Totali</strong></td>
+                                    <td class="text-end"><strong><span t-esc="sum(l.consumption_measured for l in doc.line_ids)"/></strong></td>
+                                    <td class="text-end"><strong><span t-esc="sum(l.consumption_normalized for l in doc.line_ids)"/></strong></td>
+                                    <td class="text-end"><strong><span t-esc="sum(l.amount for l in doc.line_ids)" t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/></strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        
+                        <div class="mt32" t-if="doc.tariff_ids">
+                            <strong>Note sulle Tariffe Utilizzate:</strong>
+                            <table class="table table-sm table-bordered" style="width: 50%;">
+                                <thead>
+                                    <tr>
+                                        <th>Scaglione</th>
+                                        <th>Tariffa (€/m3)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="doc.tariff_ids.sorted('limit_from')" t-as="tier">
+                                        <td>
+                                            Da <span t-field="tier.limit_from"/>
+                                            <t t-if="tier.limit_to &lt; 999999"> a <span t-field="tier.limit_to"/></t>
+                                            <t t-else=""> in poi</t>
+                                        </td>
+                                        <td><span t-field="tier.price"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

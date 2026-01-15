@@ -197,6 +197,7 @@ class GcondBilancio(models.Model):
              # Auto-create if we have water data but no category
              water_type = self.env['gcond.expense.type'].create({
                  'name': 'Spese Acqua',
+                 'code': 'ACQUA',
                  'sequence': 100
              })
              _logger.info("Created new Expense Type: Spese Acqua")
