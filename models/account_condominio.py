@@ -260,6 +260,32 @@ class GcondAccountCondominium(models.Model):
             ],
             'context': self.env.context,
         }
+
+    def action_open_bank_reconciliation(self):
+        """
+        Opens the OCA Reconciliation Widget for the Condo's Bank Journal.
+        Finds the journal where type='bank' and condominio_id=self.id.
+        """
+        self.ensure_one()
+        bank_journal = self.env['account.journal'].search([
+            ('condominio_id', '=', self.id),
+            ('type', '=', 'bank')
+        ], limit=1)
+        
+        if not bank_journal:
+             raise models.ValidationError("Nessun giornale bancario trovato per questo condominio.")
+             
+        # Find the OCA Reconcile Client Action
+        # Action XMLID: account_reconcile_oca.action_bank_statement_line_reconcile
+        action = self.env.ref('account_reconcile_oca.action_bank_statement_line_reconcile').read()[0]
+        
+        # The widget expects 'active_id' or 'active_ids' in context to know which Journal to load
+        action['context'] = dict(self.env.context)
+        action['context'].update({
+            'active_id': bank_journal.id,
+            'active_ids': [bank_journal.id],
+        })
+        return action
     
 
     def _register_menus(self):

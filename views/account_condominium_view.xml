@@ -34,6 +34,12 @@
                                 <span class="o_stat_text">Fornitori</span>
                             </div>
                         </button>
+                        <button name="action_open_bank_reconciliation" type="object" class="oe_stat_button" icon="fa-university">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Riconcilia</span>
+                                <span class="o_stat_text">Banca</span>
+                            </div>
+                        </button>
                     </div>
                     <group>
                         <group>
