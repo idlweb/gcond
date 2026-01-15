@@ -114,6 +114,90 @@ class GcondWaterDistribution(models.Model):
     move_id = fields.Many2one('account.move', string='Registrazione Contabile') # Deprecated? Keeping for compatibility or single entry fallback
     invoice_ids = fields.One2many('account.move', 'water_distribution_id', string='Avvisi di Pagamento Generati')
 
+    @api.depends('reading_general_end', 'reading_general_start')
+    def _compute_general_consumption(self):
+        for rec in self:
+            rec.consumption_general = max(0, rec.reading_general_end - rec.reading_general_start)
+
+    def action_fetch_meters(self):
+        """Populate lines with all divisional meters and their latest readings as Start Reading."""
+        self.ensure_one()
+        self.line_ids.unlink()
+        
+        meters = self.env['gcond.water.meter'].search([
+            ('condominio_id', '=', self.condominio_id.id),
+            ('meter_type', '=', 'divisional')
+        ])
+        
+        lines = []
+        for meter in meters:
+            # Find reading for Start Date (closest <= date_start)
+            start_reading = self.env['gcond.water.reading'].search([
+                ('meter_id', '=', meter.id),
+                ('date', '<=', self.date_start)
+            ], order='date desc', limit=1)
+            
+            # Find reading for End Date (closest <= date_end)
+            end_reading = self.env['gcond.water.reading'].search([
+                ('meter_id', '=', meter.id),
+                ('date', '<=', self.date_end)
+            ], order='date desc', limit=1)
+
+            # Fallback to initial_reading if no history found for Start
+            val_start = start_reading.value if start_reading else meter.initial_reading
+            
+            # For End, use found reading, or default to Start (0 consumption) if nothing new found
+            val_end = end_reading.value if end_reading else val_start
+
+            lines.append((0, 0, {
+                'meter_id': meter.id,
+                'partner_id': meter.partner_id.id,
+                'reading_start': val_start,
+                'reading_end': val_end,
+            }))
+        
+        self.line_ids = lines
+
+    def action_calculate(self):
+        """Perform Normalization and Pricing"""
+        self.ensure_one()
+        if self.consumption_general <= 0:
+            raise UserError(_("Il consumo generale deve essere maggiore di zero."))
+
+        total_measured = sum(line.consumption_measured for line in self.line_ids)
+        
+        if total_measured <= 0:
+             raise UserError(_("Nessun consumo rilevato dai sottocontatori."))
+
+        # Coefficient (K) = General / Sum(Divisional)
+        k_normalization = self.consumption_general / total_measured
+        
+        for line in self.line_ids:
+            # 1. Normalize
+            line.consumption_normalized = line.consumption_measured * k_normalization
+            
+            # 2. Apply Pricing (Scaglioni)
+            cost = 0.0
+            remaining_consumption = line.consumption_normalized
+            
+            # Sort tariffs just in case
+            sorted_tariffs = self.tariff_ids.sorted('limit_from')
+            
+            for tier in sorted_tariffs:
+                if remaining_consumption <= 0:
+                    break
+                
+                # Calculate m3 in this tier
+                # Tier size = limit_to - limit_from
+                tier_size = tier.limit_to - tier.limit_from
+                
+                consumable = min(remaining_consumption, tier_size)
+                cost += consumable * tier.price
+                remaining_consumption -= consumable
+        self.state = 'calculated'
+
+    expense_account_id = fields.Many2one('account.account', string='Conto di Contropartita (Costo)', required=False)
+
     def action_post(self):
         """
         Mark the distribution as Final/Posted.
