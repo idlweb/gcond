@@ -9,6 +9,7 @@
         <field name="print_report_name">'Ripartizione Acqua - %s' % object.name</field>
         <field name="binding_model_id" ref="model_gcond_water_distribution"/>
         <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="gcond.paperformat_gcond_landscape"/>
     </record>
 
     <!-- Report Template -->
