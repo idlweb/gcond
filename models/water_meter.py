@@ -247,7 +247,13 @@ class GcondWaterDistribution(models.Model):
         move.action_post()
         self.move_id = move.id
         self.state = 'posted'
+        move.action_post()
+        self.move_id = move.id
+        self.state = 'posted'
         return True
+
+    def action_print(self):
+        return self.env.ref('gcond.action_report_water_distribution').report_action(self)
 
 class GcondWaterDistributionLine(models.Model):
     _name = 'gcond.water.distribution.line'
