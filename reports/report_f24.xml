@@ -15,95 +15,179 @@
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="o">
                     <t t-call="web.external_layout">
-                        <div class="page">
-                            <h2 class="text-center">MODELLO DI PAGAMENTO UNIFICATO (F24)</h2>
-                            <br/>
+                        <div class="page" style="font-family: Arial, sans-serif; font-size: 12px;">
                             
-                            <!-- SEZIONE DATI ANAGRAFICI -->
-                            <div class="row" style="border: 1px solid black; padding: 10px; margin-bottom: 10px;">
-                                <div class="col-12">
-                                    <strong>CONTRIBUENTE</strong>
+                            <!-- HEADER / LOGO FINTI -->
+                            <div class="row mb-2">
+                                <div class="col-8">
+                                    <h3>MODELLO DI PAGAMENTO UNIFICATO</h3>
                                 </div>
-                                <div class="col-6">
-                                    <span t-field="o.condominio_id.name"/> <br/>
-                                    CF: <span t-field="o.condominio_id.vat"/>
+                                <div class="col-4 text-right">
+                                    <h2 style="color: #0099cc; border: 2px solid #0099cc; padding: 5px; display:inline-block;">Mod. F24</h2>
                                 </div>
-                                <div class="col-6">
-                                    Data Scadenza: <span t-field="o.date_payment"/>
+                            </div>
+
+                            <!-- DATI ANAGRAFICI -->
+                            <div style="border: 2px solid #0099cc; padding: 5px; margin-bottom: 5px; background-color: #e0f2f7;">
+                                <strong>CONTRIBUENTE</strong>
+                            </div>
+                            
+                            <!-- CODICE FISCALE -->
+                            <div class="row mb-2">
+                                <div class="col-3">
+                                    <strong>CODICE FISCALE</strong>
+                                </div>
+                                <div class="col-9" style="letter-spacing: 5px; border: 1px solid black; background-color: white; font-size: 16px; padding-left: 10px;">
+                                    <span t-field="o.condominio_id.vat"/>
+                                </div>
+                            </div>
+
+                            <!-- DATI ANAGRAFICI DETTAGLIO -->
+                            <div class="row" style="background-color: #eee; border-top: 1px solid black; padding-top: 5px;">
+                                <div class="col-2">
+                                    <strong>DATI ANAGRAFICI</strong>
+                                </div>
+                                <div class="col-10">
+                                    <div class="row">
+                                        <div class="col-12" style="border-bottom: 1px dashed black;">
+                                            <small>cognome, denominazione o ragione sociale</small><br/>
+                                            <span t-field="o.condominio_id.name" style="font-size: 14px; font-weight: bold;"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-2">
+                                            <small>data di nascita</small><br/>
+                                            <span>-</span>
+                                        </div>
+                                        <div class="col-1">
+                                            <small>sesso</small><br/>
+                                            <span>-</span>
+                                        </div>
+                                        <div class="col-6">
+                                            <small>comune (o Stato estero) di nascita</small><br/>
+                                            <span>-</span>
+                                        </div>
+                                        <div class="col-1">
+                                            <small>prov.</small><br/>
+                                            <span>-</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- DOMICILIO FISCALE -->
+                            <div class="row mt-2" style="background-color: #eee; padding-top: 5px; border-bottom: 1px solid black;">
+                                <div class="col-2">
+                                    <strong>DOMICILIO FISCALE</strong>
+                                </div>
+                                <div class="col-10">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <small>comune</small><br/>
+                                            <span t-field="o.condominio_id.city"/>
+                                        </div>
+                                        <div class="col-1">
+                                            <small>prov.</small><br/>
+                                            <span t-field="o.condominio_id.partner_id.state_id.code"/>
+                                        </div>
+                                        <div class="col-6">
+                                            <small>via e numero civico</small><br/>
+                                            <span t-field="o.condominio_id.address"/>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- SEZIONE ERARIO -->
-                            <div class="row" style="border: 1px solid black; margin-bottom: 20px;">
-                                <div class="col-12" style="background-color: #eee; border-bottom: 1px solid black; padding: 5px;">
-                                    <strong>SEZIONE ERARIO</strong>
-                                </div>
-                                <div class="col-12 p-0">
-                                    <table class="table table-bordered table-sm m-0">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 20%">Codice Tributo</th>
-                                                <th style="width: 10%">Mese Riff.</th>
-                                                <th style="width: 10%">Anno Riff.</th>
-                                                <th style="width: 30%">Importi a debito versati</th>
-                                                <th style="width: 30%">Importi a credito compensati</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <!-- Logic to group lines -->
-                                            <t t-set="grouped_lines" t-value="{}"/>
-                                            <t t-foreach="o.withholding_move_ids" t-as="move">
-                                                <t t-set="key" t-value="(move.withholding_tax_id.code, move.date.strftime('%m'), move.date.strftime('%Y'))"/>
-                                                <t t-if="key not in grouped_lines">
-                                                    <t t-set="grouped_lines" t-value="grouped_lines.update({key: 0})"/>
-                                                </t>
-                                                <t t-set="formatted_key" t-value="'%s|%s|%s' % key"/>
-                                                 <!-- Note: QWeb doesn't support easy dict updates in loop var scope cleanly. 
-                                                      Better to call a python helper on the object. 
-                                                      But for now, let's list them flat for simplicity or use a simple logic.
-                                                 -->
-                                            </t>
-                                            
-                                            <!-- Simplified approach: List moves directly if few, but better to group. 
-                                                 Since we can't easily group in QWeb, let's call a method on the wizard model. 
-                                                 But wizard is transient.
-                                                 Let's just list them sorted.
-                                            -->
-                                            <tr t-foreach="o.withholding_move_ids.sorted(key=lambda m: (m.withholding_tax_id.code, m.date))" t-as="line">
-                                                <td><span t-field="line.withholding_tax_id.code"/></td>
-                                                <td><span t-esc="line.date.strftime('%m')"/></td>
-                                                <td><span t-esc="line.date.strftime('%Y')"/></td>
-                                                <td class="text-right">
-                                                    <span t-field="line.amount" t-options='{"widget": "monetary", "display_currency": (o.journal_id.currency_id or o.journal_id.company_id.currency_id)}'/>
-                                                </td>
-                                                <td class="text-right"></td>
-                                            </tr>
-                                            <!-- Totale -->
-                                            <tr>
-                                                <td colspan="3" class="text-right"><strong>TOTALE ERARIO</strong></td>
-                                                <td class="text-right">
-                                                    <strong t-esc="sum(l.amount for l in o.withholding_move_ids)" t-options='{"widget": "monetary", "display_currency": (o.journal_id.currency_id or o.journal_id.company_id.currency_id)}'/>
-                                                </td>
-                                                <td></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                            <div class="mt-4" style="border: 2px solid #0099cc; background-color: #e0f2f7; color: #0099cc; padding: 2px;">
+                                <strong>SEZIONE ERARIO</strong>
                             </div>
 
-                            <!-- TOTALE GENERALE -->
-                            <div class="row">
-                                <div class="col-8 text-right">
-                                    <strong>SALDO FINALE</strong>
+                            <table class="table table-bordered table-sm mt-0" style="border-top: none;">
+                                <thead style="text-align: center; font-size: 10px; background-color: #eee;">
+                                    <tr>
+                                        <th style="width: 15%">codice tributo</th>
+                                        <th style="width: 15%">rateazione/regione/<br/>prov./mese rif.</th>
+                                        <th style="width: 10%">anno di<br/>riferimento</th>
+                                        <th style="width: 30%">importi a debito versati</th>
+                                        <th style="width: 30%">importi a credito compensati</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="erario_total" t-value="0"/>
+                                    <t t-foreach="o.withholding_move_ids" t-as="move">
+                                        <tr>
+                                            <td class="text-center"><span t-field="move.withholding_tax_id.code"/></td>
+                                            <td class="text-center">
+                                                <!-- Rateazione usually included in code or separate? 
+                                                     Usually for withholding: Month (00MM) or fixed '0000'.
+                                                     User example had '01' for month.
+                                                     Let's put '00'+Month here as standard practice for some codes or just Month.
+                                                     Usually for 1040/1019 in F24, "rateazione" is the month.
+                                                -->
+                                                00<span t-esc="move.date.strftime('%m')"/>
+                                            </td>
+                                            <td class="text-center"><span t-esc="move.date.strftime('%Y')"/></td>
+                                            <td class="text-right">
+                                                <span t-field="move.amount" t-options='{"widget": "monetary", "display_currency": (o.journal_id.currency_id or o.journal_id.company_id.currency_id)}'/>
+                                            </td>
+                                            <td class="text-right"></td>
+                                        </tr>
+                                        <t t-set="erario_total" t-value="erario_total + move.amount"/>
+                                    </t>
+                                    <!-- Filler rows -->
+                                    <tr t-if="len(o.withholding_move_ids) &lt; 5">
+                                        <td colspan="5" style="height: 20px;"></td>
+                                    </tr>
+                                    <tr style="background-color: #ddd;">
+                                        <td colspan="3" class="text-right"><strong>TOTALE A</strong></td>
+                                        <td class="text-right">
+                                            <strong t-esc="erario_total" t-options='{"widget": "monetary", "display_currency": (o.journal_id.currency_id or o.journal_id.company_id.currency_id)}'/>
+                                        </td>
+                                        <td class="text-right">
+                                            <strong>B</strong>
+                                        </td>
+                                    </tr>
+                                    <tr style="background-color: #e0f2f7;">
+                                        <td colspan="3" class="text-right"><strong>SALDO (A - B)</strong></td>
+                                        <td colspan="2" class="text-center">
+                                            <strong t-esc="erario_total" t-options='{"widget": "monetary", "display_currency": (o.journal_id.currency_id or o.journal_id.company_id.currency_id)}'/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                            <!-- ESTREMI DEL VERSAMENTO -->
+                            <div class="mt-4 p-2" style="background-color: #cce5ff; border: 1px solid #0099cc;">
+                                <div class="row">
+                                    <div class="col-12" style="color: white; background-color: #0099cc; padding: 2px;">
+                                        <strong>ESTREMI DEL VERSAMENTO</strong>
+                                    </div>
                                 </div>
-                                <div class="col-4 text-right" style="border: 2px solid black; padding: 5px;">
-                                    <strong t-esc="sum(l.amount for l in o.withholding_move_ids)" t-options='{"widget": "monetary", "display_currency": (o.journal_id.currency_id or o.journal_id.company_id.currency_id)}'/>
+                                <div class="row mt-2">
+                                    <div class="col-3" style="border-right: 1px solid white;">
+                                        <small>Data del pagamento</small><br/>
+                                        <span t-field="o.date_payment" style="font-size: 16px; font-weight: bold;"/>
+                                    </div>
+                                    <div class="col-6" style="border-right: 1px solid white;">
+                                        <small>IBAN del condominio</small><br/>
+                                        <span t-field="o.journal_id.bank_account_id.sanitize_acc_number" style="letter-spacing: 2px;"/>
+                                        <!-- Fallback if sanitize_acc_number not available -->
+                                        <t t-if="not o.journal_id.bank_account_id">
+                                            <span t-if="o.journal_id.bank_acc_number" t-field="o.journal_id.bank_acc_number"/>
+                                        </t>
+                                    </div>
+                                    <div class="col-3 text-right">
+                                        <small>EURO +</small><br/>
+                                        <strong t-esc="erario_total" t-options='{"widget": "monetary", "display_currency": (o.journal_id.currency_id or o.journal_id.company_id.currency_id)}'/>
+                                    </div>
                                 </div>
                             </div>
                             
-                            <div class="row mt-4">
-                                <div class="col-12 text-center text-muted">
-                                    <small>Stampa non valida ai fini fiscali. Utilizzare per controllo e data entry.</small>
+                            <div class="row mt-5">
+                                <div class="col-6 border-top">
+                                    Firma
                                 </div>
                             </div>
 
