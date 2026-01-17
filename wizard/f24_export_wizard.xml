@@ -33,6 +33,7 @@
 
                 <footer>
                     <button name="action_generate_file" string="Genera File" type="object" class="btn-primary"/>
+                    <button name="action_print_pdf" string="Stampa F24 (PDF)" type="object" class="btn-secondary"/>
                     <button name="action_mark_paid" string="Segna come Versate" type="object" class="btn-warning"
                             confirm="Sei sicuro di voler segnare queste ritenute come PAGATE? L'operazione è irreversibile."
                             invisible="not file_data"/>

@@ -58,6 +58,7 @@
         'reports/report_riparto.xml',
         'reports/report_patrimoniale.xml',
         'reports/report_water_distribution.xml',
+        'reports/report_f24.xml',
         'wizard/fee_wizard_view.xml',
         'wizard/f24_export_wizard.xml',
         'data/sequence_data.xml',

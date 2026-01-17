@@ -144,3 +144,10 @@ class GcondF24ExportWizard(models.TransientModel):
         for move in self.withholding_move_ids:
             move.action_paid()
         return {'type': 'ir.actions.client', 'tag': 'reload'}
+
+    def action_print_pdf(self):
+        self.ensure_one()
+        if not self.withholding_move_ids:
+            return 
+            
+        return self.env.ref('gcond.action_report_f24').report_action(self)
