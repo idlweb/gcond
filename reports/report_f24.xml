@@ -26,7 +26,7 @@
                                 </div>
                                 <div class="col-6">
                                     <span t-field="o.condominio_id.name"/> <br/>
-                                    CF: <span t-field="o.condominio_id.fiscal_code"/>
+                                    CF: <span t-field="o.condominio_id.vat"/>
                                 </div>
                                 <div class="col-6">
                                     Data Scadenza: <span t-field="o.date_payment"/>
@@ -74,7 +74,7 @@
                                                 <td><span t-esc="line.date.strftime('%m')"/></td>
                                                 <td><span t-esc="line.date.strftime('%Y')"/></td>
                                                 <td class="text-right">
-                                                    <span t-field="line.amount" t-options='{"widget": "monetary", "display_currency": o.journal_id.currency_id}'/>
+                                                    <span t-field="line.amount" t-options='{"widget": "monetary", "display_currency": (o.journal_id.currency_id or o.journal_id.company_id.currency_id)}'/>
                                                 </td>
                                                 <td class="text-right"></td>
                                             </tr>
@@ -82,7 +82,7 @@
                                             <tr>
                                                 <td colspan="3" class="text-right"><strong>TOTALE ERARIO</strong></td>
                                                 <td class="text-right">
-                                                    <strong t-esc="sum(l.amount for l in o.withholding_move_ids)" t-options='{"widget": "monetary", "display_currency": o.journal_id.currency_id}'/>
+                                                    <strong t-esc="sum(l.amount for l in o.withholding_move_ids)" t-options='{"widget": "monetary", "display_currency": (o.journal_id.currency_id or o.journal_id.company_id.currency_id)}'/>
                                                 </td>
                                                 <td></td>
                                             </tr>
@@ -97,7 +97,7 @@
                                     <strong>SALDO FINALE</strong>
                                 </div>
                                 <div class="col-4 text-right" style="border: 2px solid black; padding: 5px;">
-                                    <strong t-esc="sum(l.amount for l in o.withholding_move_ids)" t-options='{"widget": "monetary", "display_currency": o.journal_id.currency_id}'/>
+                                    <strong t-esc="sum(l.amount for l in o.withholding_move_ids)" t-options='{"widget": "monetary", "display_currency": (o.journal_id.currency_id or o.journal_id.company_id.currency_id)}'/>
                                 </div>
                             </div>
                             
