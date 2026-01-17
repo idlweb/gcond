@@ -59,6 +59,7 @@
         'reports/report_patrimoniale.xml',
         'reports/report_water_distribution.xml',
         'wizard/fee_wizard_view.xml',
+        'wizard/f24_export_wizard.xml',
         'data/sequence_data.xml',
     ],
     'assets': {
