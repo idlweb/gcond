@@ -172,7 +172,7 @@
                                     </div>
                                     <div class="col-6" style="border-right: 1px solid white;">
                                         <small>IBAN del condominio</small><br/>
-                                        <span t-field="o.journal_id.bank_account_id.sanitize_acc_number" style="letter-spacing: 2px;"/>
+                                        <span t-field="o.journal_id.bank_account_id.acc_number" style="letter-spacing: 2px;"/>
                                         <!-- Fallback if sanitize_acc_number not available -->
                                         <t t-if="not o.journal_id.bank_account_id">
                                             <span t-if="o.journal_id.bank_acc_number" t-field="o.journal_id.bank_acc_number"/>
