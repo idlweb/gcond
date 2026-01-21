@@ -7,7 +7,7 @@ Versione 1.0.0 del 22/10/2025
 
 Elenco completo dei diagnostici relativi alla procedura di controllo
 dell'archivio: 
-<<C:\Users\tonio\Documents\GCOND\CUR2025.txt>>
+<<C:\Users\tonio\Documents\GCOND\CU_2025_GCOND.txt>>
 
 
  ---------------------------------------------------------------------- 
