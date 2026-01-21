@@ -412,3 +412,55 @@ tipo_firma varchar(30)
 2026-01-22 00:40:59,554 INFO  Integer - FileCopy.copyInto- bytes_scritti::3581
 2026-01-22 00:40:59,554 INFO  Integer - FileCopy.copyInto- bytes_letti::3581
 2026-01-22 00:40:59,554 INFO  Integer - FileCopy.copyInto- close
+2026-01-22 00:47:18,594 DEBUG ControllaFileHandler - ControllaFileHandler - FI - 1
+2026-01-22 00:47:18,594 DEBUG ControlloViewUtil - ControlloViewUtil - FI - 1
+2026-01-22 00:47:18,594 DEBUG ControlloViewUtil - ControlloViewUtil - FI - 2
+2026-01-22 00:47:18,618 INFO  VerificaFileJob - verifica.file.incorso
+2026-01-22 00:47:18,618 INFO  File Internet - verifica.file.nonfirmato
+2026-01-22 00:47:18,618 INFO  VerificaFileJob - verifica.file.recupero.codice.fornitura
+2026-01-22 00:47:18,625 INFO  String - verifica.file.incorso
+2026-01-22 00:47:18,625 INFO  VerificaFileJob - verifica.file.recupero.codice.fornitura
+2026-01-22 00:47:18,670 INFO  File Internet - verifica.file.codice.fornitura
+2026-01-22 00:47:18,670 INFO  File Internet - verifica.file.completata
+2026-01-22 00:47:18,670 INFO  VerificaFileJob - verifica.file.codice.fornitura
+2026-01-22 00:47:18,670 INFO  VerificaFileJob - verifica.file.completata
+2026-01-22 00:47:18,676 DEBUG ControlloViewUtil - ControlloViewUtil - FI - 3
+2026-01-22 00:47:18,676 DEBUG ControlloViewUtil - ControlloViewUtil - FI - 4
+2026-01-22 00:47:18,676 DEBUG ControlloViewUtil - ControlloViewUtil - FI - 5
+2026-01-22 00:47:18,820 DEBUG ControllaFileHandler - ControllaFileHandler - FI - 2
+2026-01-22 00:47:24,618 INFO  ControlloView - File da controllare: C:\Users\tonio\Documents\GCOND\CUR25.txt
+2026-01-22 00:47:24,631 INFO  ControlloFileJob - Inizio controllo
+2026-01-22 00:47:24,632 INFO  ControlloFileJob - Esecuzione controllo in corso...
+2026-01-22 00:47:24,632 INFO  ControlloFileJob - Controllo completato
+2026-01-22 00:47:24,642 INFO  DerbyHandler - Apertura del database C:\Users\tonio\Desktop\FISCO\DesktopTelematico/databases/Desktop avvenuta con successo.
+2026-01-22 00:47:26,384 INFO  Integer - FileCopy.copyInto- fin:java.io.FileInputStream@3a12f3e7
+2026-01-22 00:47:26,385 INFO  Integer - FileCopy.copyInto- fout::java.io.FileOutputStream@84a9f65
+2026-01-22 00:47:26,385 INFO  Integer - FileCopy.copyInto- bytes_scritti::3573
+2026-01-22 00:47:26,385 INFO  Integer - FileCopy.copyInto- bytes_letti::3573
+2026-01-22 00:47:26,385 INFO  Integer - FileCopy.copyInto- close
+2026-01-22 00:54:21,976 DEBUG ControllaFileHandler - ControllaFileHandler - FI - 1
+2026-01-22 00:54:21,976 DEBUG ControlloViewUtil - ControlloViewUtil - FI - 1
+2026-01-22 00:54:21,976 DEBUG ControlloViewUtil - ControlloViewUtil - FI - 2
+2026-01-22 00:54:21,989 INFO  VerificaFileJob - verifica.file.incorso
+2026-01-22 00:54:21,989 INFO  File Internet - verifica.file.nonfirmato
+2026-01-22 00:54:21,990 INFO  VerificaFileJob - verifica.file.recupero.codice.fornitura
+2026-01-22 00:54:21,995 INFO  String - verifica.file.incorso
+2026-01-22 00:54:21,995 INFO  VerificaFileJob - verifica.file.recupero.codice.fornitura
+2026-01-22 00:54:22,041 INFO  File Internet - verifica.file.codice.fornitura
+2026-01-22 00:54:22,041 INFO  File Internet - verifica.file.completata
+2026-01-22 00:54:22,041 INFO  VerificaFileJob - verifica.file.codice.fornitura
+2026-01-22 00:54:22,041 INFO  VerificaFileJob - verifica.file.completata
+2026-01-22 00:54:22,048 DEBUG ControlloViewUtil - ControlloViewUtil - FI - 3
+2026-01-22 00:54:22,048 DEBUG ControlloViewUtil - ControlloViewUtil - FI - 4
+2026-01-22 00:54:22,048 DEBUG ControlloViewUtil - ControlloViewUtil - FI - 5
+2026-01-22 00:54:22,191 DEBUG ControllaFileHandler - ControllaFileHandler - FI - 2
+2026-01-22 00:54:27,690 INFO  ControlloView - File da controllare: C:\Users\tonio\Documents\GCOND\CUR25.txt
+2026-01-22 00:54:28,961 INFO  ControlloFileJob - Inizio controllo
+2026-01-22 00:54:28,962 INFO  ControlloFileJob - Esecuzione controllo in corso...
+2026-01-22 00:54:28,962 INFO  ControlloFileJob - Controllo completato
+2026-01-22 00:54:28,972 INFO  DerbyHandler - Apertura del database C:\Users\tonio\Desktop\FISCO\DesktopTelematico/databases/Desktop avvenuta con successo.
+2026-01-22 00:54:30,898 INFO  Integer - FileCopy.copyInto- fin:java.io.FileInputStream@4be7acd9
+2026-01-22 00:54:30,898 INFO  Integer - FileCopy.copyInto- fout::java.io.FileOutputStream@58afecfd
+2026-01-22 00:54:30,898 INFO  Integer - FileCopy.copyInto- bytes_scritti::3573
+2026-01-22 00:54:30,898 INFO  Integer - FileCopy.copyInto- bytes_letti::3573
+2026-01-22 00:54:30,898 INFO  Integer - FileCopy.copyInto- close
