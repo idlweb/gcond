@@ -1,0 +1,67 @@
+                                                                Data: 22/01/2026
+Mod. RCU 2025 - Procedura di Controllo delle Dichiarazioni
+Versione 1.0.0 del 22/10/2025
+
+
+
+
+Elenco completo dei diagnostici relativi alla procedura di controllo
+dell'archivio: 
+<<C:\Users\tonio\Documents\GCOND\CU_TEST.txt>>
+
+
+ ---------------------------------------------------------------------- 
+|                   --Descrizione degli errori--                       |
+|                                                                      |
+|(****) Errore che determina lo scarto dell'intera fornitura           |
+|(***)  Errore bloccante che determina lo scarto della dichiarazione.  |
+|       Tale anomalia non consente in ogni caso la trasmissione della  |
+|       dichiarazione                                                  |
+|(***C) Errore di entità rilevante che determina lo scarto della       |
+|       dichiarazione. Qualora, in presenza di tali segnalazioni, si   |
+|       intenda comunque procedere alla trasmissione della             |
+|       dichiarazione, è necessario confermare i dati in essa          |
+|       contenuti, avvalendosi delle funzionalità rese disponibili dal |
+|       software utilizzato per la compilazione. Con la 'conferma' si  |
+|       attesta di aver preso visione delle segnalazioni evidenziate   |
+|(**)   Segnalazione a fronte della quale è stata richiesta la         |
+|       'conferma' della dichiarazione - vedi errori tipo (***C)       |
+|(*)    Segnalazione di anomalia di entità ridotta in presenza della   |
+|       quale la dichiarazione può essere comunque trasmessa           |
+|                                                                      |
+|L'individuazione dei campi segnalati può avvenire in alternativa:     |
+|                                                                      |
+|  .  con una descrizione puntuale del campo (ad es. per i dati        |
+|     anagrafici del dichiarante)                                      |
+|  .  con l'indicazione del quadro, del rigo e della colonna relativi  |
+|     al campo stesso.                                                 |
+|                                                                      |
+ ---------------------------------------------------------------------- 
+
+
+
+Presenza di segnalazioni relative alla fornitura.
+
+Elaborazione interrotta al record 1 dell'archivio di input.
+
+(****)
+E' stato richiesto il controllo di un modello di dichiarazione diverso dal
+modello presente nella fornitura  - selezionare opportunamente il modello da
+controllare o verificare il Codice Fornitura presente nel Record A -
+
+
+
+
+******************************************************************************
+*                                  RIEPILOGO                                 *
+*                                                                            *
+* Totale dichiarazioni elaborate :     0                                     *
+* di cui:                                                                    *
+*   scartate per errori bloccanti:     0                                     *
+*   scartate per non rispondenza :     0                                     *
+*   con errori confermati        :     0                                     *
+*   con segnalazione di anomalia :     0                                     *
+*   senza segnalazioni           :     0                                     *
+*                                                                            *
+******************************************************************************
+

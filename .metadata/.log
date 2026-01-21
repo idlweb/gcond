@@ -1,0 +1,161 @@
+!SESSION 2026-01-21 23:50:28.374 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_261
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=it
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.equinox.p2.engine 4 0 2026-01-21 23:50:30.194
+!MESSAGE FrameworkEvent ERROR
+!STACK 0
+org.osgi.framework.BundleException: The bundle "org.eclipse.equinox.p2.engine_2.3.0.v20130526-2122 [2]" could not be resolved. Reason: Vincolo mancante: Require-Bundle: org.eclipse.equinox.common; bundle-version="0.0.0"
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.getResolverError(AbstractBundle.java:1332)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.getResolutionFailureException(AbstractBundle.java:1316)
+	at org.eclipse.osgi.framework.internal.core.BundleHost.startWorker(BundleHost.java:323)
+	at org.eclipse.osgi.framework.internal.core.AbstractBundle.resume(AbstractBundle.java:390)
+	at org.eclipse.osgi.framework.internal.core.Framework.resumeBundle(Framework.java:1176)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.resumeBundles(StartLevelManager.java:559)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.resumeBundles(StartLevelManager.java:544)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.incFWSL(StartLevelManager.java:457)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.doSetStartLevel(StartLevelManager.java:243)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.dispatchEvent(StartLevelManager.java:438)
+	at org.eclipse.osgi.framework.internal.core.StartLevelManager.dispatchEvent(StartLevelManager.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:230)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:340)
+
+!ENTRY org.eclipse.osgi 2 0 2026-01-21 23:50:32.387
+!MESSAGE The plugin "org.apache.derby.core" with the version "10.6.1.0" and location "reference:file:plugins/org.apache.derby.core_10.6.1.0/" is an old style Eclipse 2.0 plugin with no OSGi bundle manifest.  Support for Eclipse 2.0 style plugins will be removed in a future release. Refer to the migration guide for details.
+
+!ENTRY org.eclipse.ui 2 2 2026-01-21 23:52:00.926
+!MESSAGE Invalid preference category path: org.eclipse.equinox.internal.p2.ui.sdk.ProvisioningPreferencePage (bundle: org.eclipse.equinox.p2.ui.sdk.scheduler, page: org.eclipse.equinox.internal.p2.ui.sdk.scheduler.AutomaticUpdatesPreferencePage)
+
+!ENTRY org.eclipse.equinox.p2.engine 4 4 2026-01-21 23:52:52.449
+!MESSAGE Si è verificato un errore durante la raccolta degli elementi da installare
+!SUBENTRY 1 org.eclipse.equinox.p2.engine 4 0 2026-01-21 23:52:52.449
+!MESSAGE session context was:(profile=profile, phase=org.eclipse.equinox.internal.p2.engine.phases.Collect, operand=, action=).
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2026-01-21 23:52:52.449
+!MESSAGE No repository found containing: osgi.bundle,it.sogei.telematico.application,1.0.11.202511172153
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2026-01-21 23:52:52.449
+!MESSAGE No repository found containing: osgi.bundle,it.sogei.telematico.security.login.ui,1.0.5.202511172153
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2026-01-21 23:52:52.449
+!MESSAGE No repository found containing: org.eclipse.update.feature,it.sogei.telematico.application.core,1.1.6.202511172153
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2026-01-21 23:52:52.449
+!MESSAGE No repository found containing: org.eclipse.update.feature,it.sogei.telematico.application.jre,1.0.2.202511172153
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2026-01-21 23:52:52.449
+!MESSAGE No repository found containing: binary,it.sogei.telematico.application.jre_root.win32.win32.x86_64,1.0.2.202511172153
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2026-01-21 23:52:52.449
+!MESSAGE No repository found containing: binary,it.sogei.telematico.application.prodotto_root.win32.win32.x86_64,1.0.8.202511172153
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2026-01-21 23:52:52.449
+!MESSAGE No repository found containing: org.eclipse.update.feature,it.sogei.telematico.security.login.ui.feature,1.0.5.202511172153
+!SESSION 2026-01-21 23:54:38.083 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_261
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=it
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.ui 2 2 2026-01-21 23:54:55.208
+!MESSAGE Invalid preference category path: org.eclipse.equinox.internal.p2.ui.sdk.ProvisioningPreferencePage (bundle: org.eclipse.equinox.p2.ui.sdk.scheduler, page: org.eclipse.equinox.internal.p2.ui.sdk.scheduler.AutomaticUpdatesPreferencePage)
+
+!ENTRY org.eclipse.equinox.p2.engine 4 4 2026-01-21 23:55:22.461
+!MESSAGE Si è verificato un errore durante la raccolta degli elementi da installare
+!SUBENTRY 1 org.eclipse.equinox.p2.engine 4 0 2026-01-21 23:55:22.461
+!MESSAGE session context was:(profile=profile, phase=org.eclipse.equinox.internal.p2.engine.phases.Collect, operand=, action=).
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2026-01-21 23:55:22.461
+!MESSAGE No repository found containing: osgi.bundle,it.sogei.telematico.application,1.0.11.202511172153
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2026-01-21 23:55:22.461
+!MESSAGE No repository found containing: osgi.bundle,it.sogei.telematico.security.login.ui,1.0.5.202511172153
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2026-01-21 23:55:22.461
+!MESSAGE No repository found containing: org.eclipse.update.feature,it.sogei.telematico.application.core,1.1.6.202511172153
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2026-01-21 23:55:22.461
+!MESSAGE No repository found containing: org.eclipse.update.feature,it.sogei.telematico.application.jre,1.0.2.202511172153
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2026-01-21 23:55:22.461
+!MESSAGE No repository found containing: binary,it.sogei.telematico.application.jre_root.win32.win32.x86_64,1.0.2.202511172153
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2026-01-21 23:55:22.461
+!MESSAGE No repository found containing: binary,it.sogei.telematico.application.prodotto_root.win32.win32.x86_64,1.0.8.202511172153
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2026-01-21 23:55:22.461
+!MESSAGE No repository found containing: org.eclipse.update.feature,it.sogei.telematico.security.login.ui.feature,1.0.5.202511172153
+
+!ENTRY org.eclipse.ui 4 0 2026-01-21 23:56:44.102
+!MESSAGE Unhandled event loop exception
+!STACK 0
+java.lang.IllegalArgumentException: Argument cannot be null
+	at org.eclipse.swt.SWT.error(SWT.java:4378)
+	at org.eclipse.swt.SWT.error(SWT.java:4312)
+	at org.eclipse.swt.SWT.error(SWT.java:4283)
+	at org.eclipse.swt.widgets.Widget.error(Widget.java:472)
+	at org.eclipse.swt.widgets.Text.setText(Text.java:2241)
+	at it.sogei.telematico.application.views.ImportWorkspaceDialog$1.widgetSelected(ImportWorkspaceDialog.java:85)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:248)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1057)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:4170)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3759)
+	at org.eclipse.jface.window.Window.runEventLoop(Window.java:826)
+	at org.eclipse.jface.window.Window.open(Window.java:802)
+	at it.sogei.telematico.application.views.MyView1$5.linkActivated(MyView1.java:388)
+	at org.eclipse.ui.forms.widgets.AbstractHyperlink.handleActivate(AbstractHyperlink.java:233)
+	at org.eclipse.ui.forms.widgets.ImageHyperlink.handleActivate(ImageHyperlink.java:199)
+	at org.eclipse.ui.forms.widgets.AbstractHyperlink.handleMouseUp(AbstractHyperlink.java:327)
+	at org.eclipse.ui.forms.widgets.AbstractHyperlink.access$2(AbstractHyperlink.java:311)
+	at org.eclipse.ui.forms.widgets.AbstractHyperlink$4.handleEvent(AbstractHyperlink.java:125)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1057)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:4170)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3759)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$9.run(PartRenderingEngine.java:1113)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:997)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:140)
+	at org.eclipse.ui.internal.Workbench$5.run(Workbench.java:611)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:567)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:150)
+	at it.sogei.rcp.core.controller.DesktopController$1.run(DesktopController.java:242)
+	at it.sogei.rcp.core.controller.DesktopController$1.run(DesktopController.java:1)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Unknown Source)
+	at it.sogei.rcp.core.controller.DesktopController.secureStart(DesktopController.java:211)
+	at it.sogei.rcp.core.controller.DesktopController.start(DesktopController.java:117)
+	at it.sogei.rcp.core.boundary.DesktopBoundary.start(DesktopBoundary.java:48)
+	at it.sogei.telematico.application.Application.start(Application.java:34)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:354)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:181)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:636)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:591)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1450)
+!SESSION 2026-01-22 00:05:56.728 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_261
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=it
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.ui 2 2 2026-01-22 00:06:46.254
+!MESSAGE Invalid preference category path: org.eclipse.equinox.internal.p2.ui.sdk.ProvisioningPreferencePage (bundle: org.eclipse.equinox.p2.ui.sdk.scheduler, page: org.eclipse.equinox.internal.p2.ui.sdk.scheduler.AutomaticUpdatesPreferencePage)
+
+!ENTRY org.eclipse.equinox.p2.engine 4 4 2026-01-22 00:07:37.541
+!MESSAGE Si è verificato un errore durante la raccolta degli elementi da installare
+!SUBENTRY 1 org.eclipse.equinox.p2.engine 4 0 2026-01-22 00:07:37.541
+!MESSAGE session context was:(profile=profile, phase=org.eclipse.equinox.internal.p2.engine.phases.Collect, operand=, action=).
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2026-01-22 00:07:37.541
+!MESSAGE No repository found containing: osgi.bundle,it.sogei.telematico.application,1.0.11.202511172153
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2026-01-22 00:07:37.541
+!MESSAGE No repository found containing: osgi.bundle,it.sogei.telematico.security.login.ui,1.0.5.202511172153
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2026-01-22 00:07:37.541
+!MESSAGE No repository found containing: org.eclipse.update.feature,it.sogei.telematico.application.core,1.1.6.202511172153
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2026-01-22 00:07:37.541
+!MESSAGE No repository found containing: org.eclipse.update.feature,it.sogei.telematico.application.jre,1.0.2.202511172153
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2026-01-22 00:07:37.541
+!MESSAGE No repository found containing: binary,it.sogei.telematico.application.jre_root.win32.win32.x86_64,1.0.2.202511172153
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2026-01-22 00:07:37.541
+!MESSAGE No repository found containing: binary,it.sogei.telematico.application.prodotto_root.win32.win32.x86_64,1.0.8.202511172153
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2026-01-22 00:07:37.541
+!MESSAGE No repository found containing: org.eclipse.update.feature,it.sogei.telematico.security.login.ui.feature,1.0.5.202511172153

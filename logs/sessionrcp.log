@@ -1,0 +1,146 @@
+2026-01-22 00:06:45,331 DEBUG InfoUserService - nome:GCONDruolo:User
+2026-01-22 00:06:45,331 DEBUG InfoUserService - nome:GCONDruolo:User
+2026-01-22 00:06:45,412 DEBUG RCPWorkbenchAdvisor - dopo aggiornamenti
+2026-01-22 00:06:45,412 DEBUG DesktopAdvisor - preStartup
+2026-01-22 00:06:45,416 DEBUG DesktopAdvisor - postStartup
+2026-01-22 00:06:45,500 DEBUG WindowAdvisor - preWindowOpen
+2026-01-22 00:06:45,883 DEBUG get Utente Bean - Utente Bean null
+2026-01-22 00:06:45,883 DEBUG UtenteiBean - Chiamata a imposta utente bean
+2026-01-22 00:06:45,884 DEBUG UtenteiBean - Subject: Oggetto:
+	Principal: UserPrincipal [name=GCOND, roles=[User]]
+	Credenziale pubblica: [User]
+
+2026-01-22 00:06:45,884 DEBUG UtenteiBean - Utente: GCOND
+2026-01-22 00:06:45,885 INFO  DerbyHandler - Apertura del database C:\Users\tonio\Desktop\FISCO\DesktopTelematico/databases/Desktop avvenuta con successo.
+2026-01-22 00:06:45,886 INFO  DerbyHandler - Apertura del database C:\Users\tonio\Desktop\FISCO\DesktopTelematico/databases/Desktop avvenuta con successo.
+2026-01-22 00:06:45,886 DEBUG UtenteiBean - Nome Utente: GCOND
+2026-01-22 00:06:45,886 DEBUG UtenteiBean - Path Utente: C:/Users/tonio/Documents/GCOND/GCOND/
+2026-01-22 00:06:45,969 DEBUG WindowAdvisor - postWindowCreate
+2026-01-22 00:06:46,249 DEBUG MenusHandler - item:it.sogei.rcp.core.menu.file class:org.eclipse.jface.action.MenuManager
+2026-01-22 00:06:46,249 DEBUG MenusHandler - item:it.sogei.telematico.application.menu.applicazioni class:org.eclipse.jface.action.MenuManager
+2026-01-22 00:06:46,249 DEBUG MenusHandler - item:it.sogei.telematico.fileinternet.menu.documenti class:org.eclipse.jface.action.MenuManager
+2026-01-22 00:06:46,249 DEBUG MenusHandler - item:it.sogei.telematico.fileinternet.menu.strumenti class:org.eclipse.jface.action.MenuManager
+2026-01-22 00:06:46,249 DEBUG MenusHandler - item:org.eclipse.core.internal.registry.ConfigurationElementHandle@cfd class:org.eclipse.jface.action.MenuManager
+2026-01-22 00:06:46,249 DEBUG MenusHandler - item:it.sogei.rcp.core.menu.help class:org.eclipse.jface.action.MenuManager
+2026-01-22 00:06:46,257 DEBUG WindowAdvisor - postWindowOpen
+2026-01-22 00:06:46,282 INFO  P2Util - Ricerca aggiornamenti...
+2026-01-22 00:07:45,671 INFO  Activator - Inizio creazione ambiente
+2026-01-22 00:07:45,683 INFO  ZipFactory - (I) compressione tramite libreria java 
+2026-01-22 00:07:45,729 DEBUG Activator - createCertstoreDir
+2026-01-22 00:07:45,737 DEBUG Activator - createCertstoreDir/C:/Users/tonio/Desktop/FISCO/DesktopTelematico/configuration/org.eclipse.osgi/bundles/254/1/.cp/certstore/
+2026-01-22 00:07:45,748 INFO  Activator - Creazione ambiente completata
+2026-01-22 00:07:45,749 INFO  Activator - Caricamento controlli installati
+2026-01-22 00:07:45,749 INFO  ControlloUtility - prima istanza di ControlliUtil
+2026-01-22 00:07:45,749 INFO  ControlloUtility - initListaControlli
+2026-01-22 00:07:45,750 INFO  ControlloUtility - Controllo Singolo: trovata extension con id it.sogei.controllo.dichiarazioni.2025.77025 da parte di:it.sogei.controllo.dichiarazioni.2025.m770
+2026-01-22 00:07:45,750 DEBUG ControlloUtility - CS: CreazioneFileControllato: false - SelezioneNumeroFileUtente:true
+2026-01-22 00:07:45,751 INFO  ControlloUtility - Controllo Singolo: trovata extension con id it.sogei.controllo.dichiarazioni.2025.RCU25 da parte di:it.sogei.controllo.dichiarazioni.2025.mRCU
+2026-01-22 00:07:45,751 DEBUG ControlloUtility - CS: CreazioneFileControllato: false - SelezioneNumeroFileUtente:false
+2026-01-22 00:07:45,751 INFO  ControlloUtility - initListaControlliMulti
+2026-01-22 00:07:45,751 INFO  ControlloUtility - Controllo Multi : trovata extension con id it.sogei.controllo.dichiarazioni.2025.77025 da parte di:it.sogei.controllo.dichiarazioni.2025.m770
+2026-01-22 00:07:45,751 DEBUG ControlloUtility - Controllo getControlloMultiFile: it.sogei.controllo.moduli.Controllo77025multi
+2026-01-22 00:07:45,751 DEBUG ControlloUtility - MF: CreazioneFileControllato: false - SelezioneNumeroFileUtente:true
+2026-01-22 00:07:45,751 DEBUG ControlloUtility - listaControlliMulti: null
+2026-01-22 00:07:45,751 INFO  ControlloUtility - Controllo Multi : trovata extension con id it.sogei.controllo.dichiarazioni.2025.RCU25 da parte di:it.sogei.controllo.dichiarazioni.2025.mRCU
+2026-01-22 00:07:45,751 DEBUG ControlloUtility - Controllo getControlloMultiFile: null
+2026-01-22 00:07:45,751 DEBUG ControlloUtility - MF: CreazioneFileControllato: false - SelezioneNumeroFileUtente:false
+2026-01-22 00:07:45,764 INFO  DerbyHandler - Apertura del database C:\Users\tonio\Desktop\FISCO\DesktopTelematico/databases/Desktop avvenuta con successo.
+2026-01-22 00:07:45,774 INFO  DerbyHandler - Creato lo statment <create table rcp.log_controllo_fi
+(
+id bigint primary key,
+tipo_doc varchar(10),
+utente varchar(250),
+file_in_nome varchar(500),
+file_in_dim bigint,
+file_in_nrec bigint,
+file_in_dt timestamp,
+file_out_nome_dgn varchar(500),
+file_out_nome_dcm varchar(500),
+file_out_resp varchar(25),
+file_out_dim_dgn bigint,
+file_out_dim_dcm bigint,
+file_out_dt timestamp,
+soft_vers varchar(15),
+soft_data varchar(20),
+flag_tipo_contr varchar(5),
+soft_vers_aut varchar(15),
+soft_dt_aut varchar(15)
+)>
+2026-01-22 00:07:45,809 INFO  DerbyHandler - Creato lo statment <
+
+create table rcp.log_autentica_fi
+(
+id bigint primary key,
+tipo_doc varchar(10),
+utente varchar(250),
+file_in_nome varchar(500),
+file_in_dim bigint,
+file_in_nrec bigint,
+file_in_dt timestamp,
+file_out_nome varchar(500),
+file_out_resp varchar(25),
+file_out_dim bigint,
+file_out_dt timestamp,
+file_out_cfaut varchar(25),
+soft_vers varchar(15),
+soft_data varchar(20),
+flag_hash varchar(5),
+hash varchar(50),
+soft_vers_aut varchar(15),
+soft_dt_aut varchar(15)
+)>
+2026-01-22 00:07:45,822 INFO  DerbyHandler - Esecuzione script resources/tabelle_fi.sql avvenuta con successo.
+2026-01-22 00:07:45,822 ERROR FileInternet - Activator - Creazione DB storico
+2026-01-22 00:07:45,822 INFO  DerbyHandler - Apertura del database C:\Users\tonio\Desktop\FISCO\DesktopTelematico/databases/Desktop avvenuta con successo.
+2026-01-22 00:07:45,823 INFO  DerbyHandler - Creato lo statment <create table rcp.log_firma_fi
+(
+id bigint primary key,
+tipo_doc varchar(10),
+utente varchar(250),
+file_in_nome varchar(500),
+file_in_dim bigint,
+file_in_nrec bigint,
+file_in_dt timestamp,
+file_out_nome varchar(500),
+file_out_resp varchar(25),
+file_out_dim bigint,
+file_out_dt timestamp,
+file_out_cfaut varchar(25),
+soft_vers varchar(15),
+soft_data varchar(20),
+soft_vers_aut varchar(15),
+soft_dt_aut varchar(15),
+cert_dt_inizio varchar(50),
+cert_dt_scadenza varchar(50),
+tipo_firma varchar(30)
+)>
+2026-01-22 00:07:45,833 INFO  DerbyHandler - Esecuzione script resources/tabelle_firma.sql avvenuta con successo.
+2026-01-22 00:07:45,833 ERROR Entratel - Activator - Creazione DB storico - Firma
+2026-01-22 00:07:57,368 DEBUG ControllaFileHandler - ControllaFileHandler - FI - 1
+2026-01-22 00:07:57,370 DEBUG ControlloViewUtil - ControlloViewUtil - FI - 1
+2026-01-22 00:07:57,370 DEBUG ControlloViewUtil - ControlloViewUtil - FI - 2
+2026-01-22 00:07:57,371 INFO  Activator - crypto_conf/Cryptotools.properties
+2026-01-22 00:07:57,371 INFO  Activator - crypto_conf/Policy.properties
+2026-01-22 00:07:57,519 INFO  VerificaFileJob - verifica.file.incorso
+2026-01-22 00:07:57,524 INFO  String - verifica.file.incorso
+2026-01-22 00:07:57,565 INFO  File Internet - verifica.file.nonfirmato
+2026-01-22 00:07:57,566 INFO  VerificaFileJob - verifica.file.recupero.codice.fornitura
+2026-01-22 00:07:57,566 INFO  VerificaFileJob - verifica.file.recupero.codice.fornitura
+2026-01-22 00:07:57,640 INFO  File Internet - verifica.file.codice.fornitura
+2026-01-22 00:07:57,640 INFO  File Internet - verifica.file.completata
+2026-01-22 00:07:57,640 INFO  VerificaFileJob - verifica.file.codice.fornitura
+2026-01-22 00:07:57,640 INFO  VerificaFileJob - verifica.file.completata
+2026-01-22 00:07:57,647 DEBUG ControlloViewUtil - ControlloViewUtil - FI - 3
+2026-01-22 00:07:57,648 DEBUG ControlloViewUtil - ControlloViewUtil - FI - 4
+2026-01-22 00:07:57,648 DEBUG ControlloViewUtil - ControlloViewUtil - FI - 5
+2026-01-22 00:07:57,947 DEBUG ControllaFileHandler - ControllaFileHandler - FI - 2
+2026-01-22 00:08:16,403 INFO  ControlloView - File da controllare: C:\Users\tonio\Documents\GCOND\CU_TEST.txt
+2026-01-22 00:08:16,612 INFO  ControlloFileJob - Inizio controllo
+2026-01-22 00:08:16,621 INFO  ControlloFileJob - Esecuzione controllo in corso...
+2026-01-22 00:08:16,621 INFO  ControlloFileJob - Controllo completato
+2026-01-22 00:08:16,631 INFO  DerbyHandler - Apertura del database C:\Users\tonio\Desktop\FISCO\DesktopTelematico/databases/Desktop avvenuta con successo.
+2026-01-22 00:08:37,051 INFO  Integer - FileCopy.copyInto- fin:java.io.FileInputStream@6b2dd3df
+2026-01-22 00:08:37,051 INFO  Integer - FileCopy.copyInto- fout::java.io.FileOutputStream@4db77402
+2026-01-22 00:08:37,052 INFO  Integer - FileCopy.copyInto- bytes_scritti::3575
+2026-01-22 00:08:37,052 INFO  Integer - FileCopy.copyInto- bytes_letti::3575
+2026-01-22 00:08:37,052 INFO  Integer - FileCopy.copyInto- close
