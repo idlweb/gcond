@@ -282,3 +282,29 @@ tipo_firma varchar(30)
 2026-01-22 00:23:38,315 INFO  Integer - FileCopy.copyInto- bytes_scritti::3575
 2026-01-22 00:23:38,315 INFO  Integer - FileCopy.copyInto- bytes_letti::3575
 2026-01-22 00:23:38,315 INFO  Integer - FileCopy.copyInto- close
+2026-01-22 00:26:40,346 DEBUG ControllaFileHandler - ControllaFileHandler - FI - 1
+2026-01-22 00:26:40,347 DEBUG ControlloViewUtil - ControlloViewUtil - FI - 1
+2026-01-22 00:26:40,347 DEBUG ControlloViewUtil - ControlloViewUtil - FI - 2
+2026-01-22 00:26:40,361 INFO  VerificaFileJob - verifica.file.incorso
+2026-01-22 00:26:40,362 INFO  File Internet - verifica.file.nonfirmato
+2026-01-22 00:26:40,362 INFO  VerificaFileJob - verifica.file.recupero.codice.fornitura
+2026-01-22 00:26:40,366 INFO  String - verifica.file.incorso
+2026-01-22 00:26:40,366 INFO  VerificaFileJob - verifica.file.recupero.codice.fornitura
+2026-01-22 00:26:40,433 INFO  File Internet - verifica.file.codice.fornitura
+2026-01-22 00:26:40,433 INFO  File Internet - verifica.file.completata
+2026-01-22 00:26:40,433 INFO  VerificaFileJob - verifica.file.codice.fornitura
+2026-01-22 00:26:40,433 INFO  VerificaFileJob - verifica.file.completata
+2026-01-22 00:26:40,440 DEBUG ControlloViewUtil - ControlloViewUtil - FI - 3
+2026-01-22 00:26:40,440 DEBUG ControlloViewUtil - ControlloViewUtil - FI - 4
+2026-01-22 00:26:40,440 DEBUG ControlloViewUtil - ControlloViewUtil - FI - 5
+2026-01-22 00:26:40,599 DEBUG ControllaFileHandler - ControllaFileHandler - FI - 2
+2026-01-22 00:26:49,103 INFO  ControlloView - File da controllare: C:\Users\tonio\Documents\GCOND\CU_2025_GCOND_ok.txt
+2026-01-22 00:26:49,116 INFO  ControlloFileJob - Inizio controllo
+2026-01-22 00:26:49,117 INFO  ControlloFileJob - Esecuzione controllo in corso...
+2026-01-22 00:26:49,117 INFO  ControlloFileJob - Controllo completato
+2026-01-22 00:26:49,127 INFO  DerbyHandler - Apertura del database C:\Users\tonio\Desktop\FISCO\DesktopTelematico/databases/Desktop avvenuta con successo.
+2026-01-22 00:26:51,051 INFO  Integer - FileCopy.copyInto- fin:java.io.FileInputStream@15186ce0
+2026-01-22 00:26:51,051 INFO  Integer - FileCopy.copyInto- fout::java.io.FileOutputStream@745926c3
+2026-01-22 00:26:51,052 INFO  Integer - FileCopy.copyInto- bytes_scritti::3584
+2026-01-22 00:26:51,052 INFO  Integer - FileCopy.copyInto- bytes_letti::3584
+2026-01-22 00:26:51,052 INFO  Integer - FileCopy.copyInto- close
